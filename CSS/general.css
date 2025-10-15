@@ -1,0 +1,250 @@
+/* Estilos Generales y Variables */
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+:root {
+    --color-principal: #00455C;
+    --color-secundario-1: #00D2F2;
+    --color-secundario-2: #8DCC3D;
+    --color-secundario-3: #FFAB00;
+    --color-secundario-4: #FF2644;
+    --color-secundario-5: #B047B3;
+    --color-texto-gris: #6e7679;
+    --color-blanco: #FFFFFF;
+    --font-principal: 'Public Sans', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-principal);
+    background-color: var(--color-blanco);
+    color: var(--color-principal);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+main {
+    flex-grow: 1;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+/* Header */
+.site-header {
+    background-color: var(--color-blanco);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem 1rem 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo img {
+    height: 60px;
+}
+
+.main-nav ul {
+    display: flex;
+    gap: 2rem;
+}
+
+.main-nav a {
+    font-weight: 700;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.main-nav a:hover {
+    color: var(--color-secundario-1);
+    transform: scale(1.1);
+}
+
+.session-controls {
+    position: relative;
+}
+
+.session-btn, .user-menu-toggle {
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+    padding: 0.85rem 1.7rem;
+    border-radius: 25px;
+    border: 2px solid var(--color-principal);
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.session-btn:hover {
+    background-color: var(--color-blanco);
+    color: var(--color-principal);
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+    border-radius: 8px;
+    padding: 1rem;
+    min-width: 200px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.session-controls:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dropdown-menu ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.dropdown-menu a {
+    color: var(--color-blanco);
+    transition: color 0.3s;
+}
+
+.dropdown-menu a:hover {
+    color: var(--color-secundario-1);
+}
+
+/* Footer */
+.site-footer {
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+    padding: 1.5rem 2rem; /* Padding reducido */
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    max-width: 1400px;
+    margin: 0 auto;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.footer-logo-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 2.5rem;
+}
+
+.footer-logo {
+    height: 40px;
+}
+
+.footer-info p {
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.footer-social-legal {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.footer-social {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-social a {
+    font-size: 1.5rem;
+    color: #a0a0a0;
+    transition: color 0.3s;
+}
+
+.footer-social a:hover {
+    color: var(--color-blanco);
+}
+
+.footer-legal {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.footer-legal a {
+    text-decoration: underline;
+    font-size: 0.9rem;
+}
+
+.footer-separator {
+    width: 1px;
+    background-color: #4a7c8c;
+    align-self: stretch;
+}
+
+.footer-nav h4, .footer-dynamic-nav h4 {
+    margin-bottom: 1rem;
+}
+
+.footer-nav ul, .footer-dynamic-nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.footer-nav a, .footer-dynamic-nav a {
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .main-nav {
+        display: none; /* Simplificando para el primer pedido, se puede agregar un menú hamburguesa después */
+    }
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-content: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .header-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .session-controls {
+        width: 100%;
+        text-align: center;
+    }
+}

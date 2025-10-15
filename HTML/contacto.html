@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - UTN FRH</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/general.css">
+    <link rel="stylesheet" href="../CSS/contacto.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html"><img src="../Imagenes/UTNLogo.webp" alt="Logo UTN FRH"></a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">INICIO</a></li>
+                    <li><a href="sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="contacto.html">CONTACTO</a></li>
+                </ul>
+            </nav>
+            <div class="session-controls" id="session-controls">
+                <!-- Contenido dinámico por JS -->
+            </div>
+        </div>
+    </header>
+
+    <main class="contact-section">
+        <h1 class="main-title">CONTACTANOS</h1>
+        <div class="contact-content">
+            <div class="map-container">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3282.48974387943!2d-58.599456084769!3d-34.64235698044946!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bc951c0fe2d9f5%3A0x9f1c540898efecbe!2sUTN%20HAEDO!5e0!3m2!1ses-419!2sar!4v1678886456123"
+                    width="600" 
+                    height="450" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+            <div class="form-wrapper">
+                <form class="contact-form" novalidate>
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" class="form-field" placeholder="Escriba su nombre aquí...">
+                    </div>
+                    <div class="form-group">
+                        <label for="apellido">Apellido</label>
+                        <input type="text" id="apellido" name="apellido" class="form-field" placeholder="Escriba su apellido aquí...">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-field" placeholder="Escriba su email aquí...">
+                    </div>
+                    <div class="form-group">
+                        <label for="mensaje">Mensaje</label>
+                        <textarea id="mensaje" name="mensaje" rows="5" class="form-field" placeholder="Escriba su mensaje aquí..."></textarea>
+                    </div>
+                    <div class="form-submit-area">
+                        <button type="submit" class="submit-btn">ENVIAR</button>
+                        <div id="success-message" class="success-message">Mensaje enviado correctamente</div>
+                        <div id="error-message" class="error-message">Por favor, complete todos los campos.</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-logo-info">
+                <img src="../Imagenes/UTNLogo_footer.webp" alt="Logo UTN" class="footer-logo">
+                <div class="footer-info">
+                    <p>París 532, Haedo (1706)</p>
+                    <p>Buenos Aires, Argentina</p>
+                    <br>
+                    <p>Número de teléfono del depto.</p>
+                    <br>
+                    <p>Correo electrónico del depto.</p>
+                </div>
+            </div>
+            <div class="footer-social-legal">
+                <div class="footer-social">
+                    <a href="https://www.youtube.com/channel/UCfA_t_N_3_k" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.linkedin.com/school/utn-frh/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                </div>
+                <div class="footer-legal">
+                    <a href="mailto:contacto@frh.utn.edu.ar">Contacto</a>
+                    <br> 
+                    <a href="#politicas">Políticas de Privacidad</a>
+                </div>
+            </div>
+            <div class="footer-separator"></div>
+            <div class="footer-nav">
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="sobrenosotros.html">Sobre Nosotros</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-separator"></div>
+            <div class="footer-dynamic-nav" id="footer-dynamic-nav">
+                <!-- JS content -->
+            </div>
+        </div>
+    </footer>
+
+    <script src="../JavaScript/inicio.js"></script>
+    <script src="../JavaScript/contacto.js"></script>
+</body>
+</html>

@@ -16,15 +16,18 @@ document.addEventListener('DOMContentLoaded', () => {
         sessionControls.innerHTML = '';
         footerDynamicNav.innerHTML = '';
 
+        const currentPage = window.location.pathname.split('/').pop();
+        const loginPagePath = currentPage.includes('index.html') || currentPage === '' ? 'HTML/iniciosesion.html' : 'iniciosesion.html';
+
         if (user.role === 'GUEST') {
             // Header
-            sessionControls.innerHTML = '<a href="#iniciar-sesion" class="session-btn">Iniciar Sesión</a>';
+            sessionControls.innerHTML = `<a href="${loginPagePath}" class="session-btn">Iniciar Sesión</a>`;
             
             // Footer
             footerDynamicNav.innerHTML = `
                 <h4>Acceso</h4>
                 <ul>
-                    <li><a href="#iniciar-sesion">Iniciar Sesión</a></li>
+                    <li><a href="${loginPagePath}">Iniciar Sesión</a></li>
                 </ul>
             `;
         } else {

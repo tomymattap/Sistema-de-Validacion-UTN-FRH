@@ -21,6 +21,7 @@
             <nav class="main-nav">
                 <ul>
                     <li><a href="../index.html">INICIO</a></li>
+                    <li><a href="cursos.html">CURSOS</a></li>
                     <li><a href="sobrenosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="contacto.html">CONTACTO</a></li>
                 </ul>
@@ -28,6 +29,21 @@
             <div class="session-controls" id="session-controls">
                 <!-- Contenido dinámico por JS -->
             </div>
+            <button class="hamburger-menu" aria-label="Abrir menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        <div class="mobile-nav">
+            <nav>
+                <ul>
+                    <li><a href="../index.html">INICIO</a></li>
+                    <li><a href="cursos.html">CURSOS</a></li>
+                    <li><a href="sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="contacto.html">CONTACTO</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
@@ -40,15 +56,16 @@
                 <p>Para cumplir este objetivo, ofrecemos una amplia gama de servicios profesionales y asesoramiento especializado. Nuestros equipos de expertos brindan soluciones en áreas estratégicas como Ambiente, Industria 4.0, Desarrollo Aeroespacial, Seguridad Operacional, Gestión Pública y Logística. Además, a través de nuestros laboratorios de vanguardia, como los de Aerodinámica, Estructuras y Electrónica, realizamos investigaciones aplicadas y análisis técnicos de alta complejidad para la industria.</p>
                 <p>Creemos firmemente en la formación continua como motor de progreso. Por ello, diseñamos trayectos de formación profesional y capacitaciones a medida de las necesidades del sector productivo, además de una variada oferta de cursos de extensión abiertos a la comunidad.</p>
             </div>
-            <h2 class="subtitle courses-title"><strong>Organigrama</strong></h2>
-                <!-- Falta el movimiento -->
-                <p><strong>Secretario de Extensión Universitaria y Vinculación Tecnológica</strong></p>
-                <p>Ing. Federico Iván KRISTOF</p>
-                <p>fkristof@frh.utn.edu.ar</p>
-                <br>
-                <p><strong>Subsecretario de Extensión Universitaria y Vinculación Tecnológica</strong></p>
-                <p>Ing. Juan Ignacio MASTROIANNI</p>
-                <p>jmastroianni@frh.utn.edu.ar</p>
+            <div class="text-content">
+                <h2 class="subtitle courses-title"><strong>ORGANIGRAMA</strong></h2>
+                    <p><strong>Secretario de Extensión Universitaria y Vinculación Tecnológica</strong></p>
+                    <p>Ing. Federico Iván KRISTOF</p>
+                    <p><a href="mailto:fkristof@frh.utn.edu.ar" class="email-link">fkristof@frh.utn.edu.ar</a></p>
+                    <br>
+                    <p><strong>Subsecretario de Extensión Universitaria y Vinculación Tecnológica</strong></p>
+                    <p>Ing. Juan Ignacio MASTROIANNI</p>
+                    <p><a href="mailto:jmastroianni@frh.utn.edu.ar" class="email-link">jmastroianni@frh.utn.edu.ar</a></p>
+                </div>
         </div>
     </main>
 
@@ -81,17 +98,19 @@
                 <h4>Navegación</h4>
                 <ul>
                     <li><a href="../index.html">Inicio</a></li>
+                    <li><a href="cursos.html">Cursos</a></li>
                     <li><a href="sobrenosotros.html">Sobre Nosotros</a></li>
                     <li><a href="contacto.html">Contacto</a></li>
                 </ul>
             </div>
             <div class="footer-separator"></div>
             <div class="footer-dynamic-nav" id="footer-dynamic-nav">
-                <!-- JS content -->
             </div>
         </div>
     </footer>
 
     <script src="../JavaScript/inicio.js"></script>
+    <script src="../JavaScript/general.js"></script>
+    <a href="#" class="scroll-to-top-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 </body>
 </html>

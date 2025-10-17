@@ -141,6 +141,20 @@ ul {
     color: var(--color-secundario-1);
 }
 
+.user-menu-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.session-controls:hover .user-menu-toggle i {
+    transform: rotate(180deg);
+}
+
+.user-menu-toggle i {
+    transition: transform 0.3s ease;
+}
+
 /* Footer */
 .site-footer {
     background-color: var(--color-principal);

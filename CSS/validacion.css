@@ -1,0 +1,87 @@
+/* Estilos para la página de resultado de validación */
+
+.validation-page {
+    padding: 4rem 2rem;
+    background-color: #f4f4f4;
+    min-height: 60vh;
+}
+
+.validation-result-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    overflow: hidden; /* Para que el header se ajuste a los bordes redondeados */
+}
+
+.result-header {
+    background-color: #28a745; /* Verde */
+    color: #fff;
+    padding: 1rem 1.5rem;
+    text-align: center;
+}
+
+.result-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.result-body {
+    padding: 2rem;
+    color: var(--color-texto-principal);
+}
+
+.valid-message {
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.result-body hr {
+    border: 0;
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 2rem 0;
+}
+
+.certificate-data p {
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+}
+
+.certificate-data p strong {
+    display: inline-block;
+    width: 180px; /* Ancho fijo para las etiquetas */
+    color: var(--color-texto-gris);
+}
+
+.validation-text, .contact-info {
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.actions-container {
+    max-width: 900px;
+    margin: 1.5rem auto 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.back-btn {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.back-btn:hover {
+    background-color: #003345; /* Un tono más oscuro del principal */
+}

@@ -329,6 +329,10 @@ ul {
     }
 }
 
+.main-title {
+    margin-bottom: 2rem;
+}
+
 .main-nav a.active {
     color: var(--color-secundario-1);
 }

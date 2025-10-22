@@ -13,11 +13,19 @@
     border: 1px solid #ddd;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     border-radius: 8px;
+<<<<<<< Updated upstream
     overflow: hidden; /* Para que el header se ajuste a los bordes redondeados */
 }
 
 .result-header {
     background-color: #28a745; /* Verde */
+=======
+    overflow: hidden;
+}
+
+.result-header {
+    background-color: #28a745;
+>>>>>>> Stashed changes
     color: #fff;
     padding: 1rem 1.5rem;
     text-align: center;
@@ -83,5 +91,9 @@
 }
 
 .back-btn:hover {
+<<<<<<< Updated upstream
     background-color: #003345; /* Un tono más oscuro del principal */
+=======
+    background-color: #003345;
+>>>>>>> Stashed changes
 }

@@ -13,31 +13,16 @@
     border: 1px solid #ddd;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     border-radius: 8px;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
     overflow: hidden; /* Para que el header se ajuste a los bordes redondeados */
 }
 
 .result-header {
     background-color: #28a745; /* Verde */
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     overflow: hidden;
 }
 
 .result-header {
     background-color: #28a745;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     color: #fff;
     padding: 1rem 1.5rem;
     text-align: center;
@@ -103,17 +88,9 @@
 }
 
 .back-btn:hover {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
     background-color: #003345; /* Un tono más oscuro del principal */
-=======
     background-color: #003345;
->>>>>>> Stashed changes
-=======
     background-color: #003345;
->>>>>>> Stashed changes
-=======
     background-color: #003345;
->>>>>>> Stashed changes
+    background-color: #003345; /* Un tono más oscuro del principal */
 }

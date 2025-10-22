@@ -1,13 +1,28 @@
 .inscripciones-container {
     display: flex;
     justify-content: space-between;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 2rem auto;
     gap: 2rem;
+    width: 90%;
 }
 
 .cursos-list {
-    flex: 3;
+    flex: 4;
+}
+
+.cursos-list h1 {
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+.cursos-list h2 {
+    text-align: left;
+    font-size: 1.5rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--color-principal);
+    padding-bottom: 0.5rem;
 }
 
 .estado-aside {

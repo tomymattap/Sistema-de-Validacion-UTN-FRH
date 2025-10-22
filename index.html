@@ -10,6 +10,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="CSS\general.css">
     <link rel="stylesheet" href="CSS\inicio.css">
+
+    <script>
+        //PRUEBA:   Valida un codigo ingreasado, ABC-123-XYZ --> unico codigo valido
+
+        function validarCodigo(event) {
+            event.preventDefault(); // evita que se recargue la página
+
+            const codigoIngresado = document.getElementById("codigo").value.trim();
+
+            if (codigoIngresado === "ABC-123-XYZ") {
+                window.location.href = "HTML/validacion.html";
+            } else {
+                alert("El código ingresado no es válido y no pertenece a una certificación existente.");
+            }
+        }
+    </script>
+
 </head>
 <body>
 
@@ -20,20 +37,36 @@
             </div>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="index.html">INICIO</a></li>
-                    <li><a href="HTML\sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                    <li><a href="HTML\contacto.html">CONTACTO</a></li>
+                    <li><a href="index.html">VALIDAR</a></li>
+                    <li><a href="HTML/cursos.html">CURSOS</a></li>
+                    <li><a href="HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
             <div class="session-controls" id="session-controls">
                 <!-- Contenido dinámico por JS -->
             </div>
+            <button class="hamburger-menu" aria-label="Abrir menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        <div class="mobile-nav">
+            <nav>
+                <ul>
+                    <li><a href="index.html">VALIDAR</a></li>
+                    <li><a href="HTML/cursos.html">CURSOS</a></li>
+                    <li><a href="HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="HTML/contacto.html">CONTACTO</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
     <main id="inicio">
         <section class="hero">
-            <img src="Imagenes\aula_generica.jpg" alt="Imagen representativa de la UTN" class="hero-image">
+            <img src="Imagenes\banner_inicio.webp" alt="Imagen representativa de la UTN" class="hero-image">
         </section>
         <section class="validation-section">
             <h1>VALIDACIÓN DE CERTIFICADOS UTN – FRH</h1>
@@ -42,13 +75,12 @@
                 <br> 
                 El proceso es seguro, transparente y garantiza la veracidad de cada documento.
             </p>
-            <div class="validation-form">
+            <form class="validation-form" onsubmit="validarCodigo(event)">
                 <div class="input-container">
-                    <input type="text" id="certificate-code" placeholder="Ingrese el código alfanumérico o QR de su certificado...">
-                    <i class="fas fa-camera"></i>
+                    <input type="text" id="codigo" placeholder="Ingrese el código alfanumérico de su certificado..." required>
                 </div>
-                <button id="validate-btn" disabled>VALIDAR CERTIFICADO</button>
-            </div>
+                <button id="validate-btn">VALIDAR CERTIFICADO</button>
+            </form>
         </section>
     </main>
 
@@ -80,21 +112,18 @@
             <div class="footer-nav">
                 <h4>Navegación</h4>
                 <ul>
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="HTML\sobrenosotros.html">Sobre Nosotros</a></li>
-                    <li><a href="HTML\contacto.html">Contacto</a></li>
+                    <li><a href="HTML/cursos.html">Cursos</a></li>
+                    <li><a href="HTML/sobrenosotros.html">Sobre Nosotros</a></li>
+                    <li><a href="HTML/contacto.html">Contacto</a></li>
                 </ul>
             </div>
             <div class="footer-separator"></div>
             <div class="footer-dynamic-nav" id="footer-dynamic-nav">
-                <h4>Acceso</h4>
-                <ul>
-                    <li><a href="#iniciar-sesion">Iniciar Sesión</a></li>
-                </ul>
             </div>
         </div>
     </footer>
 
     <script src="JavaScript\inicio.js"></script>
+    <script src="JavaScript\general.js"></script>
 </body>
 </html>

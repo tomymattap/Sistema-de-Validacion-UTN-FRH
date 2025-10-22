@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre Nosotros - UTN FRH</title>
+    <title>Resultado de Validación - UTN FRH</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/sobrenosotros.css">
+    <link rel="stylesheet" href="../CSS/validacion.css">
 </head>
 <body>
 
@@ -47,25 +47,38 @@
         </div>
     </header>
 
-    <main class="about-us-section">
-        <div class="content-wrapper">
-            <h1 class="main-title">SOBRE NOSOTROS</h1>
-            <h2 class="subtitle">EXTENSIÓN UNIVERSITARIA Y VINCULACIÓN TECNOLÓGICA</h2>
-            <div class="text-content">
-                <p>La Secretaría de Extensión Universitaria y Vinculación Tecnológica actúa como un puente entre la Facultad y la comunidad. Nuestro objetivo es fomentar la colaboración con gobiernos, empresas y diversas instituciones para identificar y abordar problemáticas sociales, impulsando el desarrollo regional a través de la transferencia de conocimiento y la aplicación de nuestras capacidades científicas y de investigación.</p>
-                <p>Para cumplir este objetivo, ofrecemos una amplia gama de servicios profesionales y asesoramiento especializado. Nuestros equipos de expertos brindan soluciones en áreas estratégicas como Ambiente, Industria 4.0, Desarrollo Aeroespacial, Seguridad Operacional, Gestión Pública y Logística. Además, a través de nuestros laboratorios de vanguardia, como los de Aerodinámica, Estructuras y Electrónica, realizamos investigaciones aplicadas y análisis técnicos de alta complejidad para la industria.</p>
-                <p>Creemos firmemente en la formación continua como motor de progreso. Por ello, diseñamos trayectos de formación profesional y capacitaciones a medida de las necesidades del sector productivo, además de una variada oferta de cursos de extensión abiertos a la comunidad.</p>
+
+    <main class="validation-page">
+        <div class="validation-result-container">
+            <div class="result-header">
+                <h2>Resultado de la validación del certificado</h2>
             </div>
-            <div class="text-content">
-                <h2 class="subtitle courses-title"><strong>ORGANIGRAMA</strong></h2>
-                    <p><strong>Secretario de Extensión Universitaria y Vinculación Tecnológica</strong></p>
-                    <p>Ing. Federico Iván KRISTOF</p>
-                    <p><a href="mailto:fkristof@frh.utn.edu.ar" class="email-link">fkristof@frh.utn.edu.ar</a></p>
-                    <br>
-                    <p><strong>Subsecretario de Extensión Universitaria y Vinculación Tecnológica</strong></p>
-                    <p>Ing. Juan Ignacio MASTROIANNI</p>
-                    <p><a href="mailto:jmastroianni@frh.utn.edu.ar" class="email-link">jmastroianni@frh.utn.edu.ar</a></p>
+            <div class="result-body">
+                <p class="valid-message">El código ingresado pertenece a un certificado <strong>VÁLIDO</strong> emitido por la Universidad Tecnológica Nacional, Facultad Regional Haedo.</p>
+                
+                <hr>
+
+                <div class="certificate-data">
+                    <p><strong>Código:</strong> <span id="cert-codigo">ABC-123-XYZ</span></p>
+                    <p><strong>Tipo de Certificado:</strong> <span id="cert-tipo">Aprobado</span></p> <!-- o asistido -->
+                    <p><strong>Nombre:</strong> <span id="cert-nombre">JUAN PÉREZ</span></p>
+                    <p><strong>Documento:</strong> <span id="cert-dni">45.740.54</span></p>
+                    <p><strong>Curso:</strong> <span id="cert-curso">Electricidad Industrial</span></p>
+                    <p><strong>Fecha de Emisión:</strong> <span id="cert-fecha">19/10/2025</span></p>
                 </div>
+                <br>
+                <br>
+                <p class="validation-text">
+                    Se hace constar que <strong>JUAN PÉREZ</strong>, DNI 45740954, ha cursado y aprobado el curso <strong>Electricidad Industrial</strong>, organizado por la UNIVERSIDAD TECNOLÓGICA NACIONAL.
+                </p>
+
+                <hr>
+
+                <p class="contact-info">Ante cualquier duda, enviar un correo a <a href="mailto:extension@frh.utn.edu.ar">extension@frh.utn.edu.ar</a></p>
+            </div>
+        </div>
+        <div class="actions-container">
+            <a href="../index.html" class="back-btn">Volver</a>
         </div>
     </main>
 

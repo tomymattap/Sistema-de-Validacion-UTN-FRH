@@ -1,0 +1,88 @@
+.inscripciones-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 2rem auto;
+    gap: 2rem;
+}
+
+.cursos-list {
+    flex: 3;
+}
+
+.estado-aside {
+    flex: 1;
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    height: fit-content; /* To make it not stretch */
+}
+
+.cursos-accordion .curso-item {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    overflow: hidden; /* Ensures the details are contained */
+}
+
+.cursos-accordion .curso-header {
+    background-color: #f7f7f7;
+    padding: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cursos-accordion .curso-header:hover {
+    background-color: #e9ecef;
+}
+
+.cursos-accordion .curso-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.cursos-accordion .curso-details {
+    display: none; /* Hidden by default */
+    padding: 1rem;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.cursos-accordion .curso-details p {
+    margin: 0.5rem 0;
+}
+
+.cursos-accordion .curso-item.active .curso-details {
+    display: block; /* Shown when active */
+}
+
+.estado-aside h2 {
+    margin-top: 0;
+    border-bottom: 2px solid var(--color-principal);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.estado-aside ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.estado-aside li {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    background-color: #e9ecef;
+    text-align: center;
+    font-weight: bold;
+    color: #495057;
+    transition: all 0.3s ease;
+}
+
+.estado-aside li.highlight {
+    background-color: var(--color-secundario-1);
+    color: white;
+    transform: scale(1.05);
+}

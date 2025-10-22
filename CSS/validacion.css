@@ -15,6 +15,7 @@
     border-radius: 8px;
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     overflow: hidden; /* Para que el header se ajuste a los bordes redondeados */
 }
 
@@ -23,12 +24,17 @@
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     overflow: hidden;
 }
 
 .result-header {
     background-color: #28a745;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -99,7 +105,11 @@
 .back-btn:hover {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     background-color: #003345; /* Un tono más oscuro del principal */
+=======
+    background-color: #003345;
+>>>>>>> Stashed changes
 =======
     background-color: #003345;
 >>>>>>> Stashed changes

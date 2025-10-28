@@ -79,8 +79,8 @@
 .back-btn {
     display: inline-block;
     padding: 0.8rem 2rem;
-    background-color: var(--color-principal);
-    color: var(--color-blanco);
+    background-color: #00455C; /* Color principal explícito */
+    color: white;
     text-decoration: none;
     font-weight: 700;
     border-radius: 5px;
@@ -89,8 +89,25 @@
 
 .back-btn:hover {
     background-color: #003345; /* Un tono más oscuro del principal */
-    background-color: #003345;
-    background-color: #003345;
-    background-color: #003345;
-    background-color: #003345; /* Un tono más oscuro del principal */
 }
+
+
+.error-msg, .valid-msg {
+            text-align: center;
+            margin: 30px auto;
+            padding: 15px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            font-weight: bold;
+        }
+        .error-msg {
+            color: #b00020;
+            background-color: #ffe6e6;
+            border: 1px solid #b00020;
+        }
+        .valid-msg {
+            color: #0a662f;
+            background-color: #e7ffe6;
+            border: 1px solid #0a662f;
+        }

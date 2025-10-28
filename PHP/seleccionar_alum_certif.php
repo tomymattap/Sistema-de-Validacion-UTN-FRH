@@ -2,7 +2,7 @@
 include("conexion.php");
 
 // Consultamos todos los cursos
-$consulta = "SELECT Nombre_Curso FROM CURSO";
+$consulta = "SELECT ID_Curso, Nombre_Curso FROM CURSO";
 $resultado = mysqli_query($conexion, $consulta);
 ?>
 
@@ -18,7 +18,7 @@ $resultado = mysqli_query($conexion, $consulta);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../CSS/general.css">
     <link rel="stylesheet" href="../CSS/emitircertificados.css">
-    <link rel="stylesheet" href="../CSS/emitircertificado2.css">
+    <link rel="stylesheet" href="../CSS/validacion.css">
 </head>
 <body class="fade-in">
     <div class="preloader">
@@ -32,8 +32,8 @@ $resultado = mysqli_query($conexion, $consulta);
             </div>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="../index.html">INICIO</a></li>
-                    <li><a href="cursos.html">CURSOS</a></li>
+                    <li><a href="../index.html">VALIDAR</a></li>
+                    <!--<li> <a href="HTML/cursos.html">CURSOS</a> </li>-->
                     <li><a href="sobrenosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="contacto.html">CONTACTO</a></li>
                 </ul>
@@ -42,9 +42,9 @@ $resultado = mysqli_query($conexion, $consulta);
                 <button class="user-menu-toggle">Hola, Admin. <i class="fas fa-chevron-down"></i></button>
                 <div class="dropdown-menu">
                     <ul>
-                        <li><a href="verinscriptos.html">Ver Inscriptos</a></li>
-                        <li><a href="gestionarcursos.html">Gestionar Cursos</a></li>
-                        <li><a href="emitircertificados.html">Emitir Certificados</a></li>
+                        <li><a href="../HTML/verinscriptos.html">Ver Inscriptos</a></li>
+                        <li><a href="../HTML/gestionarcursos.html">Gestionar Cursos</a></li>
+                        <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
                         <li><a href="#">Cerrar Sesión</a></li>
                     </ul>
                 </div>
@@ -71,30 +71,51 @@ $resultado = mysqli_query($conexion, $consulta);
         </div>
     </header>
 
-    <main class="admin-section">
-        <div class="admin-container">
-            <h1 class="main-title">Emitir Certificados</h1>
-            <div class="certificate-form-container">
-                <h2>Seleccione un curso</h2>
-                <form action="procesar_curso.php" method="POST">
-                    <div class="form-group">
-                        <label for="curso">Curso:</label>
-                        <select name="curso" id="curso">
-                            <?php
-                            // Generamos las opciones dinámicamente desde la base de datos
-                            while ($fila = mysqli_fetch_assoc($resultado)) {
-                                echo "<option value='" . htmlspecialchars($fila['Nombre_Curso']) . "'>" . htmlspecialchars($fila['Nombre_Curso']) . "</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="form-buttons">
-                        <button type="submit" id="generate-certificate-btn">Continuar</button>
-                    </div>
-                </form>
-            </div>
+    <main class="admin-section" style="padding-top: 4rem; padding-bottom: 4rem;">
+    <div class="admin-container">
+        <h1 class="main-title" style="text-align: center;">Emitir Certificados</h1>
+        <div class="certificate-form-container" style="margin: 0 auto; width: 40%;">
+            <h2>Seleccione curso, año y cuatrimestre</h2>
+
+            <form action="tabla_alumnos_certif.php" method="POST">
+                <!-- Curso -->
+                <div class="form-group">
+                    <label for="curso">Curso:</label>
+                    <select name="curso" id="curso" required> 
+                        <option value="" disabled selected>Seleccione un curso</option>
+                        <?php
+                        while ($fila = mysqli_fetch_assoc($resultado)) {
+                            echo "<option value='" . htmlspecialchars($fila['ID_Curso']) . "'>" . htmlspecialchars($fila['Nombre_Curso']) . "</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+
+                <!-- Año -->
+                <div class="form-group">
+                    <label for="anio">Año:</label>
+                    <input type="number" id="anio" name="anio" min="2020" max="2099" required>
+                </div>
+
+                <!-- Cuatrimestre -->
+                <div class="form-group">
+                    <label for="cuatrimestre">Cuatrimestre:</label>
+                    <select id="cuatrimestre" name="cuatrimestre" required>
+                        <option value="" disabled selected>Seleccione un cuatrimestre</option>
+                        <option value="Primer Cuatrimestre">Primer Cuatrimestre</option>
+                        <option value="Segundo Cuatrimestre">Segundo Cuatrimestre</option>
+                    </select>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit">Continuar</button>
+                    <button type="reset" class="reset-btn">Limpiar</button>
+                </div>
+            </form>
         </div>
-    </main>
+    </div>
+</main>
+
     <footer class="site-footer">
         <div class="footer-container">
             <div class="footer-logo-info">

@@ -1,3 +1,33 @@
+<?php
+include("conexion.php");
+
+$resultado = null; // Inicializar resultado
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Validar que los datos esperados existen
+    if (isset($_POST["curso"], $_POST["anio"], $_POST["cuatrimestre"])) {
+        $curso_id = $_POST["curso"];
+        $anio = $_POST["anio"];
+        $cuatrimestre = $_POST["cuatrimestre"];
+
+        // Consulta segura con sentencias preparadas para evitar inyección SQL
+        $consulta = $conexion->prepare("
+            SELECT a.ID_Cuil_Alumno, a.Nombre_Alumno, a.Apellido_Alumno
+            FROM INSCRIPCION i
+            JOIN ALUMNO a ON i.ID_Cuil_Alumno = a.ID_Cuil_Alumno
+            WHERE i.ID_Curso = ?
+            AND i.Anio = ?
+            AND i.Cuatrimestre = ?
+            AND i.Estado_Cursada = 'FINALIZADO'
+        ");
+        // "iss" indica que los tipos de datos son: integer, string, string
+        $consulta->bind_param("iss", $curso_id, $anio, $cuatrimestre);
+        $consulta->execute();
+        $resultado = $consulta->get_result();
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,7 +39,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/emitircertificados.css">
+    <link rel="stylesheet" href="../CSS/verinscriptos.css">  <!-- estilos de la tabla -->
+    <link rel="stylesheet" href="../CSS/tabla_alumnos_certif.css">
+    <link rel="stylesheet" href="../CSS/validacion.css">
 </head>
 <body class="fade-in">
     <div class="preloader">
@@ -23,8 +55,8 @@
             </div>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="../index.html">INICIO</a></li>
-                    <li><a href="cursos.html">CURSOS</a></li>
+                    <li><a href="../index.html">VALIDAR</a></li>
+                    <!--<li> <a href="HTML/cursos.html">CURSOS</a> </li>-->
                     <li><a href="sobrenosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="contacto.html">CONTACTO</a></li>
                 </ul>
@@ -33,9 +65,9 @@
                 <button class="user-menu-toggle">Hola, Admin. <i class="fas fa-chevron-down"></i></button>
                 <div class="dropdown-menu">
                     <ul>
-                        <li><a href="verinscriptos.html">Ver Inscriptos</a></li>
-                        <li><a href="gestionarcursos.html">Gestionar Cursos</a></li>
-                        <li><a href="emitircertificados.html">Emitir Certificados</a></li>
+                        <li><a href="../HTML/verinscriptos.html">Ver Inscriptos</a></li>
+                        <li><a href="../HTML/gestionarcursos.html">Gestionar Cursos</a></li>
+                        <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
                         <li><a href="#">Cerrar Sesión</a></li>
                     </ul>
                 </div>
@@ -62,65 +94,64 @@
         </div>
     </header>
 
-    <main class="admin-section">
+    <main class="admin-section" style="padding-top: 4rem; padding-bottom: 4rem;">
         <div class="admin-container">
-            <h1 class="main-title">Emitir Certificados</h1>
-            <div class="certificate-container">
-                <div class="certificate-form-container">
-                    <h2>Datos del Certificado</h2>
-                    <form id="certificate-form">
-                        <div class="form-group">
-                            <label for="student-name">Nombre del Alumno</label>
-                            <input type="text" id="student-name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="student-dni">DNI del Alumno</label>
-                            <input type="text" id="student-dni" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="course-completed">Curso Completado</label>
-                            <select id="course-completed" required>
-                                <!-- Opciones de cursos se cargarán aquí -->
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="course-hours">Carga Horaria del Curso</label>
-                            <input type="number" id="course-hours" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="completion-year">Año de Finalización</label>
-                            <input type="number" id="completion-year" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="emission-date">Fecha de Emisión</label>
-                            <input type="date" id="emission-date" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="teacher-name">Docente a Cargo</label>
-                            <input type="text" id="teacher-name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="teacher-signature">Firma del Docente</label>
-                            <input type="file" id="teacher-signature" accept="image/*">
-                        </div>
-                        <div class="form-buttons">
-                            <button type="submit" id="generate-certificate-btn">Generar Certificado</button>
+            <h1 class="main-title">Alumnos con posibilidad de certificacion</h1>
+
+            <div class="results-container">
+                <?php if ($resultado && $resultado->num_rows > 0): ?>
+
+
+
+                    <form action="generar_certificado.php" method="POST">
+                        <!-- 🔹 campos ocultos para arrastrar datos -->
+                        <input type="hidden" name="id_curso" value="<?php echo htmlspecialchars($_POST['curso']); ?>">
+                        <input type="hidden" name="anio" value="<?php echo htmlspecialchars($_POST['anio']); ?>">
+                        <input type="hidden" name="cuatrimestre" value="<?php echo htmlspecialchars($_POST['cuatrimestre']); ?>">
+
+                        <table id="results-table">
+                            <thead>
+                                <tr>
+                                    <th>Seleccionar</th>
+                                    <th class="cuil-header">CUIL</th>
+                                    <th class="nombre-header">Nombre</th>
+                                    <th class="apellido-header">Apellido</th>
+                                    <th class="estado-header">Tipo de Certificado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($fila = $resultado->fetch_assoc()): 
+                                    $cuil = htmlspecialchars($fila['ID_Cuil_Alumno']);
+                                ?>
+                                    <tr>
+                                        <td><input type="checkbox" name="alumnos[<?php echo $cuil; ?>][cuil]" value="<?php echo $cuil; ?>"></td>
+                                        <td><?php echo $cuil; ?></td>
+                                        <td><?php echo htmlspecialchars($fila['Nombre_Alumno']); ?></td>
+                                        <td><?php echo htmlspecialchars($fila['Apellido_Alumno']); ?></td>
+                                        <td>
+                                            <select name="alumnos[<?php echo $cuil; ?>][estado]">
+                                                <option value="APROBADO" selected>APROBADO</option>
+                                                <option value="ASISTIDO">ASISTIDO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                        <div class="form-buttons" style="text-align: right; margin-top: 20px;">
+                            <button type="submit" class="submit-btn">Generar Certificaciones</button>
                         </div>
                     </form>
-                </div>
-                <div class="certificate-preview-container">
-                    <h2>Previsualización</h2>
-                    <div class="certificate-preview">
-                        <div class="qr-code-container">
-                            <p>Código QR:</p>
-                            <div id="qr-code"></div>
-                        </div>
-                        <div class="certificate-code-container">
-                            <p>Código de Certificado:</p>
-                            <span id="certificate-code"></span>
-                        </div>
+
+
+
+
+                <?php else: ?>
+                    <div style="text-align: center; padding: 2rem 0;">
+                        <p class="no-results" style="font-size: 1.1rem; margin-bottom: 2rem;">No se encontraron alumnos que cumplan con los criterios de búsqueda.</p>
+                        <a href="seleccionar_alum_certif.php" class="back-btn">Volver</a>
                     </div>
-                </div>
+                <?php endif; ?>
             </div>
         </div>
     </main>
@@ -173,7 +204,6 @@
 
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script src="../JavaScript/general.js"></script>
-    <script src="../JavaScript/emitircertificados.js"></script>
     <a href="#" class="scroll-to-top-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 </body>
 </html>

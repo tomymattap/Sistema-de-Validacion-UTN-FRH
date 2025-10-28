@@ -1,0 +1,38 @@
+/* Estilos para la tabla de selección de alumnos para certificar */
+
+.main-title {
+    text-align: center;
+    font-size: 2rem; /* Título más pequeño */
+}
+
+#results-table td, 
+#results-table th {
+    text-align: center; /* Centra todo el texto en la tabla */
+    color: black; /* Color de fuente negro para los datos */
+    font-size: 1.1rem; /* Fuente de datos más grande */
+}
+
+#results-table th {
+    color: white; /* Color de fuente blanco para los títulos por defecto */
+    font-size: 1.2rem; /* Títulos de columna un poco más grandes */
+}
+
+/* Achicar la columna de selección */
+#results-table th:first-child,
+#results-table td:first-child {
+    width: 5%;
+}
+
+/* Estilos para el botón de envío */
+.submit-btn { 
+    background-color: var(--color-principal); 
+    color: var(--color-blanco); 
+    border: none; 
+    padding: 1rem 2rem; /* Botón más grande */
+    border-radius: 6px; 
+    font-weight: 700; 
+    cursor: pointer; 
+    transition: background-color 0.3s;
+    font-size: 1.1rem; /* Fuente más grande */
+}
+.submit-btn:hover { background-color: #003344; }

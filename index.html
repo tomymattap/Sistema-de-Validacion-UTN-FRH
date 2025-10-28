@@ -11,23 +11,7 @@
     <link rel="stylesheet" href="CSS\general.css">
     <link rel="stylesheet" href="CSS\inicio.css">
 
-    <script>
-        //PRUEBA:   Valida un codigo ingreasado, ABC-123-XYZ --> unico codigo valido
-
-        function validarCodigo(event) {
-            event.preventDefault(); // evita que se recargue la página
-
-            const codigoIngresado = document.getElementById("codigo").value.trim();
-
-            if (codigoIngresado === "ABC-123-XYZ") {
-                window.location.href = "HTML/validacion.html";
-            } else {
-                alert("El código ingresado no es válido y no pertenece a una certificación existente.");
-            }
-        }
-    </script>
-
-</head>
+    </head>
 <body>
 
     <header class="site-header">
@@ -38,7 +22,7 @@
             <nav class="main-nav">
                 <ul>
                     <li><a href="index.html">VALIDAR</a></li>
-                    <li><a href="HTML/cursos.html">CURSOS</a></li>
+                    <!--<li> <a href="HTML/cursos.html">CURSOS</a> </li>-->
                     <li><a href="HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="HTML/contacto.html">CONTACTO</a></li>
                 </ul>
@@ -75,11 +59,11 @@
                 <br> 
                 El proceso es seguro y garantiza la veracidad de cada documento.
             </p>
-            <form class="validation-form" onsubmit="validarCodigo(event)">
+            <form class="validation-form" action="PHP/validacion.php" method="POST">
                 <div class="input-container">
-                    <input type="text" id="codigo" placeholder="Ingrese el código alfanumérico de su certificado..." required>
+                    <input type="text" id="codigo" name="codigo" placeholder="Ingrese el código alfanumérico de su certificado..." required>
                 </div>
-                <button id="validate-btn">VALIDAR CERTIFICADO</button>
+                <button type="submit" id="validate-btn">VALIDAR CERTIFICADO</button>
             </form>
         </section>
     </main>

@@ -157,49 +157,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </main>
 
     <footer class="site-footer">
-        <div class="footer-container">
-            <div class="footer-logo-info">
-                <img src="../Imagenes/UTNLogo_footer.webp" alt="Logo UTN" class="footer-logo">
-                <div class="footer-info">
-                    <p>París 532, Haedo (1706)</p>
-                    <p>Buenos Aires, Argentina</p>
-                    <br>
-                    <p>Número de teléfono del depto.</p>
-                    <br>
-                    <p>extension@frh.utn.edu.ar</p>
-                </div>
-            </div>
-            <div class="footer-social-legal">
-                <div class="footer-social">
-                    <a href="https://www.youtube.com/@facultadregionalhaedo-utn3647" target="_blank"><i class="fab fa-youtube"></i></a>
-                    <a href="https://www.linkedin.com/school/utn-facultad-regional-haedo/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                </div>
-                <div class="footer-legal">
-                    <a href="mailto:extension@frh.utn.edu.ar">Contacto</a>
-                    <br> 
-                    <a href="#politicas">Políticas de Privacidad</a>
-                </div>
-            </div>
-            <div class="footer-separator"></div>
-            <div class="footer-nav">
-                <h4>Navegación</h4>
-                <ul>
-                    <li><a href="../index.html">Inicio</a></li>
-                    <li><a href="cursos.html">Cursos</a></li>
-                    <li><a href="sobrenosotros.html">Sobre Nosotros</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
-                </ul>
-            </div>
-            <div class="footer-separator"></div>
-            <div class="footer-dynamic-nav" id="footer-dynamic-nav">
-                <h4>Acceso</h4>
-                <ul>
-                    <li><a href="verinscriptos.html">Ver Inscriptos</a></li>
-                    <li><a href="gestionarcursos.html">Gestionar Cursos</a></li>
-                    <li><a href="emitircertificados.html">Emitir Certificados</a></li>
-                </ul>
-            </div>
-        </div>
+        <!-- Footer content -->
     </footer>
 
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>

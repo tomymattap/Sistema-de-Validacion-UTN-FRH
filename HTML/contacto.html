@@ -62,22 +62,23 @@
                 </iframe>
             </div>
             <div class="form-wrapper">
-                <form class="contact-form" novalidate>
+                <form class="contact-form" action="../PHP/enviar.php" method="POST" novalidate>
+
                     <div class="form-group">
                         <label for="nombre">Nombre</label>
-                        <input type="text" id="nombre" name="nombre" class="form-field" placeholder="Escriba su nombre aquí...">
+                        <input type="text" id="nombre" name="nombre" class="form-field" placeholder="Escriba su nombre aquí..." required>
                     </div>
                     <div class="form-group">
                         <label for="apellido">Apellido</label>
-                        <input type="text" id="apellido" name="apellido" class="form-field" placeholder="Escriba su apellido aquí...">
+                        <input type="text" id="apellido" name="apellido" class="form-field" placeholder="Escriba su apellido aquí..." required>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" name="email" class="form-field" placeholder="Escriba su email aquí...">
+                        <input type="email" id="email" name="email" class="form-field" placeholder="Escriba su email aquí..." required>
                     </div>
                     <div class="form-group">
                         <label for="mensaje">Mensaje</label>
-                        <textarea id="mensaje" name="mensaje" rows="5" class="form-field" placeholder="Escriba su mensaje aquí..."></textarea>
+                        <textarea id="mensaje" name="mensaje" rows="5" class="form-field" placeholder="Escriba su mensaje aquí..." required></textarea>
                     </div>
                     <div class="form-submit-area">
                         <button type="submit" class="submit-btn">ENVIAR</button>
@@ -117,7 +118,7 @@
             <div class="footer-nav">
                 <h4>Navegación</h4>
                 <ul>
-                    <li><a href="cursos.html">Cursos</a></li>
+                    <!-- <li><a href="cursos.html">Cursos</a></li> -->
                     <li><a href="sobrenosotros.html">Sobre Nosotros</a></li>
                     <li><a href="contacto.html">Contacto</a></li>
                 </ul>
@@ -129,7 +130,7 @@
     </footer>
 
     <script src="../JavaScript/inicio.js"></script>
-    <script src="../JavaScript/contacto.js"></script>
+    <script src="../JavaScript/contacto.js"></script> 
     <script src="../JavaScript/general.js"></script>
 </body>
 </html>

@@ -4,15 +4,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const errorMessage = document.getElementById('error-message');
     const formFields = contactForm.querySelectorAll('.form-field');
 
-    // Ocultar mensajes de notificación que puedan estar visibles
     const hideMessages = () => {
         successMessage.classList.remove('visible');
         errorMessage.classList.remove('visible');
     };
 
     contactForm.addEventListener('submit', (event) => {
-        event.preventDefault(); // Siempre prevenir el envío por defecto
+        event.preventDefault(); // prevenimos el envío normal
 
+        hideMessages();
+
+        // Verificar que todos los campos estén llenos
         let allFieldsFilled = true;
         formFields.forEach(field => {
             if (field.value.trim() === '') {
@@ -20,21 +22,41 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        if (allFieldsFilled) {
-            // Si todos los campos están llenos, mostrar éxito
-            hideMessages();
-            successMessage.classList.add('visible');
-            contactForm.reset();
-
-            // Ocultar el mensaje de éxito después de 20 segundos
-            setTimeout(hideMessages, 20000);
-        } else {
-            // Si algún campo está vacío, mostrar error
-            hideMessages();
+        if (!allFieldsFilled) {
+            // Mostrar error si faltan campos
+            errorMessage.textContent = "Por favor, complete todos los campos.";
             errorMessage.classList.add('visible');
-
-            // Ocultar el mensaje de error después de 5 segundos
             setTimeout(hideMessages, 5000);
+            return;
         }
+
+        // Si todo está completo, enviamos el formulario con fetch()
+        const formData = new FormData(contactForm);
+
+        fetch('../PHP/enviar.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log('Respuesta del servidor:', data);
+
+            if (data.includes('✅')) {
+                successMessage.textContent = "Mensaje enviado correctamente.";
+                successMessage.classList.add('visible');
+                contactForm.reset();
+                setTimeout(hideMessages, 20000);
+            } else {
+                errorMessage.textContent = "Error al enviar el mensaje. Intente nuevamente.";
+                errorMessage.classList.add('visible');
+                setTimeout(hideMessages, 5000);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            errorMessage.textContent = "Error de conexión. Intente más tarde.";
+            errorMessage.classList.add('visible');
+            setTimeout(hideMessages, 5000);
+        });
     });
 });

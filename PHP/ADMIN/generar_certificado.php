@@ -19,7 +19,7 @@
     <header class="site-header">
         <div class="header-container">
             <div class="logo">
-                <a href="../index.html"><img src="../Imagenes/UTNLogo.webp" alt="Logo UTN FRH"></a>
+                <a href="../index.html"><img src="../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
             </div>
             <nav class="main-nav">
                 <ul>
@@ -35,7 +35,7 @@
                     <ul>
                         <li><a href="../HTML/verinscriptos.html">Ver Inscriptos</a></li>
                         <li><a href="../HTML/gestionarcursos.html">Gestionar Cursos</a></li>
-                        <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                        <li><a href="PHP\ADMIN\seleccionar_alum_certif.php">Emitir Certificados</a></li>
                         <li><a href="#">Cerrar Sesión</a></li>
                     </ul>
                 </div>
@@ -51,7 +51,7 @@
             <nav>
                 <ul>
                     <li><a href="../index.html">INICIO</a></li>
-                    <li><a href="cursos.html">CURSOS</a></li>
+                    <!--<li> <a href="HTML/cursos.html">CURSOS</a> </li>-->
                     <li><a href="sobrenosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="contacto.html">CONTACTO</a></li>
                 </ul>
@@ -164,8 +164,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     echo "
         <div class='button-container'>
-            <a href='seleccionar_alum_certif.php' class='btn'>Volver a Emitir Certificados</a>
-            <a href='descargar_certificados.php' class='btn'>Descargar Certificados Emitidos</a>
+            <a href='PHP\ADMIN\seleccionar_alum_certif.php' class='btn'>Volver a Emitir Certificados</a>
+            <a href='PHP\ADMIN\descargar_certificados.php' class='btn'>Descargar Certificados Emitidos</a>
         </div>
 ";
 }

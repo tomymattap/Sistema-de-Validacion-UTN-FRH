@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <header class="site-header">
         <div class="header-container">
             <div class="logo">
-                <a href="../index.html"><img src="../Imagenes/UTNLogo.webp" alt="Logo UTN FRH"></a>
+                <a href="../index.html"><img src="../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
             </div>
             <nav class="main-nav">
                 <ul>
@@ -67,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <ul>
                         <li><a href="../HTML/verinscriptos.html">Ver Inscriptos</a></li>
                         <li><a href="../HTML/gestionarcursos.html">Gestionar Cursos</a></li>
-                        <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                        <li><a href="PHP\ADMIN\seleccionar_alum_certif.php">Emitir Certificados</a></li>
                         <li><a href="#">Cerrar Sesión</a></li>
                     </ul>
                 </div>
@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <nav>
                 <ul>
                     <li><a href="../index.html">INICIO</a></li>
-                    <li><a href="cursos.html">CURSOS</a></li>
+                    <!--<li> <a href="HTML/cursos.html">CURSOS</a> </li>-->
                     <li><a href="sobrenosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="contacto.html">CONTACTO</a></li>
                 </ul>
@@ -103,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-                    <form action="generar_certificado.php" method="POST">
+                    <form action="PHP\ADMIN\generar_certificado.php" method="POST">
                         <!-- 🔹 campos ocultos para arrastrar datos -->
                         <input type="hidden" name="id_curso" value="<?php echo htmlspecialchars($_POST['curso']); ?>">
                         <input type="hidden" name="anio" value="<?php echo htmlspecialchars($_POST['anio']); ?>">
@@ -149,7 +149,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <?php else: ?>
                     <div style="text-align: center; padding: 2rem 0;">
                         <p class="no-results" style="font-size: 1.1rem; margin-bottom: 2rem;">No se encontraron alumnos que cumplan con los criterios de búsqueda.</p>
-                        <a href="seleccionar_alum_certif.php" class="back-btn">Volver</a>
+                        <a href="PHP\ADMIN\seleccionar_alum_certif.php" class="back-btn">Volver</a>
                     </div>
                 <?php endif; ?>
             </div>

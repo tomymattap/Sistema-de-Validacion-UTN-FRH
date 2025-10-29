@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Certificaciones - UTN FRH</title>
+    <title>Perfil de Alumno - UTN FRH</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/certificaciones.css">
+    <link rel="stylesheet" href="../CSS/perfil.css">
 </head>
 <body>
 
     <header class="site-header">
         <div class="header-container">
             <div class="logo">
-                <a href="../index.html"><img src="../Imagenes/UTNLogo.webp" alt="Logo UTN FRH"></a>
+                <a href="../index.html"><img src="../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
             </div>
             <nav class="main-nav">
                 <ul>
@@ -41,26 +41,42 @@
     </header>
 
     <main>
-        <div class="certificaciones-table-container">
-            <h1>CERTIFICADOS</h1>
-            <table class="certificaciones">
-                <thead>
-                    <tr>
-                        <th>CURSO</th>
-                        <th>ESTADO</th>
-                        <th>FECHA DE EMISIÓN</th>
-                        <th>ACCIONES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Instalación de Paneles Solares</td>
-                        <td>Aprobado</td>
-                        <td>00/00/0000</td>
-                        <td><a href="#" class="action-btn">Ver Certificado</a></td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="profile-container">
+            <h1>Perfil de Alumno</h1>
+            <div class="profile-info">
+                <div class="profile-field">
+                    <label for="nombre">Nombre</label>
+                    <div class="value non-editable">
+                        <span id="nombre">Juan</span>
+                    </div>
+                </div>
+                <div class="profile-field">
+                    <label for="apellido">Apellido</label>
+                    <div class="value non-editable">
+                        <span id="apellido">Pérez</span>
+                    </div>
+                </div>
+                <div class="profile-field">
+                    <label for="dni">DNI</label>
+                    <div class="value non-editable">
+                        <span id="dni">12345678</span>
+                    </div>
+                </div>
+                <div class="profile-field">
+                    <label for="email">Correo electrónico</label>
+                    <div class="value">
+                        <span id="email">juan.perez@gmail.com</span>
+                        <button class="edit-btn"><i class="fas fa-pencil-alt"></i></button>
+                    </div>
+                </div>
+                <div class="profile-field">
+                    <label for="telefono">Número de contacto</label>
+                    <div class="value">
+                        <span id="telefono">1122334455</span>
+                        <button class="edit-btn"><i class="fas fa-pencil-alt"></i></button>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -94,20 +110,21 @@
                 <ul>
                     <li><a href="index.html">Inicio</a></li>
                     <li><a href="HTML\sobrenosotros.html">Sobre Nosotros</a></li>
-                    <li><a href="HTML\contacto.html">Contacto</a></li>
+                    <li><a href="HTML\contacto.html">Contacto</a></li>                    
                 </ul>
             </div>
             <div class="footer-separator"></div>
             <div class="footer-dynamic-nav" id="footer-dynamic-nav">
                 <h4>Acceso</h4>
                 <ul>
-                    <li><a href="perfil.html">Perfil</a></li>
                     <li><a href="inscripciones.html">Inscripciones</a></li>
+                    <li><a href="certificaciones.html">Certificaciones</a></li>
                     <li><a href="#">Cerrar Sesión</a></li>
                 </ul>
             </div>
         </div>
     </footer>
 
+    <script src="../JavaScript/perfil.js"></script>
 </body>
 </html>

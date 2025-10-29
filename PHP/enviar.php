@@ -6,11 +6,8 @@ require 'phpmailer/src/Exception.php';
 require 'phpmailer/src/PHPMailer.php';
 require 'phpmailer/src/SMTP.php';
 
-echo "📨 Script enviar.php cargado correctamente.<br>";
-var_dump($_POST);
-
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $rol = isset($_POST['rol']) ? $_POST['rol'] : 'No especificado';
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
     $email = $_POST['email'];
@@ -35,9 +32,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Contenido del mail
         $mail->isHTML(true);
-        $mail->Subject = 'Mensaje de formulario de contacto';
+        $mail->Subject = "Mensaje de contacto de: $rol";
         $mail->Body = "
             <h3>Datos del visitante:</h3>
+            <p><b>Rol:</b> $rol</p>
             <p><b>Nombre:</b> $nombre $apellido</p>
             <p><b>Email:</b> $email</p>
             <p><b>Mensaje:</b><br>$mensaje</p>

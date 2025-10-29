@@ -35,7 +35,7 @@
                     <ul>
                         <li><a href="../HTML/verinscriptos.html">Ver Inscriptos</a></li>
                         <li><a href="../HTML/gestionarcursos.html">Gestionar Cursos</a></li>
-                        <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                        <li><a href="PHP\ADMIN\seleccionar_alum_certif.php">Emitir Certificados</a></li>
                         <li><a href="#">Cerrar Sesión</a></li>
                     </ul>
                 </div>
@@ -164,8 +164,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     echo "
         <div class='button-container'>
-            <a href='seleccionar_alum_certif.php' class='btn'>Volver a Emitir Certificados</a>
-            <a href='descargar_certificados.php' class='btn'>Descargar Certificados Emitidos</a>
+            <a href='PHP\ADMIN\seleccionar_alum_certif.php' class='btn'>Volver a Emitir Certificados</a>
+            <a href='PHP\ADMIN\descargar_certificados.php' class='btn'>Descargar Certificados Emitidos</a>
         </div>
 ";
 }

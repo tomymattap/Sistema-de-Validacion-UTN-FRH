@@ -77,7 +77,7 @@ $resultado = mysqli_query($conexion, $consulta);
         <div class="certificate-form-container" style="margin: 0 auto; width: 40%;">
             <h2>Seleccione curso, año y cuatrimestre</h2>
 
-            <form action="tabla_alumnos_certif.php" method="POST">
+            <form action="PHP\ADMIN\tabla_alumnos_certif.php" method="POST">
                 <!-- Curso -->
                 <div class="form-group">
                     <label for="curso">Curso:</label>

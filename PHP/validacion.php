@@ -1,5 +1,5 @@
 <?php
-include("../PHP/conexion.php");
+include("conexion.php");
 
 // Recibir código desde el formulario (por POST o GET)
 $codigo = $_POST['codigo'] ?? $_GET['codigo'] ?? '';
@@ -59,8 +59,8 @@ if (!empty($codigo)) {
                 <ul>
                     <li><a href="../index.html">VALIDAR</a></li>
                     <!--<li> <a href="HTML/cursos.html">CURSOS</a> </li>-->
-                    <li><a href="sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                    <li><a href="contacto.html">CONTACTO</a></li>
+                    <li><a href="../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
             <div class="session-controls" id="session-controls">
@@ -77,8 +77,8 @@ if (!empty($codigo)) {
                 <ul>
                     <li><a href="../index.html">VALIDAR</a></li>
                     <!--<li> <a href="HTML/cursos.html">CURSOS</a> </li>-->
-                    <li><a href="sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                    <li><a href="contacto.html">CONTACTO</a></li>
+                    <li><a href="../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
         </div>
@@ -156,8 +156,8 @@ if (!empty($codigo)) {
                 <ul>
                     <li><a href="../index.html">Inicio</a></li>
                     <!-- <li><a href="cursos.html">Cursos</a></li> -->
-                    <li><a href="sobrenosotros.html">Sobre Nosotros</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
+                    <li><a href="../HTML/sobrenosotros.html">Sobre Nosotros</a></li>
+                    <li><a href="../HTML/contacto.html">Contacto</a></li>
                 </ul>
             </div>
             <div class="footer-separator"></div>

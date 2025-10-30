@@ -8,31 +8,31 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/certificaciones.css">
+    <link rel="stylesheet" href="../../CSS/general.css">
+    <link rel="stylesheet" href="../../CSS/certificaciones.css">
 </head>
 <body>
 
     <header class="site-header">
         <div class="header-container">
             <div class="logo">
-                <a href="../index.html"><img src="Imagenes\UTNLogo.png" alt="Logo UTN FRH"></a>
+                <a href="../../index.html"><img src="../../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
             </div>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="../index.html">VALIDAR</a></li>
+                    <li><a href="../../index.html">VALIDAR</a></li>
                     <!--<li> <a href="HTML/cursos.html">CURSOS</a> </li>-->
-                    <li><a href="sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                    <li><a href="contacto.html">CONTACTO</a></li>
+                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
             <div class="session-controls" id="session-controls">
                 <button class="user-menu-toggle">Hola, [Nombre]. <i class="fas fa-chevron-down"></i></button>
                 <div class="dropdown-menu">
                     <ul>
-                        <li><a href="perfil.html">Mi Perfil</a></li>
-                        <li><a href="inscripciones.html">Inscripciones</a></li>
-                        <li><a href="certificaciones.html">Certificaciones</a></li>
+                        <li><a href="perfil.php">Mi Perfil</a></li>
+                        <li><a href="inscripciones.php">Inscripciones</a></li>
+                        <li><a href="certificaciones.php">Certificaciones</a></li>
                         <li><a href="#">Cerrar Sesión</a></li>
                     </ul>
                 </div>
@@ -67,7 +67,7 @@
     <footer class="site-footer">
         <div class="footer-container">
             <div class="footer-logo-info">
-                <img src="../Imagenes/UTNLogo_footer.webp" alt="Logo UTN" class="footer-logo">
+                <img src="../../Imagenes/UTNLogo_footer.webp" alt="Logo UTN" class="footer-logo">
                 <div class="footer-info">
                     <p>París 532, Haedo (1706)</p>
                     <p>Buenos Aires, Argentina</p>
@@ -92,17 +92,17 @@
             <div class="footer-nav">
                 <h4>Navegación</h4>
                 <ul>
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="HTML\sobrenosotros.html">Sobre Nosotros</a></li>
-                    <li><a href="HTML\contacto.html">Contacto</a></li>
+                    <li><a href="../../index.html">Inicio</a></li>
+                    <li><a href="../../HTML/sobrenosotros.html">Sobre Nosotros</a></li>
+                    <li><a href="../../HTML/contacto.html">Contacto</a></li>
                 </ul>
             </div>
             <div class="footer-separator"></div>
             <div class="footer-dynamic-nav" id="footer-dynamic-nav">
                 <h4>Acceso</h4>
                 <ul>
-                    <li><a href="perfil.html">Perfil</a></li>
-                    <li><a href="inscripciones.html">Inscripciones</a></li>
+                    <li><a href="perfil.php">Perfil</a></li>
+                    <li><a href="inscripciones.php">Inscripciones</a></li>
                     <li><a href="#">Cerrar Sesión</a></li>
                 </ul>
             </div>

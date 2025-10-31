@@ -8,8 +8,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/generar_certificado.css">
+    <link rel="stylesheet" href="../../CSS/general.css">
+    <link rel="stylesheet" href="../../CSS/generar_certificado.css">
 </head>
 <body class="fade-in">
     <div class="preloader">
@@ -19,23 +19,23 @@
     <header class="site-header">
         <div class="header-container">
             <div class="logo">
-                <a href="../index.html"><img src="../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
+                <a href="../../index.html"><img src="../../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
             </div>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="../index.html">VALIDAR</a></li>
+                    <li><a href="../../index.html">VALIDAR</a></li>
                     <!--<li> <a href="HTML/cursos.html">CURSOS</a> </li>-->
-                    <li><a href="sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                    <li><a href="contacto.html">CONTACTO</a></li>
+                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
             <div class="session-controls" id="session-controls">
                 <button class="user-menu-toggle">Hola, Admin. <i class="fas fa-chevron-down"></i></button>
                 <div class="dropdown-menu">
                     <ul>
-                        <li><a href="../HTML/verinscriptos.html">Ver Inscriptos</a></li>
-                        <li><a href="../HTML/gestionarcursos.html">Gestionar Cursos</a></li>
-                        <li><a href="PHP\ADMIN\seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                        <li><a href="../../HTML/verinscriptos.html">Ver Inscriptos</a></li>
+                        <li><a href="../../HTML/gestionarcursos.html">Gestionar Cursos</a></li>
+                        <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
                         <li><a href="#">Cerrar Sesión</a></li>
                     </ul>
                 </div>
@@ -50,10 +50,10 @@
             <button class="close-menu" aria-label="Cerrar menú">&times;</button>
             <nav>
                 <ul>
-                    <li><a href="../index.html">INICIO</a></li>
+                    <li><a href="../../index.html">INICIO</a></li>
                     <!--<li> <a href="HTML/cursos.html">CURSOS</a> </li>-->
-                    <li><a href="sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                    <li><a href="contacto.html">CONTACTO</a></li>
+                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
                 <div class="mobile-session-controls" id="mobile-session-controls">
                     <!-- Contenido dinámico por JS -->
@@ -65,7 +65,7 @@
 <main>
 <div class="content-container">
 <?php
-include("conexion.php");
+include("../conexion.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Variables del formulario
@@ -164,8 +164,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     echo "
         <div class='button-container'>
-            <a href='PHP\ADMIN\seleccionar_alum_certif.php' class='btn'>Volver a Emitir Certificados</a>
-            <a href='PHP\ADMIN\descargar_certificados.php' class='btn'>Descargar Certificados Emitidos</a>
+            <a href='seleccionar_alum_certif.php' class='btn'>Volver a Emitir Certificados</a>
+            <a href='descargar_certificados.php' class='btn'>Descargar Certificados Emitidos</a>
         </div>
 ";
 }
@@ -178,8 +178,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </footer>
 
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-    <script src="../JavaScript/general.js"></script>
-    <script src="../JavaScript/emitircertificados.js"></script>
+    <script src="../../JavaScript/general.js"></script>
+    <script src="../../JavaScript/emitircertificados.js"></script>
     <a href="#" class="scroll-to-top-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 </body>
 </html>

@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Si todo está completo, enviamos el formulario con fetch()
         const formData = new FormData(contactForm);
 
-        fetch('../PHP/enviar.php', {
+                fetch('/Sistema-de-Validacion-UTN-FRH/PHP/enviar.php', {
             method: 'POST',
             body: formData
         })

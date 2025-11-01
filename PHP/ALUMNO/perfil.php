@@ -50,7 +50,7 @@ $conexion->close();
                 </ul>
             </nav>
             <div class="session-controls" id="session-controls">
-                <button class="user-menu-toggle">Hola, <?php echo htmlspecialchars($alumno['Nombre_Alumno']); ?>. <i class="fas fa-chevron-down"></i></button>
+                <button class="user-menu-toggle">Hola, <?php echo htmlspecialchars($_SESSION['user_name']); ?>. <i class="fas fa-chevron-down"></i></button>
                 <div class="dropdown-menu">
                     <ul>
                         <li><a href="perfil.php">Mi Perfil</a></li>

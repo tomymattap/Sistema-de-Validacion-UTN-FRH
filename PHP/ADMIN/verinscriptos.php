@@ -1,4 +1,5 @@
 <?php
+session_start();
 include("../conexion.php");
 
 // Manejo de filtros
@@ -101,13 +102,13 @@ $estados = ['En curso', 'Finalizado', 'CERTIFICADA', 'ASISTIDO'];
                 </ul>
             </nav>
             <div class="session-controls" id="session-controls">
-                <button class="user-menu-toggle">Hola, Admin. <i class="fas fa-chevron-down"></i></button>
+                <button class="user-menu-toggle">Hola, <?php echo htmlspecialchars($_SESSION['user_name']); ?>. <i class="fas fa-chevron-down"></i></button>
                 <div class="dropdown-menu">
                     <ul>
                         <li><a href="verinscriptos.php">Ver Inscriptos</a></li>
                         <li><a href="../../HTML/gestionarcursos.html">Gestionar Cursos</a></li>
                         <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                        <li><a href="#">Cerrar Sesión</a></li>
+                        <li><a href="../logout.php">Cerrar Sesión</a></li>
                     </ul>
                 </div>
             </div>

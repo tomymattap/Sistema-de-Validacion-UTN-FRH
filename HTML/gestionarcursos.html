@@ -36,7 +36,7 @@
                         <li><a href="verinscriptos.html">Ver Inscriptos</a></li>
                         <li><a href="gestionarcursos.html">Gestionar Cursos</a></li>
                         <li><a href="../PHP/seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                        <li><a href="#">Cerrar Sesión</a></li>
+                        <li><a href="../PHP/logout.php">Cerrar Sesión</a></li>
                     </ul>
                 </div>
             </div>
@@ -162,6 +162,15 @@
 
     <script src="../JavaScript/general.js"></script>
     <script src="../JavaScript/gestionarcursos.js"></script>
+    <script>
+        fetch('../PHP/get_user_name.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.user_name) {
+                    document.querySelector('.user-menu-toggle').innerHTML = `Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i>`;
+                }
+            });
+    </script>
     <a href="#" class="scroll-to-top-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 </body>
 </html>

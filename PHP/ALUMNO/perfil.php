@@ -1,3 +1,26 @@
+<?php
+session_start();
+require '../conexion.php';
+
+// Verificar si el usuario está logueado y es un alumno
+if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 2) {
+    header("Location: ../../HTML/iniciosesion.html?error=acceso_denegado");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+
+// Obtener datos del alumno
+$sql = "SELECT Nombre_Alumno, Apellido_Alumno, DNI_Alumno, Email_Alumno, Telefono FROM alumno WHERE ID_Cuil_Alumno = ?";
+$stmt = $conexion->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$alumno = $result->fetch_assoc();
+
+$stmt->close();
+$conexion->close();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -27,13 +50,13 @@
                 </ul>
             </nav>
             <div class="session-controls" id="session-controls">
-                <button class="user-menu-toggle">Hola, [Nombre]. <i class="fas fa-chevron-down"></i></button>
+                <button class="user-menu-toggle">Hola, <?php echo htmlspecialchars($alumno['Nombre_Alumno']); ?>. <i class="fas fa-chevron-down"></i></button>
                 <div class="dropdown-menu">
                     <ul>
                         <li><a href="perfil.php">Mi Perfil</a></li>
                         <li><a href="inscripciones.php">Inscripciones</a></li>
                         <li><a href="certificaciones.php">Certificaciones</a></li>
-                        <li><a href="#">Cerrar Sesión</a></li>
+                        <li><a href="../logout.php">Cerrar Sesión</a></li>
                     </ul>
                 </div>
             </div>
@@ -47,32 +70,32 @@
                 <div class="profile-field">
                     <label for="nombre">Nombre</label>
                     <div class="value non-editable">
-                        <span id="nombre">Juan</span>
+                        <span id="nombre"><?php echo htmlspecialchars($alumno['Nombre_Alumno']); ?></span>
                     </div>
                 </div>
                 <div class="profile-field">
                     <label for="apellido">Apellido</label>
                     <div class="value non-editable">
-                        <span id="apellido">Pérez</span>
+                        <span id="apellido"><?php echo htmlspecialchars($alumno['Apellido_Alumno']); ?></span>
                     </div>
                 </div>
                 <div class="profile-field">
                     <label for="dni">DNI</label>
                     <div class="value non-editable">
-                        <span id="dni">12345678</span>
+                        <span id="dni"><?php echo htmlspecialchars($alumno['DNI_Alumno']); ?></span>
                     </div>
                 </div>
                 <div class="profile-field">
                     <label for="email">Correo electrónico</label>
                     <div class="value">
-                        <span id="email">juan.perez@gmail.com</span>
+                        <span id="email"><?php echo htmlspecialchars($alumno['Email_Alumno']); ?></span>
                         <button class="edit-btn"><i class="fas fa-pencil-alt"></i></button>
                     </div>
                 </div>
                 <div class="profile-field">
                     <label for="telefono">Número de contacto</label>
                     <div class="value">
-                        <span id="telefono">1122334455</span>
+                        <span id="telefono"><?php echo htmlspecialchars($alumno['Telefono']); ?></span>
                         <button class="edit-btn"><i class="fas fa-pencil-alt"></i></button>
                     </div>
                 </div>
@@ -119,7 +142,7 @@
                 <ul>
                     <li><a href="inscripciones.php">Inscripciones</a></li>
                     <li><a href="certificaciones.php">Certificaciones</a></li>
-                    <li><a href="#">Cerrar Sesión</a></li>
+                    <li><a href="../logout.php">Cerrar Sesión</a></li>
                 </ul>
             </div>
         </div>

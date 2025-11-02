@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateUIForUserRole(user);
 
 
-    // --- LÓGICA DE VALIDACIÓN DEL FORMULARIO ---
+    // Lógica de validación del formulario
     const certificateInput = document.getElementById('certificate-code');
     const validateButton = document.getElementById('validate-btn');
 

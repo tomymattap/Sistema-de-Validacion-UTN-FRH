@@ -4,14 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Validación de Certificados - UTN FRH</title>
+
+    <!-- Fuentes y estilos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Hojas de estilo -->
     <link rel="stylesheet" href="CSS/general.css">
     <link rel="stylesheet" href="CSS/inicio.css">
+</head>
 
-    </head>
 <body>
 
     <header class="site-header">
@@ -19,28 +23,31 @@
             <div class="logo">
                 <a href="index.html"><img src="Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
             </div>
+
             <nav class="main-nav">
                 <ul>
                     <li><a href="index.html">VALIDAR</a></li>
-                    <!--<li> <a href="HTML/cursos.html">CURSOS</a> </li>-->
                     <li><a href="HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
+
             <div class="session-controls" id="session-controls">
                 <!-- Contenido dinámico por JS -->
             </div>
+
             <button class="hamburger-menu" aria-label="Abrir menú">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
         </div>
-        <div class="mobile-nav">
+
+        <!-- Navegación móvil -->
+        <div class="mobile-nav" id="mobile-nav">
             <nav>
                 <ul>
                     <li><a href="index.html">VALIDAR</a></li>
-                    <!--<li><a href="HTML/cursos.html">CURSOS</a></li>-->
                     <li><a href="HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="HTML/contacto.html">CONTACTO</a></li>
                 </ul>
@@ -52,13 +59,15 @@
         <section class="hero">
             <img src="Imagenes/banner_inicio.webp" alt="Imagen representativa de la UTN" class="hero-image">
         </section>
+
         <section class="validation-section">
             <h1>VALIDACIÓN DE CERTIFICADOS UTN – FRH</h1>
             <p>
                 Aquí podrás validar la autenticidad de los certificados emitidos por nuestra institución.
-                <br> 
+                <br>
                 El proceso es seguro y garantiza la veracidad de cada documento.
             </p>
+
             <form class="validation-form" action="PHP/validacion.php" method="POST">
                 <div class="input-container">
                     <input type="text" id="codigo" name="codigo" placeholder="Ingrese el código alfanumérico de su certificado..." required>
@@ -96,7 +105,6 @@
             <div class="footer-nav">
                 <h4>Navegación</h4>
                 <ul>
-                    <!--<li><a href="HTML/cursos.html">Cursos</a></li>-->
                     <li><a href="HTML/sobrenosotros.html">Sobre Nosotros</a></li>
                     <li><a href="HTML/contacto.html">Contacto</a></li>
                 </ul>
@@ -107,6 +115,7 @@
         </div>
     </footer>
 
+    <!-- Scripts -->
     <script src="JavaScript/inicio.js"></script>
     <script src="JavaScript/general.js"></script>
 </body>

@@ -16,16 +16,37 @@ document.addEventListener('DOMContentLoaded', function() {
     // Navegación activa
     navLinks.forEach(link => {
         const linkPage = link.getAttribute('href').split('/').pop();
-        if (linkPage === currentPage) {
+
+        // Quita la clase activa de todos primero
+        link.classList.remove('active');
+
+        // Marca solo el enlace correspondiente a la página actual
+        if (linkPage === currentPage || 
+            (currentPage === '' && linkPage === 'index.html')) {
             link.classList.add('active');
         }
     });
 
     // Hamburger menu toggle
-    if (hamburgerMenu && mobileNav) {
+    /*if (hamburgerMenu && mobileNav) {
         hamburgerMenu.addEventListener('click', () => {
             hamburgerMenu.classList.toggle('active');
             mobileNav.classList.toggle('active');
+            document.body.classList.toggle('no-scroll'); // evita scroll al abrir menú
+        });
+    }*/
+   if (hamburgerMenu && mobileNav) {
+        hamburgerMenu.addEventListener("click", () => {
+            hamburgerMenu.classList.toggle("active");
+            mobileNav.classList.toggle("active");
+        });
+
+        // Cerrar menú al hacer clic en un enlace
+        mobileNav.querySelectorAll("a").forEach(link => {
+            link.addEventListener("click", () => {
+                hamburgerMenu.classList.remove("active");
+                mobileNav.classList.remove("active");
+            });
         });
     }
 

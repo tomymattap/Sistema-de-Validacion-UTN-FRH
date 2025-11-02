@@ -61,7 +61,8 @@ ul {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem 1rem 1.5rem;
-    max-width: 1400px;
+    /*max-width: 1400px;*/
+    width: 90%;
     margin: 0 auto;
 }
 
@@ -71,7 +72,8 @@ ul {
 
 .main-nav ul {
     display: flex;
-    gap: 2rem;
+    list-style: none;
+    gap: 30px;
 }
 
 .main-nav a {
@@ -164,7 +166,7 @@ ul {
 
 .footer-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: flex-start;
     max-width: 1400px;
     margin: 0 auto;

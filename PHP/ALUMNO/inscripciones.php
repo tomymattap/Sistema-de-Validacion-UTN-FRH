@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -27,13 +28,13 @@
                 </ul>
             </nav>
             <div class="session-controls" id="session-controls">
-                <button class="user-menu-toggle">Hola, [Nombre]. <i class="fas fa-chevron-down"></i></button>
+                <button class="user-menu-toggle">Hola, <?php session_start(); echo htmlspecialchars($_SESSION['user_name']); ?>. <i class="fas fa-chevron-down"></i></button>
                 <div class="dropdown-menu">
                     <ul>
                         <li><a href="perfil.php">Mi Perfil</a></li>
                         <li><a href="inscripciones.php">Inscripciones</a></li>
                         <li><a href="certificaciones.php">Certificaciones</a></li>
-                        <li><a href="#">Cerrar Sesión</a></li>
+                        <li><a href="../logout.php">Cerrar Sesión</a></li>
                     </ul>
                 </div>
             </div>

@@ -58,7 +58,7 @@ if (!empty($codigo)) {
             <nav class="main-nav">
                 <ul>
                     <li><a href="../index.html">VALIDAR</a></li>
-                    <!--<li> <a href="HTML/cursos.html">CURSOS</a> </li>-->
+                    <!--<li> <a href="../HTML/cursos.html">CURSOS</a> </li>-->
                     <li><a href="../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
@@ -72,17 +72,20 @@ if (!empty($codigo)) {
                 <span></span>
             </button>
         </div>
-        <div class="mobile-nav">
-            <nav>
-                <ul>
-                    <li><a href="../index.html">VALIDAR</a></li>
-                    <!--<li> <a href="HTML/cursos.html">CURSOS</a> </li>-->
-                    <li><a href="../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                    <li><a href="../HTML/contacto.html">CONTACTO</a></li>
-                </ul>
-            </nav>
-        </div>
     </header>
+
+    <!-- Menú Off-canvas -->
+    <div class="off-canvas-menu" id="off-canvas-menu">
+        <button class="close-btn" aria-label="Cerrar menú">&times;</button>
+        <nav>
+            <ul>
+                <li><a href="../index.html">VALIDAR</a></li>
+                <!--<li> <a href="../HTML/cursos.html">CURSOS</a> </li>-->
+                <li><a href="../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="../HTML/contacto.html">CONTACTO</a></li>
+            </ul>
+        </nav>
+    </div>
 
     <main class="validation-page">
         <div class="validation-result-container">
@@ -155,7 +158,7 @@ if (!empty($codigo)) {
                 <h4>Navegación</h4>
                 <ul>
                     <li><a href="../index.html">Inicio</a></li>
-                    <!-- <li><a href="cursos.html">Cursos</a></li> -->
+                    <!-- <li><a href="../HTML/cursos.html">Cursos</a></li> -->
                     <li><a href="../HTML/sobrenosotros.html">Sobre Nosotros</a></li>
                     <li><a href="../HTML/contacto.html">Contacto</a></li>
                 </ul>
@@ -166,8 +169,65 @@ if (!empty($codigo)) {
         </div>
     </footer>
 
+    <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
     <script src="../JavaScript/inicio.js"></script>
     <script src="../JavaScript/general.js"></script>
-    <a href="#" class="scroll-to-top-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
+    <script>
+        fetch('get_user_name.php')
+            .then(response => response.json())
+            .then(data => {
+                const sessionControls = document.getElementById('session-controls');
+                const mobileNav = document.querySelector('.off-canvas-menu nav ul');
+                let sessionHTML = '';
+
+                if (data.user_name) {
+                    let dropdownMenu;
+                    if (data.user_rol === 1) { // Admin
+                        dropdownMenu = `
+                            <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
+                            <div class="dropdown-menu">
+                                <ul>
+                                    <li><a href="ADMIN/verinscriptos.php">Ver Inscriptos</a></li>
+                                    <li><a href="../HTML/gestionarcursos.html">Gestionar Cursos</a></li>
+                                    <li><a href="ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                    <li><a href="logout.php">Cerrar Sesión</a></li>
+                                </ul>
+                            </div>`;
+                        sessionHTML = `
+                            <li><a href="ADMIN/verinscriptos.php">Ver Inscriptos</a></li>
+                            <li><a href="../HTML/gestionarcursos.html">Gestionar Cursos</a></li>
+                            <li><a href="ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                            <li><a href="logout.php">Cerrar Sesión</a></li>`;
+                    } else if (data.user_rol === 2) { // Alumno
+                        dropdownMenu = `
+                            <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
+                            <div class="dropdown-menu">
+                                <ul>
+                                    <li><a href="ALUMNO/perfil.php">Mi Perfil</a></li>
+                                    <li><a href="ALUMNO/inscripciones.php">Inscripciones</a></li>
+                                    <li><a href="ALUMNO/certificaciones.php">Certificaciones</a></li>
+                                    <li><a href="logout.php">Cerrar Sesión</a></li>
+                                </ul>
+                            </div>`;
+                        sessionHTML = `
+                            <li><a href="ALUMNO/perfil.php">Mi Perfil</a></li>
+                            <li><a href="ALUMNO/inscripciones.php">Inscripciones</a></li>
+                            <li><a href="ALUMNO/certificaciones.php">Certificaciones</a></li>
+                            <li><a href="logout.php">Cerrar Sesión</a></li>`;
+                    }
+                    sessionControls.innerHTML = dropdownMenu;
+                } else {
+                    sessionControls.innerHTML = '<a href="../HTML/iniciosesion.html" class="login-btn">INICIAR SESIÓN</a>';
+                    sessionHTML = '<li><a href="../HTML/iniciosesion.html">INICIAR SESIÓN</a></li>';
+                }
+
+                // Añadir al menú móvil
+                const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');
+                mobileMenuUl.insertAdjacentHTML('beforeend', sessionHTML);
+            });
+    </script>
 </body>
 </html>

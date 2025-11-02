@@ -1,24 +1,18 @@
 /* Estilos para la sección de emitir certificados */
 .certificate-container {
     display: flex;
+    flex-direction: column;
     gap: 2rem;
     margin-bottom: 2rem;
 }
 
-.certificate-form-container {
-    background-color: #f9f9f9;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 60%;
-}
-
+.certificate-form-container,
 .certificate-preview-container {
     background-color: #f9f9f9;
     padding: 1.5rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 40%;
+    width: 100%;
 }
 
 .certificate-form-container h2,
@@ -68,6 +62,7 @@
     font-weight: bold;
     background-color: #005a9c;
     color: white;
+    width: 100%;
 }
 
 .qr-code-container,
@@ -91,4 +86,23 @@
     padding: 0.5rem 1rem;
     border-radius: 4px;
     display: inline-block;
+    word-break: break-all;
+}
+
+@media (min-width: 768px) {
+    .certificate-container {
+        flex-direction: row;
+    }
+
+    .certificate-form-container {
+        width: 60%;
+    }
+
+    .certificate-preview-container {
+        width: 40%;
+    }
+
+    .form-buttons button {
+        width: auto;
+    }
 }

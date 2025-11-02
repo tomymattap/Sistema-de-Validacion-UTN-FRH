@@ -29,7 +29,7 @@
 .validation-section {
     max-width: 800px;
     margin: 2rem auto;
-    padding: 0 2rem;
+    padding: 0 1rem;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -38,18 +38,18 @@
 }
 
 .validation-section h1 {
-    font-size: 2.5rem;
+    font-size: 1.8rem;
     margin-bottom: 1rem;
     font-weight: normal;
-    white-space: nowrap;
+    white-space: normal;
     opacity: 0;
     animation: panFromLeft 0.7s ease-out 0.3s forwards;
 }
 
 .validation-section p {
     color: var(--color-texto-gris);
-    font-size: 1.1rem;
-    margin-bottom: 2.5rem;
+    font-size: 1rem;
+    margin-bottom: 2rem;
     opacity: 0;
     animation: panFromLeft 0.7s ease-out 0.5s forwards;
 }
@@ -57,7 +57,7 @@
 .validation-form {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
     width: 100%;
 }
 
@@ -69,7 +69,7 @@
 
 .input-container input {
     width: 100%;
-    padding: 1.2rem;
+    padding: 1rem;
     padding-right: 3.5rem; /* Espacio para el ícono */
     border: 2px solid var(--color-principal);
     font-size: 1rem;
@@ -95,7 +95,7 @@
     font-weight: 700;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
-    width: 50%;
+    width: 100%;
     align-self: center;
     opacity: 0;
     animation: panFromLeft 0.7s ease-out 0.9s forwards;
@@ -112,18 +112,26 @@
     cursor: not-allowed;
 }
 
-@media (max-width: 768px) {
-    .validation-section h1 {
-        font-size: 1.8rem;
+@media (min-width: 576px) {
+    #validate-btn {
+        width: 50%;
     }
 }
 
-@media (max-width: 576px) {
+@media (min-width: 768px) {
     .validation-section h1 {
-        font-size: 1.5rem;
+        font-size: 2.5rem;
     }
 
-    #validate-btn {
-        width: 100%;
+    .validation-section p {
+        font-size: 1.1rem;
+    }
+
+    .validation-form {
+        gap: 1.5rem;
+    }
+
+    .input-container input {
+        padding: 1.2rem;
     }
 }

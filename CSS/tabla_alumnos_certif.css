@@ -2,19 +2,19 @@
 
 .main-title {
     text-align: center;
-    font-size: 2rem; /* Título más pequeño */
+    font-size: 1.5rem; /* Título más pequeño */
 }
 
 #results-table td, 
 #results-table th {
     text-align: center; /* Centra todo el texto en la tabla */
     color: black; /* Color de fuente negro para los datos */
-    font-size: 1.1rem; /* Fuente de datos más grande */
+    font-size: 0.9rem; /* Fuente de datos más grande */
 }
 
 #results-table th {
     color: white; /* Color de fuente blanco para los títulos por defecto */
-    font-size: 1.2rem; /* Títulos de columna un poco más grandes */
+    font-size: 1rem; /* Títulos de columna un poco más grandes */
 }
 
 /* Achicar la columna de selección */
@@ -28,11 +28,33 @@
     background-color: var(--color-principal); 
     color: var(--color-blanco); 
     border: none; 
-    padding: 1rem 2rem; /* Botón más grande */
+    padding: 0.8rem 1.5rem; /* Botón más grande */
     border-radius: 6px; 
     font-weight: 700; 
     cursor: pointer; 
     transition: background-color 0.3s;
-    font-size: 1.1rem; /* Fuente más grande */
+    font-size: 1rem; /* Fuente más grande */
+    width: 100%;
 }
 .submit-btn:hover { background-color: #003344; }
+
+@media (min-width: 768px) {
+    .main-title {
+        font-size: 2rem;
+    }
+
+    #results-table td, 
+    #results-table th {
+        font-size: 1.1rem;
+    }
+
+    #results-table th {
+        font-size: 1.2rem;
+    }
+
+    .submit-btn {
+        width: auto;
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+    }
+}

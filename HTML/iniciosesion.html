@@ -35,17 +35,20 @@
                 <span></span>
             </button>
         </div>
-        <div class="mobile-nav">
-            <nav>
-                <ul>
-                    <li><a href="../index.html">VALIDAR</a></li>
-                    <!--<li> <a href="cursos.html">CURSOS</a> </li>-->
-                    <li><a href="sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                    <li><a href="contacto.html">CONTACTO</a></li>
-                </ul>
-            </nav>
-        </div>
     </header>
+
+    <!-- Menú Off-canvas -->
+    <div class="off-canvas-menu" id="off-canvas-menu">
+        <button class="close-btn" aria-label="Cerrar menú">&times;</button>
+        <nav>
+            <ul>
+                <li><a href="../index.html">VALIDAR</a></li>
+                <!--<li> <a href="cursos.html">CURSOS</a> </li>-->
+                <li><a href="sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="contacto.html">CONTACTO</a></li>
+            </ul>
+        </nav>
+    </div>
 
     <main class="login-page">
         <div class="login-container">
@@ -113,7 +116,32 @@
         </div>
     </footer>
 
+    <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
     <script src="../JavaScript/general.js"></script>
     <script src="../JavaScript/iniciosesion.js"></script>
+    <script>
+        fetch('../PHP/get_user_name.php')
+            .then(response => response.json())
+            .then(data => {
+                const sessionControls = document.getElementById('session-controls');
+                const mobileNav = document.querySelector('.off-canvas-menu nav ul');
+                let sessionHTML = '';
+
+                if (data.user_name) {
+                    // Si el usuario ya está logueado, redirigir a la página principal
+                    window.location.href = '../index.html';
+                } else {
+                    sessionControls.innerHTML = '<a href="iniciosesion.html" class="login-btn">INICIAR SESIÓN</a>';
+                    sessionHTML = '<li><a href="iniciosesion.html">INICIAR SESIÓN</a></li>';
+                }
+
+                // Añadir al menú móvil
+                const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');
+                mobileMenuUl.insertAdjacentHTML('beforeend', sessionHTML);
+            });
+    </script>
 </body>
 </html>

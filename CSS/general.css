@@ -46,7 +46,7 @@ ul {
     list-style: none;
 }
 
-/* Header */
+/* ----- Cabecera ----- */
 .site-header {
     background-color: var(--color-blanco);
     position: sticky;
@@ -60,14 +60,17 @@ ul {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem 1rem 1.5rem;
-    /*max-width: 1400px;*/
-    width: 90%;
+    padding: 1rem 2rem;
+    width: 100%;
     margin: 0 auto;
 }
 
 .logo img {
     height: 60px;
+}
+
+.main-nav {
+    display: none; /* Oculto en móvil, visible en escritorio */
 }
 
 .main-nav ul {
@@ -86,6 +89,11 @@ ul {
     transform: scale(1.1);
 }
 
+.main-nav a.active {
+    color: var(--color-secundario-1);
+    border-bottom: 2px solid var(--color-secundario-1);
+}
+
 .session-controls {
     position: relative;
 }
@@ -101,9 +109,20 @@ ul {
     transition: background-color 0.3s, color 0.3s;
 }
 
-.session-btn:hover {
-    background-color: var(--color-blanco);
+.login-btn {
+    background-color: transparent;
     color: var(--color-principal);
+    padding: 0.85rem 1.7rem;
+    border-radius: 25px;
+    border: 2px solid var(--color-principal);
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.session-btn:hover, .login-btn:hover {
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
 }
 
 .dropdown-menu {
@@ -157,95 +176,9 @@ ul {
     transition: transform 0.3s ease;
 }
 
-/* Footer */
-.site-footer {
-    background-color: var(--color-principal);
-    color: var(--color-blanco);
-    padding: 1.5rem 2rem; /* Padding reducido */
-}
-
-.footer-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    max-width: 1400px;
-    margin: 0 auto;
-    gap: 2rem;
-    flex-wrap: wrap;
-}
-
-.footer-logo-info {
-    display: flex;
-    align-items: flex-start;
-    gap: 2.5rem;
-}
-
-.footer-logo {
-    height: 40px;
-}
-
-.footer-info p {
-    margin-bottom: 0.25rem;
-    font-size: 0.9rem;
-}
-
-.footer-social-legal {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-}
-
-.footer-social {
-    display: flex;
-    gap: 1rem;
-}
-
-.footer-social a {
-    font-size: 1.5rem;
-    color: #a0a0a0;
-    transition: color 0.3s;
-}
-
-.footer-social a:hover {
-    color: var(--color-blanco);
-}
-
-.footer-legal {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.footer-legal a {
-    text-decoration: underline;
-    font-size: 0.9rem;
-}
-
-.footer-separator {
-    width: 1px;
-    background-color: #4a7c8c;
-    align-self: stretch;
-}
-
-.footer-nav h4, .footer-dynamic-nav h4 {
-    margin-bottom: 1rem;
-}
-
-.footer-nav ul, .footer-dynamic-nav ul {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.footer-nav a, .footer-dynamic-nav a {
-    font-size: 0.9rem;
-}
-
-/* Responsive */
-/* Hamburger Menu */
+/* ----- Menú Hamburguesa ----- */
 .hamburger-menu {
-    display: none;
+    display: flex; /* Visible en móvil */
     flex-direction: column;
     justify-content: space-around;
     width: 2.25rem;
@@ -263,71 +196,186 @@ ul {
     background-color: var(--color-principal);
     border-radius: 3px;
     transition: all 0.3s linear;
-    position: relative;
-    transform-origin: 1px;
 }
 
-/* Mobile Navigation */
-.mobile-nav {
-    display: none;
+/* ----- Menú Off-canvas ----- */
+.off-canvas-menu {
+    position: fixed;
+    top: 0;
+    right: -70%; /* Oculto fuera de la pantalla */
+    width: 70%;
+    height: 100%;
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+    transition: right 0.3s ease-in-out;
+    z-index: 1005;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
 }
 
-@media (max-width: 992px) {
+.off-canvas-menu.active {
+    right: 0; /* Visible en la pantalla */
+}
+
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: var(--color-blanco);
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.off-canvas-menu nav ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 4rem;
+}
+
+.off-canvas-menu a {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-blanco);
+}
+
+.off-canvas-menu a.active {
+    color: var(--color-secundario-1);
+}
+
+/* ----- Pie de Página ----- */
+.site-footer {
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+    padding: 2rem 1rem;
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.footer-logo-info, .footer-social-legal, .footer-nav {
+    width: 100%;
+}
+
+.footer-logo {
+    height: 40px;
+    margin-bottom: 1rem;
+}
+
+.footer-info p {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.footer-social {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.footer-social a {
+    font-size: 1.5rem;
+    color: #a0a0a0;
+    transition: color 0.3s;
+}
+
+.footer-social a:hover {
+    color: var(--color-blanco);
+}
+
+.footer-legal a {
+    text-decoration: underline;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.footer-separator {
+    display: none; /* Oculto en móvil */
+}
+
+.footer-nav h4 {
+    margin-bottom: 1rem;
+}
+
+.footer-nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* ----- Media Queries para Responsividad ----- */
+
+/* Tablets y dispositivos más grandes */
+@media (min-width: 768px) {
+    .header-container {
+        padding: 1rem 2rem;
+    }
+
     .main-nav {
-        display: none;
+        display: flex; /* Visible en escritorio */
     }
 
     .hamburger-menu {
-        display: flex;
-    }
-
-    .mobile-nav {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: -100%;
-        width: 70%;
-        max-width: 300px;
-        height: 100%;
-        background-color: var(--color-principal);
-        color: var(--color-blanco);
-        transition: left 0.3s ease-in-out;
-        z-index: 1005;
-        padding-top: 6rem;
-    }
-
-    .mobile-nav.active {
-        left: 0;
-    }
-
-    .mobile-nav nav ul {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2rem;
-    }
-
-    .mobile-nav a {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--color-blanco);
+        display: none; /* Oculto en escritorio */
     }
 
     .footer-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .footer-logo-info {
+        display: flex;
+        align-items: flex-start;
+        gap: 2.5rem;
+    }
+
+    .footer-info {
+        text-align: left;
+    }
+
+    .footer-social {
+        justify-content: flex-start;
+    }
+
+    .footer-legal {
+        display: flex;
         flex-direction: column;
-        align-items: center;
-        text-align: center;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .footer-separator {
+        display: block;
+        width: 1px;
+        background-color: #4a7c8c;
+        align-self: stretch;
+    }
+
+    .footer-nav {
+        text-align: left;
     }
 }
 
-@media (max-width: 576px) {
+/* Laptops y desktops */
+@media (min-width: 1024px) {
     .header-container {
-        flex-direction: column;
-        gap: 1rem;
-    }
-    .session-controls {
-        width: 100%;
-        text-align: center;
+        width: 90%;
     }
 }
 
@@ -335,14 +383,10 @@ ul {
     margin-bottom: 2rem;
 }
 
-.main-nav a.active {
-    color: var(--color-secundario-1);
-}
-
-/* Scroll to Top Button */
+/* ----- Botón de Volver Arriba ----- */
 .scroll-to-top-btn {
     position: fixed;
-    bottom: 10rem;
+    bottom: 2rem;
     right: 2rem;
     background-color: #00544C;
     color: #FFFFFF;
@@ -354,8 +398,15 @@ ul {
     align-items: center;
     font-size: 2rem;
     cursor: pointer;
-    transition: transform 0.3s;
+    transition: transform 0.3s, opacity 0.3s;
     z-index: 1001;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.scroll-to-top-btn.visible {
+    opacity: 1;
+    visibility: visible;
 }
 
 .scroll-to-top-btn:hover {

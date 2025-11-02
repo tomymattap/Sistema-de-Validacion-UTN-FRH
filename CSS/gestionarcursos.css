@@ -5,6 +5,7 @@
 
 .course-management-container {
     display: flex;
+    flex-direction: column;
     gap: 2rem;
     margin-bottom: 2rem;
     opacity: 0;
@@ -17,7 +18,7 @@
     padding: 1.5rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 50%;
+    width: 100%;
     transition: all 0.3s ease;
 }
 
@@ -77,6 +78,7 @@
 
 .form-buttons {
     display: flex;
+    flex-direction: column;
     gap: 1rem;
     margin-top: 1.5rem;
 }
@@ -116,8 +118,9 @@
 
 .course-item {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     padding: 1rem;
     border-bottom: 1px solid #eee;
     transition: background-color 0.3s ease;
@@ -133,6 +136,7 @@
 
 .course-item-info {
     flex-grow: 1;
+    margin-bottom: 1rem;
 }
 
 .course-item-info h3 {
@@ -145,6 +149,11 @@
     margin: 0.25rem 0 0;
     font-size: 0.9rem;
     color: #777;
+}
+
+.course-item-actions {
+    display: flex;
+    gap: 1rem;
 }
 
 .course-item-actions button {
@@ -180,4 +189,28 @@
 
 .fade-in {
     animation: fadeIn 0.5s forwards;
+}
+
+@media (min-width: 768px) {
+    .course-management-container {
+        flex-direction: row;
+    }
+
+    .course-form-container,
+    .course-list-container {
+        width: 50%;
+    }
+
+    .form-buttons {
+        flex-direction: row;
+    }
+
+    .course-item {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .course-item-info {
+        margin-bottom: 0;
+    }
 }

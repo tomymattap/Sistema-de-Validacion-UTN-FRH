@@ -3,20 +3,28 @@ session_start();
 include("../conexion.php");
 
 // Manejo de filtros
-$filter_nombre = isset($_GET['nombre']) ? mysqli_real_escape_string($conexion, $_GET['nombre']) : '';
+$filter_cuil = isset($_GET['cuil']) ? mysqli_real_escape_string($conexion, $_GET['cuil']) : '';
 $filter_curso = isset($_GET['curso']) ? intval($_GET['curso']) : 0;
 $filter_estado = isset($_GET['estado']) ? mysqli_real_escape_string($conexion, $_GET['estado']) : '';
+$filter_cuatrimestre = isset($_GET['cuatrimestre']) ? mysqli_real_escape_string($conexion, $_GET['cuatrimestre']) : '';
+$filter_anio = isset($_GET['anio']) ? mysqli_real_escape_string($conexion, $_GET['anio']) : '';
 
 // Query para listar inscriptos con JOIN a alumno y curso
 $where = [];
-if ($filter_nombre !== '') {
-    $where[] = "(a.Nombre_Alumno LIKE '%$filter_nombre%' OR a.Apellido_Alumno LIKE '%$filter_nombre%')";
+if ($filter_cuil !== '') {
+    $where[] = "a.ID_Cuil_Alumno LIKE '%$filter_cuil%'";
 }
 if ($filter_curso > 0) {
     $where[] = "i.ID_Curso = $filter_curso";
 }
 if ($filter_estado !== '') {
     $where[] = "i.Estado_Cursada = '$filter_estado'";
+}
+if ($filter_cuatrimestre !== '') {
+    $where[] = "i.Cuatrimestre = '$filter_cuatrimestre'";
+}
+if ($filter_anio !== '') {
+    $where[] = "i.Anio = '$filter_anio'";
 }
 $where_sql = '';
 if (count($where) > 0) {
@@ -130,7 +138,7 @@ $estados = ['En curso', 'Finalizado', 'CERTIFICADA', 'ASISTIDO'];
     <div class="filters-container">
         <form method="get" class="filter-form">
             <div class="filter-group">
-                <input type="text" name="nombre" id="search-main" placeholder="Buscar por nombre o apellido..." value="<?= htmlspecialchars($filter_nombre) ?>">
+                <input type="text" name="cuil" id="search-main" placeholder="Buscar por CUIL..." value="<?= htmlspecialchars($filter_cuil) ?>">
                 <select name="curso">
                     <option value="0">-- Todos los cursos --</option>
                     <?php foreach($cursos as $curso): ?>
@@ -143,6 +151,12 @@ $estados = ['En curso', 'Finalizado', 'CERTIFICADA', 'ASISTIDO'];
                         <option value="<?= $est ?>" <?= ($filter_estado === $est) ? 'selected' : '' ?>><?= $est ?></option>
                     <?php endforeach; ?>
                 </select>
+                <select name="cuatrimestre">
+                    <option value="">-- Todos los cuatrimestres --</option>
+                    <option value="Primer Cuatrimestre" <?= ($filter_cuatrimestre == 'Primer Cuatrimestre') ? 'selected' : '' ?>>Primer Cuatrimestre</option>
+                    <option value="Segundo Cuatrimestre" <?= ($filter_cuatrimestre == 'Segundo Cuatrimestre') ? 'selected' : '' ?>>Segundo Cuatrimestre</option>
+                </select>
+                <input type="number" name="anio" placeholder="Año" value="<?= htmlspecialchars($filter_anio) ?>">
             </div>
             <div class="search-group">
                 <button type="submit" id="filter-btn"><i class="fas fa-search"></i> Filtrar</button>
@@ -169,7 +183,6 @@ $estados = ['En curso', 'Finalizado', 'CERTIFICADA', 'ASISTIDO'];
             <select name="Cuatrimestre" required>
                 <option value="Primer Cuatrimestre">Primer Cuatrimestre</option>
                 <option value="Segundo Cuatrimestre">Segundo Cuatrimestre</option>
-                <option value="Anual">Anual</option>
             </select>
             <input type="number" name="Anio" value="<?= date('Y') ?>" required placeholder="Año">
             <select name="Estado_Cursada" required>

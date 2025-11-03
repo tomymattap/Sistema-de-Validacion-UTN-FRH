@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             footerDynamicNav.innerHTML = `
                 <h4>Acceso</h4>
                 <ul>
+                <br>
                     <li><a href="${loginPagePath}">Iniciar Sesión</a></li>
                 </ul>
             `;

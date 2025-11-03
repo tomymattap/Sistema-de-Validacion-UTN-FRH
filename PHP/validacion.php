@@ -191,14 +191,14 @@ if (!empty($codigo)) {
                             <div class="dropdown-menu">
                                 <ul>
                                     <li><a href="ADMIN/verinscriptos.php">Ver Inscriptos</a></li>
-                                    <li><a href="../HTML/gestionarcursos.html">Gestionar Cursos</a></li>
+                                    <li><a href="ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                                     <li><a href="ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                                     <li><a href="logout.php">Cerrar Sesión</a></li>
                                 </ul>
                             </div>`;
                         sessionHTML = `
                             <li><a href="ADMIN/verinscriptos.php">Ver Inscriptos</a></li>
-                            <li><a href="../HTML/gestionarcursos.html">Gestionar Cursos</a></li>
+                            <li><a href="ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                             <li><a href="logout.php">Cerrar Sesión</a></li>`;
                     } else if (data.user_rol === 2) { // Alumno

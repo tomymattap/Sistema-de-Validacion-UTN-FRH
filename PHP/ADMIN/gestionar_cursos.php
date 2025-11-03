@@ -2,8 +2,16 @@
 session_start();
 include("../conexion.php");
 
-// Consultamos todos los cursos
-$consulta = "SELECT ID_Curso, Nombre_Curso FROM CURSO";
+// Manejo de la búsqueda
+$search_term = isset($_GET['search']) ? mysqli_real_escape_string($conexion, $_GET['search']) : '';
+$where_sql = '';
+if (!empty($search_term)) {
+    // Busca coincidencias en el ID o en el nombre del curso
+    $where_sql = "WHERE ID_Curso LIKE '%$search_term%' OR Nombre_Curso LIKE '%$search_term%'";
+}
+
+// Consulta para obtener los cursos, filtrados si hay un término de búsqueda
+$consulta = "SELECT * FROM curso $where_sql ORDER BY ID_Curso";
 $resultado = mysqli_query($conexion, $consulta);
 ?>
 
@@ -12,14 +20,14 @@ $resultado = mysqli_query($conexion, $consulta);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emitir Certificados - Admin</title>
+    <title>Gestionar Cursos - Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../../CSS/general.css">
-    <link rel="stylesheet" href="../../CSS/emitircertificados.css">
-    <link rel="stylesheet" href="../../CSS/validacion.css">
+    <link rel="stylesheet" href="../../CSS/general.css"> <!-- Estilos generales -->
+    <link rel="stylesheet" href="../../CSS/verinscriptos.css"> <!-- Estilos para tablas -->
+    <link rel="stylesheet" href="../../CSS/gestionar_cursos.css"> <!-- Estilos específicos de esta página -->
 </head>
 <body class="fade-in">
     <div class="preloader">
@@ -63,50 +71,66 @@ $resultado = mysqli_query($conexion, $consulta);
         </nav>
     </div>
 
-    <main class="admin-section" style="padding-top: 4rem; padding-bottom: 4rem;">
-    <div class="admin-container">
-        <h1 class="main-title" style="text-align: center;">Emitir Certificados</h1>
-        <div class="certificate-form-container" style="margin: 0 auto; width: 40%;">
-            <h2>Seleccione curso, año y cuatrimestre</h2>
+    <main class="admin-section" style="padding-top: 2rem; padding-bottom: 2rem;">
+        <div class="gestion-cursos-container">
+            <aside class="menu-lateral">
+                <a href="agregar_curso.php" class="menu-btn"><i class="fas fa-plus"></i> AGREGAR</a>
+                <button class="menu-btn"><i class="fas fa-filter"></i> FILTRAR</button>
+                <button class="menu-btn"><i class="fas fa-file-csv"></i> SUBIR CSV</button>
+            </aside>
 
-            <form action="tabla_alumnos_certif.php" method="POST">
-                <!-- Curso -->
-                <div class="form-group">
-                    <label for="curso">Curso:</label>
-                    <select name="curso" id="curso" required> 
-                        <option value="" disabled selected>Seleccione un curso</option>
-                        <?php
-                        while ($fila = mysqli_fetch_assoc($resultado)) {
-                            echo "<option value='" . htmlspecialchars($fila['ID_Curso']) . "'>" . htmlspecialchars($fila['Nombre_Curso']) . "</option>";
-                        }
-                        ?>
-                    </select>
+            <div class="contenido-principal">
+                <h1 class="main-title">Gestión de Cursos</h1>
+
+                <div class="filters-container">
+                    <form method="get" action="gestionar_cursos.php" class="filter-form">
+                        <div class="filter-group">
+                            <input type="text" name="search" id="search-main" placeholder="Buscar por nombre de curso..." value="<?= htmlspecialchars($search_term) ?>">
+                        </div>
+                        <div class="search-group">
+                            <button type="submit" id="filter-btn" style="width: auto;"><i class="fas fa-search"></i> Buscar</button>
+                            <a href="gestionar_cursos.php" id="reset-btn"><i class="fas fa-undo"></i> Limpiar</a>
+                        </div>
+                    </form>
                 </div>
 
-                <!-- Año -->
-                <div class="form-group">
-                    <label for="anio">Año:</label>
-                    <input type="number" id="anio" name="anio" min="2020" max="2099" required>
+                <div class="results-container">
+                    <table id="results-table">
+                        <thead>
+                            <tr>
+                                <th>ID Curso</th>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Tipo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if ($resultado && mysqli_num_rows($resultado) > 0): ?>
+                                <?php while ($fila = mysqli_fetch_assoc($resultado)): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($fila['ID_Curso']); ?></td>
+                                        <td><?= htmlspecialchars($fila['Nombre_Curso']); ?></td>
+                                        <td><?= htmlspecialchars($fila['Categoria']); ?></td>
+                                        <td><?= htmlspecialchars($fila['Tipo']); ?></td>
+                                        <td class="actions">
+                                            <a href="editar_curso.php?id=<?= $fila['ID_Curso'] ?>" class="btn-edit" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                            <a href="confirmar_eliminar_curso.php?id=<?= $fila['ID_Curso'] ?>" class="btn-delete" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 2rem;">No se encontraron cursos que coincidan con la búsqueda.</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
-
-                <!-- Cuatrimestre -->
-                <div class="form-group">
-                    <label for="cuatrimestre">Cuatrimestre:</label>
-                    <select id="cuatrimestre" name="cuatrimestre" required>
-                        <option value="" disabled selected>Seleccione un cuatrimestre</option>
-                        <option value="Primer Cuatrimestre">Primer Cuatrimestre</option>
-                        <option value="Segundo Cuatrimestre">Segundo Cuatrimestre</option>
-                    </select>
-                </div>
-
-                <div class="form-buttons">
-                    <button type="submit">Continuar</button>
-                    <button type="reset" class="reset-btn">Limpiar</button>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
-</main>
+    </main>
+    
 
     <footer class="site-footer">
         <!-- Contenido del pie de página -->
@@ -116,9 +140,7 @@ $resultado = mysqli_query($conexion, $consulta);
         <i class="fas fa-arrow-up"></i>
     </a>
 
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script src="../../JavaScript/general.js"></script>
-    <script src="../../JavaScript/emitircertificados.js"></script>
     <script>
         fetch('../get_user_name.php')
             .then(response => response.json())

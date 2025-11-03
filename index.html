@@ -52,6 +52,10 @@
                 <li><a href="index.html">VALIDAR</a></li>
                 <li><a href="HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="HTML/contacto.html">CONTACTO</a></li>
+                <!-- Sección de Iniciar Sesión para móvil -->
+                <li class="has-submenu" id="mobile-session-section">
+                    <!-- Contenido dinámico por JS -->
+                </li>
             </ul>
         </nav>
     </div>
@@ -106,6 +110,7 @@
             <div class="footer-nav">
                 <h4>Navegación</h4>
                 <ul>
+                    <li><a href="../index.html">Validar</a></li>
                     <li><a href="HTML/sobrenosotros.html">Sobre Nosotros</a></li>
                     <li><a href="HTML/contacto.html">Contacto</a></li>
                 </ul>
@@ -124,58 +129,101 @@
     <script src="JavaScript/inicio.js"></script>
     <script src="JavaScript/general.js"></script>
     <script>
-        fetch('PHP/get_user_name.php')
-            .then(response => response.json())
-            .then(data => {
-                const sessionControls = document.getElementById('session-controls');
-                const mobileNav = document.querySelector('.off-canvas-menu nav ul');
-                let sessionHTML = '';
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('PHP/get_user_name.php')
+                .then(response => response.json())
+                .then(data => {
+                    const sessionControls = document.getElementById('session-controls');
+                    const mobileSessionSection = document.getElementById('mobile-session-section');
+                    const footerDynamicNav = document.getElementById('footer-dynamic-nav');
 
-                if (data.user_name) {
-                    let dropdownMenu;
-                    if (data.user_rol === 1) { // Admin
-                        dropdownMenu = `
-                            <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
-                            <div class="dropdown-menu">
-                                <ul>
+                    if (data.user_name) {
+                        let desktopDropdownMenu, mobileSubmenu, footerMenu;
+                        const userName = data.user_name;
+
+                        // Menú de escritorio y saludo
+                        const desktopMenu = `
+                            <button class="user-menu-toggle">Hola, ${userName} <i class="fas fa-chevron-down"></i></button>
+                            <div class="dropdown-menu"><ul>`;
+
+                        if (data.user_rol === 1) { // Admin
+                            desktopDropdownMenu = `
+                                ${desktopMenu}
+                                <li><a href="PHP/ADMIN/verinscriptos.php">Ver Inscriptos</a></li>
+                                <li><a href="HTML/gestionarcursos.html">Gestionar Cursos</a></li>
+                                <li><a href="PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                <li><a href="PHP/logout.php">Cerrar Sesión</a></li>
+                            </ul></div>`;
+
+                            mobileSubmenu = `
+                                <a href="#">Hola, ${userName}</a>
+                                <button class="submenu-toggle"><i class="fas fa-chevron-right"></i></button>
+                                <ul class="submenu">
                                     <li><a href="PHP/ADMIN/verinscriptos.php">Ver Inscriptos</a></li>
                                     <li><a href="HTML/gestionarcursos.html">Gestionar Cursos</a></li>
                                     <li><a href="PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                                     <li><a href="PHP/logout.php">Cerrar Sesión</a></li>
-                                </ul>
-                            </div>`;
-                        sessionHTML = `
-                            <li><a href="PHP/ADMIN/verinscriptos.php">Ver Inscriptos</a></li>
-                            <li><a href="HTML/gestionarcursos.html">Gestionar Cursos</a></li>
-                            <li><a href="PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                            <li><a href="PHP/logout.php">Cerrar Sesión</a></li>`;
-                    } else if (data.user_rol === 2) { // Alumno
-                        dropdownMenu = `
-                            <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
-                            <div class="dropdown-menu">
+                                </ul>`;
+
+                            footerMenu = `
+                                <h4>Admin</h4>
                                 <ul>
+                                    <li><a href="PHP/ADMIN/verinscriptos.php">Ver Inscriptos</a></li>
+                                    <li><a href="HTML/gestionarcursos.html">Gestionar Cursos</a></li>
+                                    <li><a href="PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                </ul>`;
+
+                        } else if (data.user_rol === 2) { // Alumno
+                            desktopDropdownMenu = `
+                                ${desktopMenu}
+                                <li><a href="PHP/ALUMNO/perfil.php">Mi Perfil</a></li>
+                                <li><a href="PHP/ALUMNO/inscripciones.php">Inscripciones</a></li>
+                                <li><a href="PHP/ALUMNO/certificaciones.php">Certificaciones</a></li>
+                                <li><a href="PHP/logout.php">Cerrar Sesión</a></li>
+                            </ul></div>`;
+
+                            mobileSubmenu = `
+                                <a href="#">Hola, ${userName}</a>
+                                <button class="submenu-toggle"><i class="fas fa-chevron-right"></i></button>
+                                <ul class="submenu">
                                     <li><a href="PHP/ALUMNO/perfil.php">Mi Perfil</a></li>
                                     <li><a href="PHP/ALUMNO/inscripciones.php">Inscripciones</a></li>
                                     <li><a href="PHP/ALUMNO/certificaciones.php">Certificaciones</a></li>
                                     <li><a href="PHP/logout.php">Cerrar Sesión</a></li>
-                                </ul>
-                            </div>`;
-                        sessionHTML = `
-                            <li><a href="PHP/ALUMNO/perfil.php">Mi Perfil</a></li>
-                            <li><a href="PHP/ALUMNO/inscripciones.php">Inscripciones</a></li>
-                            <li><a href="PHP/ALUMNO/certificaciones.php">Certificaciones</a></li>
-                            <li><a href="PHP/logout.php">Cerrar Sesión</a></li>`;
-                    }
-                    sessionControls.innerHTML = dropdownMenu;
-                } else {
-                    sessionControls.innerHTML = '<a href="HTML/iniciosesion.html" class="login-btn">INICIAR SESIÓN</a>';
-                    sessionHTML = '<li><a href="HTML/iniciosesion.html">INICIAR SESIÓN</a></li>';
-                }
+                                </ul>`;
 
-                // Añadir al menú móvil
-                const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');
-                mobileMenuUl.insertAdjacentHTML('beforeend', sessionHTML);
-            });
+                            footerMenu = `
+                                <h4>Alumno</h4>
+                                <ul>
+                                    <li><a href="PHP/ALUMNO/perfil.php">Mi Perfil</a></li>
+                                    <li><a href="PHP/ALUMNO/inscripciones.php">Inscripciones</a></li>
+                                    <li><a href="PHP/ALUMNO/certificaciones.php">Certificaciones</a></li>
+                                </ul>`;
+                        }
+
+                        sessionControls.innerHTML = desktopDropdownMenu;
+                        mobileSessionSection.innerHTML = mobileSubmenu;
+                        footerDynamicNav.innerHTML = footerMenu;
+
+                    } else {
+                        // Usuario no logueado
+                        sessionControls.innerHTML = '<a href="HTML/iniciosesion.html" class="login-btn">INICIAR SESIÓN</a>';
+                        mobileSessionSection.innerHTML = '<a href="HTML/iniciosesion.html">INICIAR SESIÓN</a>';
+                        footerDynamicNav.innerHTML = '<h4>Acceso</h4><ul><li><a href="HTML/iniciosesion.html">Iniciar Sesión</a></li></ul>';
+                    }
+
+                    // Lógica para desplegar el submenú en móvil
+                    const submenuToggle = document.querySelector('.submenu-toggle');
+                    if (submenuToggle) {
+                        submenuToggle.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const submenu = document.querySelector('.submenu');
+                            submenu.classList.toggle('active');
+                            submenuToggle.classList.toggle('active');
+                        });
+                    }
+                });
+        });
     </script>
 </body>
 </html>

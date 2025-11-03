@@ -202,8 +202,9 @@ ul {
 .off-canvas-menu {
     position: fixed;
     top: 0;
-    right: -70%; /* Oculto fuera de la pantalla */
-    width: 70%;
+    right: -80%; /* Oculto fuera de la pantalla */
+    width: 80%;
+    max-width: 320px;
     height: 100%;
     background-color: var(--color-principal);
     color: var(--color-blanco);
@@ -212,6 +213,7 @@ ul {
     padding: 2rem;
     display: flex;
     flex-direction: column;
+    overflow-y: auto; /* Scroll si el contenido es largo */
 }
 
 .off-canvas-menu.active {
@@ -232,19 +234,63 @@ ul {
 .off-canvas-menu nav ul {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 2rem;
+    align-items: flex-start; /* Alineación a la izquierda */
+    gap: 1.5rem; /* Espaciado reducido */
     margin-top: 4rem;
+    width: 100%;
+}
+
+.off-canvas-menu nav li {
+    width: 100%;
+    text-align: left; /* Texto alineado a la izquierda */
 }
 
 .off-canvas-menu a {
-    font-size: 1.5rem;
+    font-size: 1.2rem; /* Tamaño de fuente ajustado */
     font-weight: 700;
     color: var(--color-blanco);
+    display: block; /* Ocupa todo el ancho */
+    padding: 0.5rem 0; /* Espaciado vertical */
 }
 
 .off-canvas-menu a.active {
     color: var(--color-secundario-1);
+}
+
+/* Estilos para submenú en off-canvas */
+.off-canvas-menu .has-submenu > a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.submenu-toggle {
+    background: none;
+    border: none;
+    color: var(--color-blanco);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.3s;
+}
+
+.submenu-toggle.active {
+    transform: rotate(90deg);
+}
+
+.submenu {
+    display: none;
+    padding-left: 1.5rem; /* Indentación del submenú */
+    margin-top: 0.5rem;
+}
+
+.submenu.active {
+    display: block;
+}
+
+.submenu li a {
+    font-size: 1rem; /* Tamaño de fuente más pequeño */
+    font-weight: normal;
 }
 
 /* ----- Pie de Página ----- */
@@ -264,7 +310,7 @@ ul {
     margin: 0 auto;
 }
 
-.footer-logo-info, .footer-social-legal, .footer-nav {
+.footer-logo-info, .footer-social-legal, .footer-nav, .footer-dynamic-nav {
     width: 100%;
 }
 
@@ -337,12 +383,19 @@ ul {
         justify-content: space-between;
         align-items: flex-start;
         text-align: left;
+        gap: 2rem; /* Espacio entre columnas */
+    }
+
+    .footer-logo-info, .footer-social-legal, .footer-nav, .footer-dynamic-nav {
+        flex: 1; /* Distribución equitativa */
+        min-width: 0; /* Permite que los elementos se encojan */
     }
 
     .footer-logo-info {
         display: flex;
         align-items: flex-start;
         gap: 2.5rem;
+        flex: 1.5; /* Más espacio para el logo e info */
     }
 
     .footer-info {

@@ -4,14 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Validación de Certificados - UTN FRH</title>
+
+    <!-- Fuentes y estilos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Hojas de estilo -->
     <link rel="stylesheet" href="CSS/general.css">
     <link rel="stylesheet" href="CSS/inicio.css">
+</head>
 
-    </head>
 <body>
 
     <header class="site-header">
@@ -19,46 +23,56 @@
             <div class="logo">
                 <a href="index.html"><img src="Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
             </div>
+
             <nav class="main-nav">
                 <ul>
                     <li><a href="index.html">VALIDAR</a></li>
-                    <!--<li> <a href="HTML/cursos.html">CURSOS</a> </li>-->
                     <li><a href="HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
+
             <div class="session-controls" id="session-controls">
                 <!-- Contenido dinámico por JS -->
             </div>
+
             <button class="hamburger-menu" aria-label="Abrir menú">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
         </div>
-        <div class="mobile-nav">
-            <nav>
-                <ul>
-                    <li><a href="index.html">VALIDAR</a></li>
-                    <!--<li><a href="HTML/cursos.html">CURSOS</a></li>-->
-                    <li><a href="HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                    <li><a href="HTML/contacto.html">CONTACTO</a></li>
-                </ul>
-            </nav>
-        </div>
     </header>
+
+    <!-- Menú Off-canvas -->
+    <div class="off-canvas-menu" id="off-canvas-menu">
+        <button class="close-btn" aria-label="Cerrar menú">&times;</button>
+        <nav>
+            <ul>
+                <li><a href="index.html">VALIDAR</a></li>
+                <li><a href="HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="HTML/contacto.html">CONTACTO</a></li>
+                <!-- Sección de Iniciar Sesión para móvil -->
+                <li class="has-submenu" id="mobile-session-section">
+                    <!-- Contenido dinámico por JS -->
+                </li>
+            </ul>
+        </nav>
+    </div>
 
     <main id="inicio">
         <section class="hero">
             <img src="Imagenes/banner_inicio.webp" alt="Imagen representativa de la UTN" class="hero-image">
         </section>
+
         <section class="validation-section">
             <h1>VALIDACIÓN DE CERTIFICADOS UTN – FRH</h1>
             <p>
                 Aquí podrás validar la autenticidad de los certificados emitidos por nuestra institución.
-                <br> 
+                <br>
                 El proceso es seguro y garantiza la veracidad de cada documento.
             </p>
+
             <form class="validation-form" action="PHP/validacion.php" method="POST">
                 <div class="input-container">
                     <input type="text" id="codigo" name="codigo" placeholder="Ingrese el código alfanumérico de su certificado..." required>
@@ -96,7 +110,7 @@
             <div class="footer-nav">
                 <h4>Navegación</h4>
                 <ul>
-                    <!--<li><a href="HTML/cursos.html">Cursos</a></li>-->
+                    <li><a href="../index.html">Validar</a></li>
                     <li><a href="HTML/sobrenosotros.html">Sobre Nosotros</a></li>
                     <li><a href="HTML/contacto.html">Contacto</a></li>
                 </ul>
@@ -107,7 +121,109 @@
         </div>
     </footer>
 
+    <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Scripts -->
     <script src="JavaScript/inicio.js"></script>
     <script src="JavaScript/general.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('PHP/get_user_name.php')
+                .then(response => response.json())
+                .then(data => {
+                    const sessionControls = document.getElementById('session-controls');
+                    const mobileSessionSection = document.getElementById('mobile-session-section');
+                    const footerDynamicNav = document.getElementById('footer-dynamic-nav');
+
+                    if (data.user_name) {
+                        let desktopDropdownMenu, mobileSubmenu, footerMenu;
+                        const userName = data.user_name;
+
+                        // Menú de escritorio y saludo
+                        const desktopMenu = `
+                            <button class="user-menu-toggle">Hola, ${userName} <i class="fas fa-chevron-down"></i></button>
+                            <div class="dropdown-menu"><ul>`;
+
+                        if (data.user_rol === 1) { // Admin
+                            desktopDropdownMenu = `
+                                ${desktopMenu}
+                                <li><a href="PHP/ADMIN/verinscriptos.php">Ver Inscriptos</a></li>
+                                <li><a href="HTML/gestionarcursos.html">Gestionar Cursos</a></li>
+                                <li><a href="PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                <li><a href="PHP/logout.php">Cerrar Sesión</a></li>
+                            </ul></div>`;
+
+                            mobileSubmenu = `
+                                <a href="#">Hola, ${userName}</a>
+                                <button class="submenu-toggle"><i class="fas fa-chevron-right"></i></button>
+                                <ul class="submenu">
+                                    <li><a href="PHP/ADMIN/verinscriptos.php">Ver Inscriptos</a></li>
+                                    <li><a href="HTML/gestionarcursos.html">Gestionar Cursos</a></li>
+                                    <li><a href="PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                    <li><a href="PHP/logout.php">Cerrar Sesión</a></li>
+                                </ul>`;
+
+                            footerMenu = `
+                                <h4>Admin</h4>
+                                <ul>
+                                    <li><a href="PHP/ADMIN/verinscriptos.php">Ver Inscriptos</a></li>
+                                    <li><a href="HTML/gestionarcursos.html">Gestionar Cursos</a></li>
+                                    <li><a href="PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                </ul>`;
+
+                        } else if (data.user_rol === 2) { // Alumno
+                            desktopDropdownMenu = `
+                                ${desktopMenu}
+                                <li><a href="PHP/ALUMNO/perfil.php">Mi Perfil</a></li>
+                                <li><a href="PHP/ALUMNO/inscripciones.php">Inscripciones</a></li>
+                                <li><a href="PHP/ALUMNO/certificaciones.php">Certificaciones</a></li>
+                                <li><a href="PHP/logout.php">Cerrar Sesión</a></li>
+                            </ul></div>`;
+
+                            mobileSubmenu = `
+                                <a href="#">Hola, ${userName}</a>
+                                <button class="submenu-toggle"><i class="fas fa-chevron-right"></i></button>
+                                <ul class="submenu">
+                                    <li><a href="PHP/ALUMNO/perfil.php">Mi Perfil</a></li>
+                                    <li><a href="PHP/ALUMNO/inscripciones.php">Inscripciones</a></li>
+                                    <li><a href="PHP/ALUMNO/certificaciones.php">Certificaciones</a></li>
+                                    <li><a href="PHP/logout.php">Cerrar Sesión</a></li>
+                                </ul>`;
+
+                            footerMenu = `
+                                <h4>Alumno</h4>
+                                <ul>
+                                    <li><a href="PHP/ALUMNO/perfil.php">Mi Perfil</a></li>
+                                    <li><a href="PHP/ALUMNO/inscripciones.php">Inscripciones</a></li>
+                                    <li><a href="PHP/ALUMNO/certificaciones.php">Certificaciones</a></li>
+                                </ul>`;
+                        }
+
+                        sessionControls.innerHTML = desktopDropdownMenu;
+                        mobileSessionSection.innerHTML = mobileSubmenu;
+                        footerDynamicNav.innerHTML = footerMenu;
+
+                    } else {
+                        // Usuario no logueado
+                        sessionControls.innerHTML = '<a href="HTML/iniciosesion.html" class="login-btn">INICIAR SESIÓN</a>';
+                        mobileSessionSection.innerHTML = '<a href="HTML/iniciosesion.html">INICIAR SESIÓN</a>';
+                        footerDynamicNav.innerHTML = '<h4>Acceso</h4><ul><li><a href="HTML/iniciosesion.html">Iniciar Sesión</a></li></ul>';
+                    }
+
+                    // Lógica para desplegar el submenú en móvil
+                    const submenuToggle = document.querySelector('.submenu-toggle');
+                    if (submenuToggle) {
+                        submenuToggle.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const submenu = document.querySelector('.submenu');
+                            submenu.classList.toggle('active');
+                            submenuToggle.classList.toggle('active');
+                        });
+                    }
+                });
+        });
+    </script>
 </body>
 </html>

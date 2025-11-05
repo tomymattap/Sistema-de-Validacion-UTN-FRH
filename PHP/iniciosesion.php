@@ -24,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['user_id'] = $admin['ID_Admin'];
             $_SESSION['user_legajo'] = $admin['Legajo'];
             $_SESSION['user_rol'] = 1; // Rol de Administrador
+            $_SESSION['user_name'] = $admin['Nombre'];
 
             header("Location: ADMIN/verinscriptos.php");
             exit();
@@ -43,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($password == $alumno['Password']) {
             $_SESSION['user_id'] = $alumno['ID_Cuil_Alumno'];
             $_SESSION['user_rol'] = 2; // Rol de Alumno
+            $_SESSION['user_name'] = $alumno['Nombre_Alumno'];
 
             header("Location: ALUMNO/perfil.php");
             exit();

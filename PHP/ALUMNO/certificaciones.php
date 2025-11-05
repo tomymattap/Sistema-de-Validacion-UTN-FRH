@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -21,24 +22,34 @@
             <nav class="main-nav">
                 <ul>
                     <li><a href="../../index.html">VALIDAR</a></li>
-                    <!--<li> <a href="HTML/cursos.html">CURSOS</a> </li>-->
+                    <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
                     <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
             <div class="session-controls" id="session-controls">
-                <button class="user-menu-toggle">Hola, [Nombre]. <i class="fas fa-chevron-down"></i></button>
-                <div class="dropdown-menu">
-                    <ul>
-                        <li><a href="perfil.php">Mi Perfil</a></li>
-                        <li><a href="inscripciones.php">Inscripciones</a></li>
-                        <li><a href="certificaciones.php">Certificaciones</a></li>
-                        <li><a href="#">Cerrar Sesión</a></li>
-                    </ul>
-                </div>
+                <!-- Contenido dinámico por JS -->
             </div>
+            <button class="hamburger-menu" aria-label="Abrir menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </header>
+
+    <!-- Menú Off-canvas -->
+    <div class="off-canvas-menu" id="off-canvas-menu">
+        <button class="close-btn" aria-label="Cerrar menú">&times;</button>
+        <nav>
+            <ul>
+                <li><a href="../../index.html">VALIDAR</a></li>
+                <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
+                <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
+            </ul>
+        </nav>
+    </div>
 
     <main>
         <div class="certificaciones-table-container">
@@ -109,5 +120,51 @@
         </div>
     </footer>
 
+    <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <script src="../../JavaScript/general.js"></script>
+    <script>
+        fetch('../get_user_name.php')
+            .then(response => response.json())
+            .then(data => {
+                const sessionControls = document.getElementById('session-controls');
+                const mobileNav = document.querySelector('.off-canvas-menu nav ul');
+                let sessionHTML = '';
+
+                if (data.user_name) {
+                    let dropdownMenu;
+                    if (data.user_rol === 2) { // Alumno
+                        dropdownMenu = `
+                            <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
+                            <div class="dropdown-menu">
+                                <ul>
+                                    <li><a href="perfil.php">Mi Perfil</a></li>
+                                    <li><a href="inscripciones.php">Inscripciones</a></li>
+                                    <li><a href="certificaciones.php">Certificaciones</a></li>
+                                    <li><a href="../logout.php">Cerrar Sesión</a></li>
+                                </ul>
+                            </div>`;
+                        sessionHTML = `
+                            <li><a href="perfil.php">Mi Perfil</a></li>
+                            <li><a href="inscripciones.php">Inscripciones</a></li>
+                            <li><a href="certificaciones.php">Certificaciones</a></li>
+                            <li><a href="../logout.php">Cerrar Sesión</a></li>`;
+                    } else if (data.user_rol === 1) { // Admin
+                        // Redirigir si no es alumno
+                        window.location.href = '../ADMIN/verinscriptos.php';
+                    }
+                    sessionControls.innerHTML = dropdownMenu;
+                } else {
+                    // Redirigir si no está logueado
+                    window.location.href = '../../HTML/iniciosesion.html';
+                }
+
+                // Añadir al menú móvil
+                const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');
+                mobileMenuUl.insertAdjacentHTML('beforeend', sessionHTML);
+            });
+    </script>
 </body>
 </html>

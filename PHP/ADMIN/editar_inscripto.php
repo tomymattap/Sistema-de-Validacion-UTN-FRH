@@ -75,8 +75,41 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
     <div class="preloader"><div class="spinner"></div></div>
 
     <header class="site-header">
-        <!-- Header content remains the same -->
+        <div class="header-container">
+            <div class="logo">
+                <a href="../../index.html"><img src="../../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../../index.html">VALIDAR</a></li>
+                    <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
+                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
+                </ul>
+            </nav>
+            <div class="session-controls" id="session-controls">
+                <!-- Contenido dinámico por JS -->
+            </div>
+            <button class="hamburger-menu" aria-label="Abrir menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
     </header>
+
+    <!-- Menú Off-canvas -->
+    <div class="off-canvas-menu" id="off-canvas-menu">
+        <button class="close-btn" aria-label="Cerrar menú">&times;</button>
+        <nav>
+            <ul>
+                <li><a href="../../index.html">VALIDAR</a></li>
+                <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
+                <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
+            </ul>
+        </nav>
+    </div>
 
 <main>
 <section class="admin-section">
@@ -132,10 +165,54 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
 </main>
 
 <footer class="site-footer">
-    <!-- Footer content -->
+    <!-- Contenido del pie de página -->
 </footer>
 
+    <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
     <script src="../../JavaScript/general.js"></script>
-    <a href="#" class="scroll-to-top-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
+    <script>
+        fetch('../get_user_name.php')
+            .then(response => response.json())
+            .then(data => {
+                const sessionControls = document.getElementById('session-controls');
+                const mobileNav = document.querySelector('.off-canvas-menu nav ul');
+                let sessionHTML = '';
+
+                if (data.user_name) {
+                    let dropdownMenu;
+                    if (data.user_rol === 1) { // Admin
+                        dropdownMenu = `
+                            <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
+                            <div class="dropdown-menu">
+                                <ul>
+                                    <li><a href="verinscriptos.php">Ver Inscriptos</a></li>
+                                    <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
+                                    <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                    <li><a href="../logout.php">Cerrar Sesión</a></li>
+                                </ul>
+                            </div>`;
+                        sessionHTML = `
+                            <li><a href="verinscriptos.php">Ver Inscriptos</a></li>
+                            <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
+                            <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                            <li><a href="../logout.php">Cerrar Sesión</a></li>`;
+                    } else if (data.user_rol === 2) { // Alumno
+                        // Redirigir si no es admin
+                        window.location.href = '../../index.html';
+                    }
+                    sessionControls.innerHTML = dropdownMenu;
+                } else {
+                    // Redirigir si no está logueado
+                    window.location.href = '../../HTML/iniciosesion.html';
+                }
+
+                // Añadir al menú móvil
+                const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');
+                mobileMenuUl.insertAdjacentHTML('beforeend', sessionHTML);
+            });
+    </script>
 </body>
 </html>

@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             footerDynamicNav.innerHTML = `
                 <h4>Acceso</h4>
                 <ul>
+                <br>
                     <li><a href="${loginPagePath}">Iniciar Sesión</a></li>
                 </ul>
             `;
@@ -73,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateUIForUserRole(user);
 
 
-    // --- LÓGICA DE VALIDACIÓN DEL FORMULARIO ---
+    // Lógica de validación del formulario
     const certificateInput = document.getElementById('certificate-code');
     const validateButton = document.getElementById('validate-btn');
 

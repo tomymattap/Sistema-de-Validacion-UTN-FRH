@@ -1,7 +1,7 @@
 /* Estilos para la página de resultado de validación */
 
 .validation-page {
-    padding: 4rem 2rem;
+    padding: 2rem 1rem;
     background-color: #f4f4f4;
     min-height: 60vh;
 }
@@ -30,17 +30,17 @@
 
 .result-header h2 {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 700;
 }
 
 .result-body {
-    padding: 2rem;
+    padding: 1.5rem;
     color: var(--color-texto-principal);
 }
 
 .valid-message {
-    font-size: 1.1rem;
+    font-size: 1rem;
     text-align: center;
     margin-bottom: 1.5rem;
 }
@@ -49,22 +49,24 @@
     border: 0;
     height: 1px;
     background-color: #e0e0e0;
-    margin: 2rem 0;
+    margin: 1.5rem 0;
 }
 
 .certificate-data p {
     margin-bottom: 0.8rem;
-    font-size: 1rem;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .certificate-data p strong {
-    display: inline-block;
-    width: 180px; /* Ancho fijo para las etiquetas */
+    font-weight: 700;
     color: var(--color-texto-gris);
+    margin-bottom: 0.25rem;
 }
 
 .validation-text, .contact-info {
-    font-size: 1rem;
+    font-size: 0.9rem;
     line-height: 1.6;
     text-align: center;
 }
@@ -73,7 +75,7 @@
     max-width: 900px;
     margin: 1.5rem auto 0;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
 }
 
 .back-btn {
@@ -93,21 +95,57 @@
 
 
 .error-msg, .valid-msg {
-            text-align: center;
-            margin: 30px auto;
-            padding: 15px;
-            border-radius: 10px;
-            width: 80%;
-            max-width: 600px;
-            font-weight: bold;
-        }
-        .error-msg {
-            color: #b00020;
-            background-color: #ffe6e6;
-            border: 1px solid #b00020;
-        }
-        .valid-msg {
-            color: #0a662f;
-            background-color: #e7ffe6;
-            border: 1px solid #0a662f;
-        }
+    text-align: center;
+    margin: 20px auto;
+    padding: 15px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    font-weight: bold;
+}
+.error-msg {
+    color: #b00020;
+    background-color: #ffe6e6;
+    border: 1px solid #b00020;
+}
+.valid-msg {
+    color: #0a662f;
+    background-color: #e7ffe6;
+    border: 1px solid #0a662f;
+}
+
+@media (min-width: 768px) {
+    .validation-page {
+        padding: 4rem 2rem;
+    }
+
+    .result-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .result-body {
+        padding: 2rem;
+    }
+
+    .valid-message {
+        font-size: 1.1rem;
+    }
+
+    .certificate-data p {
+        font-size: 1rem;
+        flex-direction: row;
+    }
+
+    .certificate-data p strong {
+        width: 180px; /* Ancho fijo para las etiquetas */
+        margin-bottom: 0;
+    }
+
+    .validation-text, .contact-info {
+        font-size: 1rem;
+    }
+
+    .actions-container {
+        justify-content: flex-end;
+    }
+}

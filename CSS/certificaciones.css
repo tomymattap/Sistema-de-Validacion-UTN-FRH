@@ -9,7 +9,7 @@
 
 .certificaciones-table-container h1,
 .certificaciones-table-container p {
-    text-align: left;
+    text-align: center;
 }
 
 table.certificaciones {
@@ -30,6 +30,7 @@ table.certificaciones th, table.certificaciones td {
     padding: 1rem;
     text-align: center;
     border-bottom: 1px solid #ddd;
+    font-size: 0.9rem;
 }
 
 table.certificaciones tbody tr:nth-child(even) {
@@ -50,8 +51,23 @@ table.certificaciones tbody tr:hover {
     text-decoration: none;
     display: inline-block;
     transition: background-color 0.3s;
+    font-size: 0.9rem;
 }
 
 .action-btn:hover {
     background-color: #7ab830;
+}
+
+@media (min-width: 768px) {
+    .certificaciones-table-container h1,
+    .certificaciones-table-container p {
+        text-align: left;
+    }
+
+    table.certificaciones th, table.certificaciones td {
+        font-size: 1rem;
+    }\n
+    .action-btn {
+        font-size: 1rem;
+    }
 }

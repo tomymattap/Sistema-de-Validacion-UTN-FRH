@@ -1,21 +1,30 @@
 <?php
+session_start();
 include("../conexion.php");
 
 // Manejo de filtros
-$filter_nombre = isset($_GET['nombre']) ? mysqli_real_escape_string($conexion, $_GET['nombre']) : '';
+$filter_cuil = isset($_GET['cuil']) ? mysqli_real_escape_string($conexion, $_GET['cuil']) : '';
 $filter_curso = isset($_GET['curso']) ? intval($_GET['curso']) : 0;
 $filter_estado = isset($_GET['estado']) ? mysqli_real_escape_string($conexion, $_GET['estado']) : '';
+$filter_cuatrimestre = isset($_GET['cuatrimestre']) ? mysqli_real_escape_string($conexion, $_GET['cuatrimestre']) : '';
+$filter_anio = isset($_GET['anio']) ? mysqli_real_escape_string($conexion, $_GET['anio']) : '';
 
 // Query para listar inscriptos con JOIN a alumno y curso
 $where = [];
-if ($filter_nombre !== '') {
-    $where[] = "(a.Nombre_Alumno LIKE '%$filter_nombre%' OR a.Apellido_Alumno LIKE '%$filter_nombre%')";
+if ($filter_cuil !== '') {
+    $where[] = "a.ID_Cuil_Alumno LIKE '%$filter_cuil%'";
 }
 if ($filter_curso > 0) {
     $where[] = "i.ID_Curso = $filter_curso";
 }
 if ($filter_estado !== '') {
     $where[] = "i.Estado_Cursada = '$filter_estado'";
+}
+if ($filter_cuatrimestre !== '') {
+    $where[] = "i.Cuatrimestre = '$filter_cuatrimestre'";
+}
+if ($filter_anio !== '') {
+    $where[] = "i.Anio = '$filter_anio'";
 }
 $where_sql = '';
 if (count($where) > 0) {
@@ -101,32 +110,25 @@ $estados = ['En curso', 'Finalizado', 'CERTIFICADA', 'ASISTIDO'];
                 </ul>
             </nav>
             <div class="session-controls" id="session-controls">
-                <button class="user-menu-toggle">Hola, Admin. <i class="fas fa-chevron-down"></i></button>
-                <div class="dropdown-menu">
-                    <ul>
-                        <li><a href="verinscriptos.php">Ver Inscriptos</a></li>
-                        <li><a href="../../HTML/gestionarcursos.html">Gestionar Cursos</a></li>
-                        <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                        <li><a href="#">Cerrar Sesión</a></li>
-                    </ul>
-                </div>
+                <!-- Contenido dinámico por JS -->
             </div>
             <button class="hamburger-menu" aria-label="Abrir menú">
                 <span></span><span></span><span></span>
             </button>
         </div>
-        <div class="mobile-nav">
-            <button class="close-menu" aria-label="Cerrar menú">&times;</button>
-            <nav>
-                <ul>
-                    <li><a href="../../index.html">INICIO</a></li>
-                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                    <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
-                </ul>
-                <div class="mobile-session-controls" id="mobile-session-controls"></div>
-            </nav>
-        </div>
     </header>
+
+    <!-- Menú Off-canvas -->
+    <div class="off-canvas-menu" id="off-canvas-menu">
+        <button class="close-btn" aria-label="Cerrar menú">&times;</button>
+        <nav>
+            <ul>
+                <li><a href="../../index.html">VALIDAR</a></li>
+                <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
+            </ul>
+        </nav>
+    </div>
 
 <main>
 <section class="admin-section">
@@ -136,7 +138,7 @@ $estados = ['En curso', 'Finalizado', 'CERTIFICADA', 'ASISTIDO'];
     <div class="filters-container">
         <form method="get" class="filter-form">
             <div class="filter-group">
-                <input type="text" name="nombre" id="search-main" placeholder="Buscar por nombre o apellido..." value="<?= htmlspecialchars($filter_nombre) ?>">
+                <input type="text" name="cuil" id="search-main" placeholder="Buscar por CUIL..." value="<?= htmlspecialchars($filter_cuil) ?>">
                 <select name="curso">
                     <option value="0">-- Todos los cursos --</option>
                     <?php foreach($cursos as $curso): ?>
@@ -149,6 +151,12 @@ $estados = ['En curso', 'Finalizado', 'CERTIFICADA', 'ASISTIDO'];
                         <option value="<?= $est ?>" <?= ($filter_estado === $est) ? 'selected' : '' ?>><?= $est ?></option>
                     <?php endforeach; ?>
                 </select>
+                <select name="cuatrimestre">
+                    <option value="">-- Todos los cuatrimestres --</option>
+                    <option value="Primer Cuatrimestre" <?= ($filter_cuatrimestre == 'Primer Cuatrimestre') ? 'selected' : '' ?>>Primer Cuatrimestre</option>
+                    <option value="Segundo Cuatrimestre" <?= ($filter_cuatrimestre == 'Segundo Cuatrimestre') ? 'selected' : '' ?>>Segundo Cuatrimestre</option>
+                </select>
+                <input type="number" name="anio" placeholder="Año" value="<?= htmlspecialchars($filter_anio) ?>">
             </div>
             <div class="search-group">
                 <button type="submit" id="filter-btn"><i class="fas fa-search"></i> Filtrar</button>
@@ -175,7 +183,6 @@ $estados = ['En curso', 'Finalizado', 'CERTIFICADA', 'ASISTIDO'];
             <select name="Cuatrimestre" required>
                 <option value="Primer Cuatrimestre">Primer Cuatrimestre</option>
                 <option value="Segundo Cuatrimestre">Segundo Cuatrimestre</option>
-                <option value="Anual">Anual</option>
             </select>
             <input type="number" name="Anio" value="<?= date('Y') ?>" required placeholder="Año">
             <select name="Estado_Cursada" required>
@@ -237,11 +244,55 @@ $estados = ['En curso', 'Finalizado', 'CERTIFICADA', 'ASISTIDO'];
 </main>
 
 <footer class="site-footer">
-        <!-- Footer content -->
+        <!-- Contenido del pie de página -->
 </footer>
+
+    <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+    </a>
 
     <script src="../../JavaScript/general.js"></script>
     <script src="../../JavaScript/verinscriptos.js"></script>
-    <a href="#" class="scroll-to-top-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
+    <script>
+        fetch('../get_user_name.php')
+            .then(response => response.json())
+            .then(data => {
+                const sessionControls = document.getElementById('session-controls');
+                const mobileNav = document.querySelector('.off-canvas-menu nav ul');
+                let sessionHTML = '';
+
+                if (data.user_name) {
+                    let dropdownMenu;
+                    if (data.user_rol === 1) { // Admin
+                        dropdownMenu = `
+                            <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
+                            <div class="dropdown-menu">
+                                <ul>
+                                    <li><a href="verinscriptos.php">Ver Inscriptos</a></li>
+                                    <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
+                                    <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                    <li><a href="../logout.php">Cerrar Sesión</a></li>
+                                </ul>
+                            </div>`;
+                        sessionHTML = `
+                            <li><a href="verinscriptos.php">Ver Inscriptos</a></li>
+                            <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
+                            <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                            <li><a href="../logout.php">Cerrar Sesión</a></li>`;
+                    } else if (data.user_rol === 2) { // Alumno
+                        // Redirigir si no es admin
+                        window.location.href = '../../index.html';
+                    }
+                    sessionControls.innerHTML = dropdownMenu;
+                } else {
+                    // Redirigir si no está logueado
+                    window.location.href = '../../HTML/iniciosesion.html';
+                }
+
+                // Añadir al menú móvil
+                const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');
+                mobileMenuUl.insertAdjacentHTML('beforeend', sessionHTML);
+            });
+    </script>
 </body>
 </html>

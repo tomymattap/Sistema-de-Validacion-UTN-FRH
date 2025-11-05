@@ -141,9 +141,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
                 <div class="form-options">
-                    <a href="#" class="forgot-password">¿Olvidó su contraseña?</a>
+                    <a href="olvido_contrasena.php" class="forgot-password">¿Olvidó su contraseña?</a>
                 </div>
                 <button type="submit" class="submit-btn">ACCEDER</button>
+                <div class="form-options" style="text-align: center; margin-top: 1rem;">
+                    <p>¿No tienes una cuenta? <a href="registro.php">Crear cuenta</a></p>
+                </div>
             </form>
         </div>
     </main>

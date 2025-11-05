@@ -2,7 +2,7 @@
 $host = "localhost"; // Siempre localhost para XAMPP
 $usuario = "root";   // Usuario por defecto
 $contrasenia = "";   // Por defecto en XAMPP no tiene contraseña
-$base_datos = "sistema_validacion_v2"; 
+$base_datos = "sistema_validacion"; 
 
 // Crear conexión
 $conexion = mysqli_connect($host, $usuario, $contrasenia, $base_datos);

@@ -206,7 +206,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
                     // Redirigir si no está logueado
-                    window.location.href = '../../HTML/iniciosesion.html';
+                    window.location.href = '../iniciosesion.php';
                 }
 
                 // Añadir al menú móvil

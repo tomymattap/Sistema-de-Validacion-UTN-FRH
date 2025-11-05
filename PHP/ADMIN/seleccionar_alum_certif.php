@@ -152,7 +152,7 @@ $resultado = mysqli_query($conexion, $consulta);
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
                     // Redirigir si no está logueado
-                    window.location.href = '../../HTML/iniciosesion.html';
+                    window.location.href = '../iniciosesion.php';
                 }
 
                 // Añadir al menú móvil

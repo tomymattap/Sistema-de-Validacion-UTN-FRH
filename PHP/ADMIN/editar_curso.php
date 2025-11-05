@@ -177,7 +177,7 @@ if ($id_curso) {
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
-                    window.location.href = '../../HTML/iniciosesion.html';
+                    window.location.href = '../iniciosesion.php';
                 }
 
                 const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');

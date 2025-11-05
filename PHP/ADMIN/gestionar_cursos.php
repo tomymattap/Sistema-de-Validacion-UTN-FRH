@@ -1,76 +1,30 @@
 <?php
-session_start();
-include("../conexion.php");
+$page_title = 'Gestionar Cursos - Admin';
+$extra_styles = ['verinscriptos.css', 'gestionar_cursos.css'];
+include('../header.php');
 
-// Manejo de la búsqueda
-$search_term = isset($_GET['search']) ? mysqli_real_escape_string($conexion, $_GET['search']) : '';
-$where_sql = '';
-if (!empty($search_term)) {
-    // Busca coincidencias en el ID o en el nombre del curso
-    $where_sql = "WHERE ID_Curso LIKE '%$search_term%' OR Nombre_Curso LIKE '%$search_term%'";
+// La validación de sesión ya está en el header
+if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
+    echo '<script>window.location.href = "' . htmlspecialchars($base_path) . 'PHP/iniciosesion.php?error=acceso_denegado";</script>';
+    exit;
 }
 
-// Consulta para obtener los cursos, filtrados si hay un término de búsqueda
-$consulta = "SELECT * FROM curso $where_sql ORDER BY ID_Curso";
-$resultado = mysqli_query($conexion, $consulta);
+include("../conexion.php");
+
+// Manejo de la búsqueda con sentencias preparadas para prevenir SQL Injection
+$search_term = isset($_GET['search']) ? $_GET['search'] : '';
+$consulta = "SELECT * FROM curso";
+if (!empty($search_term)) {
+    $consulta .= " WHERE ID_Curso LIKE ? OR Nombre_Curso LIKE ?";
+    $stmt = $conexion->prepare($consulta);
+    $search_param = "%" . $search_term . "%";
+    $stmt->bind_param("ss", $search_param, $search_param);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+} else {
+    $resultado = mysqli_query($conexion, $consulta);
+}
 ?>
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestionar Cursos - Admin</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../../CSS/general.css"> <!-- Estilos generales -->
-    <link rel="stylesheet" href="../../CSS/verinscriptos.css"> <!-- Estilos para tablas -->
-    <link rel="stylesheet" href="../../CSS/gestionar_cursos.css"> <!-- Estilos específicos de esta página -->
-</head>
-<body class="fade-in">
-    <div class="preloader">
-        <div class="spinner"></div>
-    </div>
-
-    <header class="site-header">
-        <div class="header-container">
-            <div class="logo">
-                <a href="../../index.html"><img src="../../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
-            </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="../../index.html">VALIDAR</a></li>
-                    <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                    <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
-                </ul>
-            </nav>
-            <div class="session-controls" id="session-controls">
-                <!-- Contenido dinámico por JS -->
-            </div>
-            <button class="hamburger-menu" aria-label="Abrir menú">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </header>
-
-    <!-- Menú Off-canvas -->
-    <div class="off-canvas-menu" id="off-canvas-menu">
-        <button class="close-btn" aria-label="Cerrar menú">&times;</button>
-        <nav>
-            <ul>
-                <li><a href="../../index.html">VALIDAR</a></li>
-                <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
-            </ul>
-        </nav>
-    </div>
-
     <main class="admin-section" style="padding-top: 2rem; padding-bottom: 2rem;">
         <div class="gestion-cursos-container">
             <aside class="menu-lateral">

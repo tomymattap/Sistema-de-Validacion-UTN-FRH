@@ -1,68 +1,20 @@
 <?php
-session_start();
+$page_title = 'Emitir Certificados - Admin';
+$extra_styles = ['emitircertificados.css', 'validacion.css'];
+include('../header.php');
+
+// La validación de sesión ya está en el header
+if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
+    echo '<script>window.location.href = "' . htmlspecialchars($base_path) . 'PHP/iniciosesion.php?error=acceso_denegado";</script>';
+    exit;
+}
+
 include("../conexion.php");
 
 // Consultamos todos los cursos
 $consulta = "SELECT ID_Curso, Nombre_Curso FROM CURSO";
 $resultado = mysqli_query($conexion, $consulta);
 ?>
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emitir Certificados - Admin</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../../CSS/general.css">
-    <link rel="stylesheet" href="../../CSS/emitircertificados.css">
-    <link rel="stylesheet" href="../../CSS/validacion.css">
-</head>
-<body class="fade-in">
-    <div class="preloader">
-        <div class="spinner"></div>
-    </div>
-
-    <header class="site-header">
-        <div class="header-container">
-            <div class="logo">
-                <a href="../../index.html"><img src="../../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
-            </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="../../index.html">VALIDAR</a></li>
-                    <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                    <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
-                </ul>
-            </nav>
-            <div class="session-controls" id="session-controls">
-                <!-- Contenido dinámico por JS -->
-            </div>
-            <button class="hamburger-menu" aria-label="Abrir menú">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </header>
-
-    <!-- Menú Off-canvas -->
-    <div class="off-canvas-menu" id="off-canvas-menu">
-        <button class="close-btn" aria-label="Cerrar menú">&times;</button>
-        <nav>
-            <ul>
-                <li><a href="../../index.html">VALIDAR</a></li>
-                <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
-            </ul>
-        </nav>
-    </div>
-
     <main class="admin-section" style="padding-top: 4rem; padding-bottom: 4rem;">
     <div class="admin-container">
         <h1 class="main-title" style="text-align: center;">Emitir Certificados</h1>
@@ -107,58 +59,7 @@ $resultado = mysqli_query($conexion, $consulta);
         </div>
     </div>
 </main>
-
-    <footer class="site-footer">
-        <!-- Contenido del pie de página -->
-    </footer>
-
-    <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba">
-        <i class="fas fa-arrow-up"></i>
-    </a>
-
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-    <script src="../../JavaScript/general.js"></script>
-    <script src="../../JavaScript/emitircertificados.js"></script>
-    <script>
-        fetch('../get_user_name.php')
-            .then(response => response.json())
-            .then(data => {
-                const sessionControls = document.getElementById('session-controls');
-                const mobileNav = document.querySelector('.off-canvas-menu nav ul');
-                let sessionHTML = '';
-
-                if (data.user_name) {
-                    let dropdownMenu;
-                    if (data.user_rol === 1) { // Admin
-                        dropdownMenu = `
-                            <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
-                            <div class="dropdown-menu">
-                                <ul>
-                                    <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
-                                    <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
-                                    <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                                    <li><a href="../logout.php">Cerrar Sesión</a></li>
-                                </ul>
-                            </div>`;
-                        sessionHTML = `
-                            <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
-                            <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
-                            <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                            <li><a href="../logout.php">Cerrar Sesión</a></li>`;
-                    } else if (data.user_rol === 2) { // Alumno
-                        // Redirigir si no es admin
-                        window.location.href = '../../index.html';
-                    }
-                    sessionControls.innerHTML = dropdownMenu;
-                } else {
-                    // Redirigir si no está logueado
-                    window.location.href = '../iniciosesion.php';
-                }
-
-                // Añadir al menú móvil
-                const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');
-                mobileMenuUl.insertAdjacentHTML('beforeend', sessionHTML);
-            });
-    </script>
-</body>
-</html>
+<?php
+$extra_scripts = ['emitircertificados.js'];
+include('../footer.php');
+?>

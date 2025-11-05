@@ -1,16 +1,18 @@
 <?php
-session_start();
+// Incluir header.php para la lógica de sesión y CSRF
+$page_title = 'Iniciar Sesión - UTN FRH';
+$extra_styles = ['iniciosesion.css'];
+include('header.php');
+
 // Redirige si el usuario ya ha iniciado sesión
 if (isset($_SESSION['user_rol'])) {
-    if ($_SESSION['user_rol'] == 1) { // Admin
-        header('Location: ADMIN/gestionarinscriptos.php');
-    } else { // Alumno
-        header('Location: ALUMNO/perfil.php');
-    }
+    $redirect_url = ($_SESSION['user_rol'] == 1) ? 'ADMIN/gestionarinscriptos.php' : 'ALUMNO/perfil.php';
+    // Usamos un script de JS para la redirección porque el header ya se envió.
+    echo '<script>window.location.href = "' . htmlspecialchars($redirect_url) . '";</script>';
     exit;
 }
 
-require_once 'conexion.php'; 
+require_once 'conexion.php';
 $error = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -75,7 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $conexion->close();
 }
 ?>
-<!DOCTYPE html>
     <main class="login-page">
         <div class="login-container">
             <div class="login-logo">

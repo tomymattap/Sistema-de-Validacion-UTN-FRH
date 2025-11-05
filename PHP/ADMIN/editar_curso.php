@@ -63,31 +63,45 @@ if ($id_curso) {
     <link rel="stylesheet" href="../../CSS/general.css">
     <link rel="stylesheet" href="../../CSS/verinscriptos.css">
     <link rel="stylesheet" href="../../CSS/gestionar_cursos.css">
-    <style>
-        .form-container { padding: 2rem; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-        .form-group { display: flex; flex-direction: column; }
-        .form-group.full-width { grid-column: 1 / -1; }
-        .form-group label { margin-bottom: 0.5rem; font-weight: 700; color: var(--color-principal); }
-        .form-group input, .form-group select, .form-group textarea { padding: 0.75rem; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
-        .form-group textarea { resize: vertical; min-height: 100px; }
-        .form-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; grid-column: 1 / -1; }
-        .form-actions button, .form-actions a { padding: 0.75rem 1.5rem; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
-        .btn-submit { background-color: var(--color-secundario-2); color: white; }
-        .btn-cancel { background-color: #6c757d; color: white; text-align: center;}
-    </style>
+   
 </head>
 <body class="fade-in">
     <header class="site-header">
-        <!-- ... tu cabecera ... -->
+        <div class="header-container">
+            <div class="logo">
+                <a href="../../index.html"><img src="../../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../../index.html">VALIDAR</a></li>
+                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
+                </ul>
+            </nav>
+            <div class="session-controls" id="session-controls">
+                <!-- Contenido dinámico por JS -->
+            </div>
+            <button class="hamburger-menu" aria-label="Abrir menú">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
     </header>
+
+    <div class="off-canvas-menu" id="off-canvas-menu">
+        <button class="close-btn" aria-label="Cerrar menú">&times;</button>
+        <nav>
+            <ul>
+                <li><a href="../../index.html">VALIDAR</a></li>
+                <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
+            </ul>
+        </nav>
+    </div>
 
     <main class="admin-section" style="padding-top: 2rem; padding-bottom: 2rem;">
         <div class="gestion-cursos-container">
             <aside class="menu-lateral">
-                <a href="agregar_curso.php" class="menu-btn"><i class="fas fa-plus"></i> AGREGAR</a>
-                <button class="menu-btn"><i class="fas fa-filter"></i> FILTRAR</button>
-                <button class="menu-btn"><i class="fas fa-file-csv"></i> SUBIR CSV</button>
+                <a href="gestionar_cursos.php" class="menu-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
             </aside>
 
             <div class="contenido-principal">

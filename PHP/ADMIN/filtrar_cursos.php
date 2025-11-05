@@ -2,32 +2,79 @@
 session_start();
 include("../conexion.php");
 
-// Manejo de la búsqueda
-$search_term = isset($_GET['search']) ? mysqli_real_escape_string($conexion, $_GET['search']) : '';
-$where_sql = '';
-if (!empty($search_term)) {
-    // Busca coincidencias en el ID o en el nombre del curso
-    $where_sql = "WHERE ID_Curso LIKE '%$search_term%' OR Nombre_Curso LIKE '%$search_term%'";
+// Obtener valores distintos para los filtros
+$modalidades = mysqli_query($conexion, "SELECT DISTINCT Modalidad FROM curso ORDER BY Modalidad");
+$categorias = mysqli_query($conexion, "SELECT DISTINCT Categoria FROM curso ORDER BY Categoria");
+$tipos = mysqli_query($conexion, "SELECT DISTINCT Tipo FROM curso ORDER BY Tipo");
+
+$filtro_general = isset($_GET['filtro_general']) ? mysqli_real_escape_string($conexion, $_GET['filtro_general']) : '';
+$modalidad = isset($_GET['modalidad']) ? mysqli_real_escape_string($conexion, $_GET['modalidad']) : '';
+$categoria = isset($_GET['categoria']) ? mysqli_real_escape_string($conexion, $_GET['categoria']) : '';
+$tipo = isset($_GET['tipo']) ? mysqli_real_escape_string($conexion, $_GET['tipo']) : '';
+
+$where_clauses = [];
+$params = [];
+$types = '';
+
+if (!empty($filtro_general)) {
+    $like_term = "%" . $filtro_general . "%";
+    $where_clauses[] = "(Nombre_Curso LIKE ? OR Docente LIKE ? OR Modalidad LIKE ? OR Categoria LIKE ? OR Tipo LIKE ?)";
+    for ($i = 0; $i < 5; $i++) {
+        $params[] = &$like_term;
+        $types .= 's';
+    }
 }
 
-// Consulta para obtener los cursos, filtrados si hay un término de búsqueda
-$consulta = "SELECT * FROM curso $where_sql ORDER BY ID_Curso";
-$resultado = mysqli_query($conexion, $consulta);
-?>
+if (!empty($modalidad)) {
+    $where_clauses[] = "Modalidad = ?";
+    $params[] = &$modalidad;
+    $types .= 's';
+}
 
+if (!empty($categoria)) {
+    $where_clauses[] = "Categoria = ?";
+    $params[] = &$categoria;
+    $types .= 's';
+}
+
+if (!empty($tipo)) {
+    $where_clauses[] = "Tipo = ?";
+    $params[] = &$tipo;
+    $types .= 's';
+}
+
+$consulta_sql = "SELECT * FROM curso";
+if (!empty($where_clauses)) {
+    $consulta_sql .= " WHERE " . implode(' AND ', $where_clauses);
+}
+$consulta_sql .= " ORDER BY ID_Curso";
+
+$stmt = mysqli_prepare($conexion, $consulta_sql);
+
+if ($stmt) {
+    if (!empty($params)) {
+        mysqli_stmt_bind_param($stmt, $types, ...$params);
+    }
+    mysqli_stmt_execute($stmt);
+    $resultado = mysqli_stmt_get_result($stmt);
+} else {
+    $resultado = false;
+}
+
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestionar Cursos - Admin</title>
+    <title>Filtrar Cursos - Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../../CSS/general.css"> <!-- Estilos generales -->
-    <link rel="stylesheet" href="../../CSS/verinscriptos.css"> <!-- Estilos para tablas -->
-    <link rel="stylesheet" href="../../CSS/gestionar_cursos.css"> <!-- Estilos específicos de esta página -->
+    <link rel="stylesheet" href="../../CSS/general.css">
+    <link rel="stylesheet" href="../../CSS/verinscriptos.css"> 
+    <link rel="stylesheet" href="../../CSS/gestionar_cursos.css"> 
 </head>
 <body class="fade-in">
     <div class="preloader">
@@ -42,14 +89,11 @@ $resultado = mysqli_query($conexion, $consulta);
             <nav class="main-nav">
                 <ul>
                     <li><a href="../../index.html">VALIDAR</a></li>
-                    <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
                     <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
-            <div class="session-controls" id="session-controls">
-                <!-- Contenido dinámico por JS -->
-            </div>
+            <div class="session-controls" id="session-controls"></div>
             <button class="hamburger-menu" aria-label="Abrir menú">
                 <span></span>
                 <span></span>
@@ -58,13 +102,11 @@ $resultado = mysqli_query($conexion, $consulta);
         </div>
     </header>
 
-    <!-- Menú Off-canvas -->
     <div class="off-canvas-menu" id="off-canvas-menu">
         <button class="close-btn" aria-label="Cerrar menú">&times;</button>
         <nav>
             <ul>
                 <li><a href="../../index.html">VALIDAR</a></li>
-                <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
                 <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
             </ul>
@@ -74,33 +116,64 @@ $resultado = mysqli_query($conexion, $consulta);
     <main class="admin-section" style="padding-top: 2rem; padding-bottom: 2rem;">
         <div class="gestion-cursos-container">
             <aside class="menu-lateral">
-                <a href="agregar_curso.php" class="menu-btn"><i class="fas fa-plus"></i> AGREGAR</a>
-                <a href="filtrar_cursos.php" class="menu-btn"><i class="fas fa-filter"></i> FILTRAR</a>
-                <button class="menu-btn"><i class="fas fa-file-csv"></i> SUBIR CSV</button>
+                <a href="gestionar_cursos.php" class="menu-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
             </aside>
 
             <div class="contenido-principal">
-                <h1 class="main-title">Gestión de Cursos</h1>
+                <h1 class="main-title">Filtrar Cursos</h1>
 
-                <div class="filters-container">
-                    <form method="get" action="gestionar_cursos.php" class="filter-form">
+                <div class="filters-container filter-courses-container">
+                    <form method="get" action="filtrar_cursos.php" class="filter-form">
                         <div class="filter-group">
-                            <input type="text" name="search" id="search-main" placeholder="Buscar por nombre de curso..." value="<?= htmlspecialchars($search_term) ?>">
+                            <label for="filtro_general">Búsqueda general:</label>
+                            <input type="text" name="filtro_general" id="filtro_general" placeholder="Nombre, docente, etc." value="<?= htmlspecialchars($filtro_general) ?>">
+                        </div>
+                        <div class="filter-group">
+                            <label for="modalidad">Modalidad:</label>
+                            <select name="modalidad" id="modalidad">
+                                <option value="">Todas</option>
+                                <?php while ($fila = mysqli_fetch_assoc($modalidades)): ?>
+                                    <option value="<?= htmlspecialchars($fila['Modalidad']) ?>" <?= $modalidad == $fila['Modalidad'] ? 'selected' : '' ?>><?= htmlspecialchars($fila['Modalidad']) ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="categoria">Categoría:</label>
+                            <select name="categoria" id="categoria">
+                                <option value="">Todas</option>
+                                <?php while ($fila = mysqli_fetch_assoc($categorias)): ?>
+                                    <option value="<?= htmlspecialchars($fila['Categoria']) ?>" <?= $categoria == $fila['Categoria'] ? 'selected' : '' ?>><?= htmlspecialchars($fila['Categoria']) ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="tipo">Tipo:</label>
+                            <select name="tipo" id="tipo">
+                                <option value="">Todos</option>
+                                <?php while ($fila = mysqli_fetch_assoc($tipos)): ?>
+                                    <option value="<?= htmlspecialchars($fila['Tipo']) ?>" <?= $tipo == $fila['Tipo'] ? 'selected' : '' ?>><?= htmlspecialchars($fila['Tipo']) ?></option>
+                                <?php endwhile; ?>
+                            </select>
                         </div>
                         <div class="search-group">
-                            <button type="submit" id="filter-btn" style="width: auto;"><i class="fas fa-search"></i> Buscar</button>
-                            <a href="gestionar_cursos.php" id="reset-btn"><i class="fas fa-undo"></i> Limpiar</a>
+                            <button type="submit" id="filter-btn" style="width: auto;"><i class="fas fa-filter"></i> Filtrar</button>
+                            <a href="filtrar_cursos.php" id="reset-btn"><i class="fas fa-undo"></i> Limpiar</a>
                         </div>
                     </form>
                 </div>
 
                 <div class="results-container">
-                    <table id="results-table">
+                    <table id="tabla-cursos">
                         <thead>
                             <tr>
                                 <th>ID Curso</th>
                                 <th>Nombre</th>
+                                <th>Docente</th>
+                                <th>Modalidad</th>
                                 <th>Categoría</th>
+                                <th>Carga Horaria</th>
+                                <th>Descripción</th>
+                                <th>Requisitos</th>
                                 <th>Tipo</th>
                                 <th>Acciones</th>
                             </tr>
@@ -111,7 +184,12 @@ $resultado = mysqli_query($conexion, $consulta);
                                     <tr>
                                         <td><?= htmlspecialchars($fila['ID_Curso']); ?></td>
                                         <td><?= htmlspecialchars($fila['Nombre_Curso']); ?></td>
+                                        <td><?= htmlspecialchars($fila['Docente']); ?></td>
+                                        <td><?= htmlspecialchars($fila['Modalidad']); ?></td>
                                         <td><?= htmlspecialchars($fila['Categoria']); ?></td>
+                                        <td><?= htmlspecialchars($fila['Carga_Horaria']); ?></td>
+                                        <td><?= htmlspecialchars($fila['Descripcion']); ?></td>
+                                        <td class="col-descripcion"><?= htmlspecialchars($fila['Requisitos']); ?></td>
                                         <td><?= htmlspecialchars($fila['Tipo']); ?></td>
                                         <td class="actions">
                                             <a href="editar_curso.php?id=<?= $fila['ID_Curso'] ?>" class="btn-edit" title="Editar"><i class="fas fa-pencil-alt"></i></a>
@@ -121,20 +199,17 @@ $resultado = mysqli_query($conexion, $consulta);
                                 <?php endwhile; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="5" style="text-align: center; padding: 2rem;">No se encontraron cursos que coincidan con la búsqueda.</td>
+                                    <td colspan="10" style="text-align: center; padding: 2rem;">No se encontraron cursos con los filtros aplicados.</td>
                                 </tr>
-                            <?php endif; ?>
+                            <?php endif; ?> 
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </main>
-    
 
-    <footer class="site-footer">
-        <!-- Contenido del pie de página -->
-    </footer>
+    <footer class="site-footer"></footer>
 
     <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba">
         <i class="fas fa-arrow-up"></i>
@@ -167,19 +242,14 @@ $resultado = mysqli_query($conexion, $consulta);
                             <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
                             <li><a href="../logout.php">Cerrar Sesión</a></li>`;
-                    } else if (data.user_rol === 2) { // Alumno
-                        // Redirigir si no es admin
+                    } else {
                         window.location.href = '../../index.html';
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
-                    // Redirigir si no está logueado
                     window.location.href = '../../HTML/iniciosesion.html';
                 }
-
-                // Añadir al menú móvil
-                const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');
-                mobileMenuUl.insertAdjacentHTML('beforeend', sessionHTML);
+                mobileNav.insertAdjacentHTML('beforeend', sessionHTML);
             });
     </script>
 </body>

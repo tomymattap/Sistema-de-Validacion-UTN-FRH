@@ -98,18 +98,8 @@ ul {
     position: relative;
 }
 
-.session-btn, .user-menu-toggle {
-    background-color: var(--color-principal);
-    color: var(--color-blanco);
-    padding: 0.85rem 1.7rem;
-    border-radius: 25px;
-    border: 2px solid var(--color-principal);
-    font-weight: 700;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.login-btn {
+/* Estilo unificado para botones de sesión en el header */
+.btn-sesion {
     background-color: transparent;
     color: var(--color-principal);
     padding: 0.85rem 1.7rem;
@@ -118,11 +108,23 @@ ul {
     font-weight: 700;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-.session-btn:hover, .login-btn:hover {
+.btn-sesion:hover {
     background-color: var(--color-principal);
     color: var(--color-blanco);
+}
+
+/* Ajuste para el menú de usuario para que use el estilo unificado */
+.user-menu-toggle {
+    padding: 0; /* El padding se aplica en el contenedor .btn-sesion */
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
 }
 
 .dropdown-menu {
@@ -243,6 +245,12 @@ ul {
 .off-canvas-menu nav li {
     width: 100%;
     text-align: left; /* Texto alineado a la izquierda */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Línea divisoria */
+    padding: 0.8rem 0; /* Padding vertical */
+}
+
+.off-canvas-menu nav li:last-child {
+    border-bottom: none; /* Sin línea en el último elemento */
 }
 
 .off-canvas-menu a {
@@ -251,6 +259,11 @@ ul {
     color: var(--color-blanco);
     display: block; /* Ocupa todo el ancho */
     padding: 0.5rem 0; /* Espaciado vertical */
+    transition: color 0.3s;
+}
+
+.off-canvas-menu a:hover {
+    color: var(--color-secundario-1);
 }
 
 .off-canvas-menu a.active {
@@ -279,13 +292,24 @@ ul {
 }
 
 .submenu {
-    display: none;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
     padding-left: 1.5rem; /* Indentación del submenú */
     margin-top: 0.5rem;
 }
 
 .submenu.active {
-    display: block;
+    max-height: 500px; /* Altura máxima para permitir la animación */
+}
+
+.submenu li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Línea divisoria */
+    padding: 0.5rem 0;
+}
+
+.submenu li:last-child {
+    border-bottom: none;
 }
 
 .submenu li a {
@@ -425,11 +449,36 @@ ul {
     }
 }
 
+/* Ocultar controles de sesión en móvil */
+@media (max-width: 767px) {
+    .session-controls {
+        display: none;
+    }
+}
+
 /* Laptops y desktops */
 @media (min-width: 1024px) {
     .header-container {
         width: 90%;
     }
+}
+
+/* ----- Clases de utilidad para responsividad ----- */
+
+/* Por defecto, ocultar en móvil y mostrar en escritorio */
+.hide-on-mobile { display: block; }
+.show-on-mobile { display: none; }
+
+/* En pantallas pequeñas (móviles) */
+@media (max-width: 768px) {
+  .hide-on-mobile { display: none !important; } /* Ocultar elementos de escritorio */
+  .show-on-mobile { display: block !important; } /* Mostrar elementos de móvil */
+}
+
+/* En pantallas grandes (tablets y escritorio) */
+@media (min-width: 769px) {
+  .show-on-mobile { display: none !important; } /* Ocultar elementos de móvil */
+  .hide-on-mobile { display: block !important; } /* Mostrar elementos de escritorio */
 }
 
 .main-title {

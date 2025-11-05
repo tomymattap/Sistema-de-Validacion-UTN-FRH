@@ -1,0 +1,176 @@
+/* Contenedor principal de la sección de administración */
+.admin-container {
+    width: 95%;
+    max-width: 1600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: var(--color-blanco);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Contenedor de pestañas principal */
+.tabs-container {
+    border-bottom: 2px solid #dee2e6;
+    margin-bottom: 2rem;
+}
+
+.tab {
+    background: none;
+    border: none;
+    padding: 1rem 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-texto-gris);
+    cursor: pointer;
+    margin-bottom: -2px; /* Alinea con el borde inferior */
+    border-bottom: 3px solid transparent;
+    transition: color 0.3s, border-color 0.3s;
+}
+
+.tab:hover {
+    color: var(--color-principal);
+}
+
+.tab.active {
+    color: var(--color-principal);
+    border-bottom-color: var(--color-secundario-1);
+}
+
+/* Contenido de las pestañas */
+.tab-content {
+    display: none;
+    animation: fadeIn 0.5s;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Caja de filtros */
+.filtros-box {
+    background-color: #F6F9FA;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.filtro-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.filtros-box input, .filtros-box select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.botones-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn.filtrar {
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+}
+.btn.filtrar:hover {
+    background-color: #003345;
+}
+
+.btn.mostrar-todos {
+    background-color: #6c757d;
+    color: var(--color-blanco);
+}
+.btn.mostrar-todos:hover {
+    background-color: #5a6268;
+}
+
+.btn.limpiar {
+    background-color: transparent;
+    color: var(--color-texto-gris);
+    border-color: #ced4da;
+}
+.btn.limpiar:hover {
+    background-color: #e9ecef;
+}
+
+/* Estilos de la tabla de resultados */
+.tabla-inscriptos {
+    overflow-x: auto;
+}
+
+#results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+#results-table th, #results-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+#results-table thead {
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+}
+
+#results-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+#results-table tbody tr:hover {
+    background-color: rgba(0, 210, 242, 0.1);
+}
+
+#results-table mark {
+    background-color: var(--color-secundario-3);
+    color: var(--color-principal);
+    padding: 2px;
+    border-radius: 3px;
+}
+
+/* Pestaña de Agregar Inscriptos */
+.add-container {
+    background-color: #f8f9fa;
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+.tabs-secondary {
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 1.5rem;
+}
+
+.tab-panel-secondary {
+    display: none;
+}
+.tab-panel-secondary.active {
+    display: block;
+}

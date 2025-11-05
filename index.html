@@ -143,7 +143,7 @@
 
                         // Menú de escritorio y saludo
                         const desktopMenu = `
-                            <button class="user-menu-toggle">Hola, ${userName} <i class="fas fa-chevron-down"></i></button>
+                            <a href="#" class="btn-sesion user-menu-toggle">Hola, ${userName} <i class="fas fa-chevron-down"></i></a>
                             <div class="dropdown-menu"><ul>`;
 
                         if (data.user_rol === 1) { // Admin
@@ -156,8 +156,7 @@
                             </ul></div>`;
 
                             mobileSubmenu = `
-                                <a href="#">Hola, ${userName}</a>
-                                <button class="submenu-toggle"><i class="fas fa-chevron-right"></i></button>
+                                <a href="#" class="user-menu-toggle-mobile">Hola, ${userName} <i class="fas fa-chevron-down"></i></a>
                                 <ul class="submenu">
                                     <li><a href="PHP/ADMIN/verinscriptos.php">Ver Inscriptos</a></li>
                                     <li><a href="HTML/gestionarcursos.html">Gestionar Cursos</a></li>
@@ -183,8 +182,7 @@
                             </ul></div>`;
 
                             mobileSubmenu = `
-                                <a href="#">Hola, ${userName}</a>
-                                <button class="submenu-toggle"><i class="fas fa-chevron-right"></i></button>
+                                <a href="#" class="user-menu-toggle-mobile">Hola, ${userName} <i class="fas fa-chevron-down"></i></a>
                                 <ul class="submenu">
                                     <li><a href="PHP/ALUMNO/perfil.php">Mi Perfil</a></li>
                                     <li><a href="PHP/ALUMNO/inscripciones.php">Inscripciones</a></li>
@@ -207,20 +205,9 @@
 
                     } else {
                         // Usuario no logueado
-                        sessionControls.innerHTML = '<a href="HTML/iniciosesion.html" class="login-btn">INICIAR SESIÓN</a>';
+                        sessionControls.innerHTML = '<a href="HTML/iniciosesion.html" class="btn-sesion">INICIAR SESIÓN</a>';
                         mobileSessionSection.innerHTML = '<a href="HTML/iniciosesion.html">INICIAR SESIÓN</a>';
                         footerDynamicNav.innerHTML = '<h4>Acceso</h4><ul><li><a href="HTML/iniciosesion.html">Iniciar Sesión</a></li></ul>';
-                    }
-
-                    // Lógica para desplegar el submenú en móvil
-                    const submenuToggle = document.querySelector('.submenu-toggle');
-                    if (submenuToggle) {
-                        submenuToggle.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            const submenu = document.querySelector('.submenu');
-                            submenu.classList.toggle('active');
-                            submenuToggle.classList.toggle('active');
-                        });
                     }
                 });
         });

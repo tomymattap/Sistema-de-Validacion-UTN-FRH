@@ -45,4 +45,33 @@ document.addEventListener('DOMContentLoaded', () => {
             link.classList.add('active');
         }
     });
+
+    // ----- Lógica para desplegar el submenú en móvil -----
+    const setupMobileSubmenu = (mobileMenuToggle) => {
+        mobileMenuToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            const submenu = mobileMenuToggle.nextElementSibling;
+            submenu.classList.toggle('active');
+            const icon = mobileMenuToggle.querySelector('i');
+            icon.classList.toggle('fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
+        });
+    };
+
+    const mobileSessionSection = document.getElementById('mobile-session-section');
+    if (mobileSessionSection) {
+        const observer = new MutationObserver((mutationsList, observer) => {
+            for (const mutation of mutationsList) {
+                if (mutation.type === 'childList') {
+                    const mobileMenuToggle = document.querySelector('.user-menu-toggle-mobile');
+                    if (mobileMenuToggle) {
+                        setupMobileSubmenu(mobileMenuToggle);
+                        observer.disconnect(); // Detener el observador una vez que el elemento se ha encontrado y configurado
+                    }
+                }
+            }
+        });
+
+        observer.observe(mobileSessionSection, { childList: true, subtree: true });
+    }
 });

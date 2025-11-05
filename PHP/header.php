@@ -61,8 +61,7 @@ $php_path = $base_path . 'PHP/';
                             <ul>
                                 <?php if ($_SESSION['user_rol'] == 1): // Admin ?>
                                     <li><a href="<?php echo $php_path; ?>ADMIN/gestionarinscriptos.php" class="<?php echo ($current_page == 'gestionarinscriptos.php') ? 'active' : ''; ?>">Gestionar Inscriptos</a></li>
-                                    <li><a href="<?php echo $php_path; ?>ADMIN/gestionaradmin.php" class="<?php echo ($current_page == 'gestionaradmin.php') ? 'active' : ''; ?>">Gestionar Administradores</a></li>
-                                    <li><a href="<?php echo $html_path; ?>gestionarcursos.html" class="<?php echo ($current_page == 'gestionarcursos.html') ? 'active' : ''; ?>">Gestionar Cursos</a></li>
+                                    <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php" class="<?php echo ($current_page == 'gestionar_cursos.php') ? 'active' : ''; ?>">Gestionar Cursos</a></li>
                                     <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php" class="<?php echo ($current_page == 'seleccionar_alum_certif.php') ? 'active' : ''; ?>">Emitir Certificados</a></li>
                                 <?php else: // Alumno ?>
                                     <li><a href="<?php echo $php_path; ?>ALUMNO/perfil.php">Mi Perfil</a></li>
@@ -99,8 +98,7 @@ $php_path = $base_path . 'PHP/';
                         <ul class="submenu">
                             <?php if ($_SESSION['user_rol'] == 1): // Admin ?>
                                 <li><a href="<?php echo $php_path; ?>ADMIN/gestionarinscriptos.php" class="<?php echo ($current_page == 'gestionarinscriptos.php') ? 'active' : ''; ?>">Gestionar Inscriptos</a></li>
-                                <li><a href="<?php echo $php_path; ?>ADMIN/gestionaradmin.php" class="<?php echo ($current_page == 'gestionaradmin.php') ? 'active' : ''; ?>">Gestionar Administradores</a></li>
-                                <li><a href="<?php echo $html_path; ?>gestionarcursos.html" class="<?php echo ($current_page == 'gestionarcursos.html') ? 'active' : ''; ?>">Gestionar Cursos</a></li>
+                                <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php" class="<?php echo ($current_page == 'gestionar_cursos.php') ? 'active' : ''; ?>">Gestionar Cursos</a></li>
                                 <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php" class="<?php echo ($current_page == 'seleccionar_alum_certif.php') ? 'active' : ''; ?>">Emitir Certificados</a></li>
                             <?php else: // Alumno ?>
                                 <li><a href="<?php echo $php_path; ?>ALUMNO/perfil.php">Mi Perfil</a></li>

@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     mysqli_stmt_bind_param($stmt, "isisi", $ID_Curso, $Cuatrimestre, $Anio, $Estado_Cursada, $id);
     
     if (mysqli_stmt_execute($stmt)) {
-        header('Location: verinscriptos.php?update=success');
+        header('Location: gestionarinscriptos.php?update=success');
         exit;
     } else {
         die('Error al actualizar: ' . mysqli_error($conexion));
@@ -33,7 +33,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
     $res = mysqli_stmt_get_result($stmt);
 
     if (mysqli_num_rows($res) == 0) { 
-        header('Location: verinscriptos.php?error=notfound');
+        header('Location: gestionarinscriptos.php?error=notfound');
         exit;
     }
     $inscripcion = mysqli_fetch_assoc($res);
@@ -41,7 +41,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
     $cursos_res = mysqli_query($conexion, "SELECT ID_Curso, Nombre_Curso FROM curso ORDER BY Nombre_Curso");
     $estados = ['En curso', 'Finalizado', 'CERTIFICADA', 'ASISTIDO'];
 } else {
-    header('Location: verinscriptos.php');
+    header('Location: gestionarinscriptos.php');
     exit;
 }
 ?>
@@ -155,7 +155,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
             </div>
             
             <div class="form-actions">
-                <a href="verinscriptos.php" class="btn-cancel"><i class="fas fa-times"></i> Cancelar</a>
+                <a href="gestionarinscriptos.php" class="btn-cancel"><i class="fas fa-times"></i> Cancelar</a>
                 <button type="submit" name="action" value="update" class="btn-submit"><i class="fas fa-save"></i> Guardar Cambios</button>
             </div>
         </form>
@@ -188,14 +188,14 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
                             <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                             <div class="dropdown-menu">
                                 <ul>
-                                    <li><a href="verinscriptos.php">Ver Inscriptos</a></li>
+                                    <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
                                     <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                                     <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
                                     <li><a href="../logout.php">Cerrar Sesión</a></li>
                                 </ul>
                             </div>`;
                         sessionHTML = `
-                            <li><a href="verinscriptos.php">Ver Inscriptos</a></li>
+                            <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
                             <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
                             <li><a href="../logout.php">Cerrar Sesión</a></li>`;
@@ -206,7 +206,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
                     // Redirigir si no está logueado
-                    window.location.href = '../../HTML/iniciosesion.html';
+                    window.location.href = '../iniciosesion.php';
                 }
 
                 // Añadir al menú móvil

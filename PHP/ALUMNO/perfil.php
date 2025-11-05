@@ -4,7 +4,7 @@ require '../conexion.php';
 
 // Verificar si el usuario está logueado y es un alumno
 if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 2) {
-    header("Location: ../../HTML/iniciosesion.html?error=acceso_denegado");
+    header("Location: ../iniciosesion.php?error=acceso_denegado");
     exit();
 }
 

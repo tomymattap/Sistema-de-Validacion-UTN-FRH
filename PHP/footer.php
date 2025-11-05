@@ -45,7 +45,7 @@ $php_path = $php_path ?? $base_path . 'PHP/';
                     <ul>
                         <?php if ($_SESSION['user_rol'] == 1): // Admin ?>
                             <li><a href="<?php echo $php_path; ?>ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
-                            <li><a href="<?php echo $html_path; ?>gestionarcursos.html">Gestionar Cursos</a></li>
+                            <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                         <?php else: // Alumno ?>
                             <li><a href="<?php echo $php_path; ?>ALUMNO/perfil.php">Mi Perfil</a></li>

@@ -134,14 +134,14 @@ include("../conexion.php");
                             <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                             <div class="dropdown-menu">
                                 <ul>
-                                    <li><a href="verinscriptos.php">Ver Inscriptos</a></li>
+                                    <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
                                     <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                                     <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
                                     <li><a href="../logout.php">Cerrar Sesión</a></li>
                                 </ul>
                             </div>`;
                         sessionHTML = `
-                            <li><a href="verinscriptos.php">Ver Inscriptos</a></li>
+                            <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
                             <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
                             <li><a href="../logout.php">Cerrar Sesión</a></li>`;
@@ -150,7 +150,7 @@ include("../conexion.php");
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
-                    window.location.href = '../../HTML/iniciosesion.html';
+                    window.location.href = '../iniciosesion.php';
                 }
 
                 const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');

@@ -3,7 +3,7 @@ session_start();
 // Redirige si el usuario ya ha iniciado sesión
 if (isset($_SESSION['user_rol'])) {
     if ($_SESSION['user_rol'] == 1) { // Admin
-        header('Location: ADMIN/verinscriptos.php');
+        header('Location: ADMIN/gestionarinscriptos.php');
     } else { // Alumno
         header('Location: ALUMNO/perfil.php');
     }

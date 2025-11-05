@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "INSERT INTO inscripcion (ID_Cuil_Alumno, ID_Curso, Cuatrimestre, Anio, Estado_Cursada)
                 VALUES ($ID_Cuil_Alumno, $ID_Curso, '$Cuatrimestre', $Anio, '$Estado_Cursada')";
         if (mysqli_query($conexion, $sql)) {
-            header('Location: verinscriptos.php');
+            header('Location: gestionarinscriptos.php');
             exit;
         } else {
             die('Error al insertar: ' . mysqli_error($conexion));
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die('Faltan datos obligatorios.');
     }
 } else {
-    header('Location: verinscriptos.php');
+    header('Location: gestionarinscriptos.php');
     exit;
 }
 ?>

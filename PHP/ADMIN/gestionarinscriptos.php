@@ -116,7 +116,7 @@ $current_page = 'gestionarinscriptos.php';
         <h1 class="main-title">Gestionar Inscriptos</h1>
 
         <div class="tabs-container">
-            <button class="tab active" data-tab="ver">Ver Inscriptos</button>
+            <button class="tab active" data-tab="ver">Gestionar Inscriptos</button>
             <button class="tab" data-tab="agregar">Agregar Inscriptos</button>
         </div>
 

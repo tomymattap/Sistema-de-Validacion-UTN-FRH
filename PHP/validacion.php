@@ -190,14 +190,14 @@ if (!empty($codigo)) {
                             <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                             <div class="dropdown-menu">
                                 <ul>
-                                    <li><a href="ADMIN/verinscriptos.php">Ver Inscriptos</a></li>
+                                    <li><a href="ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
                                     <li><a href="ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                                     <li><a href="ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                                     <li><a href="logout.php">Cerrar Sesión</a></li>
                                 </ul>
                             </div>`;
                         sessionHTML = `
-                            <li><a href="ADMIN/verinscriptos.php">Ver Inscriptos</a></li>
+                            <li><a href="ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
                             <li><a href="ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                             <li><a href="logout.php">Cerrar Sesión</a></li>`;

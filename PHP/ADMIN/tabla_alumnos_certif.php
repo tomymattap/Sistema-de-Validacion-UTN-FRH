@@ -174,14 +174,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="dropdown-menu">
                                 <ul>
                                     <li><a href="verinscriptos.php">Ver Inscriptos</a></li>
-                                    <li><a href="../../HTML/gestionarcursos.html">Gestionar Cursos</a></li>
+                                    <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                                     <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
                                     <li><a href="../logout.php">Cerrar Sesión</a></li>
                                 </ul>
                             </div>`;
                         sessionHTML = `
                             <li><a href="verinscriptos.php">Ver Inscriptos</a></li>
-                            <li><a href="../../HTML/gestionarcursos.html">Gestionar Cursos</a></li>
+                            <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
                             <li><a href="../logout.php">Cerrar Sesión</a></li>`;
                     } else if (data.user_rol === 2) { // Alumno

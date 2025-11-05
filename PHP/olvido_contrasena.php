@@ -1,4 +1,8 @@
 <?php
+$page_title = 'Recuperar Contraseña - UTN FRH';
+$extra_styles = ['iniciosesion.css'];
+include('header.php');
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -11,9 +15,14 @@ $error = null;
 $success = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verificación del token CSRF
+    if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        $error = "Error de validación. Por favor, intente de nuevo.";
+    }
+
     $identificador = $_POST['identificador'] ?? '';
 
-    if (empty($identificador)) {
+    if (!$error && empty($identificador)) {
         $error = "El CUIL o Legajo es obligatorio.";
     } else {
         $user = null;
@@ -97,20 +106,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recuperar Contraseña - UTN FRH</title>
-    <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/iniciosesion.css">
-</head>
-<body>
-    <header class="site-header">
-        <!-- ... header ... -->
-    </header>
-
     <main class="login-page">
         <div class="login-container">
             <h1 class="login-title">Recuperar Contraseña</h1>
@@ -124,6 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
 
             <form class="login-form" action="olvido_contrasena.php" method="POST">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 <div class="form-group">
                     <label for="identificador">Legajo (Admin) o CUIL (Alumno)</label>
                     <input type="text" id="identificador" name="identificador" placeholder="Ingrese su Legajo o CUIL" required>
@@ -136,8 +132,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </main>
 
-    <footer class="site-footer">
-        <!-- ... footer ... -->
-    </footer>
-</body>
-</html>
+<?php
+include('footer.php');
+?>

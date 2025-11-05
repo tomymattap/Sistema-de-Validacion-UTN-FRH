@@ -114,8 +114,8 @@ $resultado = mysqli_query($conexion, $consulta);
                                         <td><?= htmlspecialchars($fila['Categoria']); ?></td>
                                         <td><?= htmlspecialchars($fila['Tipo']); ?></td>
                                         <td class="actions">
-                                            <a href="editar_curso.php?id=<?= $fila['ID_Curso'] ?>" class="btn-edit" title="Editar"><i class="fas fa-pencil-alt"></i></a>
-                                            <a href="confirmar_eliminar_curso.php?id=<?= $fila['ID_Curso'] ?>" class="btn-delete" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
+                                            <a href="editar_curso.php?id=<?= htmlspecialchars($fila['ID_Curso']) ?>" class="btn-edit" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                            <a href="confirmar_eliminar_curso.php?id=<?= htmlspecialchars($fila['ID_Curso']) ?>" class="btn-delete" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
                                         </td>
                                     </tr>
                                 <?php endwhile; ?>
@@ -130,57 +130,7 @@ $resultado = mysqli_query($conexion, $consulta);
             </div>
         </div>
     </main>
-    
 
-    <footer class="site-footer">
-        <!-- Contenido del pie de página -->
-    </footer>
-
-    <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba">
-        <i class="fas fa-arrow-up"></i>
-    </a>
-
-    <script src="../../JavaScript/general.js"></script>
-    <script>
-        fetch('../get_user_name.php')
-            .then(response => response.json())
-            .then(data => {
-                const sessionControls = document.getElementById('session-controls');
-                const mobileNav = document.querySelector('.off-canvas-menu nav ul');
-                let sessionHTML = '';
-
-                if (data.user_name) {
-                    let dropdownMenu;
-                    if (data.user_rol === 1) { // Admin
-                        dropdownMenu = `
-                            <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
-                            <div class="dropdown-menu">
-                                <ul>
-                                    <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
-                                    <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
-                                    <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                                    <li><a href="../logout.php">Cerrar Sesión</a></li>
-                                </ul>
-                            </div>`;
-                        sessionHTML = `
-                            <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
-                            <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
-                            <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                            <li><a href="../logout.php">Cerrar Sesión</a></li>`;
-                    } else if (data.user_rol === 2) { // Alumno
-                        // Redirigir si no es admin
-                        window.location.href = '../../index.html';
-                    }
-                    sessionControls.innerHTML = dropdownMenu;
-                } else {
-                    // Redirigir si no está logueado
-                    window.location.href = '../iniciosesion.php';
-                }
-
-                // Añadir al menú móvil
-                const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');
-                mobileMenuUl.insertAdjacentHTML('beforeend', sessionHTML);
-            });
-    </script>
-</body>
-</html>
+<?php
+include('../footer.php');
+?>

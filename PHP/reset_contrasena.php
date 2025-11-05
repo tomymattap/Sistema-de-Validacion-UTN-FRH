@@ -1,5 +1,9 @@
 <?php
-require_once 'conexion.php';
+$page_title = 'Restablecer Contraseña - UTN FRH';
+$extra_styles = ['iniciosesion.css'];
+include('header.php');
+
+require_once 'conexion.php'; // La conexión a la BD
 $token = $_GET['token'] ?? '';
 $error = null;
 $show_form = false;
@@ -48,15 +52,21 @@ if (strtotime($user['reset_token_expires_at']) <= time()) {
 $show_form = true;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verificación del token CSRF
+    if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        $error = "Error de validación. Por favor, intente de nuevo.";
+    }
+
     $password = $_POST['password'] ?? '';
     $password_confirm = $_POST['password_confirm'] ?? '';
 
-    if (empty($password) || empty($password_confirm)) {
+    if (!$error && (empty($password) || empty($password_confirm))) {
         $error = "Ambos campos de contraseña son obligatorios.";
     } elseif ($password !== $password_confirm) {
         $error = "Las contraseñas no coinciden.";
     } else {
-        $hashed_password = $password; // Manteniendo la lógica original
+        // Hashear la nueva contraseña para un almacenamiento seguro.
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         $table = ($user_type === 'admin') ? 'admin' : 'alumno';
         $id_column = ($user_type === 'admin') ? 'Legajo' : 'ID_Cuil_Alumno';
@@ -75,17 +85,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restablecer Contraseña - UTN FRH</title>
-    <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/iniciosesion.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
     <main class="login-page">
         <div class="login-container">
             <h1 class="login-title">Restablecer Contraseña</h1>
@@ -94,18 +93,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
                 <?php endif; ?>
                 <form class="login-form" method="POST">
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                     <div class="form-group">
                         <label for="password">Nueva Contraseña</label>
-                        <input type="password" id="password" name="password" required>
+                        <input type="password" id="password" name="password" placeholder="Ingrese su nueva contraseña" required>
                     </div>
                     <div class="form-group">
                         <label for="password_confirm">Confirmar Nueva Contraseña</label>
-                        <input type="password" id="password_confirm" name="password_confirm" required>
+                        <input type="password" id="password_confirm" name="password_confirm" placeholder="Confirme su contraseña" required>
                     </div>
                     <button type="submit" class="submit-btn">CAMBIAR CONTRASEÑA</button>
                 </form>
             <?php endif; ?>
         </div>
     </main>
-</body>
-</html>
+<?php
+include('footer.php');
+?>

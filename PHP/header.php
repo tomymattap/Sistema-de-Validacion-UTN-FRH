@@ -1,7 +1,29 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
+    // Configuración de seguridad de la sesión
+    ini_set('session.cookie_httponly', 1);
+    ini_set('session.use_only_cookies', 1);
+    ini_set('session.cookie_secure', isset($_SERVER['HTTPS'])); // Usar cookies seguras si se usa HTTPS
+    ini_set('session.cookie_samesite', 'Lax');
+
     session_start();
 }
+
+// Regenerar ID de sesión para prevenir fijación de sesión
+if (isset($_SESSION['last_regeneration'])) {
+    if (time() - $_SESSION['last_regeneration'] > 1800) { // Regenerar cada 30 minutos
+        session_regenerate_id(true);
+        $_SESSION['last_regeneration'] = time();
+    }
+} else {
+    $_SESSION['last_regeneration'] = time();
+}
+
+// Generar token CSRF si no existe
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrf_token = $_SESSION['csrf_token'];
 
 // Obtener el nombre del script actual para marcar el enlace activo
 $current_page = basename($_SERVER['PHP_SELF']);

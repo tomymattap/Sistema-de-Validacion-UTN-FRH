@@ -1,5 +1,9 @@
 <?php
-session_start();
+$page_title = 'Crear Contraseña - UTN FRH';
+$extra_styles = ['iniciosesion.css'];
+include('header.php');
+
+require_once 'conexion.php';
 
 // Si el usuario no pasó por la página de registro, no puede estar aquí.
 if (!isset($_SESSION['activacion_identificador']) || !isset($_SESSION['activacion_tipo'])) {
@@ -7,23 +11,26 @@ if (!isset($_SESSION['activacion_identificador']) || !isset($_SESSION['activacio
     exit;
 }
 
-require_once 'conexion.php';
 $error = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verificación del token CSRF
+    if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        $error = "Error de validación. Por favor, intente de nuevo.";
+    }
+
     $password = $_POST['password'] ?? '';
     $password_confirm = $_POST['password_confirm'] ?? '';
     $identificador = $_SESSION['activacion_identificador'];
     $tipo = $_SESSION['activacion_tipo'];
 
-    if (empty($password) || empty($password_confirm)) {
+    if (!$error && (empty($password) || empty($password_confirm))) {
         $error = "Ambos campos de contraseña son obligatorios.";
     } elseif ($password !== $password_confirm) {
         $error = "Las contraseñas no coinciden.";
     } else {
-        // Aquí deberías hashear la contraseña. Por ahora, la guardamos en texto plano como en tu código original.
-        // $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $hashed_password = $password; // Manteniendo la lógica original
+        // Hashear la contraseña para un almacenamiento seguro.
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         if ($tipo === 'admin') {
             $stmt = $conexion->prepare("UPDATE admin SET Password = ? WHERE Legajo = ?");
@@ -48,25 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Contraseña - UTN FRH</title>
-    <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/iniciosesion.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
-    <header class="site-header">
-        <div class="header-container">
-            <div class="logo">
-                <a href="../index.html"><img src="../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
-            </div>
-        </div>
-    </header>
-
     <main class="login-page">
         <div class="login-container">
             <h1 class="login-title">Crear Contraseña</h1>
@@ -77,6 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
 
             <form class="login-form" action="activar_cuenta.php" method="POST">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 <div class="form-group">
                     <label for="password">Nueva Contraseña</label>
                     <div class="password-wrapper">
@@ -96,24 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </main>
 
-    <footer class="site-footer">
-        <!-- ... contenido del footer ... -->
-    </footer>
-
-    <script>
-        // Script para mostrar/ocultar contraseña
-        document.getElementById('toggle-password').addEventListener('click', function () {
-            const password = document.getElementById('password');
-            this.classList.toggle('fa-eye');
-            this.classList.toggle('fa-eye-slash');
-            password.type = password.type === 'password' ? 'text' : 'password';
-        });
-        document.getElementById('toggle-password-confirm').addEventListener('click', function () {
-            const password = document.getElementById('password_confirm');
-            this.classList.toggle('fa-eye');
-            this.classList.toggle('fa-eye-slash');
-            password.type = password.type === 'password' ? 'text' : 'password';
-        });
-    </script>
-</body>
-</html>
+<?php
+$extra_scripts = ['iniciosesion.js']; // Reutilizamos el script para mostrar/ocultar contraseña
+include('footer.php');
+?>

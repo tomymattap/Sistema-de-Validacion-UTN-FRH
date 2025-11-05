@@ -1,12 +1,21 @@
 <?php
+$page_title = 'Registro de Usuario - UTN FRH';
+$extra_styles = ['iniciosesion.css'];
+include('header.php');
+
 require_once 'conexion.php';
 $error = null;
 $success = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verificación del token CSRF
+    if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        $error = "Error de validación. Por favor, intente de nuevo.";
+    }
+
     $identificador = $_POST['identificador'] ?? '';
 
-    if (empty($identificador)) {
+    if (!$error && empty($identificador)) {
         $error = "El CUIL o Legajo es obligatorio.";
     } else {
         $user = null;
@@ -43,7 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = "Esta cuenta ya ha sido registrada. Si olvidó su contraseña, por favor utilice la opción de recuperación.";
             } else {
                 // El usuario existe y no tiene contraseña, redirigir a la activación.
-                session_start();
                 $_SESSION['activacion_identificador'] = $identificador;
                 $_SESSION['activacion_tipo'] = $user_type;
                 header('Location: activar_cuenta.php');
@@ -56,38 +64,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Usuario - UTN FRH</title>
-    <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/iniciosesion.css">
-</head>
-<body>
-    <header class="site-header">
-        <div class="header-container">
-            <div class="logo">
-                <a href="../index.html"><img src="../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
-            </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="../index.html">VALIDAR</a></li>
-                    <li><a href="../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                    <li><a href="../HTML/contacto.html">CONTACTO</a></li>
-                </ul>
-            </nav>
-            <div class="session-controls">
-                <a href="iniciosesion.php" class="btn-sesion">INICIAR SESIÓN</a>
-            </div>
-        </div>
-    </header>
-
     <main class="login-page">
         <div class="login-container">
             <div class="login-logo">
-                <img src="../Imagenes/UTNLogo_InicioSesion.png" alt="Logo UTN">
+                <img src="<?php echo htmlspecialchars($img_path); ?>UTNLogo_InicioSesion.png" alt="Logo UTN">
             </div>
             <h1 class="login-title">Activar Cuenta</h1>
             <p style="text-align: center; margin-bottom: 1.5rem;">Ingrese su CUIL o Legajo para crear su contraseña y activar su cuenta.</p>
@@ -97,6 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
 
             <form class="login-form" action="registro.php" method="POST">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 <div class="form-group">
                     <label for="identificador">Legajo (Admin) o CUIL (Alumno)</label>
                     <input type="text" id="identificador" name="identificador" placeholder="Ingrese su Legajo o CUIL" required>
@@ -109,38 +90,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </main>
 
-    <footer class="site-footer">
-        <div class="footer-container">
-            <div class="footer-logo-info">
-                <img src="../Imagenes/UTNLogo_footer.webp" alt="Logo UTN" class="footer-logo">
-                <div class="footer-info">
-                    <p>París 532, Haedo (1706)</p>
-                    <p>Buenos Aires, Argentina</p>
-                </div>
-            </div>
-            <div class="footer-social-legal">
-                <div class="footer-social">
-                    <a href="https://www.youtube.com/@facultadregionalhaedo-utn3647" target="_blank"><i class="fab fa-youtube"></i></a>
-                    <a href="https://www.linkedin.com/school/utn-facultad-regional-haedo/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                </div>
-                <div class="footer-legal">
-                    <a href="mailto:extension@frh.utn.edu.ar">Contacto</a>
-                    <br> 
-                    <a href="#politicas">Políticas de Privacidad</a>
-                </div>
-            </div>
-            <div class="footer-separator"></div>
-            <div class="footer-nav">
-                <h4>Navegación</h4>
-                <ul>
-                    <li><a href="../index.html">Validar</a></li>
-                    <li><a href="../HTML/sobrenosotros.html">Sobre Nosotros</a></li>
-                    <li><a href="../HTML/contacto.html">Contacto</a></li>
-                </ul>
-            </div>
-        </div>
-    </footer>
-
-    <script src="../JavaScript/general.js"></script>
-</body>
-</html>
+<?php
+include('footer.php');
+?>

@@ -220,8 +220,8 @@ if (!empty($codigo)) {
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
-                    sessionControls.innerHTML = '<a href="../HTML/iniciosesion.html" class="login-btn">INICIAR SESIÓN</a>';
-                    sessionHTML = '<li><a href="../HTML/iniciosesion.html">INICIAR SESIÓN</a></li>';
+                    sessionControls.innerHTML = '<a href="iniciosesion.php" class="login-btn">INICIAR SESIÓN</a>';
+                    sessionHTML = '<li><a href="iniciosesion.php">INICIAR SESIÓN</a></li>';
                 }
 
                 // Añadir al menú móvil

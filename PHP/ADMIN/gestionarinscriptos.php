@@ -70,8 +70,8 @@ $current_page = 'gestionarinscriptos.php';
                     <div class="dropdown-menu">
                         <ul>
                             <li><a href="<?php echo $php_path; ?>ADMIN/gestionarinscriptos.php" class="<?php echo $active_class; ?>">Gestionar Inscriptos</a></li>
-                            <li><a href="<?php echo $html_path; ?>gestionarcursos.html">Gestionar Cursos</a></li>
-                            <li><a href="#">Emitir Certificados</a></li>
+                            <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                            <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                             <li><a href="<?php echo $php_path; ?>logout.php">Cerrar Sesión</a></li>
                         </ul>
                     </div>
@@ -97,8 +97,8 @@ $current_page = 'gestionarinscriptos.php';
                     <a href="#" class="user-menu-toggle-mobile">Hola, <?php echo htmlspecialchars($_SESSION['user_name']); ?> <i class="fas fa-chevron-down"></i></a>
                     <ul class="submenu">
                         <li><a href="<?php echo $php_path; ?>ADMIN/gestionarinscriptos.php" class="<?php echo $active_class; ?>">Gestionar Inscriptos</a></li>
-                        <li><a href="<?php echo $html_path; ?>gestionarcursos.html">Gestionar Cursos</a></li>
-                        <li><a href="#">Emitir Certificados</a></li>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                         <li><a href="<?php echo $php_path; ?>logout.php">Cerrar Sesión</a></li>
                     </ul>
                 <?php else: ?>
@@ -211,8 +211,8 @@ $current_page = 'gestionarinscriptos.php';
                 <ul>
                     <?php if ($_SESSION['user_rol'] == 1): ?>
                         <li><a href="<?php echo $php_path; ?>ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
-                        <li><a href="<?php echo $html_path; ?>gestionarcursos.html">Gestionar Cursos</a></li>
-                        <li><a href="#">Emitir Certificados</a></li>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                     <?php else: ?>
                         <li><a href="#">Mi Perfil</a></li>
                         <li><a href="#">Inscripciones</a></li>

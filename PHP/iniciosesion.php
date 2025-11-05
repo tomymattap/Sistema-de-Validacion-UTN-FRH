@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['user_id'] = $user['ID_Admin'];
                 $_SESSION['user_name'] = $user['Nombre'];
                 $_SESSION['user_rol'] = 1; // Rol Admin
-                header('Location: ADMIN/verinscriptos.php');
+                header('Location: ADMIN/gestionarinscriptos.php');
             } else {
                 $_SESSION['user_id'] = $user['ID_Cuil_Alumno'];
                 $_SESSION['user_name'] = $user['Nombre_Alumno'];

@@ -6,8 +6,14 @@ if (session_status() === PHP_SESSION_NONE) {
 // Obtener el nombre del script actual para marcar el enlace activo
 $current_page = basename($_SERVER['PHP_SELF']);
 
-// Definir las rutas base según la ubicación del script
-$base_path = (strpos($current_page, 'verinscriptos.php') !== false || strpos($current_page, 'perfil.php') !== false || strpos($current_page, 'inscripciones.php') !== false || strpos($current_page, 'certificaciones.php') !== false) ? '../../' : '../';
+// --- Lógica de Rutas Dinámicas ---
+// Detecta si el script actual está en una subcarpeta como /ADMIN/ o /ALUMNO/
+$is_in_subdir = strpos($_SERVER['PHP_SELF'], '/ADMIN/') !== false || strpos($_SERVER['PHP_SELF'], '/ALUMNO/') !== false;
+
+// Define la ruta base para volver al directorio raíz del proyecto
+$base_path = $is_in_subdir ? '../../' : '../';
+
+// Define las rutas a los directorios comunes
 $css_path = $base_path . 'CSS/';
 $img_path = $base_path . 'Imagenes/';
 $js_path = $base_path . 'JavaScript/';

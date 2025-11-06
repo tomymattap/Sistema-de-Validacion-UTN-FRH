@@ -57,15 +57,12 @@ include("../conexion.php");
 
     <main class="admin-section" style="padding-top: 2rem; padding-bottom: 2rem;">
         <div class="gestion-cursos-container">
-            
+            <aside class="menu-lateral">
+                <a href="gestionar_cursos.php" class="menu-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
+            </aside>
+
             <div class="contenido-principal">
-
-                <div id="header-container">
-                    <h1 class="main-title">Agregar Curso</h1>
-                    <a href="gestionar_cursos.php" class="menu-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
-                </div>
-
-                
+                <h1 class="main-title">Agregar Nuevo Curso</h1>
                 <div class="form-container">
                     <form action="insertar_curso.php" method="POST" class="form-grid">
                         <div class="form-group">

@@ -167,14 +167,14 @@
                             <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                             <div class="dropdown-menu">
                                 <ul>
-                                    <li><a href="../PHP/ADMIN/verinscriptos.php">Ver Inscriptos</a></li>
+                                    <li><a href="../PHP/ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
                                     <li><a href="../PHP/ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                                     <li><a href="../PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                                     <li><a href="../PHP/logout.php">Cerrar Sesión</a></li>
                                 </ul>
                             </div>`;
                         sessionHTML = `
-                            <li><a href="../PHP/ADMIN/verinscriptos.php">Ver Inscriptos</a></li>
+                            <li><a href="../PHP/ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
                             <li><a href="../PHP/ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="../PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                             <li><a href="../PHP/logout.php">Cerrar Sesión</a></li>`;
@@ -197,7 +197,7 @@
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
-                    sessionControls.innerHTML = '<a href="../PHP/iniciosesion.php" class="btn-sesion">INICIAR SESIÓN</a>';
+                    sessionControls.innerHTML = '<a href="../PHP/iniciosesion.php" class="login-btn">INICIAR SESIÓN</a>';
                     sessionHTML = '<li><a href="../PHP/iniciosesion.php">INICIAR SESIÓN</a></li>';
                 }
 

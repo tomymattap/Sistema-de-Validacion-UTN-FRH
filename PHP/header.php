@@ -1,13 +1,41 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
+    // Configuración de seguridad de la sesión
+    ini_set('session.cookie_httponly', 1);
+    ini_set('session.use_only_cookies', 1);
+    ini_set('session.cookie_secure', isset($_SERVER['HTTPS'])); // Usar cookies seguras si se usa HTTPS
+    ini_set('session.cookie_samesite', 'Lax');
+
     session_start();
 }
+
+// Regenerar ID de sesión para prevenir fijación de sesión
+if (isset($_SESSION['last_regeneration'])) {
+    if (time() - $_SESSION['last_regeneration'] > 1800) { // Regenerar cada 30 minutos
+        session_regenerate_id(true);
+        $_SESSION['last_regeneration'] = time();
+    }
+} else {
+    $_SESSION['last_regeneration'] = time();
+}
+
+// Generar token CSRF si no existe
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrf_token = $_SESSION['csrf_token'];
 
 // Obtener el nombre del script actual para marcar el enlace activo
 $current_page = basename($_SERVER['PHP_SELF']);
 
-// Definir las rutas base según la ubicación del script
-$base_path = (strpos($current_page, 'verinscriptos.php') !== false || strpos($current_page, 'perfil.php') !== false || strpos($current_page, 'inscripciones.php') !== false || strpos($current_page, 'certificaciones.php') !== false) ? '../../' : '../';
+// --- Lógica de Rutas Dinámicas ---
+// Detecta si el script actual está en una subcarpeta como /ADMIN/ o /ALUMNO/
+$is_in_subdir = strpos($_SERVER['PHP_SELF'], '/ADMIN/') !== false || strpos($_SERVER['PHP_SELF'], '/ALUMNO/') !== false;
+
+// Define la ruta base para volver al directorio raíz del proyecto
+$base_path = $is_in_subdir ? '../../' : '../';
+
+// Define las rutas a los directorios comunes
 $css_path = $base_path . 'CSS/';
 $img_path = $base_path . 'Imagenes/';
 $js_path = $base_path . 'JavaScript/';

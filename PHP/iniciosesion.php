@@ -1,21 +1,29 @@
 <?php
-session_start();
+// Incluir header.php para la lógica de sesión y CSRF
+$page_title = 'Iniciar Sesión - UTN FRH';
+$extra_styles = ['iniciosesion.css'];
+include('header.php');
+
 // Redirige si el usuario ya ha iniciado sesión
 if (isset($_SESSION['user_rol'])) {
-    if ($_SESSION['user_rol'] == 1) { // Admin
-        header('Location: ADMIN/gestionarinscriptos.php');
-    } else { // Alumno
-        header('Location: ALUMNO/perfil.php');
-    }
+    $redirect_url = ($_SESSION['user_rol'] == 1) ? 'ADMIN/gestionarinscriptos.php' : 'ALUMNO/perfil.php';
+    // Usamos un script de JS para la redirección porque el header ya se envió.
+    echo '<script>window.location.href = "' . htmlspecialchars($redirect_url) . '";</script>';
     exit;
 }
 
-require_once 'conexion.php'; 
+require_once 'conexion.php';
 $error = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $login_input = $_POST['login-input'] ?? '';
     $password = $_POST['password'] ?? '';
+
+    // Verificación del token CSRF
+    if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        $error = "Error de validación. Por favor, intente de nuevo.";
+        // Opcional: invalidar la sesión y forzar un nuevo inicio de sesión
+    }
 
     if (empty($login_input) || empty($password)) {
         $error = "El legajo/CUIL y la contraseña son obligatorios.";
@@ -48,12 +56,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Verificar contraseña y establecer sesión
-        if ($user && ($password == $user['Password'])) { // Se mantiene la comparación directa según el código existente
+        // Se utiliza password_verify() para comparar la contraseña ingresada con el hash almacenado.
+        if ($user && password_verify($password, $user['Password'])) {
             if ($is_admin) {
                 $_SESSION['user_id'] = $user['ID_Admin'];
                 $_SESSION['user_name'] = $user['Nombre'];
                 $_SESSION['user_rol'] = 1; // Rol Admin
-                header('Location: ADMIN/verinscriptos.php');
+                header('Location: ADMIN/gestionarinscriptos.php');
             } else {
                 $_SESSION['user_id'] = $user['ID_Cuil_Alumno'];
                 $_SESSION['user_name'] = $user['Nombre_Alumno'];
@@ -68,67 +77,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $conexion->close();
 }
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión - UTN FRH</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/iniciosesion.css">
-</head>
-<body>
-
-    <header class="site-header">
-        <div class="header-container">
-            <div class="logo">
-                <a href="../index.html"><img src="../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
-            </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="../index.html">VALIDAR</a></li>
-                    <li><a href="../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                    <li><a href="../HTML/contacto.html">CONTACTO</a></li>
-                </ul>
-            </nav>
-            <div class="session-controls" id="session-controls">
-                <a href="iniciosesion.php" class="btn-sesion">INICIAR SESIÓN</a>
-            </div>
-            <button class="hamburger-menu" aria-label="Abrir menú">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </header>
-
-    <!-- Menú Off-canvas -->
-    <div class="off-canvas-menu" id="off-canvas-menu">
-        <button class="close-btn" aria-label="Cerrar menú">&times;</button>
-        <nav>
-            <ul>
-                <li><a href="../index.html">VALIDAR</a></li>
-                <li><a href="../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                <li><a href="../HTML/contacto.html">CONTACTO</a></li>
-                <li><a href="iniciosesion.php">INICIAR SESIÓN</a></li>
-            </ul>
-        </nav>
-    </div>
-
     <main class="login-page">
         <div class="login-container">
             <div class="login-logo">
-                <img src="../Imagenes/UTNLogo_InicioSesion.png" alt="Logo UTN">
+                <img src="<?php echo htmlspecialchars($img_path); ?>UTNLogo_InicioSesion.png" alt="Logo UTN">
             </div>
             <h1 class="login-title">Iniciar Sesión</h1>
             <?php if ($error): ?>
                 <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
             <?php endif; ?>
             <form class="login-form" action="iniciosesion.php" method="POST">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 <div class="form-group">
                     <label for="login-input">Legajo (Admin) o CUIL (Alumno)</label>
                     <input type="text" id="login-input" name="login-input" placeholder="Ingrese su Legajo o CUIL" required>
@@ -141,61 +100,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
                 <div class="form-options">
-                    <a href="#" class="forgot-password">¿Olvidó su contraseña?</a>
+                    <a href="olvido_contrasena.php" class="forgot-password">¿Olvidó su contraseña?</a>
                 </div>
                 <button type="submit" class="submit-btn">ACCEDER</button>
+                <div class="form-options" style="text-align: center; margin-top: 1rem;">
+                    <p>¿No tienes una cuenta? <a href="registro.php">Crear cuenta</a></p>
+                </div>
             </form>
         </div>
     </main>
 
-    <footer class="site-footer">
-        <div class="footer-container">
-            <div class="footer-logo-info">
-                <img src="../Imagenes/UTNLogo_footer.webp" alt="Logo UTN" class="footer-logo">
-                <div class="footer-info">
-                    <p>París 532, Haedo (1706)</p>
-                    <p>Buenos Aires, Argentina</p>
-                    <br>
-                    <p>Número de teléfono del depto.</p>
-                    <br>
-                    <p>extension@frh.utn.edu.ar</p>
-                </div>
-            </div>
-            <div class="footer-social-legal">
-                <div class="footer-social">
-                    <a href="https://www.youtube.com/@facultadregionalhaedo-utn3647" target="_blank"><i class="fab fa-youtube"></i></a>
-                    <a href="https://www.linkedin.com/school/utn-facultad-regional-haedo/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                </div>
-                <div class="footer-legal">
-                    <a href="mailto:extension@frh.utn.edu.ar">Contacto</a>
-                    <br> 
-                    <a href="#politicas">Políticas de Privacidad</a>
-                </div>
-            </div>
-            <div class="footer-separator"></div>
-            <div class="footer-nav">
-                <h4>Navegación</h4>
-                <ul>
-                    <li><a href="../index.html">Validar</a></li>
-                    <li><a href="../HTML/sobrenosotros.html">Sobre Nosotros</a></li>
-                    <li><a href="../HTML/contacto.html">Contacto</a></li>
-                </ul>
-            </div>
-            <div class="footer-separator"></div>
-            <div class="footer-dynamic-nav" id="footer-dynamic-nav">
-                <h4>Acceso</h4>
-                <ul>
-                    <li><a href="iniciosesion.php">Iniciar Sesión</a></li>
-                </ul>
-            </div>
-        </div>
-    </footer>
-
-    <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba">
-        <i class="fas fa-arrow-up"></i>
-    </a>
-
-    <script src="../JavaScript/general.js"></script>
-    <script src="../JavaScript/iniciosesion.js"></script>
-</body>
-</html>
+<?php
+$extra_scripts = ['iniciosesion.js'];
+include('footer.php');
+?>

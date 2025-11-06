@@ -105,7 +105,7 @@ $current_page = 'gestionaradmin.php';
         <div class="actions-container">
             <button class="btn-agregar"><i class="fas fa-plus"></i> Agregar Administrador</button>
             <div class="search-container">
-                <input type="text" id="liveSearch" placeholder="Buscar por nombre, apellido o email...">
+                <input type="text" id="liveSearch" placeholder="Buscar por nombre o apellido...">
             </div>
         </div>
 

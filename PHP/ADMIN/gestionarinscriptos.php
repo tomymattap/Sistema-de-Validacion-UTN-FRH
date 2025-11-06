@@ -47,8 +47,6 @@ $current_page = 'gestionarinscriptos.php';
 </head>
 <body>
 
-<!-- ======================= HEADER TEMPORAL ========================= -->
-
 <!-- ======================= HEADER ========================= -->
 <header class="site-header">
     <div class="header-container">
@@ -129,7 +127,7 @@ $current_page = 'gestionarinscriptos.php';
     </nav>
 </div>
 
-<!-- ===================== FIN HEADER TEMPORAL ======================= -->
+<!-- ===================== FIN HEADER ======================= -->
 
 <main class="admin-section">
     <div class="admin-container">
@@ -193,7 +191,7 @@ $current_page = 'gestionarinscriptos.php';
     </div>
 </main>
 
-<!-- ======================= FOOTER TEMPORAL ========================= -->
+<!-- ======================= FOOTER ========================= -->
 <footer class="site-footer">
     <div class="footer-container">
         <div class="footer-logo-info">
@@ -250,7 +248,7 @@ $current_page = 'gestionarinscriptos.php';
 </footer>
 <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 
-<!-- ===================== FIN FOOTER TEMPORAL ======================= -->
+<!-- ===================== FIN FOOTER ======================= -->
 
 <script src="<?php echo $js_path; ?>general.js"></script>
 <script src="<?php echo $js_path; ?>gestionarinscriptos.js"></script>

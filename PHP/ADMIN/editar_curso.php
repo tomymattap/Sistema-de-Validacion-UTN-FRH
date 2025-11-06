@@ -100,57 +100,62 @@ if ($id_curso) {
 
     <main class="admin-section" style="padding-top: 2rem; padding-bottom: 2rem;">
         <div class="gestion-cursos-container">
-            <aside class="menu-lateral">
-                <a href="gestionar_cursos.php" class="menu-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
-            </aside>
-
+            
             <div class="contenido-principal">
-                <h1 class="main-title">Editar Curso #<?= htmlspecialchars($curso['ID_Curso']) ?></h1>
-                <div class="form-container">
-                    <form action="editar_curso.php" method="POST" class="form-grid">
-                        <input type="hidden" name="id_curso" value="<?= htmlspecialchars($curso['ID_Curso']) ?>">
-                        
-                        <div class="form-group">
-                            <label for="nombre_curso">Nombre del Curso</label>
-                            <input type="text" id="nombre_curso" name="nombre_curso" value="<?= htmlspecialchars($curso['Nombre_Curso']) ?>" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="categoria">Categoría</label>
-                            <input type="text" id="categoria" name="categoria" value="<?= htmlspecialchars($curso['Categoria']) ?>" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="modalidad">Modalidad (opcional)</label>
-                            <input type="text" id="modalidad" name="modalidad" value="<?= htmlspecialchars($curso['Modalidad']) ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="docente">Docente (opcional)</label>
-                            <input type="text" id="docente" name="docente" value="<?= htmlspecialchars($curso['Docente']) ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="carga_horaria">Carga Horaria (opcional)</label>
-                            <input type="text" id="carga_horaria" name="carga_horaria" value="<?= htmlspecialchars($curso['Carga_Horaria']) ?>" placeholder="Ej: 40 horas">
-                        </div>
-                        <div class="form-group">
-                            <label for="tipo">Tipo</label>
-                            <select id="tipo" name="tipo" required>
-                                <option value="GENUINO" <?= $curso['Tipo'] == 'GENUINO' ? 'selected' : '' ?>>Genuino</option>
-                                <option value="CERTIFICACION" <?= $curso['Tipo'] == 'CERTIFICACION' ? 'selected' : '' ?>>Certificación</option>
-                            </select>
-                        </div>
-                        <div class="form-group full-width">
-                            <label for="descripcion">Descripción (opcional)</label>
-                            <textarea id="descripcion" name="descripcion"><?= htmlspecialchars($curso['Descripcion']) ?></textarea>
-                        </div>
-                        <div class="form-group full-width">
-                            <label for="requisitos">Requisitos (opcional)</label>
-                            <textarea id="requisitos" name="requisitos"><?= htmlspecialchars($curso['Requisitos']) ?></textarea>
-                        </div>
-                        <div class="form-actions">
-                            <a href="gestionar_cursos.php" class="btn-cancel"><i class="fas fa-times"></i> Cancelar</a>
-                            <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Guardar Cambios</button>
-                        </div>
-                    </form>
+
+                <div id="header-container">
+                    <h1 class="main-title">Editar Curso <i class="fas fa-arrow-right"></i>   <?= htmlspecialchars($curso['Nombre_Curso']) ?></h1>
+                    <a href="gestionar_cursos.php" class="menu-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
                 </div>
+                
+
+                
+                    
+                    <div class="form-container">
+                        <form action="editar_curso.php" method="POST" class="form-grid">
+                            <input type="hidden" name="id_curso" value="<?= htmlspecialchars($curso['ID_Curso']) ?>">
+                            
+                            <div class="form-group">
+                                <label for="nombre_curso">Nombre del Curso</label>
+                                <input type="text" id="nombre_curso" name="nombre_curso" value="<?= htmlspecialchars($curso['Nombre_Curso']) ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="categoria">Categoría</label>
+                                <input type="text" id="categoria" name="categoria" value="<?= htmlspecialchars($curso['Categoria']) ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="modalidad">Modalidad (opcional)</label>
+                                <input type="text" id="modalidad" name="modalidad" value="<?= htmlspecialchars($curso['Modalidad']) ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="docente">Docente (opcional)</label>
+                                <input type="text" id="docente" name="docente" value="<?= htmlspecialchars($curso['Docente']) ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="carga_horaria">Carga Horaria (opcional)</label>
+                                <input type="text" id="carga_horaria" name="carga_horaria" value="<?= htmlspecialchars($curso['Carga_Horaria']) ?>" placeholder="Ej: 40 horas">
+                            </div>
+                            <div class="form-group">
+                                <label for="tipo">Tipo</label>
+                                <select id="tipo" name="tipo" required>
+                                    <option value="GENUINO" <?= $curso['Tipo'] == 'GENUINO' ? 'selected' : '' ?>>Genuino</option>
+                                    <option value="CERTIFICACION" <?= $curso['Tipo'] == 'CERTIFICACION' ? 'selected' : '' ?>>Certificación</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="descripcion">Descripción (opcional)</label>
+                                <textarea id="descripcion" name="descripcion"><?= htmlspecialchars($curso['Descripcion']) ?></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="requisitos">Requisitos (opcional)</label>
+                                <textarea id="requisitos" name="requisitos"><?= htmlspecialchars($curso['Requisitos']) ?></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <a href="gestionar_cursos.php" class="btn-cancel"><i class="fas fa-times"></i> Cancelar</a>
+                                <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Guardar Cambios</button>
+                            </div>
+                        </form>
+                    </div>
             </div>
         </div>
     </main>

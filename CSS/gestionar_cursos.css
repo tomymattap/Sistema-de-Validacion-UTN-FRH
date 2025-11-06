@@ -6,28 +6,113 @@
     margin: 0 auto;
 }
 
-.menu-lateral {
-    flex: 0 0 200px; /* No crece, no se encoge, base de 200px */
+
+.contenido-principal { flex-grow: 1; }
+
+
+#header-container {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    align-items: center;       /* centra verticalmente */
+    justify-content: space-between; /* separa título y botón */
+    margin-bottom: 1.5rem;
 }
 
-.menu-lateral .menu-btn {
-    width: 100%;
-    padding: 1rem;
-    font-size: 1rem;
+/* Estilo del título */
+#header-container .main-title {
+    font-size: 2rem;
     font-weight: 700;
-    cursor: pointer;
-    border: 1px solid var(--color-principal);
+    color: var(--color-principal);
+    margin: 0;
+}
+
+/* Botones juntos */
+.header-buttons {
+    display: flex;
+    gap: 0.5rem; /* Espacio pequeño entre botones */
+}
+
+/* Botones */
+.header-buttons .menu-btn {
     background-color: white;
     color: var(--color-principal);
+    border: 1px solid var(--color-principal);
+    padding: 0.6rem 1rem;
     border-radius: 6px;
-    text-align: center;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     transition: all 0.3s ease;
 }
-.menu-lateral .menu-btn:hover { background-color: var(--color-principal); color: white; }
-.contenido-principal { flex-grow: 1; }
+
+.header-buttons .menu-btn:hover {
+    background-color: var(--color-principal);
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #header-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .header-buttons {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 0.7rem;
+    }
+}
+
+
+/* --- Botones individuales fuera de header-buttons --- */
+#header-container .menu-btn {
+    background-color: white;
+    color: var(--color-principal);
+    border: 1px solid var(--color-principal);
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+#header-container .menu-btn:hover {
+    background-color: var(--color-principal);
+    color: white;
+    transform: translateY(-1px);
+}
+
+
+.btn-null {
+    background-color: #ffe6e6;
+    color: #a30000;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-null:hover {
+    background-color: #ffcccc;
+}
+
+
+
+
+
+
 
 /* Estilos para los botones de acción en la tabla */
 .actions { 
@@ -257,4 +342,18 @@
 
 .btn-cancel i {
     font-size: 0.95rem;
+}
+
+
+.info-resultados {
+    background-color: #e9f5ff;
+    border: 1px solid #b3e0ff;
+    border-radius: 6px;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    color: #004f66;
+    font-weight: 500;
+}
+.info-resultados strong {
+    color: var(--color-principal);
 }

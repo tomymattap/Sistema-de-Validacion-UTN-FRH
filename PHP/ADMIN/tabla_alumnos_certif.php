@@ -186,7 +186,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <li><a href="../logout.php">Cerrar Sesión</a></li>`;
                     } else if (data.user_rol === 2) { // Alumno
                         // Redirigir si no es admin
-                        window.location.href = '../../index.html';
+                        window.location.href = '../ALUMNO/perfil.php';
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {

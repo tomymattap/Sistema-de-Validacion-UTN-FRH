@@ -1,4 +1,18 @@
-<?php session_start(); ?>
+<?php
+session_start();
+
+// Verificar si el usuario está logueado y es un alumno
+if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 2) {
+    header("Location: ../iniciosesion.php?error=acceso_denegado");
+    exit();
+}
+
+// **BLOQUE DE SEGURIDAD: Forzar cambio de contraseña**
+if (isset($_SESSION['force_password_change'])) {
+    header('Location: cambiar_contrasena_obligatorio.php');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -169,7 +183,7 @@
                             <li><a href="../logout.php">Cerrar Sesión</a></li>`;
                     } else if (data.user_rol === 1) { // Admin
                         // Redirigir si no es alumno
-                        window.location.href = '../ADMIN/verinscriptos.php';
+                        window.location.href = '../ADMIN/gestionarinscriptos.php';
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {

@@ -8,6 +8,12 @@ if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 2) {
     exit();
 }
 
+// **BLOQUE DE SEGURIDAD: Forzar cambio de contraseña**
+if (isset($_SESSION['force_password_change'])) {
+    header('Location: cambiar_contrasena_obligatorio.php');
+    exit();
+}
+
 $user_id = $_SESSION['user_id'];
 
 // Obtener datos del alumno

@@ -9,6 +9,12 @@ if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
     exit;
 }
 
+// **BLOQUE DE SEGURIDAD: Forzar cambio de contraseña**
+if (isset($_SESSION['force_password_change'])) {
+    header('Location: cambiar_contrasena_obligatorio.php');
+    exit;
+}
+
 include("../conexion.php");
 
 // --- Lógica para obtener datos para los filtros ---
@@ -114,7 +120,7 @@ $current_page = 'gestionarinscriptos.php';
                             <li><a href="<?php echo $php_path; ?>ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
                         <?php else: // Alumno ?>
                             <li><a href="<?php echo $php_path; ?>ALUMNO/perfil.php">Mi Perfil</a></li>
-                            <li><a href="<?php echo $php_path; ?>ALUMNO/inscripciones.php">Inscripciones</a></li>
+                            <li><a href="<?php echo $php_path; ?>ALUMNO/inscripciones.php">Inscripciones</a></li> 
                             <li><a href="<?php echo $php_path; ?>ALUMNO/certificaciones.php">Certificaciones</a></li>
                         <?php endif; ?>
                         <li><a href="<?php echo $php_path; ?>logout.php">Cerrar Sesión</a></li>

@@ -12,6 +12,13 @@ $token = $_GET['token'] ?? '';
 $error = null;
 $show_form = false;
 
+// Definir rutas localmente
+$base_path = '../'; // Desde PHP/ a la raíz del proyecto
+$css_path = $base_path . 'CSS/';
+$img_path = $base_path . 'Imagenes/';
+$js_path = $base_path . 'JavaScript/';
+$html_path = $base_path . 'HTML/';
+
 if (empty($token)) {
     die("Token no proporcionado.");
 }
@@ -76,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id_column = ($user_type === 'admin') ? 'Legajo' : 'ID_Cuil_Alumno';
         $id_value = ($user_type === 'admin') ? $user['Legajo'] : $user['ID_Cuil_Alumno'];
 
-        $sql = "UPDATE $table SET Password = ?, reset_token_hash = NULL, reset_token_expires_at = NULL WHERE $id_column = ?";
+        $sql = "UPDATE $table SET Password = ?, reset_token_hash = NULL, reset_token_expires_at = NULL, first_login_done = 1 WHERE $id_column = ?";
         $stmt = $conexion->prepare($sql);
         $stmt->bind_param("ss", $hashed_password, $id_value);
 

@@ -18,6 +18,13 @@ require_once 'conexion.php';
 $error = null;
 $success = null;
 
+// Definir rutas localmente
+$base_path = '../'; // Desde PHP/ a la raíz del proyecto
+$css_path = $base_path . 'CSS/';
+$img_path = $base_path . 'Imagenes/';
+$js_path = $base_path . 'JavaScript/';
+$html_path = $base_path . 'HTML/';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Verificación del token CSRF
     if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {

@@ -13,6 +13,13 @@ if (!isset($_SESSION['activacion_identificador']) || !isset($_SESSION['activacio
     exit;
 }
 
+// Definir rutas localmente
+$base_path = '../'; // Desde PHP/ a la raíz del proyecto
+$css_path = $base_path . 'CSS/';
+$img_path = $base_path . 'Imagenes/';
+$js_path = $base_path . 'JavaScript/';
+$html_path = $base_path . 'HTML/';
+
 require_once 'conexion.php';
 $error = null;
 
@@ -36,9 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         if ($tipo === 'admin') {
-            $stmt = $conexion->prepare("UPDATE admin SET Password = ? WHERE Legajo = ?");
+            $stmt = $conexion->prepare("UPDATE admin SET Password = ? WHERE Legajo = ?"); // Admin no tiene first_login_done
         } else {
-            $stmt = $conexion->prepare("UPDATE alumno SET Password = ? WHERE ID_Cuil_Alumno = ?");
+            $stmt = $conexion->prepare("UPDATE alumno SET Password = ?, first_login_done = 1 WHERE ID_Cuil_Alumno = ?");
         }
 
         $stmt->bind_param("ss", $hashed_password, $identificador);

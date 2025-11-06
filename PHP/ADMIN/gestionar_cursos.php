@@ -170,8 +170,8 @@ $resultado = mysqli_query($conexion, $consulta);
                             <li><a href="gestionaradmin.php">Gestionar Administradores</a></li>
                             <li><a href="../logout.php">Cerrar Sesión</a></li>`;
                     } else if (data.user_rol === 2) { // Alumno
-                        // Redirigir si no es admin
-                        window.location.href = '../../index.html';
+                        // Redirigir si es alumno
+                        window.location.href = '../ALUMNO/perfil.php';
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {

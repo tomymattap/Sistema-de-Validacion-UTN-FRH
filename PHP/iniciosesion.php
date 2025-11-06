@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $is_admin = false;
 
         // Intentar como administrador
-        $stmt_admin = $conexion->prepare("SELECT ID_Admin, Nombre, Legajo, Password, 1 as Rol FROM admin WHERE Legajo = ?");
+        $stmt_admin = $conexion->prepare("SELECT ID_Admin, Nombre, Legajo, Password, first_login_done, 1 as Rol FROM admin WHERE Legajo = ?");
         $stmt_admin->bind_param("s", $login_input);
         $stmt_admin->execute();
         $result = $stmt_admin->get_result();
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Si no es admin, intentar como alumno
         if (!$user) {
-            $stmt_alumno = $conexion->prepare("SELECT ID_Cuil_Alumno, Nombre_Alumno, Apellido_Alumno, Password, 2 as Rol FROM alumno WHERE ID_Cuil_Alumno = ?");
+            $stmt_alumno = $conexion->prepare("SELECT ID_Cuil_Alumno, Nombre_Alumno, Apellido_Alumno, Password, first_login_done, 2 as Rol FROM alumno WHERE ID_Cuil_Alumno = ?");
             $stmt_alumno->bind_param("s", $login_input);
             $stmt_alumno->execute();
             $result = $stmt_alumno->get_result();
@@ -61,15 +61,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Verificar contraseña y establecer sesión
         if ($user && password_verify($password, $user['Password'])) {
             if ($is_admin) {
-                $_SESSION['user_id'] = $user['ID_Admin'];
-                $_SESSION['user_name'] = $user['Nombre'];
-                $_SESSION['user_rol'] = 1; // Rol Admin
-                header('Location: ADMIN/gestionarinscriptos.php');
+                if ($user['first_login_done'] == 0) {
+                    $_SESSION['user_id'] = $user['ID_Admin'];
+                    $_SESSION['force_password_change'] = true;
+                    header('Location: ADMIN/cambiar_contrasena_obligatorio.php');
+                } else {
+                    $_SESSION['user_id'] = $user['ID_Admin'];
+                    $_SESSION['user_name'] = $user['Nombre'];
+                    $_SESSION['user_rol'] = 1; // Rol Admin
+                    header('Location: ADMIN/gestionarinscriptos.php');
+                }
             } else {
-                $_SESSION['user_id'] = $user['ID_Cuil_Alumno'];
-                $_SESSION['user_name'] = $user['Nombre_Alumno'];
-                $_SESSION['user_rol'] = 2; // Rol Alumno
+                if ($user['first_login_done'] == 0) {
+                    // No crear la sesión completa. Solo guardar el ID y la bandera para el cambio.
+                    $_SESSION['user_id'] = $user['ID_Cuil_Alumno'];
+                    $_SESSION['force_password_change'] = true;
+                    header('Location: ALUMNO/cambiar_contrasena_obligatorio.php');
+                } else {
+                    $_SESSION['user_id'] = $user['ID_Cuil_Alumno'];
+                    $_SESSION['user_name'] = $user['Nombre_Alumno'];
+                    $_SESSION['user_rol'] = 2; // Rol Alumno
                 header('Location: ALUMNO/perfil.php');
+                }
             }
             exit;
         } else {

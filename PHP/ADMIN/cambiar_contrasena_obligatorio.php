@@ -1,0 +1,124 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// **BLOQUE DE SEGURIDAD**
+// La única condición para estar aquí es que se haya iniciado sesión por primera vez
+// y se deba forzar el cambio de contraseña.
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['force_password_change'])) {
+    header('Location: ../iniciosesion.php');
+    exit;
+}
+
+// Generar token CSRF si no existe
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrf_token = $_SESSION['csrf_token'];
+
+// Definir rutas localmente
+$base_path = '../../';
+$css_path = $base_path . 'CSS/';
+$img_path = $base_path . 'Imagenes/';
+
+require_once '../conexion.php';
+$error = null;
+$success = null;
+
+$user_id = $_SESSION['user_id']; // Aquí user_id es el ID_Admin
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        $error = "Error de validación. Por favor, intente de nuevo.";
+    }
+
+    $current_password = $_POST['current_password'] ?? '';
+    $new_password = $_POST['new_password'] ?? '';
+    $new_password_confirm = $_POST['new_password_confirm'] ?? '';
+
+    if (!$error && (empty($current_password) || empty($new_password) || empty($new_password_confirm))) {
+        $error = "Todos los campos de contraseña son obligatorios.";
+    } elseif ($new_password !== $new_password_confirm) {
+        $error = "La nueva contraseña y su confirmación no coinciden.";
+    } else {
+        $stmt = $conexion->prepare("SELECT Password FROM admin WHERE ID_Admin = ?");
+        $stmt->bind_param("s", $user_id);
+        $stmt->execute();
+        $user = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+
+        if ($user && password_verify($current_password, $user['Password'])) {
+            $hashed_new_password = password_hash($new_password, PASSWORD_DEFAULT);
+
+            $stmt_update = $conexion->prepare("UPDATE admin SET Password = ?, first_login_done = 1 WHERE ID_Admin = ?");
+            $stmt_update->bind_param("ss", $hashed_new_password, $user_id);
+
+            if ($stmt_update->execute()) {
+                // --- COMPLETAR EL INICIO DE SESIÓN ---
+                $stmt_get_data = $conexion->prepare("SELECT Nombre FROM admin WHERE ID_Admin = ?");
+                $stmt_get_data->bind_param("s", $user_id);
+                $stmt_get_data->execute();
+                $user_data = $stmt_get_data->get_result()->fetch_assoc();
+                
+                $_SESSION['user_name'] = $user_data['Nombre'];
+                $_SESSION['user_rol'] = 1; // Establecer el rol de admin
+                unset($_SESSION['force_password_change']);
+                
+                $success = "Su contraseña ha sido actualizada. Será redirigido al panel de administración.";
+                header('Refresh: 3; URL=gestionarinscriptos.php');
+            } else {
+                $error = "Hubo un error al actualizar su contraseña.";
+            }
+            $stmt_update->close();
+        } else {
+            $error = "La contraseña actual (su legajo) es incorrecta.";
+        }
+    }
+    $conexion->close();
+}
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambio de Contraseña Obligatorio - Admin</title>
+    <link rel="stylesheet" href="<?php echo $css_path; ?>general.css">
+    <link rel="stylesheet" href="<?php echo $css_path; ?>iniciosesion.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo"><a href="<?php echo $base_path; ?>index.html"><img src="<?php echo $img_path; ?>UTNLogo.png" alt="Logo UTN FRH"></a></div>
+            <div class="session-controls" style="display: block;"><a href="../logout.php" class="btn-sesion">Cerrar Sesión</a></div>
+        </div>
+    </header>
+    <main class="login-page">
+        <div class="login-container">
+            <h1 class="login-title">Cambiar Contraseña de Administrador</h1>
+            <p style="text-align: center; margin-bottom: 1.5rem;">Por seguridad, debe cambiar su contraseña inicial.</p>
+
+            <?php if ($error) echo "<div class='error-message'>" . htmlspecialchars($error) . "</div>"; ?>
+            <?php if ($success) echo "<div class='success-message' style='background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 1rem; margin-bottom: 1rem; border-radius: 5px;'>" . htmlspecialchars($success) . "</div>"; ?>
+
+            <form class="login-form" action="cambiar_contrasena_obligatorio.php" method="POST">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
+                <div class="form-group">
+                    <label for="current_password">Contraseña Actual (su Legajo)</label>
+                    <input type="password" id="current_password" name="current_password" placeholder="Ingrese su Legajo" required>
+                </div>
+                <div class="form-group">
+                    <label for="new_password">Nueva Contraseña</label>
+                    <input type="password" id="new_password" name="new_password" placeholder="Ingrese su nueva contraseña" required>
+                </div>
+                <div class="form-group">
+                    <label for="new_password_confirm">Confirmar Nueva Contraseña</label>
+                    <input type="password" id="new_password_confirm" name="new_password_confirm" placeholder="Confirme su nueva contraseña" required>
+                </div>
+                <button type="submit" class="submit-btn">CAMBIAR CONTRASEÑA</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

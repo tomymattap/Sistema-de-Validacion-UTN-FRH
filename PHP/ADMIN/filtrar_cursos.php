@@ -7,61 +7,83 @@ $modalidades = mysqli_query($conexion, "SELECT DISTINCT Modalidad FROM curso ORD
 $categorias = mysqli_query($conexion, "SELECT DISTINCT Categoria FROM curso ORDER BY Categoria");
 $tipos = mysqli_query($conexion, "SELECT DISTINCT Tipo FROM curso ORDER BY Tipo");
 
+// Obtener los filtros enviados por GET
 $filtro_general = isset($_GET['filtro_general']) ? mysqli_real_escape_string($conexion, $_GET['filtro_general']) : '';
 $modalidad = isset($_GET['modalidad']) ? mysqli_real_escape_string($conexion, $_GET['modalidad']) : '';
 $categoria = isset($_GET['categoria']) ? mysqli_real_escape_string($conexion, $_GET['categoria']) : '';
 $tipo = isset($_GET['tipo']) ? mysqli_real_escape_string($conexion, $_GET['tipo']) : '';
+$ver_sin_docente = isset($_GET['sin_docente']); // <-- nuevo botón
 
-$where_clauses = [];
-$params = [];
-$types = '';
+// Si se presiona el botón "Ver cursos sin docente"
+if ($ver_sin_docente) {
 
-if (!empty($filtro_general)) {
-    $like_term = "%" . $filtro_general . "%";
-    $where_clauses[] = "(Nombre_Curso LIKE ? OR Docente LIKE ? OR Modalidad LIKE ? OR Categoria LIKE ? OR Tipo LIKE ?)";
-    for ($i = 0; $i < 5; $i++) {
-        $params[] = &$like_term;
-        $types .= 's';
-    }
-}
-
-if (!empty($modalidad)) {
-    $where_clauses[] = "Modalidad = ?";
-    $params[] = &$modalidad;
-    $types .= 's';
-}
-
-if (!empty($categoria)) {
-    $where_clauses[] = "Categoria = ?";
-    $params[] = &$categoria;
-    $types .= 's';
-}
-
-if (!empty($tipo)) {
-    $where_clauses[] = "Tipo = ?";
-    $params[] = &$tipo;
-    $types .= 's';
-}
-
-$consulta_sql = "SELECT * FROM curso";
-if (!empty($where_clauses)) {
-    $consulta_sql .= " WHERE " . implode(' AND ', $where_clauses);
-}
-$consulta_sql .= " ORDER BY ID_Curso";
-
-$stmt = mysqli_prepare($conexion, $consulta_sql);
-
-if ($stmt) {
-    if (!empty($params)) {
-        mysqli_stmt_bind_param($stmt, $types, ...$params);
-    }
+    $consulta_sql = "SELECT * FROM curso WHERE Docente = '' ";
+    $stmt = mysqli_prepare($conexion, $consulta_sql);
     mysqli_stmt_execute($stmt);
     $resultado = mysqli_stmt_get_result($stmt);
+
 } else {
-    $resultado = false;
+    // --- CONSULTA NORMAL CON FILTROS ---
+
+    $where_clauses = [];
+    $params = [];
+    $types = '';
+
+    // Filtro general
+    if (!empty($filtro_general)) {
+        $like_term = "%" . $filtro_general . "%";
+        $where_clauses[] = "(Nombre_Curso LIKE ? OR Docente LIKE ? OR Modalidad LIKE ? OR Categoria LIKE ? OR Tipo LIKE ?)";
+        for ($i = 0; $i < 5; $i++) {
+            $params[] = &$like_term;
+            $types .= 's';
+        }
+    }
+
+    // Filtros específicos
+    if (!empty($modalidad)) {
+        $where_clauses[] = "Modalidad = ?";
+        $params[] = &$modalidad;
+        $types .= 's';
+    }
+
+    if (!empty($categoria)) {
+        $where_clauses[] = "Categoria = ?";
+        $params[] = &$categoria;
+        $types .= 's';
+    }
+
+    if (!empty($tipo)) {
+        $where_clauses[] = "Tipo = ?";
+        $params[] = &$tipo;
+        $types .= 's';
+    }
+
+    // Construcción final de la consulta
+    $consulta_sql = "SELECT * FROM curso";
+    if (!empty($where_clauses)) {
+        $consulta_sql .= " WHERE " . implode(' AND ', $where_clauses);
+    }
+    $consulta_sql .= " ORDER BY ID_Curso";
+
+    // Preparar y ejecutar
+    $stmt = mysqli_prepare($conexion, $consulta_sql);
+
+    if ($stmt) {
+        if (!empty($params)) {
+            mysqli_stmt_bind_param($stmt, $types, ...$params);
+        }
+        mysqli_stmt_execute($stmt);
+        $resultado = mysqli_stmt_get_result($stmt);
+    } else {
+        $resultado = false;
+    }
 }
 
+// Calcular la cantidad de cursos encontrados
+$totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
+
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -115,12 +137,13 @@ if ($stmt) {
 
     <main class="admin-section" style="padding-top: 2rem; padding-bottom: 2rem;">
         <div class="gestion-cursos-container">
-            <aside class="menu-lateral">
-                <a href="gestionar_cursos.php" class="menu-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
-            </aside>
-
+            
             <div class="contenido-principal">
-                <h1 class="main-title">Filtrar Cursos</h1>
+                
+                <div id="header-container">
+                    <h1 class="main-title">Filtrar Cursos</h1>
+                    <a href="gestionar_cursos.php" class="menu-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
+                </div>
 
                 <div class="filters-container filter-courses-container">
                     <form method="get" action="filtrar_cursos.php" class="filter-form">
@@ -158,11 +181,32 @@ if ($stmt) {
                         <div class="search-group">
                             <button type="submit" id="filter-btn" style="width: auto;"><i class="fas fa-filter"></i> Filtrar</button>
                             <a href="filtrar_cursos.php" id="reset-btn"><i class="fas fa-undo"></i> Limpiar</a>
+
+                            <button type="submit" name="sin_docente" value="1" id="null-btn" class="btn-null">
+                                <i class="fas fa-user-slash"></i> Ver cursos sin docente
+                            </button>
+
                         </div>
                     </form>
                 </div>
 
                 <div class="results-container">
+
+                    <?php $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0; ?>
+
+                    <div class="info-resultados">
+                        <?php if (isset($_GET['sin_docente'])): ?>
+                            <p>Se encontraron <strong><?= $totalCursos ?></strong> cursos sin docente asignado.</p>
+                        <?php elseif ($totalCursos > 0): ?>
+                            <p>Se encontraron <strong><?= $totalCursos ?></strong> cursos con los filtros aplicados.</p>
+                        <?php else: ?>
+                            <p>No se encontraron cursos con los filtros seleccionados.</p>
+                        <?php endif; ?>
+                    </div>
+
+
+                    
+
                     <table id="tabla-cursos">
                         <thead>
                             <tr>
@@ -231,7 +275,7 @@ if ($stmt) {
                             <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                             <div class="dropdown-menu">
                                 <ul>
-                                    <li><a href="verinscriptos.php">Ver Inscriptos</a></li>
+                                    <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
                                     <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                                     <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
                                     <li><a href="../logout.php">Cerrar Sesión</a></li>

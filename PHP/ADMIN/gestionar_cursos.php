@@ -73,14 +73,22 @@ $resultado = mysqli_query($conexion, $consulta);
 
     <main class="admin-section" style="padding-top: 2rem; padding-bottom: 2rem;">
         <div class="gestion-cursos-container">
-            <aside class="menu-lateral">
-                <a href="agregar_curso.php" class="menu-btn"><i class="fas fa-plus"></i> AGREGAR</a>
-                <a href="filtrar_cursos.php" class="menu-btn"><i class="fas fa-filter"></i> FILTRAR</a>
-                <button class="menu-btn"><i class="fas fa-file-csv"></i> SUBIR CSV</button>
-            </aside>
+            
 
             <div class="contenido-principal">
-                <h1 class="main-title">Gestión de Cursos</h1>
+
+                <div id="header-container">
+                    <h1 class="main-title">Gestión de Cursos</h1>
+                    
+                    <div class="header-buttons">
+                        <a href="agregar_curso.php" class="menu-btn"><i class="fas fa-plus"></i> AGREGAR</a>
+                        <a href="filtrar_cursos.php" class="menu-btn"><i class="fas fa-filter"></i> FILTRAR</a>
+                        <a href="filtrar_cursos.php" class="menu-btn"><i class="fas fa-file-csv"></i> COMPARTIR FORMULARIO</a>
+                        
+                    </div>
+
+                </div>
+                
 
                 <div class="filters-container">
                     <form method="get" action="gestionar_cursos.php" class="filter-form">
@@ -159,7 +167,6 @@ $resultado = mysqli_query($conexion, $consulta);
                                     <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
                                     <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                                     <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                                    <li><a href="gestionaradmin.php">Gestionar Administradores</a></li>
                                     <li><a href="../logout.php">Cerrar Sesión</a></li>
                                 </ul>
                             </div>`;
@@ -167,11 +174,10 @@ $resultado = mysqli_query($conexion, $consulta);
                             <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
                             <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                            <li><a href="gestionaradmin.php">Gestionar Administradores</a></li>
                             <li><a href="../logout.php">Cerrar Sesión</a></li>`;
                     } else if (data.user_rol === 2) { // Alumno
-                        // Redirigir si es alumno
-                        window.location.href = '../ALUMNO/perfil.php';
+                        // Redirigir si no es admin
+                        window.location.href = '../../index.html';
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {

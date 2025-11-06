@@ -36,20 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ID_Curso'])) {
         } catch (Exception $e) {
             // Revertir la transacción en caso de error
             mysqli_rollback($conexion);
-            
-            // Mostrar un mensaje de error amigable usando la plantilla
-            $page_title = 'Error al Eliminar Curso';
-            include('../header.php');
-            echo '<main class="admin-section" style="padding: 2rem;">';
-            echo '<div class="admin-container">';
-            echo '<h1 class="main-title">Error al eliminar el curso</h1>';
-            echo '<div class="error-message" style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">';
-            echo htmlspecialchars($e->getMessage());
-            echo '</div>';
-            echo '<a href="gestionar_cursos.php" class="btn" style="background-color: var(--color-principal); color: white;">Volver a Gestión de Cursos</a>';
-            echo '</div></main>';
-            include('../footer.php');
-            exit;
+            die('Error: ' . $e->getMessage() . ' <a href="gestionar_cursos.php">Volver</a>');
         }
     }
 }

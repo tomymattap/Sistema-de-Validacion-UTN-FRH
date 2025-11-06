@@ -1,48 +1,86 @@
 <?php
-$page_title = 'Gestionar Cursos - Admin';
-$extra_styles = ['verinscriptos.css', 'gestionar_cursos.css'];
-include('../header.php');
-
-// La validación de sesión ya está en el header
-if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
-    echo '<script>window.location.href = "' . htmlspecialchars($base_path) . 'PHP/iniciosesion.php?error=acceso_denegado";</script>';
-    exit;
-}
-
+session_start();
 include("../conexion.php");
 
-// Manejo de la búsqueda con sentencias preparadas para prevenir SQL Injection
-$search_term = isset($_GET['search']) ? $_GET['search'] : '';
-$consulta = "SELECT * FROM curso";
+// Manejo de la búsqueda
+$search_term = isset($_GET['search']) ? mysqli_real_escape_string($conexion, $_GET['search']) : '';
+$where_sql = '';
 if (!empty($search_term)) {
-    $consulta .= " WHERE ID_Curso LIKE ? OR Nombre_Curso LIKE ?";
-    $stmt = $conexion->prepare($consulta);
-    $search_param = "%" . $search_term . "%";
-    $stmt->bind_param("ss", $search_param, $search_param);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-} else {
-    $resultado = mysqli_query($conexion, $consulta);
+    // Busca coincidencias en el ID o en el nombre del curso
+    $where_sql = "WHERE ID_Curso LIKE '%$search_term%' OR Nombre_Curso LIKE '%$search_term%'";
 }
+
+// Consulta para obtener los cursos, filtrados si hay un término de búsqueda
+$consulta = "SELECT * FROM curso $where_sql ORDER BY ID_Curso";
+$resultado = mysqli_query($conexion, $consulta);
 ?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Cursos - Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../../CSS/general.css"> <!-- Estilos generales -->
+    <link rel="stylesheet" href="../../CSS/verinscriptos.css"> <!-- Estilos para tablas -->
+    <link rel="stylesheet" href="../../CSS/gestionar_cursos.css"> <!-- Estilos específicos de esta página -->
+</head>
+<body class="fade-in">
+    <div class="preloader">
+        <div class="spinner"></div>
+    </div>
+
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="../../index.html"><img src="../../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../../index.html">VALIDAR</a></li>
+                    <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
+                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
+                </ul>
+            </nav>
+            <div class="session-controls" id="session-controls">
+                <!-- Contenido dinámico por JS -->
+            </div>
+            <button class="hamburger-menu" aria-label="Abrir menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Menú Off-canvas -->
+    <div class="off-canvas-menu" id="off-canvas-menu">
+        <button class="close-btn" aria-label="Cerrar menú">&times;</button>
+        <nav>
+            <ul>
+                <li><a href="../../index.html">VALIDAR</a></li>
+                <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
+                <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
+            </ul>
+        </nav>
+    </div>
+
     <main class="admin-section" style="padding-top: 2rem; padding-bottom: 2rem;">
         <div class="gestion-cursos-container">
-            
+            <aside class="menu-lateral">
+                <a href="agregar_curso.php" class="menu-btn"><i class="fas fa-plus"></i> AGREGAR</a>
+                <a href="filtrar_cursos.php" class="menu-btn"><i class="fas fa-filter"></i> FILTRAR</a>
+                <button class="menu-btn"><i class="fas fa-file-csv"></i> SUBIR CSV</button>
+            </aside>
 
             <div class="contenido-principal">
-
-                <div id="header-container">
-                    <h1 class="main-title">Gestión de Cursos</h1>
-                    
-                    <div class="header-buttons">
-                        <a href="agregar_curso.php" class="menu-btn"><i class="fas fa-plus"></i> AGREGAR</a>
-                        <a href="filtrar_cursos.php" class="menu-btn"><i class="fas fa-filter"></i> FILTRAR</a>
-                        <a href="filtrar_cursos.php" class="menu-btn"><i class="fas fa-file-csv"></i> COMPARTIR FORMULARIO</a>
-                        
-                    </div>
-
-                </div>
-                
+                <h1 class="main-title">Gestión de Cursos</h1>
 
                 <div class="filters-container">
                     <form method="get" action="gestionar_cursos.php" class="filter-form">
@@ -76,8 +114,8 @@ if (!empty($search_term)) {
                                         <td><?= htmlspecialchars($fila['Categoria']); ?></td>
                                         <td><?= htmlspecialchars($fila['Tipo']); ?></td>
                                         <td class="actions">
-                                            <a href="editar_curso.php?id=<?= htmlspecialchars($fila['ID_Curso']) ?>" class="btn-edit" title="Editar"><i class="fas fa-pencil-alt"></i></a>
-                                            <a href="confirmar_eliminar_curso.php?id=<?= htmlspecialchars($fila['ID_Curso']) ?>" class="btn-delete" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
+                                            <a href="editar_curso.php?id=<?= $fila['ID_Curso'] ?>" class="btn-edit" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                            <a href="confirmar_eliminar_curso.php?id=<?= $fila['ID_Curso'] ?>" class="btn-delete" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
                                         </td>
                                     </tr>
                                 <?php endwhile; ?>
@@ -92,7 +130,59 @@ if (!empty($search_term)) {
             </div>
         </div>
     </main>
+    
 
-<?php
-include('../footer.php');
-?>
+    <footer class="site-footer">
+        <!-- Contenido del pie de página -->
+    </footer>
+
+    <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <script src="../../JavaScript/general.js"></script>
+    <script>
+        fetch('../get_user_name.php')
+            .then(response => response.json())
+            .then(data => {
+                const sessionControls = document.getElementById('session-controls');
+                const mobileNav = document.querySelector('.off-canvas-menu nav ul');
+                let sessionHTML = '';
+
+                if (data.user_name) {
+                    let dropdownMenu;
+                    if (data.user_rol === 1) { // Admin
+                        dropdownMenu = `
+                            <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
+                            <div class="dropdown-menu">
+                                <ul>
+                                    <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                                    <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
+                                    <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                    <li><a href="gestionaradmin.php">Gestionar Administradores</a></li>
+                                    <li><a href="../logout.php">Cerrar Sesión</a></li>
+                                </ul>
+                            </div>`;
+                        sessionHTML = `
+                            <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                            <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
+                            <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                            <li><a href="gestionaradmin.php">Gestionar Administradores</a></li>
+                            <li><a href="../logout.php">Cerrar Sesión</a></li>`;
+                    } else if (data.user_rol === 2) { // Alumno
+                        // Redirigir si no es admin
+                        window.location.href = '../../index.html';
+                    }
+                    sessionControls.innerHTML = dropdownMenu;
+                } else {
+                    // Redirigir si no está logueado
+                    window.location.href = '../iniciosesion.php';
+                }
+
+                // Añadir al menú móvil
+                const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');
+                mobileMenuUl.insertAdjacentHTML('beforeend', sessionHTML);
+            });
+    </script>
+</body>
+</html>

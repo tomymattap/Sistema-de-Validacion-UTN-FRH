@@ -1,9 +1,13 @@
 <?php
-$page_title = 'Restablecer Contraseña - UTN FRH';
-$extra_styles = ['iniciosesion.css'];
-include('header.php');
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrf_token = $_SESSION['csrf_token'];
 
-require_once 'conexion.php'; // La conexión a la BD
+require_once 'conexion.php';
 $token = $_GET['token'] ?? '';
 $error = null;
 $show_form = false;
@@ -85,6 +89,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restablecer Contraseña - UTN FRH</title>
+    <link rel="stylesheet" href="../CSS/general.css">
+    <link rel="stylesheet" href="../CSS/iniciosesion.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="../index.html"><img src="../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
+            </div>
+        </div>
+    </header>
     <main class="login-page">
         <div class="login-container">
             <h1 class="login-title">Restablecer Contraseña</h1>
@@ -107,6 +129,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
         </div>
     </main>
-<?php
-include('footer.php');
-?>
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-info" style="text-align: center; width: 100%;">
+                <p>París 532, Haedo (1706) | Buenos Aires, Argentina</p>
+                <p>extension@frh.utn.edu.ar</p>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Script para mostrar/ocultar contraseña
+        document.querySelectorAll('.password-wrapper i').forEach(icon => {
+            icon.addEventListener('click', function () {
+                const input = this.previousElementSibling;
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+                input.type = input.type === 'password' ? 'text' : 'password';
+            });
+        });
+    </script>
+</body>
+</html>

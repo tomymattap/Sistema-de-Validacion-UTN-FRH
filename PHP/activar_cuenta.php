@@ -1,9 +1,11 @@
 <?php
-$page_title = 'Crear Contraseña - UTN FRH';
-$extra_styles = ['iniciosesion.css'];
-include('header.php');
-
-require_once 'conexion.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrf_token = $_SESSION['csrf_token'];
 
 // Si el usuario no pasó por la página de registro, no puede estar aquí.
 if (!isset($_SESSION['activacion_identificador']) || !isset($_SESSION['activacion_tipo'])) {
@@ -11,6 +13,7 @@ if (!isset($_SESSION['activacion_identificador']) || !isset($_SESSION['activacio
     exit;
 }
 
+require_once 'conexion.php';
 $error = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -55,6 +58,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Contraseña - UTN FRH</title>
+    <link rel="stylesheet" href="../CSS/general.css">
+    <link rel="stylesheet" href="../CSS/iniciosesion.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="../index.html"><img src="../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
+            </div>
+        </div>
+    </header>
     <main class="login-page">
         <div class="login-container">
             <h1 class="login-title">Crear Contraseña</h1>
@@ -85,7 +106,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </main>
 
-<?php
-$extra_scripts = ['iniciosesion.js']; // Reutilizamos el script para mostrar/ocultar contraseña
-include('footer.php');
-?>
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-info" style="text-align: center; width: 100%;">
+                <p>París 532, Haedo (1706) | Buenos Aires, Argentina</p>
+                <p>extension@frh.utn.edu.ar</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Script para mostrar/ocultar contraseña
+        document.querySelectorAll('.password-wrapper i').forEach(icon => {
+            icon.addEventListener('click', function () {
+                const input = this.previousElementSibling;
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+                input.type = input.type === 'password' ? 'text' : 'password';
+            });
+        });
+    </script>
+</body>
+</html>

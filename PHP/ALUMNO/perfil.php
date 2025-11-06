@@ -192,7 +192,7 @@ $conexion->close();
                             <li><a href="../logout.php">Cerrar Sesión</a></li>`;
                     } else if (data.user_rol === 1) { // Admin
                         // Redirigir si no es alumno
-                        window.location.href = '../ADMIN/verinscriptos.php';
+                        window.location.href = '../ADMIN/gestionarinscriptos.php';
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {

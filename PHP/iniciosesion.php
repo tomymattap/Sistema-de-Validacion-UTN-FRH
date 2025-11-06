@@ -1,12 +1,18 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Generar token CSRF si no existe
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrf_token = $_SESSION['csrf_token'];
+
 // Redirige si el usuario ya ha iniciado sesión
 if (isset($_SESSION['user_rol'])) {
-    if ($_SESSION['user_rol'] == 1) { // Admin
-        header('Location: ADMIN/gestionarinscriptos.php');
-    } else { // Alumno
-        header('Location: ALUMNO/perfil.php');
-    }
+    $redirect_url = ($_SESSION['user_rol'] == 1) ? 'ADMIN/gestionarinscriptos.php' : 'ALUMNO/perfil.php';
+    header('Location: ' . $redirect_url);
     exit;
 }
 
@@ -14,10 +20,15 @@ require_once 'conexion.php';
 $error = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verificación del token CSRF
+    if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        $error = "Error de validación. Por favor, intente de nuevo.";
+    }
+
     $login_input = $_POST['login-input'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    if (empty($login_input) || empty($password)) {
+    if (!$error && (empty($login_input) || empty($password))) {
         $error = "El legajo/CUIL y la contraseña son obligatorios.";
     } else {
         $user = null;
@@ -48,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Verificar contraseña y establecer sesión
-        if ($user && ($password == $user['Password'])) { // Se mantiene la comparación directa según el código existente
+        if ($user && password_verify($password, $user['Password'])) {
             if ($is_admin) {
                 $_SESSION['user_id'] = $user['ID_Admin'];
                 $_SESSION['user_name'] = $user['Nombre'];
@@ -71,15 +82,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión - UTN FRH</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/iniciosesion.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iniciar Sesión - UTN FRH</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="../CSS/general.css">
+<link rel="stylesheet" href="../CSS/iniciosesion.css">
 </head>
 <body>
 
@@ -129,6 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
             <?php endif; ?>
             <form class="login-form" action="iniciosesion.php" method="POST">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 <div class="form-group">
                     <label for="login-input">Legajo (Admin) o CUIL (Alumno)</label>
                     <input type="text" id="login-input" name="login-input" placeholder="Ingrese su Legajo o CUIL" required>
@@ -141,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
                 <div class="form-options">
-                    <a href="#" class="forgot-password">¿Olvidó su contraseña?</a>
+                    <a href="olvido_contrasena.php" class="forgot-password">¿Olvidó su contraseña?</a>
                 </div>
                 <button type="submit" class="submit-btn">ACCEDER</button>
             </form>

@@ -169,18 +169,26 @@
                             footerMenu = `
                                 <h4>Admin</h4>
                                 <ul>
+                                    <br>
                                     <li><a href="PHP/ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                                    <br>
                                     <li><a href="PHP/ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                                    <br>
                                     <li><a href="PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                    <br>
                                     <li><a href="PHP/ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
                                 </ul>`;
 
                         } else if (data.user_rol === 2) { // Alumno
                             desktopDropdownMenu = `
                                 ${desktopMenu}
+                                <br>
                                 <li><a href="PHP/ALUMNO/perfil.php">Mi Perfil</a></li>
+                                <br>
                                 <li><a href="PHP/ALUMNO/inscripciones.php">Inscripciones</a></li>
+                                <br>
                                 <li><a href="PHP/ALUMNO/certificaciones.php">Certificaciones</a></li>
+                                <br>
                                 <li><a href="PHP/logout.php">Cerrar Sesión</a></li>
                             </ul></div>`;
 

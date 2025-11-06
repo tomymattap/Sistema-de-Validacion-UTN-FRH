@@ -17,11 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
         footerDynamicNav.innerHTML = '';
 
         const currentPage = window.location.pathname.split('/').pop();
-        const loginPagePath = currentPage.includes('index.html') || currentPage === '' ? 'HTML/iniciosesion.html' : 'iniciosesion.html';
+        const loginPagePath = currentPage.includes('index.html') || currentPage === '' ? 'HTML/iniciosesion.php' : 'iniciosesion.php';
 
         if (user.role === 'GUEST') {
             // Header
-            sessionControls.innerHTML = `<a href="${loginPagePath}" class="session-btn">Iniciar Sesión</a>`;
+            sessionControls.innerHTML = `<a href="${loginPagePath}" class="btn-sesion">Iniciar Sesión</a>`;
             
             // Footer
             footerDynamicNav.innerHTML = `
@@ -33,15 +33,15 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         } else {
             let menuItems = '';
-            let footerItems = '';
             let roleName = '';
 
             if (user.role === 'ADMIN') {
                 roleName = 'ADMIN';
                 menuItems = `
-                    <li><a href="#ver-inscriptos">Ver Inscriptos</a></li>
+                    <li><a href="#gestionarinscriptos">Gesionar Inscriptos</a></li>
                     <li><a href="#gestionar-cursos">Gestionar Cursos</a></li>
                     <li><a href="#emitir-certificados">Emitir Certificados</a></li>
+                    <li><a href="#gestionaradmins">Gestionar Administradores</a></li>
                 `;
             } else if (user.role === 'ALUMNO') {
                 roleName = 'ALUMNO';

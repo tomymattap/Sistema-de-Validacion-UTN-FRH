@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             duration: document.getElementById('course-duration').value,
             modality: document.getElementById('course-modality').value,
             requirements: document.getElementById('course-requirements').value,
-            image: '' // Handle image upload separately
+            image: ''
         };
 
         if (id) {

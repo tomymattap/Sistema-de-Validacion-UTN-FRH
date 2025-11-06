@@ -1,72 +1,100 @@
-/* Estilos para la tabla de certificaciones */
+/*
+    ARCHIVO: certificaciones.css
+    DESCRIPCIÓN: Estilos para la página de certificaciones del alumno.
+    Define la apariencia de la tabla que lista los certificados obtenidos.
+*/
+
+/* -------------------------------------------
+    Contenedor Principal de la Tabla
+------------------------------------------- */
 
 .certificaciones-table-container {
-    max-width: 1400px;
-    width: 90%;
-    margin: 2rem auto;
-    overflow-x: auto;
+    max-width: 1400px; /* Ancho máximo del contenedor */
+    width: 90%; /* Ancho relativo para responsividad */
+    margin: 2rem auto; /* Centrado horizontal y espaciado vertical */
+    overflow-x: auto; /* Permite scroll horizontal si la tabla es muy ancha */
 }
 
+/* Título y párrafo centrados por defecto */
 .certificaciones-table-container h1,
 .certificaciones-table-container p {
     text-align: center;
 }
 
+/* -------------------------------------------
+    Estilos de la Tabla de Certificaciones
+------------------------------------------- */
+
 table.certificaciones {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: collapse; /* Une los bordes de las celdas */
     margin-top: 1rem;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    overflow: hidden;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1); /* Sombra para dar profundidad */
+    border-radius: 8px; /* Bordes redondeados */
+    overflow: hidden; /* Asegura que el contenido respete los bordes redondeados */
 }
 
+/* Cabecera de la tabla */
 table.certificaciones thead {
-    background-color: var(--color-principal);
-    color: var(--color-blanco);
+    background-color: var(--color-principal); /* Color de fondo definido en general.css */
+    color: var(--color-blanco); /* Color de texto definido en general.css */
 }
 
+/* Celdas de la cabecera (th) y del cuerpo (td) */
 table.certificaciones th, table.certificaciones td {
     padding: 1rem;
     text-align: center;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #ddd; /* Línea divisoria entre filas */
     font-size: 0.9rem;
 }
 
+/* Colorea las filas pares para mejorar la legibilidad */
 table.certificaciones tbody tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
+/* Efecto hover sobre las filas para resaltar la selección */
 table.certificaciones tbody tr:hover {
     background-color: #e9ecef;
 }
 
+/* -------------------------------------------
+    Estilos de los Botones de Acción
+------------------------------------------- */
+
 .action-btn {
-    background-color: var(--color-secundario-2);
+    background-color: var(--color-secundario-2); /* Color de fondo */
     color: var(--color-blanco);
     padding: 0.5rem 1rem;
     border: none;
-    border-radius: 20px;
+    border-radius: 20px; /* Botón con bordes redondeados */
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s; /* Transición suave para el color de fondo */
     font-size: 0.9rem;
 }
 
 .action-btn:hover {
-    background-color: #7ab830;
+    background-color: #7ab830; /* Color de fondo al pasar el mouse */
 }
 
+/* -------------------------------------------
+    Ajustes para Dispositivos Medianos y Grandes
+------------------------------------------- */
+
 @media (min-width: 768px) {
+    /* Alinea el texto a la izquierda en pantallas más grandes */
     .certificaciones-table-container h1,
     .certificaciones-table-container p {
         text-align: left;
     }
 
+    /* Aumenta el tamaño de la fuente para mejorar la legibilidad */
     table.certificaciones th, table.certificaciones td {
         font-size: 1rem;
-    }\n
+    }
+
     .action-btn {
         font-size: 1rem;
     }

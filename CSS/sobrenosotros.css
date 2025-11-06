@@ -1,5 +1,14 @@
-/* Estilos de la Página Sobre Nosotros */
+/*
+    ARCHIVO: sobrenosotros.css
+    DESCRIPCIÓN: Estilos específicos para la página "Sobre Nosotros".
+    Define la apariencia del texto informativo, los títulos y las animaciones de entrada.
+*/
 
+/* -------------------------------------------
+    Animaciones y Contenedor Principal
+------------------------------------------- */
+
+/* Animación para que los elementos aparezcan desde abajo */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -16,19 +25,25 @@
     padding: 2rem 1rem;
 }
 
+/* Contenedor que limita el ancho del contenido */
 .content-wrapper {
     max-width: 900px;
-    margin: 0 auto;
+    margin: 0 auto; /* Centrado horizontal */
 }
 
+/* -------------------------------------------
+    Títulos y Contenido de Texto
+------------------------------------------- */
+
+/* Aplica la animación a los títulos y párrafos */
 .main-title, .subtitle, .text-content p {
-    opacity: 0; /* Inicialmente invisibles */
-    animation: fadeInUp 0.8s ease-out forwards; /* Animación para todos */
+    opacity: 0; /* Inicialmente invisibles para la animación */
+    animation: fadeInUp 0.8s ease-out forwards;
 }
 
 .main-title {
     font-size: 2rem;
-    font-weight: 700; /* Negrita */
+    font-weight: 700;
     margin-bottom: 0.5rem;
     text-align: left;
 }
@@ -38,32 +53,38 @@
     font-weight: 400;
     margin-bottom: 2rem;
     text-align: left;
-    animation-delay: 0.2s; /* Retraso para el subtítulo */
+    animation-delay: 0.2s; /* Retraso para que aparezca después del título */
 }
 
 .text-content {
-    color: #00455C; /* Color de texto solicitado */
+    color: #00455C; /* Color de texto principal */
     font-size: 1rem;
-    line-height: 1.7;
+    line-height: 1.7; /* Espaciado entre líneas para mejor legibilidad */
 }
 
 .text-content p {
     margin-bottom: 0.5rem;
 }
 
-/* Retrasos en cascada para los párrafos */
+/* Retrasos de animación en cascada para los párrafos */
 .text-content p:nth-child(1) { animation-delay: 0.4s; }
 .text-content p:nth-child(2) { animation-delay: 0.6s; }
 .text-content p:nth-child(3) { animation-delay: 0.8s; }
 
+/* Título de la sección de organigrama */
 .courses-title {
     margin-top: 3rem;
-    animation-delay: 1s; /* Aparece al final */
+    animation-delay: 1s; /* Aparece al final de las animaciones anteriores */
 }
 
+/* Estilo para los enlaces de correo electrónico */
 .email-link {
     color: #537b89;
 }
+
+/* -------------------------------------------
+    Ajustes para Dispositivos Medianos y Grandes
+------------------------------------------- */
 
 @media (min-width: 768px) {
     .about-us-section {

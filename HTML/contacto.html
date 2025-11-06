@@ -4,31 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacto - UTN FRH</title>
+
+    <!-- Carga de fuentes y librerías de íconos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/contacto.css">
+
+    <!-- Hojas de estilo CSS -->
+    <link rel="stylesheet" href="../CSS/general.css">   <!-- Estilos generales del sitio -->
+    <link rel="stylesheet" href="../CSS/contacto.css"> <!-- Estilos específicos para la página de contacto -->
 </head>
 <body>
 
+    <!-- =======================
+        CABECERA (HEADER)
+    ======================== -->
     <header class="site-header">
         <div class="header-container">
+            <!-- Logo de la UTN -->
             <div class="logo">
                 <a href="../index.html"><img src="../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
             </div>
+
+            <!-- Navegación principal para escritorio -->
             <nav class="main-nav">
                 <ul>
                     <li><a href="../index.html">VALIDAR</a></li>
-                    <!--<li> <a href="cursos.html">CURSOS</a> </li>-->
                     <li><a href="sobrenosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
+
+            <!-- Controles de sesión (Botón Iniciar Sesión o Menú de Usuario) -->
+            <!-- Este div es llenado dinámicamente por JavaScript -->
             <div class="session-controls" id="session-controls">
                 <!-- Contenido dinámico por JS -->
             </div>
+
+            <!-- Botón de menú hamburguesa para vista móvil -->
             <button class="hamburger-menu" aria-label="Abrir menú">
                 <span></span>
                 <span></span>
@@ -37,22 +51,28 @@
         </div>
     </header>
 
-    <!-- Menú Off-canvas -->
+    <!-- =======================
+        MENÚ LATERAL (OFF-CANVAS)
+    ======================== -->
     <div class="off-canvas-menu" id="off-canvas-menu">
         <button class="close-btn" aria-label="Cerrar menú">&times;</button>
         <nav>
             <ul>
                 <li><a href="../index.html">VALIDAR</a></li>
-                <!--<li> <a href="cursos.html">CURSOS</a> </li>-->
                 <li><a href="sobrenosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="contacto.html">CONTACTO</a></li>
+                <!-- El menú de sesión móvil se añade aquí con JS -->
             </ul>
         </nav>
     </div>
 
+    <!-- =======================
+        CONTENIDO PRINCIPAL
+    ======================== -->
     <main class="contact-section">
         <h1 class="main-title">CONTACTANOS</h1>
         <div class="contact-content">
+            <!-- Contenedor del mapa de Google -->
             <div class="map-container">
                 <iframe 
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3282.48974387943!2d-58.599456084769!3d-34.64235698044946!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bc951c0fe2d9f5%3A0x9f1c540898efecbe!2sUTN%20HAEDO!5e0!3m2!1ses-419!2sar!4v1678886456123"
@@ -64,9 +84,11 @@
                     referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
             </div>
+            <!-- Contenedor del formulario -->
             <div class="form-wrapper">
                 <form class="contact-form" action="../PHP/enviar.php" method="POST" novalidate>
 
+                    <!-- Campo: Rol del emisor -->
                     <div class="form-group">
                         <label for="rol">Emisor del Mensaje</label>
                         <select id="rol" name="rol" class="form-field" required>
@@ -79,24 +101,30 @@
                             <option value="Otro">Otro</option>
                         </select>
                     </div>
+                    <!-- Campo: Nombre -->
                     <div class="form-group">
                         <label for="nombre">Nombre</label>
                         <input type="text" id="nombre" name="nombre" class="form-field" placeholder="Escriba su nombre aquí..." required>
                     </div>
+                    <!-- Campo: Apellido -->
                     <div class="form-group">
                         <label for="apellido">Apellido</label>
                         <input type="text" id="apellido" name="apellido" class="form-field" placeholder="Escriba su apellido aquí..." required>
                     </div>
+                    <!-- Campo: Email -->
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" class="form-field" placeholder="Escriba su email aquí..." required>
                     </div>
+                    <!-- Campo: Mensaje -->
                     <div class="form-group">
                         <label for="mensaje">Mensaje</label>
                         <textarea id="mensaje" name="mensaje" rows="5" class="form-field" placeholder="Escriba su mensaje aquí..." required></textarea>
                     </div>
+                    <!-- Área de envío y mensajes de estado -->
                     <div class="form-submit-area">
                         <button type="submit" class="submit-btn">ENVIAR</button>
+                        <!-- Mensajes de éxito/error (controlados por JS) -->
                         <div id="success-message" class="success-message">Mensaje enviado correctamente</div>
                         <div id="error-message" class="error-message">Por favor, complete todos los campos.</div>
                     </div>
@@ -105,6 +133,9 @@
         </div>
     </main>
 
+    <!-- =======================
+        PIE DE PÁGINA (FOOTER)
+    ======================== -->
     <footer class="site-footer">
         <div class="footer-container">
             <div class="footer-logo-info">
@@ -134,25 +165,32 @@
                 <h4>Navegación</h4>
                 <ul>
                     <li><a href="../index.html">Validar</a></li>
-                    <!-- <li><a href="cursos.html">Cursos</a></li> -->
                     <li><a href="sobrenosotros.html">Sobre Nosotros</a></li>
                     <li><a href="contacto.html">Contacto</a></li>
                 </ul>
             </div>
             <div class="footer-separator"></div>
+            <!-- Navegación dinámica (se llena con JS) -->
             <div class="footer-dynamic-nav" id="footer-dynamic-nav">
             </div>
         </div>
     </footer>
 
+    <!-- Botón para volver arriba -->
     <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba">
         <i class="fas fa-arrow-up"></i>
     </a>
 
-    <script src="../JavaScript/inicio.js"></script>
-    <script src="../JavaScript/contacto.js"></script> 
-    <script src="../JavaScript/general.js"></script>
+    <!-- =======================
+        SCRIPTS
+    ======================== -->
+    <script src="../JavaScript/inicio.js"></script>       <!-- Script de inicio (posiblemente para funcionalidad compartida) -->
+    <script src="../JavaScript/contacto.js"></script>     <!-- Script para la validación y envío del formulario de contacto -->
+    <script src="../JavaScript/general.js"></script>       <!-- Script general para todo el sitio (menú, etc.) -->
+    
+    <!-- Script para gestionar la sesión del usuario -->
     <script>
+        // Petición para obtener el estado de la sesión del usuario
         fetch('../PHP/get_user_name.php')
             .then(response => response.json())
             .then(data => {
@@ -160,9 +198,11 @@
                 const mobileNav = document.querySelector('.off-canvas-menu nav ul');
                 let sessionHTML = '';
 
+                // Si el usuario está logueado
                 if (data.user_name) {
                     let dropdownMenu;
-                    if (data.user_rol === 1) { // Admin
+                    // Si es Admin (rol 1)
+                    if (data.user_rol === 1) {
                         dropdownMenu = `
                             <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                             <div class="dropdown-menu">
@@ -180,7 +220,8 @@
                             <li><a href="../PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                             <li><a href="../PHP/ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
                             <li><a href="../PHP/logout.php">Cerrar Sesión</a></li>`;
-                    } else if (data.user_rol === 2) { // Alumno
+                    // Si es Alumno (rol 2)
+                    } else if (data.user_rol === 2) {
                         dropdownMenu = `
                             <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                             <div class="dropdown-menu">
@@ -199,11 +240,12 @@
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
-                    sessionControls.innerHTML = '<a href="../PHP/iniciosesion.php" class="login-btn">INICIAR SESIÓN</a>';
+                    // Si el usuario no está logueado, muestra el botón de Iniciar Sesión
+                    sessionControls.innerHTML = '<a href="../PHP/iniciosesion.php" class="btn-sesion">INICIAR SESIÓN</a>';
                     sessionHTML = '<li><a href="../PHP/iniciosesion.php">INICIAR SESIÓN</a></li>';
                 }
 
-                // Añadir al menú móvil
+                // Añade los enlaces de sesión al menú móvil
                 const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');
                 mobileMenuUl.insertAdjacentHTML('beforeend', sessionHTML);
             });

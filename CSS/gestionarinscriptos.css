@@ -1,4 +1,13 @@
-/* Contenedor principal de la sección de administración */
+/*
+    ARCHIVO: gestionarinscriptos.css
+    DESCRIPCIÓN: Estilos para la página de gestión de inscriptos del administrador.
+    Define la apariencia de las pestañas (Buscar, Agregar), el formulario de filtros, la tabla de resultados y el formulario para agregar nuevos inscriptos.
+*/
+
+/* -------------------------------------------
+    Contenedor Principal y Pestañas
+------------------------------------------- */
+
 .admin-container {
     width: 95%;
     max-width: 1600px;
@@ -9,12 +18,13 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-/* Contenedor de pestañas principal */
+/* Contenedor de las pestañas principales (Buscar / Agregar) */
 .tabs-container {
     border-bottom: 2px solid #dee2e6;
     margin-bottom: 2rem;
 }
 
+/* Estilo de cada pestaña */
 .tab {
     background: none;
     border: none;
@@ -23,7 +33,7 @@
     font-weight: 700;
     color: var(--color-texto-gris);
     cursor: pointer;
-    margin-bottom: -2px; /* Alinea con el borde inferior */
+    margin-bottom: -2px; /* Alinea el borde inferior de la pestaña activa con el borde del contenedor */
     border-bottom: 3px solid transparent;
     transition: color 0.3s, border-color 0.3s;
 }
@@ -32,22 +42,26 @@
     color: var(--color-principal);
 }
 
+/* Estilo de la pestaña activa */
 .tab.active {
     color: var(--color-principal);
-    border-bottom-color: var(--color-secundario-1);
+    border-bottom-color: var(--color-secundario-1); /* Línea celeste para indicar actividad */
 }
 
-/* Contenido de las pestañas */
+/* Contenido asociado a cada pestaña */
 .tab-content {
-    display: none;
+    display: none; /* Oculto por defecto */
     animation: fadeIn 0.5s;
 }
 
 .tab-content.active {
-    display: block;
+    display: block; /* Visible cuando la pestaña está activa */
 }
 
-/* Caja de filtros */
+/* -------------------------------------------
+    Formulario de Filtros y Búsqueda
+------------------------------------------- */
+
 .filtros-box {
     background-color: #F6F9FA;
     padding: 2rem;
@@ -58,9 +72,10 @@
     gap: 1.5rem;
 }
 
+/* Fila dentro del contenedor de filtros */
 .filtro-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Diseño de grilla responsivo */
     gap: 1.5rem;
 }
 
@@ -73,6 +88,7 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
+/* Contenedor de los botones del formulario de filtros */
 .botones-filtros {
     display: flex;
     flex-wrap: wrap;
@@ -81,6 +97,7 @@
     margin-top: 1rem;
 }
 
+/* Estilo base para botones */
 .btn {
     padding: 0.8rem 1.5rem;
     border-radius: 8px;
@@ -94,6 +111,7 @@
     gap: 0.5rem;
 }
 
+/* Botón "Filtrar" */
 .btn.filtrar {
     background-color: var(--color-principal);
     color: var(--color-blanco);
@@ -102,6 +120,7 @@
     background-color: #003345;
 }
 
+/* Botón "Mostrar Todos" */
 .btn.mostrar-todos {
     background-color: #6c757d;
     color: var(--color-blanco);
@@ -110,6 +129,7 @@
     background-color: #5a6268;
 }
 
+/* Botón "Limpiar Filtros" */
 .btn.limpiar {
     background-color: transparent;
     color: var(--color-texto-gris);
@@ -119,9 +139,12 @@
     background-color: #e9ecef;
 }
 
-/* Estilos de la tabla de resultados */
+/* -------------------------------------------
+    Tabla de Resultados de Búsqueda
+------------------------------------------- */
+
 .tabla-inscriptos {
-    overflow-x: auto;
+    overflow-x: auto; /* Scroll horizontal en pantallas pequeñas */
 }
 
 #results-table {
@@ -142,13 +165,14 @@
 }
 
 #results-table tbody tr:nth-child(even) {
-    background-color: #f8f9fa;
+    background-color: #f8f9fa; /* Filas intercaladas */
 }
 
 #results-table tbody tr:hover {
-    background-color: rgba(0, 210, 242, 0.1);
+    background-color: rgba(0, 210, 242, 0.1); /* Resaltado celeste */
 }
 
+/* Estilo para resaltar el texto coincidente en la búsqueda */
 #results-table mark {
     background-color: var(--color-secundario-3);
     color: var(--color-principal);
@@ -156,13 +180,17 @@
     border-radius: 3px;
 }
 
-/* Pestaña de Agregar Inscriptos */
+/* -------------------------------------------
+    Pestaña de Agregar Inscriptos
+------------------------------------------- */
+
 .add-container {
     background-color: #f8f9fa;
     padding: 2rem;
     border-radius: 10px;
 }
 
+/* Pestañas secundarias (ej. para diferentes métodos de agregado) */
 .tabs-secondary {
     border-bottom: 1px solid #dee2e6;
     margin-bottom: 1.5rem;

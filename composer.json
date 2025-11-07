@@ -1,0 +1,19 @@
+{
+    "name": "usuario/sistema_validacion",
+    "autoload": {
+        "psr-4": {
+            "Usuario\\SistemaValidacion\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Valentin Perez",
+            "email": "vperez226@alumnos.frh.utn.edu.ar"
+        }
+    ],
+    "require": {
+        "setasign/fpdf": "^1.8",
+        "setasign/fpdi": "^2.6",
+        "chillerlan/php-qrcode": "^5.0"
+    }
+}

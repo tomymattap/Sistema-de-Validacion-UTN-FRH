@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(contactForm);
 
         // --- PETICIÓN FETCH PARA ENVIAR LOS DATOS ---
-        fetch('../PHP/enviar.php', {
+        fetch('../PHP/guardar_contacto.php', {      //o enviar.php
             method: 'POST',
             body: formData
         })

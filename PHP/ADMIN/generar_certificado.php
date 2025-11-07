@@ -125,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Si todo salió bien, confirma los cambios
         mysqli_commit($conexion);
-        echo "<div class='message info'>🎉 Todas las certificaciones fueron generadas correctamente.</div>";
+        echo "<div class='message info'> Todas las certificaciones fueron generadas correctamente.</div>";
 
         // Guardar datos en la sesión para el siguiente paso
         $_SESSION['alumnos_para_certificar'] = $alumnos_a_certificar;

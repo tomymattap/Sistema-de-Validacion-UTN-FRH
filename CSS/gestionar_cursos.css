@@ -63,18 +63,31 @@
 }
 
 /* -------------------------------------------
-    Formulario de Búsqueda y Filtro
+    Sección de Filtros / Búsqueda
 ------------------------------------------- */
+
+.filters-container {
+    background-color: #f8f9fa; /* color de fondo clarito */
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: flex-end; /* Todo alineado a la derecha */
+}
 
 .filter-form {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 1.5rem; /* Separación de la tabla */
+    gap: 1rem;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    max-width: 800px;
+    width: 100%;
 }
 
 .filter-group {
-    flex: 1; /* El campo de búsqueda ocupa el espacio disponible */
+    flex: 1;
+    max-width: 400px;
 }
 
 #search-main {
@@ -84,13 +97,96 @@
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 6px;
+    background-color: white;
 }
 
 .search-group {
     display: flex;
     gap: 10px;
+    justify-content: flex-end;
 }
 
+
+.filter-courses-container {
+    background-color: #f8f9fa;
+    padding: 1.2rem 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.filter-courses-container .filter-form {
+    display: flex;
+    align-items: flex-end; /* alinea todos los campos al pie */
+    gap: 1rem;
+    flex-wrap: wrap; /* permite que bajen si no entra en pantallas chicas */
+    width: 100%;
+    max-width: 1200px;
+    justify-content: space-between;
+}
+
+/* Grupos de filtros */
+.filter-courses-container .filter-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 180px;
+}
+
+.filter-courses-container label {
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 4px;
+}
+
+/* Inputs y selects redondeados y estéticos */
+.filter-courses-container input[type="text"],
+.filter-courses-container select {
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 20px; /* más redondos */
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+}
+
+.filter-courses-container input[type="text"]:focus,
+.filter-courses-container select:focus {
+    border-color: var(--color-principal, #007bff);
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.2);
+    outline: none;
+}
+
+/* Botones */
+.filter-courses-container .search-group {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+#null-btn {
+    background-color: var(--color-principal, #0056b3);
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+}
+
+#null-btn {
+    background-color: #dc3545;
+}
+
+#null-btn:hover {
+    background-color: #c82333;
+}
 
 
 
@@ -334,6 +430,7 @@ tr.modified, tr.modified:hover {
 #tabla-cursos td.actions {
     width: 120px;
     text-align: center;
+    border-bottom: none;
 }
 
 .actions { 
@@ -561,4 +658,15 @@ tr.modified, tr.modified:hover {
 
 .copy-feedback.visible {
     opacity: 1;
+}
+
+/* ===================================== */
+/* ===== CONTENEDOR DE FILTROS (BOX) ===== */
+/* ===================================== */
+.filters-box {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    border: 1px solid #dee2e6;
 }

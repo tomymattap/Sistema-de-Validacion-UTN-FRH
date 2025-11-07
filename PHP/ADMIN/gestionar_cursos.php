@@ -104,7 +104,7 @@ $resultado = mysqli_query($conexion, $consulta);
                 </div>
 
                 <div class="results-container">
-                    <table id="results-table">
+                    <table id="tabla-cursos">
                         <thead>
                             <tr>
                                 <th>ID Curso</th>

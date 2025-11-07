@@ -80,6 +80,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $alumnos_a_certificar = [];
 
+    $alumnos_a_certificar = [];
+
     // Inicia una transacción
     mysqli_begin_transaction($conexion);
 

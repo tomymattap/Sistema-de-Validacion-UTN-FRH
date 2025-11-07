@@ -1,4 +1,8 @@
 <?php
+
+//FUERA DE USO ACTUALMENTE
+
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 

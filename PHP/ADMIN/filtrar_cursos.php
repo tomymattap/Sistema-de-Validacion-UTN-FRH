@@ -142,7 +142,7 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
                 
                 <div id="header-container">
                     <h1 class="main-title">Filtrar Cursos</h1>
-                    <a href="gestionar_cursos.php" class="menu-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
+                    <a href="gestionar_cursos.php" class="menu-btn volver-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
                 </div>
 
                 <div class="filters-container filter-courses-container">

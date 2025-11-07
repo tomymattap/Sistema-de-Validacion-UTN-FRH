@@ -62,7 +62,7 @@ include("../conexion.php");
 
                 <div id="header-container">
                     <h1 class="main-title">Agregar Curso</h1>
-                    <a href="gestionar_cursos.php" class="menu-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
+                    <a href="gestionar_cursos.php" class="menu-btn volver-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
                 </div>
 
                 

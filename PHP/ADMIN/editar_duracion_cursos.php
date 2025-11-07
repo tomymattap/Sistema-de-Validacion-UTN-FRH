@@ -57,7 +57,7 @@ $resultado = mysqli_query($conexion, $consulta);
             <div class="contenido-principal">
                 <div id="header-container">
                     <h1 class="main-title">Editar Fechas de Cursos</h1>
-                    <a href="gestionar_cursos.php" class="menu-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
+                    <a href="gestionar_cursos.php" class="menu-btn volver-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
                 </div>
 
                 <form action="confirmar_modif_fechas.php" method="POST">

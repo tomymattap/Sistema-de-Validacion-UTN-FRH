@@ -113,8 +113,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cursos'])) {
                             <?php foreach ($cursos_modificados as $curso): ?>
                                 <li>
                                     <strong><?= htmlspecialchars($curso['nombre']) ?> (ID: <?= htmlspecialchars($curso['id']) ?>)</strong>
-                                    <span>Inicio: <?= htmlspecialchars($curso['inicio'] ?: 'No asignada') ?></span>
-                                    <span>Fin: <?= htmlspecialchars($curso['fin'] ?: 'No asignada') ?></span>
+                                    <div class="fechas-confirmacion">
+                                        <span>Inicio: <strong><?= htmlspecialchars($curso['inicio'] ?: 'No asignada') ?></strong></span>
+                                        <span>Fin: <strong><?= htmlspecialchars($curso['fin'] ?: 'No asignada') ?></strong></span>
+                                    </div>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
@@ -128,9 +130,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cursos'])) {
                         <p>No se detectaron modificaciones en las fechas de ningún curso.</p>
                     </div>
                 <?php endif; ?>
-
+                    
                 <div class="form-actions" style="text-align: center; margin-top: 2rem;">
-                    <a href="gestionar_cursos.php" class="menu-btn"><i class="fas fa-arrow-left"></i> Volver a Gestión de Cursos</a>
+                    <a href="gestionar_cursos.php" class="menu-btn volver-btn"><i class="fas fa-arrow-left"></i> Volver a Gestión de Cursos</a>
                 </div>
 
             </div>

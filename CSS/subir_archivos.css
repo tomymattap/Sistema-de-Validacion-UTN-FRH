@@ -1,0 +1,134 @@
+/* -------------------------------------------
+   Página: Subida de Archivos para Certificados
+------------------------------------------- */
+
+/* Contenedor general */
+.admin-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Título */
+.main-title {
+    text-align: center;
+    font-weight: 700;
+    font-size: 2rem;
+    color: #004b63;
+    margin-bottom: 1.5rem;
+}
+
+/* Descripción */
+.admin-container p {
+    text-align: center;
+    font-size: 1rem;
+    color: #444;
+    margin-bottom: 2rem;
+}
+
+/* Formulario centrado */
+#upload-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Agrupaciones del formulario */
+.form-group {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+/* Etiquetas */
+.form-group label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: #003b50;
+}
+
+/* Dropzones centrados */
+.dropzone {
+    border: 2px dashed #007bff;
+    border-radius: 10px;
+    padding: 25px;
+    text-align: center;
+    color: #555;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 160px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.dropzone:hover,
+.dropzone.dz-drag-hover {
+    background-color: #eef7ff;
+    border-color: #0056b3;
+}
+
+/* Ícono de subida */
+.dropzone .dz-message::before {
+    content: "\f093"; /* Ícono de upload */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 2.5rem;
+    color: #007bff;
+    display: block;
+    margin-bottom: 15px;
+}
+
+/* Checkbox y contenedor */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+/* Campo de texto */
+.form-control {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--color-principal, #004b63);
+    box-shadow: 0 0 4px rgba(0, 86, 179, 0.25);
+}
+
+/* Botón final */
+.form-buttons {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.submit-btn {
+    background-color: var(--color-principal, #004b63);
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-btn:hover {
+    background-color: #006b8c;
+    transform: translateY(-2px);
+}

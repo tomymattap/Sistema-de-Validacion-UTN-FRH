@@ -155,7 +155,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Si todo salió bien, confirma los cambios
         mysqli_commit($conexion);
-        echo "<div class='message info'>🎉 Todas las certificaciones fueron generadas correctamente.</div>";
+        echo "<div class='message info'> Todas las certificaciones fueron generadas correctamente.</div>";
 
     } catch (Exception $e) {
         mysqli_rollback($conexion);

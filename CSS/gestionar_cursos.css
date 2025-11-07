@@ -205,46 +205,126 @@
 
 
 
-/* ===== TABLA CURSOS ===== */
-#tabla-cursos {
+/* ================================= */
+/* ===== ESTILOS GENERALES TABLA ===== */
+/* ================================= */
+#tabla-cursos, #tabla-fechas {
     width: 100%;
     border-collapse: collapse;
     margin-top: 1.5rem;
     background-color: #fff;
     font-size: 0.95rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden; /* Para que el borde redondeado se aplique a la tabla */
 }
 
 /* CABECERA */
-#tabla-cursos thead {
+#tabla-cursos thead, #tabla-fechas thead {
     background-color: var(--color-principal);
     color: var(--color-blanco);
 }
 
-#tabla-cursos th {
+#tabla-cursos th, #tabla-fechas th {
     text-align: left;
     padding: 1rem 1.5rem;
     font-weight: 700;
-    border-bottom: 2px solid #dee2e6;
 }
 
 /* CELDAS DE TEXTO */
-#tabla-cursos td {
-    padding: 0.9rem 1.5rem; /* ← más espacio lateral */
+#tabla-cursos td, #tabla-fechas td {
+    padding: 0.9rem 1.5rem;
     border-bottom: 1px solid #dee2e6;
-    vertical-align: top;
+    vertical-align: middle; /* Centra verticalmente el contenido */
     line-height: 1.5;
     text-align: left;
 }
 
 /* FILAS INTERCALADAS Y HOVER */
-#tabla-cursos tbody tr:nth-child(even) {
+#tabla-cursos tbody tr:nth-child(even),
+#tabla-fechas tbody tr:nth-child(even) {
     background-color: #f8f9fa;
 }
 
-#tabla-cursos tbody tr:hover {
+#tabla-cursos tbody tr:hover,
+#tabla-fechas tbody tr:hover {
     background-color: #eef4ff;
     transition: background-color 0.2s ease;
 }
+
+/* ===================================== */
+/* ===== ESTILOS TABLA EDITAR FECHAS ===== */
+/* ===================================== */
+
+/* Estilos para los inputs dentro de la tabla de fechas */
+#tabla-fechas input[type="date"] {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: var(--font-principal);
+    font-size: 0.9rem;
+    width: 100%;
+    min-width: 140px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#tabla-fechas input[type="date"]:focus {
+    border-color: var(--color-principal);
+    box-shadow: 0 0 0 2px rgba(0, 74, 92, 0.2);
+    outline: none;
+}
+
+/* Fila modificada */
+tr.modified, tr.modified:hover {
+    background-color: #e6f7d8 !important; /* Un verde claro para indicar cambio */
+    transition: background-color 0.3s ease;
+}
+
+/* ======================================= */
+/* ===== ESTILOS LISTA CONFIRMACIÓN ===== */
+/* ======================================= */
+
+.lista-confirmacion {
+    list-style: none;
+    padding-left: 0;
+}
+
+.lista-confirmacion li {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.lista-confirmacion li strong {
+    flex-basis: 100%;
+    font-size: 1.05rem;
+    color: var(--color-principal);
+    margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+    .lista-confirmacion li strong {
+        flex-basis: auto;
+        margin-bottom: 0;
+    }
+}
+
+.lista-confirmacion li span {
+    background-color: #e9ecef;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
 
 /* DESCRIPCIÓN Y REQUISITOS CON SALTO DE LÍNEA */
 #tabla-cursos td:nth-child(7),
@@ -356,4 +436,19 @@
 }
 .info-resultados strong {
     color: var(--color-principal);
+}
+
+/* ===================================== */
+/* ===== BOTÓN CONFIRMAR MODIFICACIONES ===== */
+/* ===================================== */
+#btn-confirmar-fechas {
+    padding: 0.8rem 1.8rem; /* Mayor padding para más tamaño */
+    font-size: 1.05rem;     /* Fuente ligeramente más grande */
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+#btn-confirmar-fechas:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }

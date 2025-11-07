@@ -27,7 +27,7 @@ $resultado = mysqli_query($conexion, $consulta);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css"> <!-- Estilos generales -->
     <link rel="stylesheet" href="../../CSS/verinscriptos.css"> <!-- Estilos para tablas -->
-    <link rel="stylesheet" href="../../CSS/gestionar_cursos.css"> <!-- Estilos específicos de esta página -->
+    <link rel="stylesheet" href="../../CSS/gestionar_cursos.css"> 
 </head>
 <body class="fade-in">
     <div class="preloader">
@@ -83,6 +83,7 @@ $resultado = mysqli_query($conexion, $consulta);
                     <div class="header-buttons">
                         <a href="agregar_curso.php" class="menu-btn"><i class="fas fa-plus"></i> AGREGAR</a>
                         <a href="filtrar_cursos.php" class="menu-btn"><i class="fas fa-filter"></i> FILTRAR</a>
+                        <a href="editar_duracion_cursos.php" class="menu-btn"><i class="fas fa-calendar-alt"></i> ACTUALIZAR FECHAS</a>
                         <a href="filtrar_cursos.php" class="menu-btn"><i class="fas fa-file-csv"></i> COMPARTIR FORMULARIO</a>
                         
                     </div>

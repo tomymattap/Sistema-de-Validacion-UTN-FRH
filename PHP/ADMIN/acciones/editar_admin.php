@@ -16,24 +16,17 @@ $id_admin = $_POST['id'] ?? '';
 $nombre = $_POST['nombre'] ?? '';
 $apellido = $_POST['apellido'] ?? '';
 $email = $_POST['email'] ?? '';
-$password = $_POST['password'] ?? '';
+$rol = $_POST['rol'] ?? '';
 
-if (empty($id_admin) || empty($nombre) || empty($apellido) || empty($email)) {
+if (empty($id_admin) || empty($nombre) || empty($apellido) || empty($email) || empty($rol)) {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'Faltan datos para la actualización']);
     exit;
 }
 
-if (!empty($password)) {
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    $sql = "UPDATE admin SET Nombre = ?, Apellido = ?, Email = ?, Password = ? WHERE ID_Admin = ?";
-    $stmt = mysqli_prepare($conexion, $sql);
-    mysqli_stmt_bind_param($stmt, "sssss", $nombre, $apellido, $email, $hashed_password, $id_admin);
-} else {
-    $sql = "UPDATE admin SET Nombre = ?, Apellido = ?, Email = ? WHERE ID_Admin = ?";
-    $stmt = mysqli_prepare($conexion, $sql);
-    mysqli_stmt_bind_param($stmt, "ssss", $nombre, $apellido, $email, $id_admin);
-}
+$sql = "UPDATE admin SET Nombre = ?, Apellido = ?, Email = ?, ID_Rol = ? WHERE ID_Admin = ?";
+$stmt = mysqli_prepare($conexion, $sql);
+mysqli_stmt_bind_param($stmt, "sssis", $nombre, $apellido, $email, $rol, $id_admin);
 
 if (mysqli_stmt_execute($stmt)) {
     echo json_encode(['success' => true]);

@@ -16,10 +16,9 @@ $legajo = $_POST['legajo'] ?? '';
 $nombre = $_POST['nombre'] ?? '';
 $apellido = $_POST['apellido'] ?? '';
 $email = $_POST['email'] ?? '';
-$password = $_POST['password'] ?? '';
 $rol = $_POST['rol'] ?? 1;
 
-if (empty($legajo) || empty($nombre) || empty($apellido) || empty($email) || empty($password)) {
+if (empty($legajo) || empty($nombre) || empty($apellido) || empty($email)) {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'Todos los campos son obligatorios']);
     exit;
@@ -41,12 +40,9 @@ mysqli_stmt_close($stmt);
 // Generar ID_Admin
 $id_admin = strtolower($apellido) . '_' . $legajo;
 
-// Hashear contraseña
-$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-$sql = "INSERT INTO admin (ID_Admin, Legajo, Nombre, Apellido, Email, Password, ID_Rol) VALUES (?, ?, ?, ?, ?, ?, ?)";
+$sql = "INSERT INTO admin (ID_Admin, Legajo, Nombre, Apellido, Email, ID_Rol) VALUES (?, ?, ?, ?, ?, ?)";
 $stmt = mysqli_prepare($conexion, $sql);
-mysqli_stmt_bind_param($stmt, "sissssi", $id_admin, $legajo, $nombre, $apellido, $email, $hashed_password, $rol);
+mysqli_stmt_bind_param($stmt, "sisssi", $id_admin, $legajo, $nombre, $apellido, $email, $rol);
 
 if (mysqli_stmt_execute($stmt)) {
     echo json_encode(['success' => true]);

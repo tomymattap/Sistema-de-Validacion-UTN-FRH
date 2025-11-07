@@ -1,11 +1,10 @@
 /*
-    ARCHIVO: gestionarinscriptos.css
-    DESCRIPCIÓN: Estilos para la página de gestión de inscriptos del administrador.
-    Define la apariencia de las pestañas (Buscar, Agregar), el formulario de filtros, la tabla de resultados y el formulario para agregar nuevos inscriptos.
+    ARCHIVO: gestionar_inscriptos.css
+    DESCRIPCIÓN: Estilos para la página de gestión de inscriptos.
 */
 
 /* -------------------------------------------
-    Contenedor Principal y Pestañas
+    Contenedor Principal y Títulos
 ------------------------------------------- */
 
 .admin-container {
@@ -18,145 +17,178 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-/* Contenedor de las pestañas principales (Buscar / Agregar) */
-.tabs-container {
-    border-bottom: 2px solid #dee2e6;
+.main-title {
+    color: var(--color-principal);
     margin-bottom: 2rem;
-}
-
-/* Estilo de cada pestaña */
-.tab {
-    background: none;
-    border: none;
-    padding: 1rem 1.5rem;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--color-texto-gris);
-    cursor: pointer;
-    margin-bottom: -2px; /* Alinea el borde inferior de la pestaña activa con el borde del contenedor */
-    border-bottom: 3px solid transparent;
-    transition: color 0.3s, border-color 0.3s;
-}
-
-.tab:hover {
-    color: var(--color-principal);
-}
-
-/* Estilo de la pestaña activa */
-.tab.active {
-    color: var(--color-principal);
-    border-bottom-color: var(--color-secundario-1); /* Línea celeste para indicar actividad */
-}
-
-/* Contenido asociado a cada pestaña */
-.tab-content {
-    display: none; /* Oculto por defecto */
-    animation: fadeIn 0.5s;
-}
-
-.tab-content.active {
-    display: block; /* Visible cuando la pestaña está activa */
+    text-align: center;
 }
 
 /* -------------------------------------------
-    Formulario de Filtros y Búsqueda
+    Pestañas (Tabs)
+------------------------------------------- */
+.tabs-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #eee;
+}
+
+.tabs-container .tab {
+    background-color: transparent;
+    border: none;
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-texto-gris);
+    cursor: pointer;
+    transition: color 0.3s, border-bottom 0.3s;
+    position: relative;
+}
+
+.tabs-container .tab:hover {
+    color: var(--color-secundario-1);
+}
+
+.tabs-container .tab.active {
+    color: var(--color-principal);
+    border-bottom: 3px solid var(--color-principal);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Pestañas secundarias dentro de "Agregar Inscriptos" */
+.tabs-secondary {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.tabs-secondary button {
+    background-color: transparent;
+    border: none;
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-texto-gris);
+    cursor: pointer;
+    transition: color 0.3s, border-bottom 0.3s;
+    margin-right: 1rem;
+}
+
+.tabs-secondary button:hover {
+    color: var(--color-secundario-1);
+}
+
+.tabs-secondary button.active {
+    color: var(--color-principal);
+    border-bottom: 2px solid var(--color-principal);
+}
+
+.tab-panel-secondary {
+    display: none;
+}
+
+.tab-panel-secondary.active {
+    display: block;
+}
+
+/* -------------------------------------------
+    Filtros y Buscador
 ------------------------------------------- */
 
 .filtros-box {
-    background-color: #F6F9FA;
-    padding: 2rem;
-    border-radius: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1.5rem;
     margin-bottom: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
 }
 
-/* Fila dentro del contenedor de filtros */
 .filtro-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Diseño de grilla responsivo */
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
-.filtros-box input, .filtros-box select {
+.filtros-box input[type="search"],
+.filtros-box select {
     width: 100%;
-    padding: 0.8rem 1rem;
+    padding: 0.7rem 1rem;
     border: 1px solid #ced4da;
-    border-radius: 8px;
-    font-size: 1rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border-radius: 5px;
+    font-size: 0.95rem;
 }
 
-/* Contenedor de los botones del formulario de filtros */
 .botones-filtros {
     display: flex;
-    flex-wrap: wrap;
+    justify-content: flex-end;
     gap: 1rem;
-    align-items: center;
-    margin-top: 1rem;
+    flex-wrap: wrap;
 }
 
-/* Estilo base para botones */
-.btn {
-    padding: 0.8rem 1.5rem;
-    border-radius: 8px;
-    font-weight: 700;
+.btn.filtrar,
+.btn.mostrar-todos,
+.btn.limpiar {
+    padding: 0.7rem 1.2rem;
+    border-radius: 5px;
+    font-weight: 600;
     cursor: pointer;
-    border: 2px solid transparent;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
+    border: none;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-/* Botón "Filtrar" */
 .btn.filtrar {
     background-color: var(--color-principal);
     color: var(--color-blanco);
 }
+
 .btn.filtrar:hover {
-    background-color: #003345;
+    background-color: #8DCC3D;
 }
 
-/* Botón "Mostrar Todos" */
 .btn.mostrar-todos {
+    background-color: var(--color-secundario-4);
+    color: var(--color-blanco);
+}
+
+.btn.mostrar-todos:hover {
+    background-color: #8DCC3D;
+}
+
+.btn.limpiar {
     background-color: #6c757d;
     color: var(--color-blanco);
 }
-.btn.mostrar-todos:hover {
-    background-color: #5a6268;
-}
 
-/* Botón "Limpiar Filtros" */
-.btn.limpiar {
-    background-color: transparent;
-    color: var(--color-texto-gris);
-    border-color: #ced4da;
-}
 .btn.limpiar:hover {
-    background-color: #e9ecef;
+    background-color: #8DCC3D;
 }
 
 /* -------------------------------------------
-    Tabla de Resultados de Búsqueda
+    Tabla de Inscriptos
 ------------------------------------------- */
 
 .tabla-inscriptos {
-    overflow-x: auto; /* Scroll horizontal en pantallas pequeñas */
+    overflow-x: auto;
+    margin-top: 2rem;
 }
 
 #results-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 1rem;
-}
-
-#results-table th, #results-table td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid #dee2e6;
+    background-color: var(--color-blanco);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden; /* Para que los bordes redondeados se apliquen a la tabla */
 }
 
 #results-table thead {
@@ -164,41 +196,174 @@
     color: var(--color-blanco);
 }
 
+#results-table th,
+#results-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+}
+
 #results-table tbody tr:nth-child(even) {
-    background-color: #f8f9fa; /* Filas intercaladas */
+    background-color: #f8f9fa;
 }
 
 #results-table tbody tr:hover {
-    background-color: rgba(0, 210, 242, 0.1); /* Resaltado celeste */
+    background-color: rgba(0, 210, 242, 0.05);
 }
 
-/* Estilo para resaltar el texto coincidente en la búsqueda */
-#results-table mark {
-    background-color: var(--color-secundario-3);
-    color: var(--color-principal);
-    padding: 2px;
-    border-radius: 3px;
+.status-badge {
+    display: inline-block;
+    padding: 0.3em 0.6em;
+    border-radius: 0.25rem;
+    font-size: 0.85em;
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+}
+
+.status-badge.status-pendiente {
+    color: #6c757d;
+    background-color: #e2e6ea;
+}
+
+.status-badge.status-en-curso {
+    color: #00455c;
+    background-color: #cfe2ff;
+}
+
+.status-badge.status-finalizada {
+    color: #198754;
+    background-color: #d1e7dd;
+}
+
+.status-badge.status-certificada {
+    color: #0d6efd;
+    background-color: #cff4fc;
+}
+
+.no-results {
+    text-align: center;
+    padding: 2rem;
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+.error-message {
+    color: #dc3545;
+    font-weight: 600;
 }
 
 /* -------------------------------------------
-    Pestaña de Agregar Inscriptos
+    Formulario de Carga Manual de Inscripción
 ------------------------------------------- */
 
-.add-container {
-    background-color: #f8f9fa;
+.form-carga-manual {
+    background-color: var(--color-blanco);
     padding: 2rem;
-    border-radius: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-top: 1.5rem;
 }
 
-/* Pestañas secundarias (ej. para diferentes métodos de agregado) */
-.tabs-secondary {
-    border-bottom: 1px solid #dee2e6;
+.form-carga-manual h2 {
+    color: var(--color-principal);
     margin-bottom: 1.5rem;
+    text-align: center;
 }
 
-.tab-panel-secondary {
-    display: none;
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
-.tab-panel-secondary.active {
-    display: block;
+
+.form-carga-manual .campo-form label {
+    font-weight: 600;
+    color: var(--color-texto-gris);
+    margin-bottom: 0.4rem;
+}
+
+.form-carga-manual .campo-form input[type="text"],
+.form-carga-manual .campo-form input[type="number"],
+.form-carga-manual .campo-form input[type="email"],
+.form-carga-manual .campo-form input[type="tel"],
+.form-carga-manual .campo-form select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: #495057;
+    background-color: #fff;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.form-carga-manual .campo-form input:focus,
+.form-carga-manual .campo-form select:focus {
+    border-color: var(--color-secundario);
+    box-shadow: 0 0 0 0.2rem rgba(0, 210, 242, 0.25);
+    outline: none;
+}
+
+.botones-form-carga {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-registrar,
+.btn-cancelar-carga {
+    padding: 0.8rem 1.8rem;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.btn-registrar {
+    background-color: var(--color-principal); /* #00455c */
+    color: var(--color-blanco);
+}
+
+.btn-registrar:hover {
+    background-color: #8DCC3D;
+    transform: translateY(-2px);
+}
+
+.btn-cancelar-carga {
+    background-color: var(--color-blanco);
+    color: var(--color-secundario); /* #00D2F2 */
+    border-color: var(--color-secundario);
+}
+
+.btn-cancelar-carga:hover {
+    background-color: var(--color-secundario-4);
+    color: var(--color-blanco);
+    transform: translateY(-2px);
+}
+
+.mensaje-form {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.mensaje-form.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.mensaje-form.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
 }

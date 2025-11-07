@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -75,6 +78,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $alumnos = $_POST["alumnos"];
     $id_admin = $_SESSION['user_id']; // Se obtiene el ID del admin logueado
 
+    $alumnos_a_certificar = [];
+
     // Inicia una transacción
     mysqli_begin_transaction($conexion);
 
@@ -84,20 +89,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $cuil = $alumno['cuil'];
             $estado = $alumno['estado'];
+            $alumnos_a_certificar[] = $cuil; // Guardar CUIL para la sesión
 
             // 1️⃣ INSERTA la certificación
             $insert = "
             INSERT INTO CERTIFICACION (
-                Estado_Aprobacion,
-                Fecha_Emision,
-                ID_Admin,
-                ID_CUV,
-                ID_Inscripcion_Certif
+                Estado_Aprobacion, Fecha_Emision, ID_Admin, ID_CUV, ID_Inscripcion_Certif
             )
             SELECT 
-                '$estado',
-                CURDATE(),
-                '$id_admin',
+                '$estado', CURDATE(), '$id_admin',
                 CONCAT(
                     CASE WHEN c.Tipo = 'GENUINO' THEN 'G' ELSE 'C' END,
                     YEAR(CURDATE()),
@@ -115,20 +115,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     '%'
                                 )
                         ), 1),
-                        4,
-                        '0'
+                        4, '0'
                     )
                 ),
                 i.ID_Inscripcion
             FROM INSCRIPCION i
             JOIN CURSO c ON c.ID_Curso = i.ID_Curso
             WHERE 
-                i.ID_Cuil_Alumno = '$cuil'
-                AND i.ID_Curso = '$id_curso'
-                AND i.Anio = '$anio'
-                AND i.Cuatrimestre = '$cuatrimestre'
-                AND i.Estado_Cursada <> 'CERTIFICADA';
-
+                i.ID_Cuil_Alumno = '$cuil' AND i.ID_Curso = '$id_curso' AND 
+                i.Anio = '$anio' AND i.Cuatrimestre = '$cuatrimestre' AND 
+                i.Estado_Cursada <> 'CERTIFICADA';
             ";
 
             if (!mysqli_query($conexion, $insert)) {
@@ -140,10 +136,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             UPDATE INSCRIPCION
             SET Estado_Cursada = 'CERTIFICADA'
             WHERE 
-                ID_Cuil_Alumno = '$cuil'
-                AND ID_Curso = '$id_curso'
-                AND Anio = '$anio'
-                AND Cuatrimestre = '$cuatrimestre';
+                ID_Cuil_Alumno = '$cuil' AND ID_Curso = '$id_curso' AND 
+                Anio = '$anio' AND Cuatrimestre = '$cuatrimestre';
             ";
 
             if (!mysqli_query($conexion, $update)) {
@@ -157,17 +151,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         mysqli_commit($conexion);
         echo "<div class='message info'>🎉 Todas las certificaciones fueron generadas correctamente.</div>";
 
+        // Guardar datos en la sesión para el siguiente paso
+        $_SESSION['alumnos_para_certificar'] = $alumnos_a_certificar;
+        $_SESSION['curso_info'] = [
+            'id_curso' => $id_curso,
+            'anio' => $anio,
+            'cuatrimestre' => $cuatrimestre
+        ];
+
+        // Mostrar botón de descarga
+        echo "
+            <div class='button-container'>
+                <a href='seleccionar_alum_certif.php' class='btn'>Volver a Emitir Certificados</a>
+                <a href='generar_pdf_certif.php' class='btn'>Descargar Certificados</a>
+            </div>
+        ";
+
     } catch (Exception $e) {
         mysqli_rollback($conexion);
         echo "<div class='message error'>❌ Ocurrió un error: " . htmlspecialchars($e->getMessage()) . "</div>";
-        }
-
-    echo "
-        <div class='button-container'>
-            <a href='seleccionar_alum_certif.php' class='btn'>Volver a Emitir Certificados</a>
-            <a href='descargar_certificados.php' class='btn'>Descargar Certificados Emitidos</a>
-        </div>
-";
+        echo "<div class='button-container'><a href='seleccionar_alum_certif.php' class='btn'>Volver</a></div>";
+    }
 }
 ?>
 </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-11-2025 a las 00:19:22
+-- Tiempo de generación: 06-11-2025 a las 20:19:29
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -34,6 +34,7 @@ CREATE TABLE `admin` (
   `Apellido` varchar(50) NOT NULL,
   `Email` varchar(100) NOT NULL,
   `Password` varchar(255) NOT NULL,
+  `first_login_done` tinyint(1) NOT NULL DEFAULT 0,
   `ID_Rol` int(11) NOT NULL,
   `reset_token_hash` varchar(64) DEFAULT NULL,
   `reset_token_expires_at` datetime DEFAULT NULL
@@ -43,12 +44,12 @@ CREATE TABLE `admin` (
 -- Volcado de datos para la tabla `admin`
 --
 
-INSERT INTO `admin` (`ID_Admin`, `Legajo`, `Nombre`, `Apellido`, `Email`, `Password`, `ID_Rol`, `reset_token_hash`, `reset_token_expires_at`) VALUES
-('lione_29646', 29646, 'Sol', 'Lione', 'spuello646@alumnos.frh.utn.edu.ar', '123456', 1, NULL, NULL),
-('mastroianni_91196', 91196, 'Juan Ignacio', 'Mastroianni', 'jmastroianni@frh.utn.edu.ar', '123456', 1, NULL, NULL),
-('matta_30184', 30184, 'Tomas', 'Matta Palladino', 'tmatta184@alumnos.frh.utn.edu.ar', '$2y$10$RBIk1cIHBexIn5BxNSr/P.M0HREHNAoNpvffFWrLiWkq30PWfc2nq', 1, NULL, NULL),
-('perez_30226', 30226, 'Valentin', 'Perez', 'vperez226@alumnos.frh.utn.edu.ar', '123456', 1, NULL, NULL),
-('soria_30270', 30270, 'Daiana', 'Soria Piola', 'dsoria270@alumnos.frh.utn.edu.ar', '123456', 1, NULL, NULL);
+INSERT INTO `admin` (`ID_Admin`, `Legajo`, `Nombre`, `Apellido`, `Email`, `Password`, `first_login_done`, `ID_Rol`, `reset_token_hash`, `reset_token_expires_at`) VALUES
+('lione_29646', 29646, 'Sol', 'Lione', 'spuello646@alumnos.frh.utn.edu.ar', '$2y$10$.z/.LuyD54DvoYUFGgZOl.6S16rDjVZul.S/dBEmpmZdrJTAlms7i', 0, 1, NULL, NULL),
+('mastroianni_91196', 91196, 'Juan Ignacio', 'Mastroianni', 'jmastroianni@frh.utn.edu.ar', '$2y$10$MnXHKQN.82zWvo4AKNfQbuYdtddyDWaS8UVaER/zkS62Hlm5Giony', 0, 1, NULL, NULL),
+('matta_30184', 30184, 'Tomas', 'Matta Palladino', 'tmatta184@alumnos.frh.utn.edu.ar', '$2y$10$Gs3kZ2i73onQqxWDv8qOu.bQAecDdHgtQhXCLRrgm7Jtu2k5BcuMC', 1, 1, NULL, NULL),
+('perez_30226', 30226, 'Valentin', 'Perez', 'vperez226@alumnos.frh.utn.edu.ar', '$2y$10$UyFjwYtRZWDERu.pkLiIeei9AsIaEk4w0JJUBZbYjYEPhNi9QtiTW', 0, 1, NULL, NULL),
+('soria_30270', 30270, 'Daiana', 'Soria Piola', 'dsoria270@alumnos.frh.utn.edu.ar', '$2y$10$xJMbrgttHfIklkzGrlUOD.OaNe/cWCiZq8yGrW8.r5RFE1Id2nduu', 0, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -66,6 +67,7 @@ CREATE TABLE `alumno` (
   `Telefono` varchar(30) NOT NULL,
   `ID_Rol` int(11) NOT NULL,
   `Password` varchar(255) NOT NULL,
+  `first_login_done` tinyint(1) NOT NULL DEFAULT 0,
   `reset_token_hash` varchar(64) DEFAULT NULL,
   `reset_token_expires_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -74,27 +76,27 @@ CREATE TABLE `alumno` (
 -- Volcado de datos para la tabla `alumno`
 --
 
-INSERT INTO `alumno` (`ID_Cuil_Alumno`, `DNI_Alumno`, `Nombre_Alumno`, `Apellido_Alumno`, `Email_Alumno`, `Direccion`, `Telefono`, `ID_Rol`, `Password`, `reset_token_hash`, `reset_token_expires_at`) VALUES
-(20431223444, 43122344, 'Mateo', 'Fernández', 'mateo.fernandez@gmail.com', 'Calle San Juan 856', '1132345678', 2, '123456', NULL, NULL),
-(20433456784, 43345678, 'Felipe', 'Castro', 'felipe.castro@gmail.com', 'Calle Independencia 900', '1120000010', 2, 'hola123123', NULL, NULL),
-(20438901234, 43890123, 'Benjamín', 'Herrera', 'benjamin.herrera@gmail.com', 'Calle Belgrano 980', '1120000006', 2, '123456', NULL, NULL),
-(20441223454, 44122345, 'Luciano', 'Santos', 'luciano.santos@gmail.com', 'Calle Moreno 1200', '1190123456', 2, '123456', NULL, NULL),
-(20447654324, 44765432, 'Santiago', 'López', 'santiago.lopez@gmail.com', 'Calle Tucum�n 1450', '1156789012', 2, '123456', NULL, NULL),
-(20450987654, 45098765, 'Franco', 'Domínguez', 'franco.dominguez@gmail.com', 'Calle Pueyrred�n 600', '1112345678', 2, '123456', NULL, NULL),
-(20451234564, 45123456, 'Tomás', 'Navarro', 'tomas.navarro@gmail.com', 'Calle Jujuy 660', '1120000008', 2, '123456', NULL, NULL),
-(20457890124, 45789012, 'Agustín', 'Méndez', 'agustin.mendez@gmail.com', 'Calle Lavalle 1045', '1120000002', 2, '123456', NULL, NULL),
-(20459871234, 45987123, 'Tomás', 'González', 'tomas.gonzalez@gmail.com', 'Calle Mendoza 777', '1178901234', 2, '123456', NULL, NULL),
-(20460123454, 46012345, 'Joaquín', 'Suárez', 'joaquin.suarez@gmail.com', 'Calle Mitre 3020', '1120000004', 2, '123456', NULL, NULL),
-(27376543222, 43765432, 'Martina', 'Vega', 'martina.vega@gmail.com', 'Av. Mitre 2200', '1101234567', 2, '123456', NULL, NULL),
-(27385678922, 38567892, 'Emilia', 'Flores', 'emilia.flores@gmail.com', 'Av. Pueyrred�n 740', '1120000007', 2, '123456', NULL, NULL),
-(27391234562, 39123456, 'Lucía', 'Gómez', 'lucia.gomez@gmail.com', 'Av. Callao 1850', '1120000001', 2, '123456', NULL, NULL),
-(27398765422, 43987654, 'Camila', 'Pereyra', 'camila.pereyra@gmail.com', 'Av. Rivadavia 3400', '1167890123', 2, '123456', NULL, NULL),
-(27427890122, 42789012, 'Martina', 'Delgado', 'martina.delgado@gmail.com', 'Av. San Mart�n 500', '1120000005', 2, '123456', NULL, NULL),
-(27435567892, 43556789, 'Milagros', 'Torres', 'milagros.torres@gmail.com', 'Av. C�rdoba 870', '1120000003', 2, '123456', NULL, NULL),
-(27440123452, 44012345, 'Sofía', 'Martínez', 'sofia.martinez@gmail.com', 'Av. Corrientes 1234', '1123456789', 2, '123456', NULL, NULL),
-(27446789012, 44678901, 'Valeria', 'Benítez', 'valeria.benitez@gmail.com', 'Av. Santa Fe 2300', '1120000009', 2, '123456', NULL, NULL),
-(27448765432, 44876543, 'Julieta', 'Ramírez', 'julieta.ramirez@gmail.com', 'Av. Santa Fe 900', '1189012345', 2, '123456', NULL, NULL),
-(27452334562, 45233456, 'Valentina', 'Rojas', 'valentina.rojas@gmail.com', 'Av. Belgrano 2222', '1145678901', 2, '123456', NULL, NULL);
+INSERT INTO `alumno` (`ID_Cuil_Alumno`, `DNI_Alumno`, `Nombre_Alumno`, `Apellido_Alumno`, `Email_Alumno`, `Direccion`, `Telefono`, `ID_Rol`, `Password`, `first_login_done`, `reset_token_hash`, `reset_token_expires_at`) VALUES
+(20431223444, 43122344, 'Mateo', 'Fernández', 'mateo.fernandez@gmail.com', 'Calle San Juan 856', '1132345678', 2, '$2y$10$Pc0kb1Px8mrxMxS.u8UhkO9hC8IE3957vkQ2NoECzKdq5o5YbP.02', 0, NULL, NULL),
+(20433456784, 43345678, 'Felipe', 'Castro', 'felipe.castro@gmail.com', 'Calle Independencia 900', '1120000010', 2, '$2y$10$r/12cX2dq4iV1YCtQ.V3UeQIBt/QD5c4RDkx0nKXU.2qnltu91.fm', 0, NULL, NULL),
+(20438901234, 43890123, 'Benjamín', 'Herrera', 'benjamin.herrera@gmail.com', 'Calle Belgrano 980', '1120000006', 2, '$2y$10$UO3l32cSoNsHjkfyMX7ZC.NP.J/u.kZbZsJCVtRtRXqqysU7UMa0i', 0, NULL, NULL),
+(20441223454, 44122345, 'Luciano', 'Santos', 'luciano.santos@gmail.com', 'Calle Moreno 1200', '1190123456', 2, '$2y$10$V0v4JQZWh4HcZC4D.GGDZuqyIH5/KZOCgi.Lxa.W.kXAV9XwKBXcG', 0, NULL, NULL),
+(20447654324, 44765432, 'Santiago', 'López', 'santiago.lopez@gmail.com', 'Calle Tucum�n 1450', '1156789012', 2, '$2y$10$Zun7NAVH22NF6Ah8NiAiw.Z6dMe3Docij/8/UW6n02HufsasYQGhK', 0, NULL, NULL),
+(20450987654, 45098765, 'Franco', 'Domínguez', 'franco.dominguez@gmail.com', 'Calle Pueyrred�n 600', '1112345678', 2, '$2y$10$agt2AzVv6QBeAlIOif2VmOly1Mamr3U.xr/5hJ6FOLWeppNyyCobC', 0, NULL, NULL),
+(20451234564, 45123456, 'Tomás', 'Navarro', 'tomas.navarro@gmail.com', 'Calle Jujuy 660', '1120000008', 2, '$2y$10$QEVsEJPfIJjOnZsQESgbNOqOlUY5QfoHXYRmeXWnz5TAGClAnsI7i', 0, NULL, NULL),
+(20457890124, 45789012, 'Agustín', 'Méndez', 'agustin.mendez@gmail.com', 'Calle Lavalle 1045', '1120000002', 2, '$2y$10$rCEWgeXB9.zVC/k8V5vW8e/ymf1B56zpAl5O6U8z4tD5cOkbo93bm', 0, NULL, NULL),
+(20459871234, 45987123, 'Tomás', 'González', 'tomas.gonzalez@gmail.com', 'Calle Mendoza 777', '1178901234', 2, '$2y$10$pHIQwpyXNKle5zLzNw6TIuM1gsdFFuHGEP6HPOdGaH3rzJ2x67TSW', 0, NULL, NULL),
+(20460123454, 46012345, 'Joaquín', 'Suárez', 'joaquin.suarez@gmail.com', 'Calle Mitre 3020', '1120000004', 2, '$2y$10$pkjCyX/Y7wQDuHL5U.snK./xfUYwH2emADkU.96DYsGi6CS.rGkS6', 0, NULL, NULL),
+(27376543222, 43765432, 'Martina', 'Vega', 'martina.vega@gmail.com', 'Av. Mitre 2200', '1101234567', 2, '$2y$10$Aky6Rfz6I9q6q3MbI/UUUu8DNLQf8uqld865NoOvw7c/i7bzVK0Ym', 0, NULL, NULL),
+(27385678922, 38567892, 'Emilia', 'Flores', 'emilia.flores@gmail.com', 'Av. Pueyrred�n 740', '1120000007', 2, '$2y$10$N96X6Fvae9RjqGPiqEqO0.wyk44UNPnsfuhg5.9kzGdXni65VBRJO', 0, NULL, NULL),
+(27391234562, 39123456, 'Lucía', 'Gómez', 'lucia.gomez@gmail.com', 'Av. Callao 1850', '1120000001', 2, '$2y$10$bnlE/GCKWMSXeB1QA4Utm.DxThKxeXgGQLWQ09QyWUFlwMKxfgb4G', 0, NULL, NULL),
+(27398765422, 43987654, 'Camila', 'Pereyra', 'camila.pereyra@gmail.com', 'Av. Rivadavia 3400', '1167890123', 2, '$2y$10$PRW1jCQZxG9MibsMnYjm4OhA8EBt7EMlYiIPVjynb3gkx8gZJhW.W', 0, NULL, NULL),
+(27427890122, 42789012, 'Martina', 'Delgado', 'martina.delgado@gmail.com', 'Av. San Mart�n 500', '1120000005', 2, '$2y$10$mj66SZkGm1KMfl8g7UkVYez3VNoWnotZtx6S7.gCzae7oU0SfwKGW', 0, NULL, NULL),
+(27435567892, 43556789, 'Milagros', 'Torres', 'milagros.torres@gmail.com', 'Av. C�rdoba 870', '1120000003', 2, '$2y$10$..lIwV6YF178j1G5VkBG7.BVWrKaiO5h/h/Eko4e7iicyt.Ggexc2', 0, NULL, NULL),
+(27440123452, 44012345, 'Sofía', 'Martínez', 'sofia.martinez@gmail.com', 'Av. Corrientes 1234', '1123456789', 2, '$2y$10$T4Rx0K8FAyT.bQETXrbiXuPctkhbUPl2so3Pq9W6MxwYbg.fiMuPW', 0, NULL, NULL),
+(27446789012, 44678901, 'Valeria', 'Benítez', 'valeria.benitez@gmail.com', 'Av. Santa Fe 2300', '1120000009', 2, '$2y$10$mfj5z93eCOKJ9rpr2ZGS6uz4UosPwIvP3E02Uhsu/Ni58o1mf9DO2', 0, NULL, NULL),
+(27448765432, 44876543, 'Julieta', 'Ramírez', 'julieta.ramirez@gmail.com', 'Av. Santa Fe 900', '1189012345', 2, '$2y$10$2pGA4t9JI1d8H2BFIgiJEeYBBqFgJH1JNeIfr7SxzbG9DYqfQ.ubO', 0, NULL, NULL),
+(27452334562, 45233456, 'Valentina', 'Rojas', 'valentina.rojas@gmail.com', 'Av. Belgrano 2222', '1145678901', 2, '$2y$10$6j7nEvyyw6clyRsl8z9LWOxGYFOKzRVNIgnqnPCDVQPGm3Bs9/mTe', 0, NULL, NULL);
 
 -- --------------------------------------------------------
 

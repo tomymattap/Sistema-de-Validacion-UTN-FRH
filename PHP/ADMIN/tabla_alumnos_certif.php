@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-                    <form action="generar_certificado.php" method="POST">
+                    <form action="subir_archivos_certificado.php" method="POST">
                         <!-- 🔹 campos ocultos para arrastrar datos -->
                         <input type="hidden" name="id_curso" value="<?php echo htmlspecialchars($_POST['curso']); ?>">
                         <input type="hidden" name="anio" value="<?php echo htmlspecialchars($_POST['anio']); ?>">

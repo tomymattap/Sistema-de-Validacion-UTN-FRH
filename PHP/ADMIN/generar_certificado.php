@@ -56,7 +56,16 @@
 <main>
 <div class="content-container">
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include("../conexion.php");
+
+// Validar que solo los administradores puedan acceder y obtener su ID
+if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1 || !isset($_SESSION['user_id'])) {
+    echo "<div class='message error'>❌ Acceso denegado. No tiene permiso para realizar esta acción.</div>";
+    exit;
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Variables del formulario
@@ -64,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $anio = $_POST["anio"];
     $cuatrimestre = $_POST["cuatrimestre"];
     $alumnos = $_POST["alumnos"];
-    $id_admin = 'lione_29646'; // 🔹 Podés reemplazarlo luego por el admin logueado
+    $id_admin = $_SESSION['user_id']; // Se obtiene el ID del admin logueado
 
     // Inicia una transacción
     mysqli_begin_transaction($conexion);

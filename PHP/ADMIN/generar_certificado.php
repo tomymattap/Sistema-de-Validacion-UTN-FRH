@@ -59,6 +59,9 @@ session_start();
 <main>
 <div class="content-container">
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include("../conexion.php");
 
 // Validar que solo los administradores puedan acceder y obtener su ID
@@ -68,17 +71,14 @@ if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1 || !isset($_SESS
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Asegurarse de que el ID del admin esté en la sesión
-    if (!isset($_SESSION['user_id'])) {
-        die("<div class='message error'>❌ Su sesión ha expirado o es inválida. Por favor, inicie sesión de nuevo.</div>");
-    }
-    $id_admin = $_SESSION['user_id']; // Se obtiene el ID del admin logueado
-
     // Variables del formulario
     $id_curso = $_POST["id_curso"];
     $anio = $_POST["anio"];
     $cuatrimestre = $_POST["cuatrimestre"];
     $alumnos = $_POST["alumnos"];
+    $id_admin = $_SESSION['user_id']; // Se obtiene el ID del admin logueado
+
+    $alumnos_a_certificar = [];
 
     $alumnos_a_certificar = [];
 
@@ -86,38 +86,64 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     mysqli_begin_transaction($conexion);
 
     try {
-        foreach ($alumnos as $cuil => $alumno) {
+        foreach ($alumnos as $alumno) {
             if (!isset($alumno['cuil'])) continue; // solo los alumnos seleccionados
 
+            $cuil = $alumno['cuil'];
             $estado = $alumno['estado'];
-            $alumnos_a_certificar[$cuil] = ['estado' => $estado, 'id_curso' => $id_curso]; // Guardar CUIL, estado e ID del curso para la sesión
+            $alumnos_a_certificar[] = $cuil; // Guardar CUIL para la sesión
 
             // 1️⃣ INSERTA la certificación
-            $stmt_insert = $conexion->prepare("
-            INSERT INTO CERTIFICACION (Estado_Aprobacion, Fecha_Emision, ID_Admin, ID_CUV, ID_Inscripcion_Certif)
-            SELECT ?, CURDATE(), ?, 
-                (SELECT CONCAT(
+            $insert = "
+            INSERT INTO CERTIFICACION (
+                Estado_Aprobacion, Fecha_Emision, ID_Admin, ID_CUV, ID_Inscripcion_Certif
+            )
+            SELECT 
+                '$estado', CURDATE(), '$id_admin',
+                CONCAT(
                     CASE WHEN c.Tipo = 'GENUINO' THEN 'G' ELSE 'C' END,
                     YEAR(CURDATE()),
                     LPAD(i.ID_Curso, 2, '0'),
-                    LPAD(COALESCE(MAX(CAST(SUBSTRING(ce.ID_CUV, 8) AS UNSIGNED)), 0) + 1, 4, '0')
-                ) FROM INSCRIPCION i JOIN CURSO c ON i.ID_Curso = c.ID_Curso LEFT JOIN CERTIFICACION ce ON ce.ID_CUV LIKE CONCAT(CASE WHEN c.Tipo = 'GENUINO' THEN 'G' ELSE 'C' END, YEAR(CURDATE()), LPAD(i.ID_Curso, 2, '0'), '%') WHERE i.ID_Cuil_Alumno = ? AND i.ID_Curso = ? AND i.Anio = ? AND i.Cuatrimestre = ?),
+                    LPAD(
+                        COALESCE((
+                            SELECT RIGHT(MAX(ID_CUV), 4) + 1
+                            FROM CERTIFICACION ce
+                            WHERE 
+                                YEAR(ce.Fecha_Emision) = YEAR(CURDATE())
+                                AND ce.ID_CUV LIKE CONCAT(
+                                    CASE WHEN c.Tipo = 'GENUINO' THEN 'G' ELSE 'C' END,
+                                    YEAR(CURDATE()),
+                                    LPAD(i.ID_Curso, 2, '0'),
+                                    '%'
+                                )
+                        ), 1),
+                        4, '0'
+                    )
+                ),
                 i.ID_Inscripcion
             FROM INSCRIPCION i
-            WHERE i.ID_Cuil_Alumno = ? AND i.ID_Curso = ? AND i.Anio = ? AND i.Cuatrimestre = ? AND i.Estado_Cursada <> 'CERTIFICADA'
-            ");
-            $stmt_insert->bind_param("ssiiisiiis", $estado, $id_admin, $cuil, $id_curso, $anio, $cuatrimestre, $cuil, $id_curso, $anio, $cuatrimestre);
+            JOIN CURSO c ON c.ID_Curso = i.ID_Curso
+            WHERE 
+                i.ID_Cuil_Alumno = '$cuil' AND i.ID_Curso = '$id_curso' AND 
+                i.Anio = '$anio' AND i.Cuatrimestre = '$cuatrimestre' AND 
+                i.Estado_Cursada <> 'CERTIFICADA';
+            ";
 
-            if (!$stmt_insert->execute()) {
-                throw new Exception("Error al generar certificación para $cuil: " . $stmt_insert->error);
+            if (!mysqli_query($conexion, $insert)) {
+                throw new Exception("Error al generar certificación para $cuil: " . mysqli_error($conexion));
             }
 
             // 2️⃣ ACTUALIZA el estado de cursada
-            $stmt_update = $conexion->prepare("UPDATE INSCRIPCION SET Estado_Cursada = 'CERTIFICADA' WHERE ID_Cuil_Alumno = ? AND ID_Curso = ? AND Anio = ? AND Cuatrimestre = ?");
-            $stmt_update->bind_param("siss", $cuil, $id_curso, $anio, $cuatrimestre);
+            $update = "
+            UPDATE INSCRIPCION
+            SET Estado_Cursada = 'CERTIFICADA'
+            WHERE 
+                ID_Cuil_Alumno = '$cuil' AND ID_Curso = '$id_curso' AND 
+                Anio = '$anio' AND Cuatrimestre = '$cuatrimestre';
+            ";
 
-            if (!$stmt_update->execute()) {
-                throw new Exception("Error al actualizar estado para $cuil: " . $stmt_update->error);
+            if (!mysqli_query($conexion, $update)) {
+                throw new Exception("Error al actualizar estado para $cuil: " . mysqli_error($conexion));
             }
 
             echo "<div class='message success'>✅ Certificación generada para el alumno con CUIL $cuil ($estado)</div>";
@@ -133,15 +159,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'id_curso' => $id_curso,
             'anio' => $anio,
             'cuatrimestre' => $cuatrimestre
-        ];
-
-        // Guardar info de archivos para el PDF
-        $_SESSION['cert_files_info'] = [
-            'firma_secretario_path' => $_POST['firma_secretario_path'] ?? null,
-            'firma_docente_director_path' => $_POST['firma_docente_director_path'] ?? null,
-            'logo_camara_path' => $_POST['logo_camara_path'] ?? null,
-            'es_director' => isset($_POST['es_director']),
-            'nombre_instituto' => $_POST['nombre_instituto'] ?? null
         ];
 
         // Mostrar botón de descarga

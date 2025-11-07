@@ -1,5 +1,14 @@
-/* Estilos de la Página de Contacto  */
+/*
+    ARCHIVO: contacto.css
+    DESCRIPCIÓN: Estilos específicos para la página de contacto.
+    Define la apariencia del formulario de contacto, el mapa de ubicación y los mensajes de estado (éxito/error).
+*/
 
+/* -------------------------------------------
+    Animaciones y Contenedor Principal
+------------------------------------------- */
+
+/* Animación para que los elementos aparezcan desde abajo */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -11,6 +20,7 @@
     }
 }
 
+/* Contenedor principal de la sección de contacto */
 .contact-section {
     width: 100%;
     background-color: #FFFFFF;
@@ -18,22 +28,24 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: hidden;
+    overflow: hidden; /* Evita que las animaciones generen barras de scroll */
 }
 
+/* Título principal de la sección */
 .main-title {
     font-size: 2rem;
     font-weight: 700;
     text-align: center;
     margin-bottom: 1.5rem;
     color: var(--color-principal);
-    opacity: 0;
-    animation: fadeInUp 0.8s ease-out 0.1s forwards;
+    opacity: 0; /* Inicia oculto para la animación */
+    animation: fadeInUp 0.8s ease-out 0.1s forwards; /* Aplica la animación */
 }
 
+/* Contenedor que agrupa el mapa y el formulario */
 .contact-content {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Apilado en móvil */
     justify-content: center;
     align-items: center;
     gap: 2rem;
@@ -41,11 +53,16 @@
     max-width: 1200px;
 }
 
+/* -------------------------------------------
+    Estilos del Mapa y Formulario
+------------------------------------------- */
+
+/* Contenedor del mapa de Google */
 .map-container {
     width: 100%;
     max-width: 550px;
     opacity: 0;
-    animation: fadeInUp 0.8s ease-out 0.3s forwards;
+    animation: fadeInUp 0.8s ease-out 0.3s forwards; /* Animación con retraso */
 }
 
 .map-container iframe {
@@ -55,6 +72,7 @@
     border-radius: 8px;
 }
 
+/* Contenedor del formulario */
 .form-wrapper {
     width: 100%;
     max-width: 500px;
@@ -62,13 +80,14 @@
     flex-direction: column;
     align-items: flex-start;
     opacity: 0;
-    animation: fadeInUp 0.8s ease-out 0.5s forwards;
+    animation: fadeInUp 0.8s ease-out 0.5s forwards; /* Animación con más retraso */
 }
 
 .contact-form {
     width: 100%;
 }
 
+/* Grupo de cada campo del formulario (label + input) */
 .form-group {
     margin-bottom: 10px;
 }
@@ -80,6 +99,7 @@
     color: var(--color-principal);
 }
 
+/* Estilos para los campos de entrada, área de texto y selector */
 .form-group input,
 .form-group textarea,
 .form-group select {
@@ -92,22 +112,24 @@
     transition: box-shadow 0.3s, border-color 0.3s;
 }
 
+/* Estilo del texto de placeholder */
 .form-group input::placeholder,
 .form-group textarea::placeholder {
     color: #537b89;
     opacity: 1;
 }
 
+/* Efecto de foco en los campos del formulario */
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
     outline: none;
     border-color: var(--color-secundario-1);
-    box-shadow: 0 0 0 3px rgba(0, 210, 242, 0.3);
+    box-shadow: 0 0 0 3px rgba(0, 210, 242, 0.3); /* Resplandor para indicar foco */
 }
 
 .form-group textarea {
-    resize: vertical;
+    resize: vertical; /* Permite redimensionar verticalmente */
     min-height: 80px;
 }
 
@@ -116,10 +138,16 @@
     color: var(--color-principal);
 }
 
+/* Estilo para el selector cuando no se ha elegido una opción válida */
 .form-group select:invalid {
     color: #537b89;
 }
 
+/* -------------------------------------------
+    Botón de Envío y Mensajes de Estado
+------------------------------------------- */
+
+/* Área que contiene el botón de envío y los mensajes */
 .form-submit-area {
     display: flex;
     flex-direction: column;
@@ -128,6 +156,7 @@
     margin-top: 10px;
 }
 
+/* Botón para enviar el formulario */
 .submit-btn {
     background-color: var(--color-principal);
     color: var(--color-blanco);
@@ -147,13 +176,14 @@
     color: var(--color-principal);
 }
 
+/* Estilos base para los mensajes de éxito y error */
 .success-message, .error-message {
     padding: 0.7rem 1rem;
     color: var(--color-blanco);
     border-radius: 6px;
     font-weight: 700;
     font-size: 0.9rem;
-    opacity: 0;
+    opacity: 0; /* Ocultos por defecto */
     visibility: hidden;
     transition: opacity 0.4s, visibility 0.4s;
     width: 100%;
@@ -161,19 +191,23 @@
 }
 
 .success-message {
-    background-color: var(--color-secundario-2);
+    background-color: var(--color-secundario-2); /* Fondo verde para éxito */
 }
 
 .error-message {
-    background-color: var(--color-secundario-4);
+    background-color: var(--color-secundario-4); /* Fondo rojo para error */
 }
 
+/* Clase que se añade con JS para mostrar los mensajes */
 .success-message.visible, .error-message.visible {
     opacity: 1;
     visibility: visible;
 }
 
-/* Responsive */
+/* -------------------------------------------
+    Ajustes para Dispositivos Medianos y Grandes
+------------------------------------------- */
+
 @media (min-width: 768px) {
     .contact-section {
         padding: 2rem;
@@ -183,6 +217,7 @@
         font-size: 2.5rem;
     }
 
+    /* Organiza el mapa y el formulario en una fila */
     .contact-content {
         flex-direction: row;
         align-items: flex-start;
@@ -204,5 +239,3 @@
         width: auto;
     }
 }
-
-

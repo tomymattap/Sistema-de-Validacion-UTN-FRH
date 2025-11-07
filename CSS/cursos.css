@@ -1,21 +1,34 @@
-/* Estilos de la Página de Cursos - Diseño Minimalista y Moderno */
+/*
+    ARCHIVO: cursos.css
+    DESCRIPCIÓN: Estilos para la página de visualización de cursos.
+    Define el diseño de las tarjetas de curso, la navegación por categorías y la estructura general de la sección.
+*/
+
+/* -------------------------------------------
+    Variables de Color y Diseño Específicas
+------------------------------------------- */
 
 :root {
-    --color-primario: #005f73;
-    --color-secundario: #0a9396;
-    --color-fondo: #f8f9fa;
-    --color-tarjeta: #ffffff;
-    --color-texto-principal: #212529;
-    --color-texto-secundario: #495057;
-    --sombra-tarjeta: 0 4px 15px rgba(0, 0, 0, 0.07);
-    --borde-radio: 12px;
+    --color-primario: #005f73;          /* Color principal para títulos y elementos destacados */
+    --color-secundario: #0a9396;        /* Color de acento para detalles y enlaces */
+    --color-fondo: #f8f9fa;             /* Color de fondo suave para la sección */
+    --color-tarjeta: #ffffff;           /* Color de fondo para las tarjetas de curso */
+    --color-texto-principal: #212529;   /* Color de texto oscuro para títulos */
+    --color-texto-secundario: #495057;  /* Color de texto gris para descripciones */
+    --sombra-tarjeta: 0 4px 15px rgba(0, 0, 0, 0.07); /* Sombra sutil para las tarjetas */
+    --borde-radio: 12px;                /* Radio de borde para un look moderno */
 }
+
+/* -------------------------------------------
+    Contenedor y Navegación de Cursos
+------------------------------------------- */
 
 .cursos-section {
     padding: 2rem 1rem;
     background-color: var(--color-fondo);
 }
 
+/* Barra de navegación para filtrar por categoría de curso */
 .cursos-nav {
     text-align: center;
     margin-bottom: 2rem;
@@ -24,7 +37,7 @@
 
 .cursos-nav ul {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Permite que los botones pasen a la siguiente línea si no caben */
     justify-content: center;
     gap: 0.5rem;
     list-style: none;
@@ -32,12 +45,13 @@
     margin: 0;
 }
 
+/* Estilo de los botones de navegación de categorías */
 .cursos-nav a {
     text-decoration: none;
     color: var(--color-primario);
     font-weight: 700;
     padding: 0.6rem 1.2rem;
-    border-radius: 50px;
+    border-radius: 50px; /* Botones tipo píldora */
     transition: background-color 0.3s, color 0.3s, transform 0.2s;
     border: 2px solid transparent;
     background-color: var(--color-tarjeta);
@@ -45,17 +59,24 @@
     font-size: 0.9rem;
 }
 
+/* Efecto hover y estado activo para los botones de categoría */
 .cursos-nav a:hover, .cursos-nav a.active {
     background-color: var(--color-primario);
     color: var(--color-tarjeta);
-    transform: translateY(-3px);
+    transform: translateY(-3px); /* Ligero levantamiento al pasar el mouse */
 }
 
+/* -------------------------------------------
+    Categorías y Listado de Cursos
+------------------------------------------- */
+
+/* Contenedor de una categoría de curso (ej. "Cursos de IT") */
 .course-category {
     margin-bottom: 3rem;
-    scroll-margin-top: 80px;
+    scroll-margin-top: 80px; /* Espacio superior al navegar con anclas (#) */
 }
 
+/* Título de la categoría */
 .course-category h2 {
     font-size: 2rem;
     font-weight: 700;
@@ -65,6 +86,7 @@
     position: relative;
 }
 
+/* Línea decorativa debajo del título de la categoría */
 .course-category h2::after {
     content: '';
     display: block;
@@ -75,27 +97,33 @@
     border-radius: 2px;
 }
 
+/* Grilla que contiene las tarjetas de los cursos */
 .course-list {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Una columna en móvil */
     gap: 1.5rem;
 }
+
+/* -------------------------------------------
+    Tarjeta de Curso Individual
+------------------------------------------- */
 
 .course-card {
     background-color: var(--color-tarjeta);
     border-radius: var(--borde-radio);
     box-shadow: var(--sombra-tarjeta);
-    overflow: hidden;
+    overflow: hidden; /* Oculta el exceso de la imagen */
     transition: transform 0.3s, box-shadow 0.3s;
     display: flex;
     flex-direction: column;
 }
 
 .course-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transform: translateY(-5px); /* Efecto de levantamiento */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Sombra más pronunciada */
 }
 
+/* Contenedor de la imagen del curso */
 .course-card .card-image {
     width: 100%;
     height: 180px;
@@ -105,17 +133,19 @@
 .course-card .card-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* La imagen cubre el contenedor sin deformarse */
     transition: transform 0.4s;
 }
 
+/* Efecto de zoom en la imagen al pasar el mouse sobre la tarjeta */
 .course-card:hover .card-image img {
     transform: scale(1.05);
 }
 
+/* Contenedor de la información del curso */
 .course-info {
     padding: 1.2rem;
-    flex-grow: 1;
+    flex-grow: 1; /* Permite que este contenedor crezca y ocupe el espacio disponible */
     display: flex;
     flex-direction: column;
 }
@@ -138,6 +168,10 @@
     color: var(--color-primario);
 }
 
+/* -------------------------------------------
+    Ajustes para Dispositivos Medianos y Grandes
+------------------------------------------- */
+
 @media (min-width: 768px) {
     .cursos-section {
         padding: 3rem 2rem;
@@ -152,6 +186,7 @@
         font-size: 2.5rem;
     }
 
+    /* Cambia la grilla a múltiples columnas en pantallas más grandes */
     .course-list {
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 2.5rem;

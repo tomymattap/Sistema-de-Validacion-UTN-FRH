@@ -1,6 +1,16 @@
+/*
+    ARCHIVO: inscripciones.css
+    DESCRIPCIÓN: Estilos para la página de inscripciones del alumno.
+    Define la apariencia de la lista de cursos a los que el alumno está inscripto y el estado de su cuenta.
+*/
+
+/* -------------------------------------------
+    Contenedor Principal
+------------------------------------------- */
+
 .inscripciones-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Apilado en móvil */
     justify-content: space-between;
     max-width: 1400px;
     margin: 2rem auto;
@@ -8,8 +18,12 @@
     width: 90%;
 }
 
+/* -------------------------------------------
+    Lista de Cursos Inscriptos
+------------------------------------------- */
+
 .cursos-list {
-    flex: 4;
+    flex: 4; /* Ocupa más espacio que la barra lateral */
 }
 
 .cursos-list h1 {
@@ -26,22 +40,15 @@
     padding-bottom: 0.5rem;
 }
 
-.estado-aside {
-    flex: 1;
-    background-color: #f9f9f9;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    height: fit-content; /* To make it not stretch */
-}
-
+/* Acordeón para mostrar los cursos */
 .cursos-accordion .curso-item {
     border: 1px solid #ddd;
     border-radius: 4px;
     margin-bottom: 1rem;
-    overflow: hidden; /* Ensures the details are contained */
+    overflow: hidden; /* Contiene los bordes redondeados */
 }
 
+/* Cabecera de cada item del acordeón */
 .cursos-accordion .curso-header {
     background-color: #f7f7f7;
     padding: 1rem;
@@ -58,8 +65,9 @@
     font-size: 1.1rem;
 }
 
+/* Detalles del curso (ocultos por defecto) */
 .cursos-accordion .curso-details {
-    display: none; /* Hidden by default */
+    display: none;
     padding: 1rem;
     border-top: 1px solid #ddd;
     background-color: #fff;
@@ -69,8 +77,22 @@
     margin: 0.5rem 0;
 }
 
+/* Muestra los detalles cuando el item está activo (se hace clic) */
 .cursos-accordion .curso-item.active .curso-details {
-    display: block; /* Shown when active */
+    display: block;
+}
+
+/* -------------------------------------------
+    Barra Lateral de Estado de Cuenta
+------------------------------------------- */
+
+.estado-aside {
+    flex: 1; /* Ocupa menos espacio que la lista de cursos */
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    height: fit-content; /* La altura se ajusta al contenido */
 }
 
 .estado-aside h2 {
@@ -98,25 +120,26 @@
     transition: all 0.3s ease;
 }
 
+/* Estilo para resaltar el estado actual */
 .estado-aside li.highlight {
     background-color: var(--color-secundario-1);
     color: white;
     transform: scale(1.05);
 }
 
+/* -------------------------------------------
+    Ajustes para Dispositivos Medianos y Grandes
+------------------------------------------- */
+
 @media (min-width: 768px) {
+    /* Organiza el contenido en una fila */
     .inscripciones-container {
         flex-direction: row;
     }
 
-    .cursos-list h1 {
-        text-align: left;
-    }
-
-    .cursos-list h2 {
-        text-align: left;
-    }
-
+    /* Alinea los títulos a la izquierda */
+    .cursos-list h1,
+    .cursos-list h2,
     .estado-aside h2 {
         text-align: left;
     }

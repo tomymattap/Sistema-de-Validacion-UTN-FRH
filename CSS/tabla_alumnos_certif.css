@@ -1,42 +1,53 @@
-/* Estilos para la tabla de selección de alumnos para certificar */
 
 .main-title {
     text-align: center;
-    font-size: 1.5rem; /* Título más pequeño */
+    font-size: 1.5rem;
 }
 
+/* Centra el texto en todas las celdas y define el color y tamaño de fuente */
 #results-table td, 
 #results-table th {
-    text-align: center; /* Centra todo el texto en la tabla */
-    color: black; /* Color de fuente negro para los datos */
-    font-size: 0.9rem; /* Fuente de datos más grande */
+    text-align: center;
+    color: black;
+    font-size: 0.9rem;
 }
 
+/* Estilos específicos para la cabecera de la tabla */
 #results-table th {
-    color: white; /* Color de fuente blanco para los títulos por defecto */
-    font-size: 1rem; /* Títulos de columna un poco más grandes */
+    color: white; /* El color de fondo se hereda de gestionarinscriptos.css o similar */
+    font-size: 1rem;
 }
 
-/* Achicar la columna de selección */
+/* Ajusta el ancho de la primera columna (checkbox de selección) */
 #results-table th:first-child,
 #results-table td:first-child {
     width: 5%;
 }
 
-/* Estilos para el botón de envío */
+/* -------------------------------------------
+    Botón de Envío
+------------------------------------------- */
+
 .submit-btn { 
     background-color: var(--color-principal); 
     color: var(--color-blanco); 
     border: none; 
-    padding: 0.8rem 1.5rem; /* Botón más grande */
+    padding: 0.8rem 1.5rem;
     border-radius: 6px; 
     font-weight: 700; 
     cursor: pointer; 
     transition: background-color 0.3s;
-    font-size: 1rem; /* Fuente más grande */
-    width: 100%;
+    font-size: 1rem;
+    width: 100%; /* Ancho completo en móvil */
 }
-.submit-btn:hover { background-color: #003344; }
+
+.submit-btn:hover { 
+    background-color: #003344; /* Tono más oscuro al pasar el mouse */
+}
+
+/* -------------------------------------------
+    Ajustes para Dispositivos Medianos y Grandes
+------------------------------------------- */
 
 @media (min-width: 768px) {
     .main-title {
@@ -53,7 +64,7 @@
     }
 
     .submit-btn {
-        width: auto;
+        width: auto; /* Ancho automático en pantallas grandes */
         padding: 1rem 2rem;
         font-size: 1.1rem;
     }

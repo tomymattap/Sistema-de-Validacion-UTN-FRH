@@ -1,4 +1,12 @@
-/* Estilos para la página de resultado de validación */
+/*
+    ARCHIVO: validacion.css
+    DESCRIPCIÓN: Estilos para la página que muestra el resultado de la validación de un certificado.
+    Define la apariencia de los mensajes de éxito (certificado válido) y error (certificado inválido).
+*/
+
+/* -------------------------------------------
+    Contenedor Principal y de Resultados
+------------------------------------------- */
 
 .validation-page {
     padding: 2rem 1rem;
@@ -6,6 +14,7 @@
     min-height: 60vh;
 }
 
+/* Contenedor principal del resultado de la validación */
 .validation-result-container {
     max-width: 900px;
     margin: 0 auto;
@@ -13,16 +22,16 @@
     border: 1px solid #ddd;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     border-radius: 8px;
-    overflow: hidden; /* Para que el header se ajuste a los bordes redondeados */
+    overflow: hidden; /* Asegura que los bordes redondeados se apliquen al contenido */
 }
 
-.result-header {
-    background-color: #28a745; /* Verde */
-    overflow: hidden;
-}
+/* -------------------------------------------
+    Cabecera y Cuerpo del Resultado
+------------------------------------------- */
 
+/* Cabecera del cuadro de resultado (verde para válido, rojo para inválido) */
 .result-header {
-    background-color: #28a745;
+    background-color: #28a745; /* Verde por defecto (éxito) */
     color: #fff;
     padding: 1rem 1.5rem;
     text-align: center;
@@ -34,6 +43,7 @@
     font-weight: 700;
 }
 
+/* Cuerpo del cuadro de resultado */
 .result-body {
     padding: 1.5rem;
     color: var(--color-texto-principal);
@@ -52,11 +62,16 @@
     margin: 1.5rem 0;
 }
 
+/* -------------------------------------------
+    Datos del Certificado y Botones
+------------------------------------------- */
+
+/* Estilo para los datos del certificado (Nombre, Curso, etc.) */
 .certificate-data p {
     margin-bottom: 0.8rem;
     font-size: 0.9rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Apilado en móvil */
 }
 
 .certificate-data p strong {
@@ -65,12 +80,14 @@
     margin-bottom: 0.25rem;
 }
 
+/* Texto informativo adicional */
 .validation-text, .contact-info {
     font-size: 0.9rem;
     line-height: 1.6;
     text-align: center;
 }
 
+/* Contenedor para el botón de volver */
 .actions-container {
     max-width: 900px;
     margin: 1.5rem auto 0;
@@ -78,10 +95,11 @@
     justify-content: center;
 }
 
+/* Botón para volver a la página de inicio */
 .back-btn {
     display: inline-block;
     padding: 0.8rem 2rem;
-    background-color: #00455C; /* Color principal explícito */
+    background-color: #00455C;
     color: white;
     text-decoration: none;
     font-weight: 700;
@@ -90,10 +108,14 @@
 }
 
 .back-btn:hover {
-    background-color: #003345; /* Un tono más oscuro del principal */
+    background-color: #003345;
 }
 
+/* -------------------------------------------
+    Mensajes de Estado (Alternativos)
+------------------------------------------- */
 
+/* Estilos para mensajes de error o éxito mostrados fuera del contenedor principal */
 .error-msg, .valid-msg {
     text-align: center;
     margin: 20px auto;
@@ -103,16 +125,22 @@
     max-width: 600px;
     font-weight: bold;
 }
+
 .error-msg {
     color: #b00020;
     background-color: #ffe6e6;
     border: 1px solid #b00020;
 }
+
 .valid-msg {
     color: #0a662f;
     background-color: #e7ffe6;
     border: 1px solid #0a662f;
 }
+
+/* -------------------------------------------
+    Ajustes para Dispositivos Medianos y Grandes
+------------------------------------------- */
 
 @media (min-width: 768px) {
     .validation-page {
@@ -131,13 +159,14 @@
         font-size: 1.1rem;
     }
 
+    /* Organiza las etiquetas y valores en una fila */
     .certificate-data p {
         font-size: 1rem;
         flex-direction: row;
     }
 
     .certificate-data p strong {
-        width: 180px; /* Ancho fijo para las etiquetas */
+        width: 180px; /* Ancho fijo para las etiquetas para alineación */
         margin-bottom: 0;
     }
 
@@ -146,6 +175,6 @@
     }
 
     .actions-container {
-        justify-content: flex-end;
+        justify-content: flex-end; /* Alinea el botón a la derecha */
     }
 }

@@ -1,4 +1,12 @@
-/* Estilos para la sección de Admin - Ver Inscriptos */
+/*
+    ARCHIVO: verinscriptos.css
+    DESCRIPCIÓN: Estilos para la página de visualización de inscriptos (posiblemente una versión anterior o alternativa a gestionarinscriptos.css).
+    Define la apariencia de los filtros y la tabla de resultados.
+*/
+
+/* -------------------------------------------
+    Contenedor Principal y Títulos
+------------------------------------------- */
 
 .admin-section {
     padding: 2rem 1rem;
@@ -14,13 +22,17 @@
     margin-bottom: 1.5rem;
 }
 
+/* -------------------------------------------
+    Contenedor de Filtros
+------------------------------------------- */
+
 .filters-container {
     background-color: #f8f9fa;
     padding: 1.5rem;
     border-radius: 8px;
     margin-bottom: 2rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Apilado en móvil */
     gap: 1.5rem;
 }
 
@@ -37,6 +49,7 @@
     align-items: center;
 }
 
+/* Campos de selección e inputs */
 .filters-container select, 
 .filters-container input {
     padding: 0.75rem;
@@ -47,8 +60,12 @@
 }
 
 #search-main {
-    flex-grow: 1;
+    flex-grow: 1; /* El campo de búsqueda principal ocupa el espacio disponible */
 }
+
+/* -------------------------------------------
+    Botones de Filtro
+------------------------------------------- */
 
 .filters-container button {
     padding: 0.75rem 1.5rem;
@@ -58,7 +75,7 @@
     font-size: 1rem;
     font-weight: 700;
     transition: background-color 0.3s;
-    width: 100%;
+    width: 100%; /* Ancho completo en móvil */
 }
 
 #filter-btn {
@@ -79,8 +96,12 @@
     background-color: #5a6268;
 }
 
+/* -------------------------------------------
+    Tabla de Resultados
+------------------------------------------- */
+
 .results-container {
-    overflow-x: auto;
+    overflow-x: auto; /* Scroll horizontal en pantallas pequeñas */
 }
 
 #results-table {
@@ -110,9 +131,14 @@
     background-color: #e9ecef;
 }
 
+/* Utilidad para alinear elementos a la derecha */
 .align-right {
     margin-left: auto;
 }
+
+/* -------------------------------------------
+    Ajustes para Dispositivos Medianos y Grandes
+------------------------------------------- */
 
 @media (min-width: 768px) {
     .admin-section {
@@ -123,6 +149,7 @@
         font-size: 2.5rem;
     }
 
+    /* Organiza los filtros en una fila */
     .filters-container {
         flex-direction: row;
         justify-content: space-between;

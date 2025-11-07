@@ -1,4 +1,13 @@
-/* Contenedor principal de la sección de administración */
+/*
+    ARCHIVO: gestionaradmin.css
+    DESCRIPCIÓN: Estilos para la página de gestión de administradores.
+    Define la apariencia de la tabla de administradores, el buscador, el botón para agregar nuevos administradores y los modales para agregar/editar/eliminar.
+*/
+
+/* -------------------------------------------
+    Contenedor Principal y Acciones
+------------------------------------------- */
+
 .admin-container {
     width: 95%;
     max-width: 1600px;
@@ -15,17 +24,19 @@
     text-align: center;
 }
 
+/* Contenedor para el botón de agregar y la barra de búsqueda */
 .actions-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Permite que los elementos se reorganicen en pantallas pequeñas */
     gap: 1rem;
 }
 
+/* Botón para agregar un nuevo administrador */
 .btn-agregar {
-    background-color: var(--color-principal); /* Azul institucional */
+    background-color: var(--color-principal);
     color: var(--color-blanco);
     padding: 0.8rem 1.5rem;
     border-radius: 8px;
@@ -39,9 +50,10 @@
 }
 
 .btn-agregar:hover {
-    background-color: #003345;
+    background-color: #003345; /* Tono más oscuro al pasar el mouse */
 }
 
+/* Contenedor de la barra de búsqueda */
 .search-container {
     flex-grow: 1;
     max-width: 400px;
@@ -55,6 +67,7 @@
     font-size: 1rem;
 }
 
+/* Contenedor para mostrar mensajes de error */
 .error-container {
     background-color: #f8d7da;
     color: #721c24;
@@ -65,8 +78,12 @@
     text-align: center;
 }
 
+/* -------------------------------------------
+    Tabla de Administradores
+------------------------------------------- */
+
 .table-container {
-    overflow-x: auto;
+    overflow-x: auto; /* Scroll horizontal en pantallas pequeñas */
 }
 
 .tabla-admins {
@@ -86,13 +103,14 @@
 }
 
 .tabla-admins tbody tr:nth-child(even) {
-    background-color: #f8f9fa;
+    background-color: #f8f9fa; /* Filas intercaladas */
 }
 
 .tabla-admins tbody tr:hover {
-    background-color: rgba(0, 210, 242, 0.1);
+    background-color: rgba(0, 210, 242, 0.1); /* Resaltado celeste al pasar el mouse */
 }
 
+/* Estilos para los botones de acción en la tabla (editar/eliminar) */
 .acciones-admin .btn-editar,
 .acciones-admin .btn-eliminar {
     background: none;
@@ -105,16 +123,20 @@
 }
 
 .acciones-admin .btn-editar:hover {
-    color: #00D2F2; /* Celeste activo */
+    color: #00D2F2; /* Celeste */
 }
 
 .acciones-admin .btn-eliminar:hover {
     color: #dc3545; /* Rojo */
 }
 
-/* Estilos para el Modal */
+/* -------------------------------------------
+    Estilos para el Modal (Ventana Emergente)
+------------------------------------------- */
+
+/* Fondo oscuro semitransparente del modal */
 .modal {
-    display: flex;
+    display: flex; /* Usar flexbox para centrar el contenido */
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -127,6 +149,7 @@
     justify-content: center;
 }
 
+/* Contenido del modal (el cuadro blanco) */
 .modal-contenido {
     background-color: #fefefe;
     margin: auto;
@@ -139,6 +162,7 @@
     position: relative;
 }
 
+/* Botón de cerrar (la 'X') */
 .cerrar {
     color: #aaa;
     float: right;
@@ -161,6 +185,7 @@
     margin-bottom: 1.5rem;
 }
 
+/* Campos del formulario dentro del modal */
 .campo-form {
     margin-bottom: 1rem;
 }
@@ -179,13 +204,15 @@
     border-radius: 5px;
 }
 
+/* Contenedor de los botones del formulario del modal */
 .botones-form {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-end; /* Alinea los botones a la derecha */
     gap: 1rem;
     margin-top: 2rem;
 }
 
+/* Estilo base para los botones del modal */
 .btn-guardar, .btn-cancelar, .btn-confirmar {
     padding: 0.8rem 1.5rem;
     border-radius: 8px;
@@ -195,17 +222,18 @@
 }
 
 .btn-guardar, .btn-confirmar {
-    background-color: #4CAF50; /* Verde institucional para Guardar */
+    background-color: #4CAF50; /* Verde para acciones positivas */
     color: white;
 }
 
 .btn-cancelar {
-    background-color: #6c757d;
+    background-color: #6c757d; /* Gris para cancelar */
     color: white;
 }
 
+/* Estilos específicos para el modal de confirmación de eliminación */
 .modal-confirmacion .btn-confirmar {
-    background-color: var(--color-principal); /* Azul para Confirmar Eliminación */
+    background-color: var(--color-principal); /* Azul para confirmar la eliminación */
 }
 
 .modal-confirmacion p {

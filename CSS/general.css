@@ -1,42 +1,56 @@
-/* Estilos Generales y Variables */
+/*
+    ARCHIVO: general.css
+    DESCRIPCIÓN: Hoja de estilos principal que define el diseño general, la apariencia y la responsividad del sitio web.
+    Contiene variables de color, estilos para la cabecera, pie de página, menús de navegación y otros elementos comunes.
+*/
 
+/* -------------------------------------------
+    Definiciones Globales y Animaciones
+------------------------------------------- */
+
+/* Animación para que el contenido aparezca gradualmente */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 
+/* Definición de variables CSS para mantener la consistencia en el diseño */
 :root {
-    --color-principal: #00455C;
-    --color-secundario-1: #00D2F2;
-    --color-secundario-2: #8DCC3D;
+    --color-principal: #00455C;       /* Color institucional primario */
+    --color-secundario-1: #00D2F2;   /* Color de acento para enlaces y elementos activos */
+    --color-secundario-2: #8DCC3D;   /* Otros colores secundarios para posibles usos */
     --color-secundario-3: #FFAB00;
     --color-secundario-4: #FF2644;
     --color-secundario-5: #B047B3;
-    --color-texto-gris: #6e7679;
-    --color-blanco: #FFFFFF;
-    --font-principal: 'Public Sans', sans-serif;
+    --color-texto-gris: #6e7679;     /* Color para texto secundario o deshabilitado */
+    --color-blanco: #FFFFFF;         /* Color blanco estándar */
+    --font-principal: 'Public Sans', sans-serif; /* Tipografía principal del sitio */
 }
 
+/* Reseteo de estilos básicos para todos los elementos */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; /* El padding y borde no afectan el tamaño final del elemento */
 }
 
+/* Estilos base para el cuerpo de la página */
 body {
     font-family: var(--font-principal);
     background-color: var(--color-blanco);
     color: var(--color-principal);
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    animation: fadeIn 0.5s ease-in-out;
+    min-height: 100vh; /* Asegura que el cuerpo ocupe al menos toda la altura de la pantalla */
+    animation: fadeIn 0.5s ease-in-out; /* Aplica la animación de aparición */
 }
 
+/* Estilo para el contenido principal, permite que el pie de página se mantenga abajo */
 main {
     flex-grow: 1;
 }
 
+/* Estilos base para enlaces y listas */
 a {
     text-decoration: none;
     color: inherit;
@@ -46,16 +60,21 @@ ul {
     list-style: none;
 }
 
-/* ----- Cabecera ----- */
+/* -------------------------------------------
+    Estilos de la Cabecera (Header)
+------------------------------------------- */
+
+/* Contenedor principal de la cabecera */
 .site-header {
     background-color: var(--color-blanco);
-    position: sticky;
+    position: sticky; /* La cabecera se mantiene fija al hacer scroll */
     top: 0;
     width: 100%;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1000; /* Se asegura que esté por encima de otros elementos */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra sutil para dar profundidad */
 }
 
+/* Contenedor interno para alinear el contenido de la cabecera */
 .header-container {
     display: flex;
     justify-content: space-between;
@@ -65,17 +84,18 @@ ul {
     margin: 0 auto;
 }
 
+/* Estilo del logo */
 .logo img {
     height: 60px;
 }
 
+/* Navegación principal (escritorio) */
 .main-nav {
-    display: none; /* Oculto en móvil, visible en escritorio */
+    display: none; /* Oculto por defecto en móviles */
 }
 
 .main-nav ul {
     display: flex;
-    list-style: none;
     gap: 30px;
 }
 
@@ -89,19 +109,21 @@ ul {
     transform: scale(1.1);
 }
 
+/* Estilo para el enlace de la página activa */
 .main-nav a.active {
     color: var(--color-secundario-1);
     border-bottom: 2px solid var(--color-secundario-1);
 }
 
+/* Contenedor para los controles de sesión (Iniciar Sesión / Menú de usuario) */
 .session-controls {
     position: relative;
 }
 
-/* Estilo unificado para botones de sesión en el header */
+/* Estilo del botón "INICIAR SESIÓN" */
 .btn-sesion {
-    background-color: transparent;
-    color: var(--color-principal);
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
     padding: 0.85rem 1.7rem;
     border-radius: 25px;
     border: 2px solid var(--color-principal);
@@ -113,22 +135,24 @@ ul {
     gap: 0.5rem;
 }
 
+/* Efecto hover para el botón "INICIAR SESIÓN" */
 .btn-sesion:hover {
-    background-color: var(--color-principal);
-    color: var(--color-blanco);
+    background-color: var(--color-blanco);
+    color: var(--color-principal);
 }
 
-/* Ajuste para el menú de usuario para que use el estilo unificado */
+/* Ajustes para el menú desplegable del usuario */
 .user-menu-toggle {
-    padding: 0; /* El padding se aplica en el contenedor .btn-sesion */
+    padding: 0;
     border: none;
     background: none;
     color: inherit;
     font: inherit;
 }
 
+/* Menú desplegable para el usuario logueado */
 .dropdown-menu {
-    display: none;
+    display: none; /* Oculto por defecto */
     position: absolute;
     top: 100%;
     right: 0;
@@ -143,6 +167,7 @@ ul {
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+/* Muestra el menú desplegable al pasar el mouse sobre el contenedor */
 .session-controls:hover .dropdown-menu {
     display: block;
     opacity: 1;
@@ -170,6 +195,7 @@ ul {
     gap: 0.5rem;
 }
 
+/* Gira la flecha del menú de usuario al pasar el mouse */
 .session-controls:hover .user-menu-toggle i {
     transform: rotate(180deg);
 }
@@ -178,9 +204,12 @@ ul {
     transition: transform 0.3s ease;
 }
 
-/* ----- Menú Hamburguesa ----- */
+/* -------------------------------------------
+    Estilos del Menú Hamburguesa (Móvil)
+------------------------------------------- */
+
 .hamburger-menu {
-    display: flex; /* Visible en móvil */
+    display: flex; /* Visible solo en móvil */
     flex-direction: column;
     justify-content: space-around;
     width: 2.25rem;
@@ -200,11 +229,15 @@ ul {
     transition: all 0.3s linear;
 }
 
-/* ----- Menú Off-canvas ----- */
+/* -------------------------------------------
+    Estilos del Menú Lateral (Off-canvas)
+------------------------------------------- */
+
+/* Contenedor del menú que se desliza desde la derecha */
 .off-canvas-menu {
     position: fixed;
     top: 0;
-    right: -80%; /* Oculto fuera de la pantalla */
+    right: -80%; /* Oculto fuera de la pantalla por defecto */
     width: 80%;
     max-width: 320px;
     height: 100%;
@@ -215,13 +248,15 @@ ul {
     padding: 2rem;
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* Scroll si el contenido es largo */
+    overflow-y: auto;
 }
 
+/* Clase que se añade con JS para mostrar el menú */
 .off-canvas-menu.active {
-    right: 0; /* Visible en la pantalla */
+    right: 0;
 }
 
+/* Botón para cerrar el menú lateral */
 .close-btn {
     position: absolute;
     top: 1rem;
@@ -233,32 +268,33 @@ ul {
     cursor: pointer;
 }
 
+/* Estilos de la lista de navegación dentro del menú lateral */
 .off-canvas-menu nav ul {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Alineación a la izquierda */
-    gap: 1.5rem; /* Espaciado reducido */
+    align-items: flex-start;
+    gap: 1.5rem;
     margin-top: 4rem;
     width: 100%;
 }
 
 .off-canvas-menu nav li {
     width: 100%;
-    text-align: left; /* Texto alineado a la izquierda */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Línea divisoria */
-    padding: 0.8rem 0; /* Padding vertical */
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.8rem 0;
 }
 
 .off-canvas-menu nav li:last-child {
-    border-bottom: none; /* Sin línea en el último elemento */
+    border-bottom: none;
 }
 
 .off-canvas-menu a {
-    font-size: 1.2rem; /* Tamaño de fuente ajustado */
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--color-blanco);
-    display: block; /* Ocupa todo el ancho */
-    padding: 0.5rem 0; /* Espaciado vertical */
+    display: block;
+    padding: 0.5rem 0;
     transition: color 0.3s;
 }
 
@@ -270,7 +306,7 @@ ul {
     color: var(--color-secundario-1);
 }
 
-/* Estilos para submenú en off-canvas */
+/* Estilos para el submenú dentro del menú lateral (ej. menú de usuario) */
 .off-canvas-menu .has-submenu > a {
     display: flex;
     justify-content: space-between;
@@ -292,19 +328,19 @@ ul {
 }
 
 .submenu {
-    max-height: 0;
+    max-height: 0; /* Oculto por defecto */
     overflow: hidden;
-    transition: max-height 0.5s ease-in-out;
-    padding-left: 1.5rem; /* Indentación del submenú */
+    transition: max-height 0.5s ease-in-out; /* Animación de despliegue */
+    padding-left: 1.5rem;
     margin-top: 0.5rem;
 }
 
 .submenu.active {
-    max-height: 500px; /* Altura máxima para permitir la animación */
+    max-height: 500px; /* Altura máxima para mostrar el contenido */
 }
 
 .submenu li {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Línea divisoria */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     padding: 0.5rem 0;
 }
 
@@ -313,11 +349,14 @@ ul {
 }
 
 .submenu li a {
-    font-size: 1rem; /* Tamaño de fuente más pequeño */
+    font-size: 1rem;
     font-weight: normal;
 }
 
-/* ----- Pie de Página ----- */
+/* -------------------------------------------
+    Estilos del Pie de Página (Footer)
+------------------------------------------- */
+
 .site-footer {
     background-color: var(--color-principal);
     color: var(--color-blanco);
@@ -326,7 +365,7 @@ ul {
 
 .footer-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Apilado en móvil */
     align-items: center;
     text-align: center;
     gap: 2rem;
@@ -373,7 +412,7 @@ ul {
 }
 
 .footer-separator {
-    display: none; /* Oculto en móvil */
+    display: none; /* Oculto en móvil, visible en escritorio */
 }
 
 .footer-nav h4 {
@@ -386,40 +425,44 @@ ul {
     gap: 0.75rem;
 }
 
-/* ----- Media Queries para Responsividad ----- */
+/* -------------------------------------------
+    Media Queries para Diseño Responsivo
+------------------------------------------- */
 
-/* Tablets y dispositivos más grandes */
+/* Estilos para Tablets y Escritorio (a partir de 768px) */
 @media (min-width: 768px) {
     .header-container {
         padding: 1rem 2rem;
     }
 
+    /* Muestra la navegación principal y oculta el menú hamburguesa */
     .main-nav {
-        display: flex; /* Visible en escritorio */
+        display: flex;
     }
 
     .hamburger-menu {
-        display: none; /* Oculto en escritorio */
+        display: none;
     }
 
+    /* Organiza el pie de página en columnas */
     .footer-container {
         flex-direction: row;
         justify-content: space-between;
         align-items: flex-start;
         text-align: left;
-        gap: 2rem; /* Espacio entre columnas */
+        gap: 2rem;
     }
 
     .footer-logo-info, .footer-social-legal, .footer-nav, .footer-dynamic-nav {
-        flex: 1; /* Distribución equitativa */
-        min-width: 0; /* Permite que los elementos se encojan */
+        flex: 1;
+        min-width: 0;
     }
 
     .footer-logo-info {
         display: flex;
         align-items: flex-start;
         gap: 2.5rem;
-        flex: 1.5; /* Más espacio para el logo e info */
+        flex: 1.5;
     }
 
     .footer-info {
@@ -437,6 +480,7 @@ ul {
         gap: 0.5rem;
     }
 
+    /* Muestra los separadores verticales en el pie de página */
     .footer-separator {
         display: block;
         width: 1px;
@@ -449,43 +493,32 @@ ul {
     }
 }
 
-/* Ocultar controles de sesión en móvil */
+/* Oculta los controles de sesión en la cabecera en vista móvil */
 @media (max-width: 767px) {
     .session-controls {
         display: none;
     }
 }
 
-/* Laptops y desktops */
+/* Ajustes para Laptops y Desktops (a partir de 1024px) */
 @media (min-width: 1024px) {
     .header-container {
-        width: 90%;
+        width: 90%; /* Limita el ancho en pantallas grandes */
     }
 }
 
-/* ----- Clases de utilidad para responsividad ----- */
-
-/* Por defecto, ocultar en móvil y mostrar en escritorio */
-.hide-on-mobile { display: block; }
-.show-on-mobile { display: none; }
-
-/* En pantallas pequeñas (móviles) */
-@media (max-width: 768px) {
-  .hide-on-mobile { display: none !important; } /* Ocultar elementos de escritorio */
-  .show-on-mobile { display: block !important; } /* Mostrar elementos de móvil */
-}
-
-/* En pantallas grandes (tablets y escritorio) */
-@media (min-width: 769px) {
-  .show-on-mobile { display: none !important; } /* Ocultar elementos de móvil */
-  .hide-on-mobile { display: block !important; } /* Mostrar elementos de escritorio */
-}
+/* -------------------------------------------
+    Clases de Utilidad
+------------------------------------------- */
 
 .main-title {
     margin-bottom: 2rem;
 }
 
-/* ----- Botón de Volver Arriba ----- */
+/* -------------------------------------------
+    Estilos del Botón "Volver Arriba"
+------------------------------------------- */
+
 .scroll-to-top-btn {
     position: fixed;
     bottom: 2rem;
@@ -502,10 +535,11 @@ ul {
     cursor: pointer;
     transition: transform 0.3s, opacity 0.3s;
     z-index: 1001;
-    opacity: 0;
+    opacity: 0; /* Oculto por defecto */
     visibility: hidden;
 }
 
+/* Clase que se añade con JS para mostrar el botón */
 .scroll-to-top-btn.visible {
     opacity: 1;
     visibility: visible;

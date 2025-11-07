@@ -1,6 +1,15 @@
-/* Contenedor para centrar el contenido sin afectar header/footer */
+/*
+    ARCHIVO: generar_certificado.css
+    DESCRIPCIÓN: Estilos para la página que muestra el resultado de la generación de un certificado.
+    Se utiliza para mostrar mensajes de éxito, error o información al usuario después de intentar crear un certificado.
+*/
+
+/* -------------------------------------------
+    Contenedor y Mensajes
+------------------------------------------- */
+
+/* Contenedor principal para centrar el contenido vertical y horizontalmente */
 .content-container {
-    
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,9 +17,10 @@
     text-align: center;
     color: #333;
     padding: 2rem 1rem;
-    margin-bottom: 4rem; /* Separación del footer */
+    margin-bottom: 4rem; /* Separación del pie de página */
 }
 
+/* Estilo base para los cuadros de mensaje */
 .message {
     border-radius: 10px;
     padding: 20px 30px;
@@ -21,36 +31,45 @@
     max-width: 600px;
 }
 
+/* Mensaje de éxito (fondo verde) */
 .success {
     background-color: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
 }
 
+/* Mensaje de error (fondo rojo) */
 .error {
     background-color: #f8d7da;
     color: #721c24;
     border: 1px solid #f5c6cb;
 }
 
+/* Mensaje de información (fondo azul) */
 .info {
     background-color: #cce5ff;
     color: #004085;
     border: 1px solid #b8daff;
 }
 
+/* -------------------------------------------
+    Botones de Acción
+------------------------------------------- */
+
+/* Contenedor para los botones de acción (ej. "Volver") */
 .button-container {
     margin-top: 30px;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Apilados en móvil */
     gap: 1rem;
     justify-content: center;
     width: 100%;
     max-width: 600px;
 }
 
+/* Estilo base para los botones */
 .btn {
-    background-color: #00455C;
+    background-color: #00455C; /* Color institucional */
     color: white;
     border: none;
     padding: 12px 20px;
@@ -58,12 +77,16 @@
     text-decoration: none;
     font-weight: bold;
     transition: background-color 0.3s ease;
-    width: 100%;
+    width: 100%; /* Ancho completo en móvil */
 }
 
 .btn:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* Color al pasar el mouse */
 }
+
+/* -------------------------------------------
+    Ajustes para Dispositivos Medianos y Grandes
+------------------------------------------- */
 
 @media (min-width: 768px) {
     .message {
@@ -71,12 +94,13 @@
         width: 60%;
     }
 
+    /* Organiza los botones en una fila */
     .button-container {
         flex-direction: row;
         gap: 20px;
     }
 
     .btn {
-        width: auto;
+        width: auto; /* Ancho automático para los botones */
     }
 }

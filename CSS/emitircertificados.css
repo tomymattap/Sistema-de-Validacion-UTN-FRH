@@ -1,11 +1,21 @@
-/* Estilos para la sección de emitir certificados */
+/*
+    ARCHIVO: emitircertificados.css
+    DESCRIPCIÓN: Estilos para la página de emisión de certificados por parte del administrador.
+    Define la estructura del formulario de datos del certificado y la previsualización del código QR y alfanumérico.
+*/
+
+/* -------------------------------------------
+    Contenedor Principal
+------------------------------------------- */
+
 .certificate-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Apilado en móvil */
     gap: 2rem;
     margin-bottom: 2rem;
 }
 
+/* Contenedores para el formulario y la previsualización */
 .certificate-form-container,
 .certificate-preview-container {
     background-color: #f9f9f9;
@@ -15,15 +25,20 @@
     width: 100%;
 }
 
+/* Títulos de las secciones */
 .certificate-form-container h2,
 .certificate-preview-container h2 {
     margin-top: 0;
     margin-bottom: 1.5rem;
     font-size: 1.5rem;
     color: #333;
-    border-bottom: 2px solid #005a9c;
+    border-bottom: 2px solid #005a9c; /* Línea decorativa */
     padding-bottom: 0.5rem;
 }
+
+/* -------------------------------------------
+    Estilos del Formulario
+------------------------------------------- */
 
 .form-group {
     margin-bottom: 1rem;
@@ -36,6 +51,7 @@
     color: #555;
 }
 
+/* Estilos para los campos de entrada de datos */
 .form-group input[type="text"],
 .form-group input[type="number"],
 .form-group input[type="date"],
@@ -49,6 +65,7 @@
     box-sizing: border-box;
 }
 
+/* Contenedor de los botones del formulario */
 .form-buttons {
     margin-top: 1.5rem;
 }
@@ -62,21 +79,28 @@
     font-weight: bold;
     background-color: #005a9c;
     color: white;
-    width: 100%;
+    width: 100%; /* Ocupa todo el ancho en móvil */
 }
 
+/* -------------------------------------------
+    Previsualización del Certificado
+------------------------------------------- */
+
+/* Contenedores para el código QR y el código alfanumérico */
 .qr-code-container,
 .certificate-code-container {
     margin-top: 2rem;
     text-align: center;
 }
 
+/* Estilo del contenedor del código QR generado */
 #qr-code {
     margin: 1rem auto;
     width: 128px;
     height: 128px;
 }
 
+/* Estilo del código alfanumérico generado */
 #certificate-code {
     font-family: monospace;
     font-size: 1.2rem;
@@ -86,10 +110,15 @@
     padding: 0.5rem 1rem;
     border-radius: 4px;
     display: inline-block;
-    word-break: break-all;
+    word-break: break-all; /* Evita que el código largo rompa el diseño */
 }
 
+/* -------------------------------------------
+    Ajustes para Dispositivos Medianos y Grandes
+------------------------------------------- */
+
 @media (min-width: 768px) {
+    /* Organiza el formulario y la previsualización en una fila */
     .certificate-container {
         flex-direction: row;
     }
@@ -103,6 +132,6 @@
     }
 
     .form-buttons button {
-        width: auto;
+        width: auto; /* Ancho automático para los botones */
     }
 }

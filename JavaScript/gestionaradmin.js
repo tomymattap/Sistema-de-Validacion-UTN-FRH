@@ -124,10 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" required>
                 </div>
-                <div class="campo-form">
-                    <label for="password">Contraseña:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
                 <input type="hidden" name="rol" value="1">
                 <div class="botones-form">
                     <button type="submit" class="btn-guardar">Guardar</button>
@@ -188,8 +184,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             <input type="email" id="email" name="email" value="${admin.Email}" required>
                         </div>
                         <div class="campo-form">
-                            <label for="password">Nueva Contraseña (dejar en blanco para no cambiar):</label>
-                            <input type="password" id="password" name="password">
+                            <label for="rol">Rol:</label>
+                            <select id="rol" name="rol" required>
+                                <option value="1" ${admin.ID_Rol == 1 ? 'selected' : ''}>Admin</option>
+                                <option value="2" ${admin.ID_Rol == 2 ? 'selected' : ''}>Otro</option>
+                            </select>
                         </div>
                         <div class="botones-form">
                             <button type="submit" class="btn-guardar">Guardar Cambios</button>
@@ -220,34 +219,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // ELIMINAR
         if (button.classList.contains('btn-eliminar')) {
+            const idAdmin = button.dataset.id;
             const contenido = `
-                <div class="modal-confirmacion">
-                    <p>¿Está seguro de que desea eliminar este administrador?</p>
-                    <div class="botones-form">
-                        <button type="button" class="btn-confirmar">Confirmar</button>
-                        <button type="button" class="btn-cancelar">Cancelar</button>
+                <div class="modal-confirmacion-institucional">
+                    <div class="icono-advertencia">⚠️</div>
+                    <p class="advertencia-titulo"><strong>Advertencia: estás por eliminar un administrador.</strong></p>
+                    <p>¿Está seguro de que desea eliminar al administrador con ID: <strong>${idAdmin}</strong>?</p>
+                    <div class="botones-confirmacion">
+                        <button type="button" class="btn-confirmar-eliminar">Confirmar eliminación</button>
+                        <button type="button" class="btn-cancelar-eliminar">Cancelar</button>
                     </div>
                 </div>
             `;
-            mostrarModal('Confirmar Eliminación', contenido, async () => {
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal modal-advertencia';
+            modal.innerHTML = `
+                <div class="modal-contenido-advertencia">
+                    <span class="cerrar-advertencia">&times;</span>
+                    ${contenido}
+                </div>
+            `;
+            document.body.appendChild(modal);
+
+            const cerrarModal = () => modal.remove();
+            modal.querySelector('.cerrar-advertencia').onclick = cerrarModal;
+            modal.querySelector('.btn-cancelar-eliminar').onclick = cerrarModal;
+
+            modal.querySelector('.btn-confirmar-eliminar').onclick = async () => {
                 try {
                     const response = await fetch('acciones/eliminar_admin.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: `id=${id}`
+                        body: `id=${idAdmin}`
                     });
                     const result = await response.json();
                     if (response.ok && result.success) {
                         mostrarMensaje('Administrador eliminado correctamente.');
                         cargarAdmins();
-                        document.querySelector('.modal').remove();
                     } else {
                         mostrarMensaje(result.message || 'Error al eliminar.', 'error');
                     }
                 } catch (error) {
                     mostrarMensaje('Error de conexión al intentar eliminar.', 'error');
+                } finally {
+                    cerrarModal();
                 }
-            });
+            };
         }
     });
 

@@ -62,8 +62,8 @@ $current_page = 'gestionarinscriptos.php';
         <nav class="main-nav hide-on-mobile">
             <ul>
                 <li><a href="<?php echo $base_path; ?>index.html">VALIDAR</a></li>
-                <li><a href="<?php echo $html_path; ?>sobrenosotros.php">SOBRE NOSOTROS</a></li>
-                <li><a href="<?php echo $html_path; ?>contacto.php">CONTACTO</a></li>
+                <li><a href="<?php echo $html_path; ?>sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="<?php echo $html_path; ?>contacto.html">CONTACTO</a></li>
             </ul>
         </nav>
         <div class="session-controls hide-on-mobile">
@@ -140,7 +140,7 @@ $current_page = 'gestionarinscriptos.php';
         <h1 class="main-title">Gestionar Inscriptos</h1>
 
         <div class="tabs-container">
-            <button class="tab active" data-tab="ver">Gestionar Inscriptos</button>
+            <button class="tab active" data-tab="ver">Ver Inscriptos</button>
             <button class="tab" data-tab="agregar">Agregar Inscriptos</button>
         </div>
 
@@ -186,7 +186,72 @@ $current_page = 'gestionarinscriptos.php';
                 </nav>
                 <div id="tab-manual" class="tab-panel-secondary active">
                     <h2>Carga Manual de Inscripción</h2>
-                    <!-- Formulario de carga manual irá aquí -->
+                    <form id="formCargaManual" class="form-carga-manual">
+                        <div class="form-grid">
+                            <div class="campo-form">
+                                <label for="cuil">CUIL del Alumno:</label>
+                                <input type="text" id="cuil" name="cuil" required pattern="[0-9]{11}" title="El CUIL debe tener 11 dígitos sin guiones.">
+                            </div>
+                            <div class="campo-form">
+                                <label for="dni">DNI del Alumno:</label>
+                                <input type="text" id="dni" name="dni" required pattern="[0-9]{7,8}" title="El DNI debe tener entre 7 y 8 dígitos.">
+                            </div>
+                            <div class="campo-form">
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" id="nombre" name="nombre" required>
+                            </div>
+                            <div class="campo-form">
+                                <label for="apellido">Apellido:</label>
+                                <input type="text" id="apellido" name="apellido" required>
+                            </div>
+                            <div class="campo-form">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="campo-form">
+                                <label for="direccion">Dirección:</label>
+                                <input type="text" id="direccion" name="direccion">
+                            </div>
+                            <div class="campo-form">
+                                <label for="telefono">Teléfono:</label>
+                                <input type="tel" id="telefono" name="telefono">
+                            </div>
+                            <div class="campo-form">
+                                <label for="curso">Curso a Inscribir:</label>
+                                <select id="curso" name="curso" required>
+                                    <option value="">Seleccione un curso</option>
+                                    <?php foreach ($cursos as $curso): ?>
+                                        <option value="<?php echo $curso['ID_Curso']; ?>"><?php echo htmlspecialchars($curso['Nombre_Curso']); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="campo-form">
+                                <label for="cuatrimestre">Cuatrimestre:</label>
+                                <select id="cuatrimestre" name="cuatrimestre" required>
+                                    <option value="Primer Cuatrimestre">Primer Cuatrimestre</option>
+                                    <option value="Segundo Cuatrimestre">Segundo Cuatrimestre</option>
+                                </select>
+                            </div>
+                            <div class="campo-form">
+                                <label for="anio">Año:</label>
+                                <input type="number" id="anio" name="anio" value="<?php echo date('Y'); ?>" required>
+                            </div>
+                            <div class="campo-form">
+                                <label for="estado_cursada">Estado de la Cursada:</label>
+                                <select id="estado_cursada" name="estado_cursada" required>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="En curso">En curso</option>
+                                    <option value="Finalizada">Finalizada</option>
+                                    <option value="Certificada">Certificada</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="mensaje-carga-manual" class="mensaje-form" style="display: none;"></div>
+                        <div class="botones-form-carga">
+                            <button type="submit" class="btn-registrar">Registrar Inscripción</button>
+                            <button type="button" class="btn-cancelar-carga">Cancelar</button>
+                        </div>
+                    </form>
                 </div>
                 <div id="tab-archivo" class="tab-panel-secondary">
                     <h2>Carga Masiva con Archivo CSV</h2>
@@ -234,12 +299,20 @@ $current_page = 'gestionarinscriptos.php';
                 <h4><?php echo $_SESSION['user_rol'] == 1 ? 'Admin' : 'Alumno'; ?></h4>
                 <ul>
                     <?php if ($_SESSION['user_rol'] == 1): ?>
+                        <br>
                         <li><a href="<?php echo $php_path; ?>ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                        <br>
                         <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                        <br>
                         <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
                     <?php else: ?>
+                        <br>
                         <li><a href="#">Mi Perfil</a></li>
+                        <br>
                         <li><a href="#">Inscripciones</a></li>
+                        <br>
                         <li><a href="#">Certificaciones</a></li>
                     <?php endif; ?>
                 </ul>

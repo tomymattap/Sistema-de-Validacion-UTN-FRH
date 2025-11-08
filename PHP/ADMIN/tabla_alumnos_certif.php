@@ -39,9 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css">
-    <link rel="stylesheet" href="../../CSS/verinscriptos.css">  <!-- estilos de la tabla -->
     <link rel="stylesheet" href="../../CSS/tabla_alumnos_certif.css">
-    <link rel="stylesheet" href="../../CSS/validacion.css">
 </head>
 <body class="fade-in">
     <div class="preloader">
@@ -101,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <input type="hidden" name="anio" value="<?php echo htmlspecialchars($_POST['anio']); ?>">
                         <input type="hidden" name="cuatrimestre" value="<?php echo htmlspecialchars($_POST['cuatrimestre']); ?>">
 
-                        <table id="results-table">
+                        <table id="results-table" class="tabla-certificaciones">
                             <thead>
                                 <tr>
                                     <th>Seleccionar</th>
@@ -131,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </tbody>
                         </table>
                         <div class="form-buttons" style="text-align: right; margin-top: 20px;">
-                            <button type="submit" class="submit-btn">Generar Certificaciones</button>
+                            <button type="submit" class="btn-submit">Generar Certificaciones</button>
                         </div>
                     </form>
 

@@ -1,0 +1,188 @@
+/*
+    ARCHIVO: encuesta.css
+    DESCRIPCIÓN: Estilos para la página de la encuesta de satisfacción del alumno.
+*/
+
+.encuesta-page {
+    padding: 2rem 1rem;
+    background-color: #f4f7f6;
+}
+
+.encuesta-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.encuesta-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1.5rem;
+}
+
+.encuesta-header h1 {
+    color: var(--color-principal);
+    margin-bottom: 0.5rem;
+}
+
+.encuesta-header p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.encuesta-form fieldset {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.encuesta-form legend {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--color-principal);
+    padding: 0 0.5rem;
+    margin-left: 1rem;
+}
+
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.matrix-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.matrix-table th, .matrix-table td {
+    padding: 0.8rem;
+    text-align: center;
+    border: 1px solid #eee;
+}
+
+.matrix-table th {
+    background-color: #f8f9fa;
+}
+
+.matrix-table td:first-child {
+    text-align: left;
+    font-weight: 600;
+}
+
+.escala-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.escala-group > span {
+    font-weight: 600;
+    color: #555;
+}
+
+.escala-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.escala-item input[type="radio"] {
+    margin-bottom: 0.25rem;
+}
+
+textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
+.form-actions {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.submit-btn {
+    background-color: var(--color-secundario-2);
+    color: white;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.submit-btn:hover {
+    background-color: #7ab830;
+    transform: translateY(-2px);
+}
+
+.encuesta-completada {
+    text-align: center;
+    padding: 2rem;
+}
+
+.encuesta-completada .fa-check-circle {
+    font-size: 4rem;
+    color: var(--color-secundario-2);
+    margin-bottom: 1rem;
+}
+
+.encuesta-completada h1 {
+    color: var(--color-principal);
+    margin-bottom: 1rem;
+}
+
+.encuesta-completada p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.btn-descargar {
+    display: inline-block;
+    background-color: var(--color-principal);
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.2rem;
+    transition: all 0.3s;
+    margin-bottom: 1rem;
+}
+
+.btn-descargar:hover {
+    background-color: #003345;
+    transform: scale(1.05);
+}
+
+.btn-volver {
+    display: block;
+    margin-top: 1rem;
+    color: #555;
+    text-decoration: underline;
+}

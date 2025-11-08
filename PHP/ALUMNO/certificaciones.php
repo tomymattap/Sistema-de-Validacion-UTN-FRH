@@ -12,6 +12,25 @@ if (isset($_SESSION['force_password_change'])) {
     header('Location: cambiar_contrasena_obligatorio.php');
     exit();
 }
+
+require '../conexion.php';
+$user_id = $_SESSION['user_id'];
+
+// Consulta para obtener los certificados del alumno
+$sql = "SELECT 
+            c.Nombre_Curso, 
+            cert.Estado_Aprobacion, 
+            cert.Fecha_Emision,
+            i.ID_Inscripcion
+        FROM certificacion cert
+        JOIN inscripcion i ON cert.ID_Inscripcion_Certif = i.ID_Inscripcion
+        JOIN curso c ON i.ID_Curso = c.ID_Curso
+        WHERE i.ID_Cuil_Alumno = ?";
+$stmt = $conexion->prepare($sql);
+$stmt->bind_param("s", $user_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -78,12 +97,16 @@ if (isset($_SESSION['force_password_change'])) {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Instalación de Paneles Solares</td>
-                        <td>Aprobado</td>
-                        <td>00/00/0000</td>
-                        <td><a href="#" class="action-btn">Ver Certificado</a></td>
-                    </tr>
+                    <?php if ($resultado && $resultado->num_rows > 0): ?>
+                        <?php while ($fila = $resultado->fetch_assoc()): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($fila['Nombre_Curso']); ?></td>
+                                <td><?php echo htmlspecialchars($fila['Estado_Aprobacion']); ?></td>
+                                <td><?php echo htmlspecialchars(date("d/m/Y", strtotime($fila['Fecha_Emision']))); ?></td>
+                                <td><a href="ver_certificado.php?id=<?php echo htmlspecialchars($fila['ID_Inscripcion']); ?>" class="action-btn">Ver Certificado</a></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>

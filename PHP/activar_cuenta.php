@@ -124,9 +124,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <script>
         // Script para mostrar/ocultar contraseña
-        document.querySelectorAll('.password-wrapper i').forEach(icon => {
+        document.querySelectorAll('.password-wrapper i[data-toggle-for]').forEach(icon => {
             icon.addEventListener('click', function () {
-                const input = this.previousElementSibling;
+                const inputId = this.getAttribute('data-toggle-for');
+                const input = document.getElementById(inputId);
                 this.classList.toggle('fa-eye');
                 this.classList.toggle('fa-eye-slash');
                 input.type = input.type === 'password' ? 'text' : 'password';

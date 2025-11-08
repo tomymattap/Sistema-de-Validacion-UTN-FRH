@@ -125,11 +125,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                     <div class="form-group">
                         <label for="password">Nueva Contraseña</label>
-                        <input type="password" id="password" name="password" placeholder="Ingrese su nueva contraseña" required>
+                        <div class="password-wrapper">
+                            <input type="password" id="password" name="password" placeholder="Ingrese su nueva contraseña" required autocomplete="new-password">
+                            <i class="fas fa-eye-slash" data-toggle-for="password"></i>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="password_confirm">Confirmar Nueva Contraseña</label>
-                        <input type="password" id="password_confirm" name="password_confirm" placeholder="Confirme su contraseña" required>
+                        <div class="password-wrapper">
+                            <input type="password" id="password_confirm" name="password_confirm" placeholder="Confirme su contraseña" required autocomplete="new-password">
+                            <i class="fas fa-eye-slash" data-toggle-for="password_confirm"></i>
+                        </div>
                     </div>
                     <button type="submit" class="submit-btn">CAMBIAR CONTRASEÑA</button>
                 </form>
@@ -146,9 +152,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </footer>
     <script>
         // Script para mostrar/ocultar contraseña
-        document.querySelectorAll('.password-wrapper i').forEach(icon => {
+        document.querySelectorAll('.password-wrapper i[data-toggle-for]').forEach(icon => {
             icon.addEventListener('click', function () {
-                const input = this.previousElementSibling;
+                const inputId = this.getAttribute('data-toggle-for');
+                const input = document.getElementById(inputId);
                 this.classList.toggle('fa-eye');
                 this.classList.toggle('fa-eye-slash');
                 input.type = input.type === 'password' ? 'text' : 'password';

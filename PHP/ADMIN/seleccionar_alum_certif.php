@@ -48,8 +48,8 @@ $current_page = 'seleccionar_alum_certif.php';
         <nav class="main-nav hide-on-mobile">
             <ul>
                 <li><a href="<?php echo $base_path; ?>index.html">VALIDAR</a></li>
-                <li><a href="<?php echo $html_path; ?>sobrenosotros.php">SOBRE NOSOTROS</a></li>
-                <li><a href="<?php echo $html_path; ?>contacto.php">CONTACTO</a></li>
+                <li><a href="<?php echo $html_path; ?>sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="<?php echo $html_path; ?>contacto.html">CONTACTO</a></li>
             </ul>
         </nav>
         <div class="session-controls hide-on-mobile">
@@ -79,8 +79,8 @@ $current_page = 'seleccionar_alum_certif.php';
     <nav>
         <ul>
             <li><a href="<?php echo $base_path; ?>index.html">VALIDAR</a></li>
-            <li><a href="<?php echo $html_path; ?>sobrenosotros.php">SOBRE NOSOTROS</a></li>
-            <li><a href="<?php echo $html_path; ?>contacto.php">CONTACTO</a></li>
+            <li><a href="<?php echo $html_path; ?>sobrenosotros.html">SOBRE NOSOTROS</a></li>
+            <li><a href="<?php echo $html_path; ?>contacto.html">CONTACTO</a></li>
             <li id="mobile-session-section">
                 <a href="#" class="user-menu-toggle-mobile">Hola, <?php echo htmlspecialchars($_SESSION['user_name']); ?> <i class="fas fa-chevron-down"></i></a>
                 <ul class="submenu">

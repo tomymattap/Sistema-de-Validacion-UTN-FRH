@@ -121,6 +121,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             echo "<div class='message success'>✅ Certificación generada para el alumno con CUIL $cuil ($estado)</div>";
+
+            // --- INICIO: ENVÍO DE EMAIL DE NOTIFICACIÓN ---
+            $query_email = $conexion->prepare("SELECT Nombre_Alumno, Apellido_Alumno, Email_Alumno FROM ALUMNO WHERE ID_Cuil_Alumno = ?");
+            $query_email->bind_param("s", $cuil);
+            $query_email->execute();
+            $alumno_data = $query_email->get_result()->fetch_assoc();
+            $query_email->close();
+
+            if ($alumno_data && !empty($alumno_data['Email_Alumno'])) {
+                $mail = new PHPMailer(true);
+                try {
+                    // Configuración del servidor SMTP
+                    $mail->isSMTP();
+                    $mail->Host       = 'smtp.gmail.com';
+                    $mail->SMTPAuth   = true;
+                    $mail->Username   = 'sollione2004@gmail.com'; // Tu correo de Gmail
+                    $mail->Password   = 'masu hqty zqfc pudz';      // Tu contraseña de aplicación de Gmail
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    $mail->Port       = 587;
+
+                    // Remitente y destinatario
+                    $mail->setFrom('sollione2004@gmail.com', 'Sistema de Validacion UTN FRH');
+                    $mail->addAddress($alumno_data['Email_Alumno'], $alumno_data['Nombre_Alumno'] . ' ' . $alumno_data['Apellido_Alumno']);
+
+                    // Contenido del mail
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Tu certificado del curso esta listo para descargar';
+                    $login_link = "http://{$_SERVER['HTTP_HOST']}/Sistema-De-Validacion-UTN-FRH/PHP/iniciosesion.php";
+                    $mail->Body    = "Hola " . htmlspecialchars($alumno_data['Nombre_Alumno']) . ",<br><br>Te informamos que tu certificado para el curso <strong>\"" . htmlspecialchars($nombre_curso) . "\"</strong> ya se encuentra disponible en tu perfil.<br><br>Puedes acceder a la plataforma para descargarlo haciendo clic en el siguiente enlace:<br><a href='$login_link'>Iniciar Sesión y ver mis certificados</a><br><br>Saludos,<br>Equipo de Extensión Universitaria - UTN FRH.";
+
+                    $mail->send();
+                    echo "<div class='message success' style='background-color: #e6f7ff; border-color: #91d5ff; color: #0050b3;'>📧 Notificación enviada a " . htmlspecialchars($alumno_data['Email_Alumno']) . "</div>";
+                } catch (Exception $e) {
+                    echo "<div class='message error' style='background-color: #fffbe6; border-color: #ffe58f; color: #d46b08;'>⚠️ No se pudo enviar la notificación por correo al alumno con CUIL $cuil. Mailer Error: {$mail->ErrorInfo}</div>";
+                }
+            }
+            // --- FIN: ENVÍO DE EMAIL DE NOTIFICACIÓN ---
         }
 
         // Si todo salió bien, confirma los cambios

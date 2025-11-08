@@ -85,7 +85,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cambio de Contraseña Obligatorio - Admin</title>
     <link rel="stylesheet" href="<?php echo $css_path; ?>general.css">
-    <link rel="stylesheet" href="<?php echo $css_path; ?>iniciosesion.css">
+    <link rel="stylesheet" href="<?php echo $css_path; ?>iniciosesion.css"> <!-- Reutilizamos estilos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header class="site-header">
@@ -106,19 +107,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 <div class="form-group">
                     <label for="current_password">Contraseña Actual (su Legajo)</label>
-                    <input type="password" id="current_password" name="current_password" placeholder="Ingrese su Legajo" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="current_password" name="current_password" placeholder="Ingrese su Legajo" required autocomplete="current-password">
+                        <i class="fas fa-eye-slash" data-toggle-for="current_password"></i>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="new_password">Nueva Contraseña</label>
-                    <input type="password" id="new_password" name="new_password" placeholder="Ingrese su nueva contraseña" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="new_password" name="new_password" placeholder="Ingrese su nueva contraseña" required autocomplete="new-password">
+                        <i class="fas fa-eye-slash" data-toggle-for="new_password"></i>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="new_password_confirm">Confirmar Nueva Contraseña</label>
-                    <input type="password" id="new_password_confirm" name="new_password_confirm" placeholder="Confirme su nueva contraseña" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="new_password_confirm" name="new_password_confirm" placeholder="Confirme su nueva contraseña" required autocomplete="new-password">
+                        <i class="fas fa-eye-slash" data-toggle-for="new_password_confirm"></i>
+                    </div>
                 </div>
                 <button type="submit" class="submit-btn">CAMBIAR CONTRASEÑA</button>
             </form>
         </div>
     </main>
+    <script>
+        // Script para mostrar/ocultar contraseña
+        document.querySelectorAll('.password-wrapper i[data-toggle-for]').forEach(icon => {
+            icon.addEventListener('click', function () {
+                const inputId = this.getAttribute('data-toggle-for');
+                const input = document.getElementById(inputId);
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+                input.type = input.type === 'password' ? 'text' : 'password';
+            });
+        });
+    </script>
 </body>
 </html>

@@ -67,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt_get_name->execute();
                 $user_data = $stmt_get_name->get_result()->fetch_assoc();
                 $_SESSION['user_name'] = $user_data['Nombre_Alumno'];
+                $_SESSION['user_rol'] = 2; // Se establece el rol de alumno.
                 unset($_SESSION['force_password_change']); // Eliminar la bandera de cambio forzado
                 
                 $success = "Su contraseña ha sido actualizada exitosamente. Será redirigido a su perfil.";
@@ -120,15 +121,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 <div class="form-group">
                     <label for="current_password">Contraseña Actual (su CUIL)</label>
-                    <input type="password" id="current_password" name="current_password" placeholder="Ingrese su CUIL" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="current_password" name="current_password" placeholder="Ingrese su CUIL" required autocomplete="current-password">
+                        <i class="fas fa-eye-slash" data-toggle-for="current_password"></i>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="new_password">Nueva Contraseña</label>
-                    <input type="password" id="new_password" name="new_password" placeholder="Ingrese su nueva contraseña" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="new_password" name="new_password" placeholder="Ingrese su nueva contraseña" required autocomplete="new-password">
+                        <i class="fas fa-eye-slash" data-toggle-for="new_password"></i>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="new_password_confirm">Confirmar Nueva Contraseña</label>
-                    <input type="password" id="new_password_confirm" name="new_password_confirm" placeholder="Confirme su nueva contraseña" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="new_password_confirm" name="new_password_confirm" placeholder="Confirme su nueva contraseña" required autocomplete="new-password">
+                        <i class="fas fa-eye-slash" data-toggle-for="new_password_confirm"></i>
+                    </div>
                 </div>
                 <button type="submit" class="submit-btn">CAMBIAR CONTRASEÑA</button>
                 <div class="form-options" style="text-align: center; margin-top: 1rem;">
@@ -145,5 +155,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </footer>
+    <script>
+        // Script para mostrar/ocultar contraseña
+        document.querySelectorAll('.password-wrapper i[data-toggle-for]').forEach(icon => {
+            icon.addEventListener('click', function () {
+                const inputId = this.getAttribute('data-toggle-for');
+                const input = document.getElementById(inputId);
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+                input.type = input.type === 'password' ? 'text' : 'password';
+            });
+        });
+    </script>
 </body>
 </html>

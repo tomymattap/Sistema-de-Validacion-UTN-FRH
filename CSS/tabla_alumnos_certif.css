@@ -1,132 +1,71 @@
-/* -------------------------------------------
-   TABLA DE CERTIFICACIONES (versión amplia y legible)
-------------------------------------------- */
 
-.tabla-certificaciones {
-    width: 95%; /* Más ancha, pero sin pegarse al borde */
-    border-collapse: collapse;
-    background-color: #ffffff;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    margin: 1.5rem auto;
-    font-size: 1rem; /* Letras más grandes */
-    line-height: 1.4;
-}
-
-.tabla-certificaciones thead {
-    background-color: var(--color-principal, #004b63);
-    color: #fff;
-    text-align: center;
-    font-size: 1rem;
-}
-
-.tabla-certificaciones th, 
-.tabla-certificaciones td {
-    padding: 0.9rem 1.2rem; /* Más espacio interno */
-    border-bottom: 1px solid #e0e6eb;
-}
-
-.tabla-certificaciones th {
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    font-size: 0.95rem;
-}
-
-/* Filas alternadas */
-.tabla-certificaciones tbody tr:nth-child(even) {
-    background-color: #f7fafc;
-}
-
-/* Hover */
-.tabla-certificaciones tbody tr:hover {
-    background-color: #e9f4f9;
-    transition: background-color 0.2s ease;
-}
-
-/* Checkbox */
-.tabla-certificaciones input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    accent-color: var(--color-principal, #004b63);
-}
-
-/* Selects */
-.tabla-certificaciones select {
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-radius: 18px;
-    background-color: #fff;
-    font-size: 0.95rem;
-    color: #333;
-    cursor: pointer;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.tabla-certificaciones select:focus {
-    border-color: var(--color-principal, #004b63);
-    box-shadow: 0 0 5px rgba(0, 86, 179, 0.25);
-    outline: none;
-}
-
-/* Contenedor de la tabla */
-.results-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Botón */
-.form-buttons {
-    text-align: right;
-    margin-top: 1.8rem;
-    margin-right: 2rem;
-}
-
-.btn-submit {
-    background-color: var(--color-principal, #004b63);
-    color: #fff;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 30px;
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    cursor: pointer;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-    transition: all 0.25s ease;
-}
-
-.btn-submit:hover {
-    background-color: #006b8c;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 12px rgba(0, 86, 179, 0.25);
-}
-
-.btn-submit:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 6px rgba(0, 86, 179, 0.2);
-}
-
-/* Título centrado */
 .main-title {
     text-align: center;
-    font-weight: 700;
-    font-size: 2rem;
-    color: #004b63;
-    margin-bottom: 2rem;
+    font-size: 1.5rem;
 }
 
-/* Responsivo */
-@media (max-width: 768px) {
-    .tabla-certificaciones {
-        width: 100%;
-        font-size: 0.95rem;
+/* Centra el texto en todas las celdas y define el color y tamaño de fuente */
+#results-table td, 
+#results-table th {
+    text-align: center;
+    color: black;
+    font-size: 0.9rem;
+}
+
+/* Estilos específicos para la cabecera de la tabla */
+#results-table th {
+    color: white; /* El color de fondo se hereda de gestionarinscriptos.css o similar */
+    font-size: 1rem;
+}
+
+/* Ajusta el ancho de la primera columna (checkbox de selección) */
+#results-table th:first-child,
+#results-table td:first-child {
+    width: 5%;
+}
+
+/* -------------------------------------------
+    Botón de Envío
+------------------------------------------- */
+
+.submit-btn { 
+    background-color: var(--color-principal); 
+    color: var(--color-blanco); 
+    border: none; 
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px; 
+    font-weight: 700; 
+    cursor: pointer; 
+    transition: background-color 0.3s;
+    font-size: 1rem;
+    width: 100%; /* Ancho completo en móvil */
+}
+
+.submit-btn:hover { 
+    background-color: #003344; /* Tono más oscuro al pasar el mouse */
+}
+
+/* -------------------------------------------
+    Ajustes para Dispositivos Medianos y Grandes
+------------------------------------------- */
+
+@media (min-width: 768px) {
+    .main-title {
+        font-size: 2rem;
     }
-    .tabla-certificaciones th,
-    .tabla-certificaciones td {
-        padding: 0.7rem 0.8rem;
+
+    #results-table td, 
+    #results-table th {
+        font-size: 1.1rem;
+    }
+
+    #results-table th {
+        font-size: 1.2rem;
+    }
+
+    .submit-btn {
+        width: auto; /* Ancho automático en pantallas grandes */
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
     }
 }

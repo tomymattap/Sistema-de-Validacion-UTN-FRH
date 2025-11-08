@@ -94,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
                     <form action="subir_archivos_certificado.php" method="POST">
-                        <!-- 🔹 campos ocultos para arrastrar datos -->
+                        <!-- campos ocultos para arrastrar datos -->
                         <input type="hidden" name="id_curso" value="<?php echo htmlspecialchars($_POST['curso']); ?>">
                         <input type="hidden" name="anio" value="<?php echo htmlspecialchars($_POST['anio']); ?>">
                         <input type="hidden" name="cuatrimestre" value="<?php echo htmlspecialchars($_POST['cuatrimestre']); ?>">
@@ -128,7 +128,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <?php endwhile; ?>
                             </tbody>
                         </table>
-                        <div class="form-buttons" style="text-align: right; margin-top: 20px;">
+                        <div class="form-buttons" style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 20px;">
+                            <button type="button" class="btn-cancelar-cert" onclick="window.history.back()">Cancelar</button>
                             <button type="submit" class="btn-submit">Generar Certificaciones</button>
                         </div>
                     </form>
@@ -146,56 +147,76 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </main>
 
-    <footer class="site-footer">
-        <!-- Contenido del pie de página -->
-    </footer>
 
-    <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba">
-        <i class="fas fa-arrow-up"></i>
-    </a>
+<!-- ======================= FOOTER ========================= -->
+<footer class="site-footer">
+    <div class="footer-container">
+        <div class="footer-logo-info">
+            <img src="<?php echo $img_path; ?>UTNLogo_footer.webp" alt="Logo UTN" class="footer-logo">
+            <div class="footer-info">
+                <p>París 532, Haedo (1706)</p>
+                <p>Buenos Aires, Argentina</p><br>
+                <p>Número de teléfono del depto.</p><br>
+                <p>extension@frh.utn.edu.ar</p>
+            </div>
+        </div>
+        <div class="footer-social-legal">
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <div class="footer-legal">
+                <a href="#">Contacto</a><br>
+                <a href="#">Políticas de Privacidad</a>
+            </div>
+        </div>
+        <div class="footer-separator"></div>
+        <div class="footer-nav">
+            <h4>Navegación</h4>
+            <ul>
+                <li><a href="<?php echo $base_path; ?>index.html">Validar</a></li>
+                <li><a href="<?php echo $html_path; ?>sobrenosotros.html">Sobre Nosotros</a></li>
+                <li><a href="<?php echo $html_path; ?>contacto.html">Contacto</a></li>
+            </ul>
+        </div>
+        <div class="footer-separator"></div>
+        <div class="footer-dynamic-nav">
+            <?php if (isset($_SESSION['user_name'])): ?>
+                <h4><?php echo $_SESSION['user_rol'] == 1 ? 'Admin' : 'Alumno'; ?></h4>
+                <ul>
+                    <?php if ($_SESSION['user_rol'] == 1): ?>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
+                    <?php else: ?>
+                        <br>
+                        <li><a href="#">Mi Perfil</a></li>
+                        <br>
+                        <li><a href="#">Inscripciones</a></li>
+                        <br>
+                        <li><a href="#">Certificaciones</a></li>
+                    <?php endif; ?>
+                </ul>
+            <?php else: ?>
+                <h4>Acceso</h4>
+                <ul>
+                    <li><a href="<?php echo $php_path; ?>iniciosesion.php">Iniciar Sesión</a></li>
+                </ul>
+            <?php endif; ?>
+        </div>
+    </div>
+</footer>
+<a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></a>
+
+<!-- ===================== FIN FOOTER ======================= -->
 
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script src="../../JavaScript/general.js"></script>
-    <script>
-        fetch('../get_user_name.php')
-            .then(response => response.json())
-            .then(data => {
-                const sessionControls = document.getElementById('session-controls');
-                const mobileNav = document.querySelector('.off-canvas-menu nav ul');
-                let sessionHTML = '';
 
-                if (data.user_name) {
-                    let dropdownMenu;
-                    if (data.user_rol === 1) { // Admin
-                        dropdownMenu = `
-                            <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
-                            <div class="dropdown-menu">
-                                <ul>
-                                    <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
-                                    <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
-                                    <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                                    <li><a href="../logout.php">Cerrar Sesión</a></li>
-                                </ul>
-                            </div>`;
-                        sessionHTML = `
-                            <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
-                            <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
-                            <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                            <li><a href="../logout.php">Cerrar Sesión</a></li>`;
-                    } else if (data.user_rol === 2) { // Alumno
-                        // Redirigir si no es admin
-                        window.location.href = '../ALUMNO/perfil.php';
-                    }
-                    sessionControls.innerHTML = dropdownMenu;
-                } else {
-                    // Redirigir si no está logueado
-                    window.location.href = '../iniciosesion.php';
-                }
-
-                // Añadir al menú móvil
-                const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');
-                mobileMenuUl.insertAdjacentHTML('beforeend', sessionHTML);
-            });
-    </script>
 </body>
 </html>

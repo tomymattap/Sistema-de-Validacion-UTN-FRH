@@ -36,21 +36,24 @@
 
 /* Botón para agregar un nuevo administrador */
 .btn-agregar {
-    background-color: var(--color-principal);
+    background-color: var(--color-principal); /* #00455c */
     color: var(--color-blanco);
-    padding: 0.8rem 1.5rem;
+    padding: 12px 20px;
+    min-height: 45px;
     border-radius: 8px;
     font-weight: 700;
     cursor: pointer;
-    border: none;
-    transition: background-color 0.3s;
+    border: 2px solid transparent; /* Borde para mantener tamaño en hover */
+    transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
 }
 
 .btn-agregar:hover {
-    background-color: #003345; /* Tono más oscuro al pasar el mouse */
+    background-color: var(--color-blanco);
+    color: var(--color-principal);
+    border-color: var(--color-principal);
 }
 
 /* Contenedor de la barra de búsqueda */
@@ -183,6 +186,24 @@
 .modal-contenido h2 {
     color: var(--color-principal);
     margin-bottom: 1.5rem;
+}
+
+/* Unificar tipografía en el modal */
+.modal-contenido,
+.modal-contenido input,
+.modal-contenido select,
+.modal-contenido label,
+.modal-contenido button {
+    font-family: 'Public Sans', sans-serif;
+}
+
+.modal-contenido label {
+    font-weight: 600; /* semibold for labels */
+}
+
+.modal-contenido input,
+.modal-contenido select {
+    font-weight: 400; /* regular for inputs */
 }
 
 /* Campos del formulario dentro del modal */
@@ -340,4 +361,15 @@
 @keyframes slideIn {
     from { transform: translateY(-50px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
+}
+
+/* -------------------------------------------
+    Estilos para Resaltado de Búsqueda
+------------------------------------------- */
+
+.tabla-admins mark {
+    background-color: transparent;
+    color: #FFAB00;
+    font-weight: 600;
+    padding: 0;
 }

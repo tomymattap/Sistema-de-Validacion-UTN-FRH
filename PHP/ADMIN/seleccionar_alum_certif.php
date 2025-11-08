@@ -141,7 +141,66 @@ $current_page = 'seleccionar_alum_certif.php';
 </main>
 
 <footer class="site-footer">
-    <!-- Contenido del pie de página -->
+    <div class="footer-container">
+        <div class="footer-logo-info">
+            <img src="../../Imagenes/UTNLogo_footer.webp" alt="Logo UTN" class="footer-logo">
+            <div class="footer-info">
+                <p>París 532, Haedo (1706)</p>
+                <p>Buenos Aires, Argentina</p><br>
+                <p>Número de teléfono del depto.</p><br>
+                <p>extension@frh.utn.edu.ar</p>
+            </div>
+        </div>
+        <div class="footer-social-legal">
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <div class="footer-legal">
+                <a href="#">Contacto</a><br>
+                <a href="#">Políticas de Privacidad</a>
+            </div>
+        </div>
+        <div class="footer-separator"></div>
+        <div class="footer-nav">
+            <h4>Navegación</h4>
+            <ul>
+                <li><a href="../../index.html">Validar</a></li>
+                <li><a href="../../HTML/sobrenosotros.html">Sobre Nosotros</a></li>
+                <li><a href="../../HTML/contacto.html">Contacto</a></li>
+            </ul>
+        </div>
+        <div class="footer-separator"></div>
+        <div class="footer-dynamic-nav">
+            <?php if (isset($_SESSION['user_name'])): ?>
+                <h4><?php echo $_SESSION['user_rol'] == 1 ? 'Admin' : 'Alumno'; ?></h4>
+                <ul>
+                    <?php if ($_SESSION['user_rol'] == 1): ?>
+                        <br>
+                        <li><a href="../../PHP/ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                        <br>
+                        <li><a href="../../PHP/ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                        <br>
+                        <li><a href="../../PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                        <br>
+                        <li><a href="../../PHP/ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
+                    <?php else: ?>
+                        <br>
+                        <li><a href="#">Mi Perfil</a></li>
+                        <br>
+                        <li><a href="#">Inscripciones</a></li>
+                        <br>
+                        <li><a href="#">Certificaciones</a></li>
+                    <?php endif; ?>
+                </ul>
+            <?php else: ?>
+                <h4>Acceso</h4>
+                <ul>
+                    <li><a href="../../PHP/iniciosesion.php">Iniciar Sesión</a></li>
+                </ul>
+            <?php endif; ?>
+        </div>
+    </div>
 </footer>
 
 <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba">

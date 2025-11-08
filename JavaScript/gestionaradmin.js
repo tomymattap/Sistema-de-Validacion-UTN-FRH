@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <form id="formAgregarAdmin">
                 <div class="campo-form">
                     <label for="legajo">Legajo:</label>
-                    <input type="number" id="legajo" name="legajo" required>
+                    <input type="text" id="legajo" name="legajo" required pattern="[0-9]*" inputmode="numeric" placeholder="Ingrese solo números">
                 </div>
                 <div class="campo-form">
                     <label for="nombre">Nombre:</label>

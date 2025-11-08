@@ -110,10 +110,13 @@
     box-shadow: 0 0 4px rgba(0, 86, 179, 0.25);
 }
 
-/* Botón final */
+/* Botón final y contenedor de botones */
 .form-buttons {
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-top: 2rem;
+    gap: 1rem;
 }
 
 .submit-btn {
@@ -130,5 +133,48 @@
 
 .submit-btn:hover {
     background-color: #006b8c;
+    transform: translateY(-2px);
+}
+
+/* -------------------------------------------
+    Mensaje de Error Institucional
+------------------------------------------- */
+.institutional-error-message {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #ffeaea;
+    color: #b30000;
+    border: 1px solid #ffcccc;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-weight: 600;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.institutional-error-message i {
+    font-size: 1.2em;
+    flex-shrink: 0;
+}
+
+/* -------------------------------------------
+    Botón Cancelar
+------------------------------------------- */
+.btn-cancelar-cert {
+    background-color: #ffffff;
+    color: var(--color-principal, #004b63);
+    border: 2px solid var(--color-principal, #004b63);
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-cancelar-cert:hover {
+    background-color: var(--color-principal, #004b63);
+    color: #ffffff;
     transform: translateY(-2px);
 }

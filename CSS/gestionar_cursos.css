@@ -106,7 +106,6 @@
     justify-content: flex-end;
 }
 
-
 .filter-courses-container {
     background-color: #f8f9fa;
     padding: 1.2rem 1.5rem;
@@ -187,9 +186,6 @@
 #null-btn:hover {
     background-color: #c82333;
 }
-
-
-
 
 /* Botón "Buscar" */
 #filter-btn {
@@ -669,4 +665,15 @@ tr.modified, tr.modified:hover {
     border-radius: 8px;
     margin-bottom: 1.5rem;
     border: 1px solid #dee2e6;
+}
+
+/* -------------------------------------------
+    Estilos para Resaltado de Búsqueda
+------------------------------------------- */
+
+#tabla-cursos mark {
+    background-color: transparent;
+    color: #FFAB00;
+    font-weight: 600;
+    padding: 0;
 }

@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['user_rol'] = 1; // Establecer el rol de admin
                 unset($_SESSION['force_password_change']);
                 
-                $success = "Su contraseña ha sido actualizada. Será redirigido al panel de administración.";
+                $success = "Su contraseña ha sido actualizada correctamente. Será redirigido al panel de administración.";
                 header('Refresh: 3; URL=gestionarinscriptos.php');
             } else {
                 $error = "Hubo un error al actualizar su contraseña.";
@@ -101,8 +101,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p style="text-align: center; margin-bottom: 1.5rem;">Por seguridad, debe cambiar su contraseña inicial.</p>
 
             <?php if ($error) echo "<div class='error-message'>" . htmlspecialchars($error) . "</div>"; ?>
-            <?php if ($success) echo "<div class='success-message' style='background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 1rem; margin-bottom: 1rem; border-radius: 5px;'>" . htmlspecialchars($success) . "</div>"; ?>
+            <?php if ($success) echo "<div class='success-message'>" . htmlspecialchars($success) . "</div>"; ?>
 
+            <?php if (!$success): ?>
             <form class="login-form" action="cambiar_contrasena_obligatorio.php" method="POST">
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 <div class="form-group">
@@ -128,6 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <button type="submit" class="submit-btn">CAMBIAR CONTRASEÑA</button>
             </form>
+            <?php endif; ?>
         </div>
     </main>
     <script>

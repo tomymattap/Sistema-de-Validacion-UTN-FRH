@@ -21,7 +21,8 @@ $sql = "SELECT
             c.Nombre_Curso, 
             cert.Estado_Aprobacion, 
             cert.Fecha_Emision,
-            i.ID_Inscripcion
+            i.ID_Inscripcion,
+            c.Tipo
         FROM certificacion cert
         JOIN inscripcion i ON cert.ID_Inscripcion_Certif = i.ID_Inscripcion
         JOIN curso c ON i.ID_Curso = c.ID_Curso
@@ -103,7 +104,17 @@ $resultado = $stmt->get_result();
                                 <td><?php echo htmlspecialchars($fila['Nombre_Curso']); ?></td>
                                 <td><?php echo htmlspecialchars($fila['Estado_Aprobacion']); ?></td>
                                 <td><?php echo htmlspecialchars(date("d/m/Y", strtotime($fila['Fecha_Emision']))); ?></td>
-                                <td><a href="ver_certificado.php?id=<?php echo htmlspecialchars($fila['ID_Inscripcion']); ?>" class="action-btn">Ver Certificado</a></td>
+                                <td>
+                                    <?php
+                                    // Si el curso es 'Genuino', va a la encuesta. Si no, descarga directa.
+                                    if ($fila['Tipo'] === 'Genuino') {
+                                        $link = "ver_certificado.php?id=" . htmlspecialchars($fila['ID_Inscripcion']);
+                                    } else {
+                                        $link = "descargar_certificado.php?id=" . htmlspecialchars($fila['ID_Inscripcion']);
+                                    }
+                                    ?>
+                                    <a href="<?php echo $link; ?>" class="action-btn">Ver Certificado</a>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                     <?php endif; ?>
@@ -149,9 +160,9 @@ $resultado = $stmt->get_result();
             <div class="footer-dynamic-nav" id="footer-dynamic-nav">
                 <h4>Acceso</h4>
                 <ul>
-                    <li><a href="perfil.php">Perfil</a></li>
+                    <li><a href="perfil.php">Mi Perfil</a></li>
                     <li><a href="inscripciones.php">Inscripciones</a></li>
-                    <li><a href="#">Cerrar Sesión</a></li>
+                    <li><a href="../logout.php">Cerrar Sesión</a></li>
                 </ul>
             </div>
         </div>
@@ -172,7 +183,7 @@ $resultado = $stmt->get_result();
 
                 if (data.user_name) {
                     let dropdownMenu;
-                    if (data.user_rol === 2) { // Alumno
+                    if (data.user_rol === 2) { // Estudiante
                         dropdownMenu = `
                             <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                             <div class="dropdown-menu">
@@ -195,7 +206,7 @@ $resultado = $stmt->get_result();
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
                     // Redirigir si no está logueado
-                    window.location.href = '../../HTML/iniciosesion.html';
+                    window.location.href = '../iniciosesion.php?error=acceso_denegado';
                 }
 
                 // Añadir al menú móvil

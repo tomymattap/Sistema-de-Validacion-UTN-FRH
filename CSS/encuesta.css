@@ -6,6 +6,7 @@
 .encuesta-page {
     padding: 2rem 1rem;
     background-color: #f4f7f6;
+    min-height: 100vh;
 }
 
 .encuesta-container {
@@ -15,6 +16,7 @@
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    color: var(--color-principal);
 }
 
 .encuesta-header {
@@ -61,6 +63,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    color: #333;
     cursor: pointer;
 }
 
@@ -78,6 +81,7 @@
 
 .matrix-table th {
     background-color: #f8f9fa;
+    font-weight: 700;
 }
 
 .matrix-table td:first-child {
@@ -125,6 +129,7 @@ textarea {
 }
 
 .submit-btn {
+    width: auto;
     background-color: var(--color-secundario-2);
     color: white;
     padding: 0.8rem 2rem;

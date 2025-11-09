@@ -243,7 +243,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
                     // Redirigir si no está logueado
-                    window.location.href = '../../PHP/iniciosesion.php';
+                    window.location.href = '../iniciosesion.php?error=acceso_denegado';
                 }
 
                 // Añadir al menú móvil

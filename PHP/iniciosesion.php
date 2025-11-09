@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     $_SESSION['user_id'] = $user['ID_Cuil_Alumno'];
                     $_SESSION['user_name'] = $user['Nombre_Alumno'];
-                    $_SESSION['user_rol'] = 2; // Rol Alumno
+                    $_SESSION['user_rol'] = 2; // Rol Estudiante
                 header('Location: ALUMNO/perfil.php');
                 }
             }
@@ -99,8 +99,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Iniciar Sesión - UTN FRH</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link rel="stylesheet" href="../CSS/general.css">
-<link rel="stylesheet" href="../CSS/iniciosesion.css">
+<link rel="stylesheet" href="../CSS/general.css"> <!-- Ruta correcta -->
+<link rel="stylesheet" href="../CSS/iniciosesion.css"> <!-- Ruta correcta -->
 </head>
 <body>
 
@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <li><a href="../index.html">VALIDAR</a></li>
                 <li><a href="../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="../HTML/contacto.html">CONTACTO</a></li>
-                <li><a href="iniciosesion.php">INICIAR SESIÓN</a></li>
+                <li><a href="iniciosesion.php" class="btn-sesion">INICIAR SESIÓN</a></li>
             </ul>
         </nav>
     </div>
@@ -152,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form class="login-form" action="iniciosesion.php" method="POST">
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 <div class="form-group">
-                    <label for="login-input">Legajo (Admin) o CUIL (Alumno)</label>
+                    <label for="login-input">Legajo (Admin) o CUIL (Estudiante)</label>
                     <input type="text" id="login-input" name="login-input" placeholder="Ingrese su Legajo o CUIL" required>
                 </div>
                 <div class="form-group">

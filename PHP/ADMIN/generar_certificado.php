@@ -148,6 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // Contenido del mail
                     $mail->isHTML(true);
                     $mail->Subject = 'Tu certificado del curso esta listo para descargar';
+                    $mail->CharSet = 'UTF-8'; // ¡Esta es la línea clave!
                     $login_link = "http://{$_SERVER['HTTP_HOST']}/Sistema-De-Validacion-UTN-FRH/PHP/iniciosesion.php";
                     $mail->Body    = "Hola " . htmlspecialchars($alumno_data['Nombre_Alumno']) . ",<br><br>Te informamos que tu certificado para el curso <strong>\"" . htmlspecialchars($nombre_curso) . "\"</strong> ya se encuentra disponible en tu perfil.<br><br>Puedes acceder a la plataforma para descargarlo haciendo clic en el siguiente enlace:<br><a href='$login_link'>Iniciar Sesión y ver mis certificados</a><br><br>Saludos,<br>Equipo de Extensión Universitaria - UTN FRH.";
 
@@ -243,7 +244,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
                     // Redirigir si no está logueado
-                    window.location.href = '../../PHP/iniciosesion.php';
+                    window.location.href = '../iniciosesion.php?error=acceso_denegado';
                 }
 
                 // Añadir al menú móvil

@@ -38,8 +38,10 @@ $user_type = '';
 if ($result_admin->num_rows > 0) {
     $user = $result_admin->fetch_assoc();
     $user_type = 'admin';
-} else {
-    $stmt_admin->close();
+}
+$stmt_admin->close(); // Se cierra la consulta del admin en todos los casos.
+
+if (!$user) { // Solo si no se encontró un admin, se busca en alumnos.
     $sql_alumno = "SELECT * FROM alumno WHERE reset_token_hash = ?";
     $stmt_alumno = $conexion->prepare($sql_alumno);
     $stmt_alumno->bind_param("s", $token_hash);
@@ -110,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <header class="site-header">
         <div class="header-container">
             <div class="logo">
-                <a href="../index.html"><img src="../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
+                <a href="<?php echo $base_path; ?>index.html"><img src="<?php echo $img_path; ?>UTNLogo.png" alt="Logo UTN FRH"></a>
             </div>
         </div>
     </header>

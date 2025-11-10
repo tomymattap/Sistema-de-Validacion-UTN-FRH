@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($tipo === 'admin') {
             $stmt = $conexion->prepare("UPDATE admin SET Password = ? WHERE Legajo = ?"); // Admin no tiene first_login_done
         } else {
-            $stmt = $conexion->prepare("UPDATE alumno SET Password = ?, first_login_done = 1 WHERE ID_Cuil_Alumno = ?");
+            $stmt = $conexion->prepare("UPDATE alumno SET Password = ?, first_login_done = 1 WHERE ID_Cuil_Alumno = ?"); // La tabla sigue siendo 'alumno'
         }
 
         $stmt->bind_param("ss", $hashed_password, $identificador);
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <header class="site-header">
         <div class="header-container">
             <div class="logo">
-                <a href="../index.html"><img src="../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
+                <a href="<?php echo $base_path; ?>index.html"><img src="<?php echo $img_path; ?>UTNLogo.png" alt="Logo UTN FRH"></a>
             </div>
         </div>
     </header>

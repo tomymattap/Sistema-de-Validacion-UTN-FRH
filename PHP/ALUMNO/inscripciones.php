@@ -188,7 +188,7 @@ if (isset($_SESSION['force_password_change'])) {
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
                     // Redirigir si no está logueado
-                    window.location.href = '../../HTML/iniciosesion.html';
+                    window.location.href = '../iniciosesion.php?error=acceso_denegado';
                 }
 
                 // Añadir al menú móvil

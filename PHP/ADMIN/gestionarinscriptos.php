@@ -34,7 +34,7 @@ $base_path = '../../';
 $css_path = $base_path . 'CSS/';
 $img_path = $base_path . 'Imagenes/';
 $js_path = $base_path . 'JavaScript/';
-$html_path = $base_path . 'HTML/';
+$html_path = $base_path . 'HTML/'; // Ruta correcta a la carpeta HTML
 $php_path = $base_path . 'PHP/';
 $current_page = 'gestionarinscriptos.php';
 ?>
@@ -79,7 +79,7 @@ $current_page = 'gestionarinscriptos.php';
                                 <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                                 <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                                 <li><a href="<?php echo $php_path; ?>ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
-                            <?php else: // Alumno ?>
+                            <?php else: // Estudiante ?>
                                 <li><a href="<?php echo $php_path; ?>ALUMNO/perfil.php">Mi Perfil</a></li>
                                 <li><a href="<?php echo $php_path; ?>ALUMNO/inscripciones.php">Inscripciones</a></li>
                                 <li><a href="<?php echo $php_path; ?>ALUMNO/certificaciones.php">Certificaciones</a></li>
@@ -105,8 +105,8 @@ $current_page = 'gestionarinscriptos.php';
     <nav>
         <ul>
             <li><a href="<?php echo $base_path; ?>index.html">VALIDAR</a></li>
-            <li><a href="<?php echo $html_path; ?>sobrenosotros.php">SOBRE NOSOTROS</a></li>
-            <li><a href="<?php echo $html_path; ?>contacto.php">CONTACTO</a></li>
+            <li><a href="<?php echo $html_path; ?>sobrenosotros.html">SOBRE NOSOTROS</a></li>
+            <li><a href="<?php echo $html_path; ?>contacto.html">CONTACTO</a></li>
             <li id="mobile-session-section">
                 <?php if (isset($_SESSION['user_name'])):
                     $user_rol = $_SESSION['user_rol'];
@@ -118,7 +118,7 @@ $current_page = 'gestionarinscriptos.php';
                             <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                             <li><a href="<?php echo $php_path; ?>ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
-                        <?php else: // Alumno ?>
+                        <?php else: // Estudiante ?>
                             <li><a href="<?php echo $php_path; ?>ALUMNO/perfil.php">Mi Perfil</a></li>
                             <li><a href="<?php echo $php_path; ?>ALUMNO/inscripciones.php">Inscripciones</a></li> 
                             <li><a href="<?php echo $php_path; ?>ALUMNO/certificaciones.php">Certificaciones</a></li>
@@ -189,11 +189,11 @@ $current_page = 'gestionarinscriptos.php';
                     <form id="formCargaManual" class="form-carga-manual">
                         <div class="form-grid">
                             <div class="campo-form">
-                                <label for="cuil">CUIL del Alumno:</label>
+                                <label for="cuil">CUIL del Estudiante:</label>
                                 <input type="text" id="cuil" name="cuil" required pattern="[0-9]{11}" title="El CUIL debe tener 11 dígitos sin guiones.">
                             </div>
                             <div class="campo-form">
-                                <label for="dni">DNI del Alumno:</label>
+                                <label for="dni">DNI del Estudiante:</label>
                                 <input type="text" id="dni" name="dni" required pattern="[0-9]{7,8}" title="El DNI debe tener entre 7 y 8 dígitos.">
                             </div>
                             <div class="campo-form">
@@ -296,7 +296,7 @@ $current_page = 'gestionarinscriptos.php';
         <div class="footer-separator"></div>
         <div class="footer-dynamic-nav">
             <?php if (isset($_SESSION['user_name'])): ?>
-                <h4><?php echo $_SESSION['user_rol'] == 1 ? 'Admin' : 'Alumno'; ?></h4>
+                <h4><?php echo $_SESSION['user_rol'] == 1 ? 'Admin' : 'Estudiante'; ?></h4>
                 <ul>
                     <?php if ($_SESSION['user_rol'] == 1): ?>
                         <br>

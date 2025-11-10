@@ -75,15 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(mobileSessionSection, { childList: true, subtree: true });
     }
 
-    // --- SIMULACIÓN DE SESIÓN DE USUARIO ---
-    // En una aplicación real, esta información vendría del servidor.
-    // Cambia el valor de 'userRole' para probar los diferentes estados:
-    // 'GUEST', 'ALUMNO', 'ADMIN'
-    const user = {
-        role: 'GUEST', // O 'ALUMNO', 'ADMIN'
-        name: 'Juan Pérez'
-    };
-
+    // ----- Lógica de Sesión de Usuario para Páginas Estáticas -----
+    // Este bloque se encarga de mostrar "Iniciar Sesión" o el menú de usuario.
     const sessionControls = document.getElementById('session-controls');
     const footerDynamicNav = document.getElementById('footer-dynamic-nav');
 
@@ -99,61 +92,78 @@ document.addEventListener('DOMContentLoaded', () => {
         // Limpiar contenedores
         sessionControls.innerHTML = '';
         footerDynamicNav.innerHTML = '';
+    // Solo ejecutar si los elementos existen (para no interferir con páginas de admin/alumno que tienen su propia lógica)
+    if (sessionControls && mobileSessionSection && footerDynamicNav) {
+        
+        // Determinar la ruta base correcta para el fetch
+        const path = window.location.pathname;
+        const fetchPath = path.includes('/HTML/') ? '../PHP/get_user_name.php' : 'PHP/get_user_name.php';
+        const basePath = path.includes('/HTML/') ? '../' : '';
 
-        const currentPage = window.location.pathname.split('/').pop();
-        const loginPagePath = currentPage.includes('index.html') || currentPage === '' ? 'HTML/iniciosesion.php' : 'iniciosesion.php';
+        fetch(fetchPath)
+            .then(response => response.json())
+            .then(data => {
+                if (data.user_name) {
+                    let desktopDropdownMenu, mobileSubmenu, footerMenu;
+                    const userName = data.user_name;
+                    const phpPath = `${basePath}PHP/`;
 
-        if (user.role === 'GUEST') {
-            // Header
-            sessionControls.innerHTML = `<a href="${loginPagePath}" class="btn-sesion">Iniciar Sesión</a>`;
-            
-            // Footer
-            footerDynamicNav.innerHTML = `
-                <h4>Acceso</h4>
-                <ul>
-                <br>
-                    <li><a href="${loginPagePath}">Iniciar Sesión</a></li>
-                </ul>
-            `;
-        } else {
-            let menuItems = '';
-            let roleName = '';
+                    const desktopMenu = `
+                        <a href="#" class="btn-sesion user-menu-toggle">Hola, ${userName} <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-menu"><ul>`;
 
-            if (user.role === 'ADMIN') {
-                roleName = 'ADMIN';
-                menuItems = `
-                    <li><a href="#gestionarinscriptos">Gesionar Inscriptos</a></li>
-                    <li><a href="#gestionar-cursos">Gestionar Cursos</a></li>
-                    <li><a href="#emitir-certificados">Emitir Certificados</a></li>
-                    <li><a href="#gestionaradmins">Gestionar Administradores</a></li>
-                `;
-            } else if (user.role === 'ALUMNO') {
-                roleName = 'ALUMNO';
-                menuItems = `
-                    <li><a href="#mi-perfil">Mi Perfil</a></li>
-                    <li><a href="#certificados">Certificados</a></li>
-                    <li><a href="#inscripciones">Inscripciones</a></li>
-                `;
-            }
+                    if (data.user_rol === 1) { // Admin
+                        desktopDropdownMenu = `${desktopMenu}
+                            <li><a href="${phpPath}ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                            <li><a href="${phpPath}ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                            <li><a href="${phpPath}ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                            <li><a href="${phpPath}ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
+                            <li><a href="${phpPath}logout.php">Cerrar Sesión</a></li></ul></div>`;
+                        mobileSubmenu = `<a href="#" class="user-menu-toggle-mobile">Hola, ${userName} <i class="fas fa-chevron-down"></i></a>
+                            <ul class="submenu">
+                                <li><a href="${phpPath}ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                                <li><a href="${phpPath}ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                                <li><a href="${phpPath}ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                <li><a href="${phpPath}ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
+                                <li><a href="${phpPath}logout.php">Cerrar Sesión</a></li>
+                            </ul>`;
+                        footerMenu = `<h4>Admin</h4><ul>
+                            <li><a href="${phpPath}ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                            <li><a href="${phpPath}ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                            <li><a href="${phpPath}ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                            <li><a href="${phpPath}ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
+                            </ul>`;
 
-            // Header
-            sessionControls.innerHTML = `
-                <div class="user-menu-toggle">
-                    <span>Hola, ${user.name.split(' ')[0]}</span> | <strong>${roleName}</strong>
-                </div>
-                <div class="dropdown-menu">
-                    <ul>${menuItems}</ul>
-                </div>
-            `;
+                    } else if (data.user_rol === 2) { // Estudiante
+                        desktopDropdownMenu = `${desktopMenu}
+                            <li><a href="${phpPath}ALUMNO/perfil.php">Mi Perfil</a></li>
+                            <li><a href="${phpPath}ALUMNO/inscripciones.php">Inscripciones</a></li>
+                            <li><a href="${phpPath}ALUMNO/certificaciones.php">Certificaciones</a></li>
+                            <li><a href="${phpPath}logout.php">Cerrar Sesión</a></li></ul></div>`;
+                        mobileSubmenu = `<a href="#" class="user-menu-toggle-mobile">Hola, ${userName} <i class="fas fa-chevron-down"></i></a>
+                            <ul class="submenu">
+                                <li><a href="${phpPath}ALUMNO/perfil.php">Mi Perfil</a></li>
+                                <li><a href="${phpPath}ALUMNO/inscripciones.php">Inscripciones</a></li>
+                                <li><a href="${phpPath}ALUMNO/certificaciones.php">Certificaciones</a></li>
+                                <li><a href="${phpPath}logout.php">Cerrar Sesión</a></li></ul>`;
+                        footerMenu = `<h4>Estudiante</h4><ul>
+                            <li><a href="${phpPath}ALUMNO/perfil.php">Mi Perfil</a></li>
+                            <li><a href="${phpPath}ALUMNO/inscripciones.php">Inscripciones</a></li>
+                            <li><a href="${phpPath}ALUMNO/certificaciones.php">Certificaciones</a></li></ul>`;
+                    }
 
-            // Footer
-            footerDynamicNav.innerHTML = `
-                <h4>${roleName}</h4>
-                <ul>${menuItems}</ul>
-            `;
+                    sessionControls.innerHTML = desktopDropdownMenu;
+                    mobileSessionSection.innerHTML = mobileSubmenu;
+                    footerDynamicNav.innerHTML = footerMenu;
+
+                } else {
+                    // Usuario no logueado (invitado)
+                    const loginPath = `${basePath}PHP/iniciosesion.php`;
+                    sessionControls.innerHTML = `<a href="${loginPath}" class="btn-sesion">INICIAR SESIÓN</a>`;
+                    mobileSessionSection.innerHTML = `<a href="${loginPath}">INICIAR SESIÓN</a>`;
+                    footerDynamicNav.innerHTML = `<h4>Acceso</h4><ul><li><a href="${loginPath}">Iniciar Sesión</a></li></ul>`;
+                }
+            });
         }
     }
-
-    // Inicializar la UI con el rol de usuario simulado
-    updateUIForUserRole(user);
 });

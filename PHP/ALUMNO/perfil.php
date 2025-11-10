@@ -32,7 +32,7 @@ $conexion->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil de Alumno - UTN FRH</title>
+    <title>Perfil de Estudiante - UTN FRH</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -81,7 +81,7 @@ $conexion->close();
 
     <main>
         <div class="profile-container">
-            <h1>Perfil de Alumno</h1>
+            <h1>Perfil de Estudiante</h1>
             <div class="profile-info">
                 <div class="profile-field">
                     <label for="nombre">Nombre</label>
@@ -180,7 +180,7 @@ $conexion->close();
 
                 if (data.user_name) {
                     let dropdownMenu;
-                    if (data.user_rol === 2) { // Alumno
+                    if (data.user_rol === 2) { // Estudiante
                         dropdownMenu = `
                             <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                             <div class="dropdown-menu">
@@ -203,7 +203,7 @@ $conexion->close();
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
                     // Redirigir si no está logueado
-                    window.location.href = '../../HTML/iniciosesion.html';
+                    window.location.href = '../iniciosesion.php?error=acceso_denegado';
                 }
 
                 // Añadir al menú móvil

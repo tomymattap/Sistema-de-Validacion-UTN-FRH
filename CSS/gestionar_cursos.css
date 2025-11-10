@@ -422,6 +422,16 @@ tr.modified, tr.modified:hover {
     white-space: normal;
 }
 
+/* Checkbox de selección en la tabla */
+#tabla-cursos th:first-child,
+#tabla-cursos td:first-child {
+    width: 40px;
+    text-align: center;
+}
+#tabla-cursos input[type="checkbox"] {
+    transform: scale(1.2);
+}
+
 /* Celda de acciones (Editar/Eliminar) */
 #tabla-cursos td.actions {
     width: 120px;
@@ -676,4 +686,30 @@ tr.modified, tr.modified:hover {
     color: #FFAB00;
     font-weight: 600;
     padding: 0;
+}
+
+/* Botón flotante para eliminación múltiple */
+.btn-flotante-eliminar {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: var(--color-secundario-4, #dc3545);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 15px 25px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s ease-out, background-color 0.2s ease;
+}
+.btn-flotante-eliminar:hover {
+    transform: scale(1.05);
+    background-color: #c82333;
+}
 }

@@ -204,50 +204,54 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
                         <?php endif; ?>
                     </div>
 
-
-                    
-
-                    <table id="tabla-cursos">
-                        <thead>
-                            <tr>
-                                <th>ID Curso</th>
-                                <th>Nombre</th>
-                                <th>Docente</th>
-                                <th>Modalidad</th>
-                                <th>Categoría</th>
-                                <th>Carga Horaria</th>
-                                <th>Descripción</th>
-                                <th>Requisitos</th>
-                                <th>Tipo</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if ($resultado && mysqli_num_rows($resultado) > 0): ?>
-                                <?php while ($fila = mysqli_fetch_assoc($resultado)): ?>
-                                    <tr>
-                                        <td><?= htmlspecialchars($fila['ID_Curso']); ?></td>
-                                        <td><?= htmlspecialchars($fila['Nombre_Curso']); ?></td>
-                                        <td><?= htmlspecialchars($fila['Docente']); ?></td>
-                                        <td><?= htmlspecialchars($fila['Modalidad']); ?></td>
-                                        <td><?= htmlspecialchars($fila['Categoria']); ?></td>
-                                        <td><?= htmlspecialchars($fila['Carga_Horaria']); ?></td>
-                                        <td><?= htmlspecialchars($fila['Descripcion']); ?></td>
-                                        <td class="col-descripcion"><?= htmlspecialchars($fila['Requisitos']); ?></td>
-                                        <td><?= htmlspecialchars($fila['Tipo']); ?></td>
-                                        <td class="actions">
-                                            <a href="editar_curso.php?id=<?= $fila['ID_Curso'] ?>" class="btn-edit" title="Editar"><i class="fas fa-pencil-alt"></i></a>
-                                            <a href="confirmar_eliminar_curso.php?id=<?= $fila['ID_Curso'] ?>" class="btn-delete" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
-                                        </td>
-                                    </tr>
-                                <?php endwhile; ?>
-                            <?php else: ?>
+                    <form action="confirmar_eliminar_curso.php" method="POST" id="form-eliminar-multiple">
+                        <table id="tabla-cursos">
+                            <thead>
                                 <tr>
-                                    <td colspan="10" style="text-align: center; padding: 2rem;">No se encontraron cursos con los filtros aplicados.</td>
+                                    <th><input type="checkbox" id="seleccionar-todos" title="Seleccionar todos"></th>
+                                    <th>ID Curso</th>
+                                    <th>Nombre</th>
+                                    <th>Docente</th>
+                                    <th>Modalidad</th>
+                                    <th>Categoría</th>
+                                    <th>Carga Horaria</th>
+                                    <th>Descripción</th>
+                                    <th>Requisitos</th>
+                                    <th>Tipo</th>
+                                    <th>Acciones</th>
                                 </tr>
-                            <?php endif; ?> 
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php if ($resultado && mysqli_num_rows($resultado) > 0): ?>
+                                    <?php while ($fila = mysqli_fetch_assoc($resultado)): ?>
+                                        <tr>
+                                            <td><input type="checkbox" name="cursos_a_eliminar[]" value="<?= $fila['ID_Curso'] ?>" class="checkbox-curso"></td>
+                                            <td><?= htmlspecialchars($fila['ID_Curso']); ?></td>
+                                            <td class="col-nombre"><?= htmlspecialchars($fila['Nombre_Curso']); ?></td>
+                                            <td class="col-docente"><?= htmlspecialchars($fila['Docente']); ?></td>
+                                            <td class="col-modalidad"><?= htmlspecialchars($fila['Modalidad']); ?></td>
+                                            <td class="col-categoria"><?= htmlspecialchars($fila['Categoria']); ?></td>
+                                            <td class="col-carga-horaria"><?= htmlspecialchars($fila['Carga_Horaria']); ?></td>
+                                            <td class="col-descripcion"><?= htmlspecialchars($fila['Descripcion']); ?></td>
+                                            <td class="col-requisitos"><?= htmlspecialchars($fila['Requisitos']); ?></td>
+                                            <td class="col-tipo"><?= htmlspecialchars($fila['Tipo']); ?></td>
+                                            <td class="actions">
+                                                <a href="editar_curso.php?id=<?= $fila['ID_Curso'] ?>" class="btn-edit" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                                <a href="confirmar_eliminar_curso.php?id=<?= $fila['ID_Curso'] ?>" class="btn-delete" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
+                                            </td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="11" style="text-align: center; padding: 2rem;">No se encontraron cursos con los filtros aplicados.</td>
+                                    </tr>
+                                <?php endif; ?> 
+                            </tbody>
+                        </table>
+                        <button type="submit" id="btn-eliminar-flotante" class="btn-flotante-eliminar" style="display:none;">
+                            <i class="fas fa-trash-alt"></i> Eliminar Seleccionados (<span id="contador-seleccion">0</span>)
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -260,6 +264,42 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
     </a>
 
     <script src="../../JavaScript/general.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnFlotante = document.getElementById('btn-eliminar-flotante');
+            const contadorSpan = document.getElementById('contador-seleccion');
+            const checkboxes = document.querySelectorAll('.checkbox-curso');
+            const seleccionarTodos = document.getElementById('seleccionar-todos');
+
+            function actualizarBotonFlotante() {
+                const seleccionados = document.querySelectorAll('.checkbox-curso:checked').length;
+                contadorSpan.textContent = seleccionados;
+                if (seleccionados > 0) {
+                    btnFlotante.style.display = 'flex';
+                } else {
+                    btnFlotante.style.display = 'none';
+                }
+            }
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', actualizarBotonFlotante);
+            });
+
+            seleccionarTodos.addEventListener('change', function() {
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+                actualizarBotonFlotante();
+            });
+
+            document.getElementById('form-eliminar-multiple').addEventListener('submit', function(e) {
+                if (document.querySelectorAll('.checkbox-curso:checked').length === 0) {
+                    alert('Debe seleccionar al menos un curso para eliminar.');
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
     <script>
         fetch('../get_user_name.php')
             .then(response => response.json())

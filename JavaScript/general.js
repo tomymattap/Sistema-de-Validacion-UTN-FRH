@@ -87,6 +87,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const sessionControls = document.getElementById('session-controls');
     const footerDynamicNav = document.getElementById('footer-dynamic-nav');
 
+    const element = document.getElementById('mobile-session-section');
+
+    if (element) {
+
+        element.innerHTML = '...'; // solo si existe
+
+    }
+
     function updateUIForUserRole(user) {
         // Limpiar contenedores
         sessionControls.innerHTML = '';

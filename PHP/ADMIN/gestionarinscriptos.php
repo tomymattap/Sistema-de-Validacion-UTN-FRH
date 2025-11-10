@@ -144,118 +144,172 @@ $current_page = 'gestionarinscriptos.php';
             <button class="tab" data-tab="agregar">Agregar Inscriptos</button>
         </div>
 
-        <!-- Pestaña: Ver Inscriptos -->
+        <!-- ========== VER INSCRIPTOS ========== -->
         <div id="ver" class="tab-content active">
             <div class="filtros-box">
                 <div class="filtro-row">
                     <input type="search" id="buscadorLive" placeholder="Buscar por Nombre, CUIL, Curso...">
                     <select id="filtroCurso">
-                        <option value="">Seleccionar curso</option>
+                        <option value="">Curso</option>
                         <?php foreach ($cursos as $curso): ?>
                             <option value="<?php echo $curso['ID_Curso']; ?>"><?php echo htmlspecialchars($curso['Nombre_Curso']); ?></option>
                         <?php endforeach; ?>
                     </select>
+
+                    <select id="filtroComision" disabled>
+                        <option value="">Comisión</option>
+                    </select>
+
                     <select id="filtroEstado">
-                        <option value="">Estado de la cursada</option>
+                        <option value="">Estado</option>
                         <?php foreach ($estados as $estado): ?><option value="<?php echo $estado; ?>"><?php echo $estado; ?></option><?php endforeach; ?>
                     </select>
+
                     <select id="filtroAnio">
                         <option value="">Año</option>
                         <?php foreach ($anios as $anio): ?><option value="<?php echo $anio; ?>"><?php echo $anio; ?></option><?php endforeach; ?>
                     </select>
+
                     <select id="filtroCuatrimestre">
                         <option value="">Cuatrimestre</option>
                         <?php foreach ($cuatrimestres as $cuatri): ?><option value="<?php echo $cuatri; ?>"><?php echo $cuatri; ?></option><?php endforeach; ?>
                     </select>
                 </div>
+
                 <div class="botones-filtros">
                     <button id="btnFiltrar" class="btn filtrar"><i class="fas fa-search"></i> Filtrar</button>
                     <button id="btnMostrarTodos" class="btn mostrar-todos">Mostrar Listado Completo</button>
-                    <button id="btnLimpiar" class="btn limpiar">&#x21BB; Limpiar Filtros</button>
+                    <button id="btnLimpiar" class="btn limpiar">&#x21BB; Limpiar</button>
                 </div>
             </div>
+
             <div id="resultados" class="tabla-inscriptos"></div>
         </div>
 
-        <!-- Pestaña: Agregar Inscriptos -->
+        <!-- ========== AGREGAR INSCRIPTOS ========== -->
         <div id="agregar" class="tab-content">
             <div class="add-container">
                 <nav class="tabs-secondary">
                     <button data-tab="manual" class="active">Carga Manual</button>
-                    <button data-tab="archivo">Cargar con Archivo</button>
+                    <button data-tab="archivo">Carga con Archivo</button>
                 </nav>
+
+                <!-- ======== CARGA MANUAL ======== -->
                 <div id="tab-manual" class="tab-panel-secondary active">
                     <h2>Carga Manual de Inscripción</h2>
-                    <form id="formCargaManual" class="form-carga-manual">
+                    <form id="formCargaManual" method="POST" action="insertar_inscripto.php" class="form-carga-manual">
                         <div class="form-grid">
+                            <div class="campo-form"><label for="cuil">CUIL del estudiante *</label><input type="text" id="cuil" name="ID_Cuil_Alumno" required pattern="[0-9]{10,11}" title="Solo números"></div>
+                            <div class="campo-form"><label for="dni">DNI del estudiante *</label><input type="text" id="dni" name="DNI_Alumno" required pattern="[0-9]{7,8}"></div>
+                            <div class="campo-form"><label for="nombre">Nombre *</label><input type="text" id="nombre" name="Nombre_Alumno" required></div>
+                            <div class="campo-form"><label for="apellido">Apellido *</label><input type="text" id="apellido" name="Apellido_Alumno" required></div>
+                            <div class="campo-form"><label for="email">Email *</label><input type="email" id="email" name="Email_Alumno" required></div>
+                            <div class="campo-form"><label for="direccion">Dirección</label><input type="text" id="direccion" name="Direccion"></div>
+                            <div class="campo-form"><label for="telefono">Teléfono</label><input type="tel" id="telefono" name="Telefono"></div>
+
                             <div class="campo-form">
-                                <label for="cuil">CUIL del Estudiante:</label>
-                                <input type="text" id="cuil" name="cuil" required pattern="[0-9]{11}" title="El CUIL debe tener 11 dígitos sin guiones.">
-                            </div>
-                            <div class="campo-form">
-                                <label for="dni">DNI del Estudiante:</label>
-                                <input type="text" id="dni" name="dni" required pattern="[0-9]{7,8}" title="El DNI debe tener entre 7 y 8 dígitos.">
-                            </div>
-                            <div class="campo-form">
-                                <label for="nombre">Nombre:</label>
-                                <input type="text" id="nombre" name="nombre" required>
-                            </div>
-                            <div class="campo-form">
-                                <label for="apellido">Apellido:</label>
-                                <input type="text" id="apellido" name="apellido" required>
-                            </div>
-                            <div class="campo-form">
-                                <label for="email">Email:</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            <div class="campo-form">
-                                <label for="direccion">Dirección:</label>
-                                <input type="text" id="direccion" name="direccion">
-                            </div>
-                            <div class="campo-form">
-                                <label for="telefono">Teléfono:</label>
-                                <input type="tel" id="telefono" name="telefono">
-                            </div>
-                            <div class="campo-form">
-                                <label for="curso">Curso a Inscribir:</label>
-                                <select id="curso" name="curso" required>
+                                <label for="curso">Curso a inscribir *</label>
+                                <select id="curso" name="ID_Curso" required>
                                     <option value="">Seleccione un curso</option>
                                     <?php foreach ($cursos as $curso): ?>
                                         <option value="<?php echo $curso['ID_Curso']; ?>"><?php echo htmlspecialchars($curso['Nombre_Curso']); ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
+
                             <div class="campo-form">
-                                <label for="cuatrimestre">Cuatrimestre:</label>
-                                <select id="cuatrimestre" name="cuatrimestre" required>
+                                <label for="comision">Comisión *</label>
+                                <input type="text" id="comision" name="Comision" placeholder="Ej: A, B o 1" required>
+                            </div>
+
+                            <div class="campo-form"><label for="cuatrimestre">Cuatrimestre *</label>
+                                <select id="cuatrimestre" name="Cuatrimestre" required>
                                     <option value="Primer Cuatrimestre">Primer Cuatrimestre</option>
                                     <option value="Segundo Cuatrimestre">Segundo Cuatrimestre</option>
                                 </select>
                             </div>
+
+                            <div class="campo-form"><label for="anio">Año *</label><input type="number" id="anio" name="Anio" value="<?php echo date('Y'); ?>" required min="2000" max="2100"></div>
+
                             <div class="campo-form">
-                                <label for="anio">Año:</label>
-                                <input type="number" id="anio" name="anio" value="<?php echo date('Y'); ?>" required>
-                            </div>
-                            <div class="campo-form">
-                                <label for="estado_cursada">Estado de la Cursada:</label>
-                                <select id="estado_cursada" name="estado_cursada" required>
+                                <label for="estado_cursada">Estado de la Cursada</label>
+                                <select id="estado_cursada" name="Estado_Cursada" required>
                                     <option value="Pendiente">Pendiente</option>
-                                    <option value="En curso">En curso</option>
+                                    <option value="En Curso">En Curso</option>
                                     <option value="Finalizada">Finalizada</option>
                                     <option value="Certificada">Certificada</option>
                                 </select>
                             </div>
                         </div>
-                        <div id="mensaje-carga-manual" class="mensaje-form" style="display: none;"></div>
+
+                        <div id="mensaje-carga-manual" class="mensaje-form" style="display:none;"></div>
                         <div class="botones-form-carga">
                             <button type="submit" class="btn-registrar">Registrar Inscripción</button>
-                            <button type="button" class="btn-cancelar-carga">Cancelar</button>
+                            <button type="reset" class="btn-cancelar-cert">Cancelar</button>
                         </div>
                     </form>
                 </div>
+
+                <!-- ======== CARGA CON ARCHIVO ======== -->
                 <div id="tab-archivo" class="tab-panel-secondary">
-                    <h2>Carga Masiva con Archivo CSV</h2>
-                    <!-- Formulario de carga de archivos irá aquí -->
+                    <section class="carga-archivo-container">
+                        <h2 class="main-title">Cargar Inscriptos desde Archivo CSV</h2>
+
+                        <div class="info-bar">
+                            <p class="info-text">Revisá el formato del archivo antes de subirlo.</p>
+                            <button type="button" class="info-btn" id="btnGuiaArchivo">¿Cómo subo un archivo?</button>
+                        </div>
+
+                        <form id="upload-form" method="POST" enctype="multipart/form-data" action="insertar_inscriptos_csv.php">
+                            <div class="form-group">
+                                <label for="archivo">Seleccionar archivo CSV:</label>
+                                <div class="dropzone" id="dropzone">
+                                    <input type="file" id="archivo" name="archivo" accept=".csv" hidden>
+                                    <p class="dz-message">Arrastrá el archivo aquí o hacé clic para seleccionarlo</p>
+                                </div>
+                            </div>
+
+                            <div id="preview-container" class="preview-container" style="display:none;">
+                                <h3>Vista previa del archivo (primeras 5 filas)</h3>
+                                <table id="preview-table" class="preview-table"></table>
+                                <div id="preview-errors" style="color:#b30000; font-weight:600; margin-top:8px;"></div>
+                            </div>
+
+                            <div class="form-buttons">
+                                <button type="button" id="btnUploadConfirm" class="submit-btn">Subir Archivo</button>
+                                <button type="button" class="btn-cancelar-cert" id="btnCancelarArchivo">Cancelar</button>
+                            </div>
+                            <div id="mensajeArchivo" style="margin-top:12px; font-weight:600;"></div>
+                        </form>
+
+                        <!-- Overlay con la guía para subir archivos -->
+                        <div id="overlayGuia" class="overlay" aria-hidden="true">
+                            <div class="overlay-content" role="dialog" aria-modal="true" aria-labelledby="tituloGuia">
+                                <button class="close-btn" id="cerrarGuia" title="Cerrar">&times;</button>
+                                <h3 id="tituloGuia">Guía para subir archivos de inscriptos</h3>
+                                <p>Tu archivo debe ser .CSV (UTF-8) y contener las columnas en este orden exacto:</p>
+                                <ul>
+                                    <li><strong>CUIL</strong> (sin guiones)</li>
+                                    <li><strong>DNI</strong></li>
+                                    <li><strong>Apellido</strong></li>
+                                    <li><strong>Nombre</strong></li>
+                                    <li><strong>Email</strong></li>
+                                    <li>Dirección (opcional)</li>
+                                    <li>Teléfono (opcional)</li>
+                                    <li><strong>Curso</strong> (nombre o ID_Curso, preferible ID_Curso)</li>
+                                    <li><strong>Cuatrimestre</strong></li>
+                                    <li><strong>Año</strong></li>
+                                    <li><strong>Comisión</strong></li>
+                                </ul>
+                                <p><strong>Ejemplo de fila:</strong></p>
+                                <p><code>20431223444,43122344,Fernández,Mateo,mateo@mail.com,Calle Falsa 123,1123456789,23,Primer Cuatrimestre,2025,A</code></p>
+                                <div style="text-align:right; margin-top:1rem;">
+                                    <button id="btnCerrarGuia" class="btn-cancelar-cert">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </section>
                 </div>
             </div>
         </div>

@@ -77,10 +77,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ----- Lógica de Sesión de Usuario para Páginas Estáticas -----
     // Este bloque se encarga de mostrar "Iniciar Sesión" o el menú de usuario.
-    const sessionControls = document.getElementById('session-controls');
+    const sessionControls = document.getElementById('session-controls');    
     const footerDynamicNav = document.getElementById('footer-dynamic-nav');
 
-    // Solo ejecutar si los elementos existen (para no interferir con páginas de admin/alumno que tienen su propia lógica)
+    // Solo ejecutar si los elementos existen (para no interferir con páginas de admin/estudiante que tienen su propia lógica)
     if (sessionControls && mobileSessionSection && footerDynamicNav) {
         
         // Determinar la ruta base correcta para el fetch
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data.user_name) {
                     let desktopDropdownMenu, mobileSubmenu, footerMenu;
                     const userName = data.user_name;
-                    const phpPath = `${basePath}PHP/`;
+                    const phpPath = `${basePath}PHP/`; // Asegura que siempre apunte a la carpeta PHP
 
                     const desktopMenu = `
                         <a href="#" class="btn-sesion user-menu-toggle">Hola, ${userName} <i class="fas fa-chevron-down"></i></a>
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <li><a href="${phpPath}ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="${phpPath}ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                             <li><a href="${phpPath}ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
-                            </ul>`;
+                        </ul>`;
 
                     } else if (data.user_rol === 2) { // Estudiante
                         desktopDropdownMenu = `${desktopMenu}

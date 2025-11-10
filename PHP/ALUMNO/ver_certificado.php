@@ -62,6 +62,7 @@ $conexion->close();
 
     <main class="encuesta-page">
         <div class="encuesta-container">
+            <a href="certificaciones.php" class="btn-volver-prominente"><i class="fas fa-arrow-left"></i> Volver sin contestar</a>
             <?php if ($encuesta_completa): ?>
                 <!-- VISTA SI LA ENCUESTA YA FUE COMPLETADA -->
                 <div class="encuesta-completada">
@@ -173,6 +174,7 @@ $conexion->close();
                     </fieldset>
 
                     <div class="form-actions">
+                        <a href="certificaciones.php" class="btn-volver">Volver</a>
                         <button type="submit" class="submit-btn">Enviar Encuesta y Ver Certificado</button>
                     </div>
                 </form>

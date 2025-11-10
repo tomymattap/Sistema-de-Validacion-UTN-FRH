@@ -225,16 +225,16 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
                                 <?php if ($resultado && mysqli_num_rows($resultado) > 0): ?>
                                     <?php while ($fila = mysqli_fetch_assoc($resultado)): ?>
                                         <tr>
-                                            <td><input type="checkbox" name="cursos_a_eliminar[]" value="<?= $fila['ID_Curso'] ?>" class="checkbox-curso"></td>
+                                            <td class="col-checkbox"><input type="checkbox" name="cursos_a_eliminar[]" value="<?= $fila['ID_Curso'] ?>" class="checkbox-curso"></td>
                                             <td><?= htmlspecialchars($fila['ID_Curso']); ?></td>
-                                            <td class="col-nombre"><?= htmlspecialchars($fila['Nombre_Curso']); ?></td>
-                                            <td class="col-docente"><?= htmlspecialchars($fila['Docente']); ?></td>
-                                            <td class="col-modalidad"><?= htmlspecialchars($fila['Modalidad']); ?></td>
-                                            <td class="col-categoria"><?= htmlspecialchars($fila['Categoria']); ?></td>
-                                            <td class="col-carga-horaria"><?= htmlspecialchars($fila['Carga_Horaria']); ?></td>
-                                            <td class="col-descripcion"><?= htmlspecialchars($fila['Descripcion']); ?></td>
-                                            <td class="col-requisitos"><?= htmlspecialchars($fila['Requisitos']); ?></td>
-                                            <td class="col-tipo"><?= htmlspecialchars($fila['Tipo']); ?></td>
+                                            <td><?= htmlspecialchars($fila['Nombre_Curso']); ?></td>
+                                            <td><?= htmlspecialchars($fila['Docente']); ?></td>
+                                            <td><?= htmlspecialchars($fila['Modalidad']); ?></td>
+                                            <td><?= htmlspecialchars($fila['Categoria']); ?></td>
+                                            <td><?= htmlspecialchars($fila['Carga_Horaria']); ?></td>
+                                            <td><?= htmlspecialchars($fila['Descripcion']); ?></td>
+                                            <td><?= htmlspecialchars($fila['Requisitos']); ?></td>
+                                            <td><?= htmlspecialchars($fila['Tipo']); ?></td>
                                             <td class="actions">
                                                 <a href="editar_curso.php?id=<?= $fila['ID_Curso'] ?>" class="btn-edit" title="Editar"><i class="fas fa-pencil-alt"></i></a>
                                                 <a href="confirmar_eliminar_curso.php?id=<?= $fila['ID_Curso'] ?>" class="btn-delete" title="Eliminar"><i class="fas fa-trash-alt"></i></a>

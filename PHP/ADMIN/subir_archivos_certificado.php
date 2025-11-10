@@ -111,7 +111,7 @@ $current_page = 'seleccionar_alum_certif.php'; // Se mantiene para marcar el men
 <main class="admin-section" style="padding-top: 4rem; padding-bottom: 4rem;">
         <div class="admin-container">
             <h1 class="main-title">Archivos para el Certificado</h1>
-            <p style="text-align: center; margin-bottom: 2rem;">Sube las firmas y logos necesarios para generar los certificados.</p>
+            <p style="text-align: center; margin-bottom: 2rem;">Suba las firmas y logos necesarios para generar los certificados.</p>
 
             <form action="generar_certificado.php" method="post" id="upload-form">
                 

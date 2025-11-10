@@ -14,6 +14,7 @@ include("../conexion.php");
 // Consulta para obtener las evaluaciones de cursos externos
 $consulta_sql = "
     SELECT 
+    e.ID_Evaluacion,
     c.Nombre_Curso,
     c.Descripcion,
     c.Carga_Horaria,
@@ -93,55 +94,82 @@ $php_path = $base_path . 'PHP/';
                 </div>
             </div>
 
-            <div class="results-container">
-                <table id="tabla-cursos">
+            <div >
+                <table id="tabla-cursos-externos">
                     <thead>
                         <tr>
                             <th>Curso</th>
                             <th>Carga Horaria</th>
                             <th>Descripción</th>
                             <th>Requisitos</th>
+                            <th colspan="3" class="inst-header">Instituciones Asociadas</th>
+                            <th>Estado Evaluación</th>
+                            <th>Info. Extra</th>
+                            <th>Acción</th>
+                        </tr>
+                        <tr class="sub-header">
+                            <th colspan="4"></th>
                             <th>Institución 1</th>
                             <th>Institución 2</th>
                             <th>Institución 3</th>
-                            
-                            
-                            
-                            <th>Archivo de Evaluación</th>
+                            <th colspan="3"></th>
                         </tr>
-
                     </thead>
                     <tbody>
                         <?php if ($resultado && mysqli_num_rows($resultado) > 0): ?>
-                            <?php while ($fila = mysqli_fetch_assoc($resultado)): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($fila['Nombre_Curso']); ?></td>
-                                    <td><?= htmlspecialchars($fila['Carga_Horaria']); ?></td>
-                                    <td><?= htmlspecialchars($fila['Descripcion']); ?></td>
-                                    <td><?= htmlspecialchars($fila['Requisitos']); ?></td>
-                                    <td><?= htmlspecialchars($fila['Institucion1']); ?></td>
-                                    <td><?= htmlspecialchars($fila['Institucion2']); ?></td>
-                                    <td><?= htmlspecialchars($fila['Institucion3']); ?></td>
-                                    
-                                    
-                                    
-                                    <td>
-                                    <?php if (!empty($fila['archivo_evaluacion'])): ?>
-                                        <a href="<?= htmlspecialchars($fila['archivo_evaluacion']) ?>" target="_blank">Descargar Archivo</a>
-                                    <?php else: ?>
-                                        Sin Archivo
-                                    <?php endif; ?>
-                                    </td>
-                                </tr>
+                            <?php while ($fila = mysqli_fetch_assoc($resultado)):
+                                $estado_evaluacion = htmlspecialchars($fila['Estado_Evaluacion']);
+                                $estado_class = '';
 
+                                switch ($estado_evaluacion) {
+                                    case 'PENDIENTE':
+                                        $estado_class = 'estado-pendiente';
+                                        break;
+                                    case 'ACEPTADO':
+                                        $estado_class = 'estado-aceptado';
+                                        break;
+                                    case 'RECHAZADO':
+                                        $estado_class = 'estado-rechazado';
+                                        break;
+                                }
+                            ?>
+                            <tr>
+                                <td><?= htmlspecialchars($fila['Nombre_Curso']); ?></td>
+                                <td><?= htmlspecialchars($fila['Carga_Horaria']); ?> hs</td>
+                                <td><?= htmlspecialchars($fila['Descripcion']); ?></td>
+                                <td><?= htmlspecialchars($fila['Requisitos']); ?></td>
+
+                                <td class="col-institucion"><?= htmlspecialchars($fila['Institucion1']); ?></td>
+                                <td class="col-institucion"><?= htmlspecialchars($fila['Institucion2']); ?></td>
+                                <td class="col-institucion"><?= htmlspecialchars($fila['Institucion3']); ?></td>
+
+                                <td class="col-estado <?= $estado_class ?>"><?= $estado_evaluacion ?></td>
+
+                                <td class="col-info-extra">
+                                    <?php if (!empty($fila['Archivo_Evaluacion'])): ?>
+                                        <a href="descargar_archivo_externo.php?id=<?= htmlspecialchars($fila['ID_Evaluacion']) ?>" class="btn-descargar-pdf">
+                                            <i class="fas fa-file-download"></i> PDF
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="sin-archivo">Sin archivo</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="col-accion">
+                                    <a href="ver_evaluacion_externa.php?id=<?= htmlspecialchars($fila['ID_Evaluacion']) ?>" class="btn-accion" title="Ver y Evaluar">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
                             <?php endwhile; ?>
+
                         <?php else: ?>
                             <tr>
-                                <td colspan="6" style="text-align: center; padding: 2rem;">No se encontraron evaluaciones de cursos externos.</td>
+                                <td colspan="9" class="sin-resultados">No se encontraron evaluaciones de cursos externos.</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
+
             </div>
         </div>
     </div>

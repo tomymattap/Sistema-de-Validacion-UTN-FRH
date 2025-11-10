@@ -712,3 +712,154 @@ tr.modified, tr.modified:hover {
     transform: scale(1.05);
     background-color: #c82333;
 }
+
+
+/* Estilos para la zona de arrastre */
+        .drop-zone_gc {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+        .drop-zone_gc.drag-over {
+            border-color: #007bff; /* Color al arrastrar sobre la zona */
+        }
+
+#removeFileBtn{
+    padding: 5px 10px; 
+    font-size: 0.8em;
+}
+
+
+.btn-descargar {
+    display: inline-block;
+    background-color: var(--color-principal, #0056b3);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+}
+
+.btn-descargar:hover {
+    background-color: #004080;
+}
+
+
+
+/* -------------------------------------------
+   TABLA DE CURSOS EXTERNOS
+------------------------------------------- */
+
+#tabla-cursos-externos {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    background-color: #ffffff;
+    margin-top: 2rem;
+    font-size: 0.95rem;
+    text-align: left;
+}
+
+#tabla-cursos-externos thead {
+    background-color: var(--color-principal, #0056b3);
+    color: #fff;
+}
+
+#tabla-cursos-externos thead th {
+    padding: 0.8rem 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#tabla-cursos-externos .sub-header {
+    background-color: #e9f2ff;
+    color: #333;
+    text-transform: none;
+    font-size: 0.9rem;
+}
+
+#tabla-cursos-externos .sub-header th {
+    text-align: center; /* Centra el texto del sub-header */
+}
+
+#tabla-cursos-externos tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+#tabla-cursos-externos tbody tr:hover {
+    background-color: #eef6ff;
+    transition: background-color 0.2s ease;
+}
+
+#tabla-cursos-externos td {
+    padding: 0.75rem 1rem;
+    vertical-align: top;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Estados visuales */
+.estado-pendiente {
+    color: var(--color-secundario-1, #ffb703);
+    font-weight: bold;
+}
+
+.estado-aceptado {
+    color: var(--color-secundario-2, #0a8754);
+    font-weight: bold;
+}
+
+.estado-rechazado {
+    color: var(--color-secundario-4, #c1121f);
+    font-weight: bold;
+}
+
+.sin-archivo {
+    color: #777;
+    font-style: italic;
+}
+
+.sin-resultados {
+    text-align: center;
+    padding: 2rem;
+    color: #555;
+    font-style: italic;
+}
+
+/* Botón de descarga */
+.btn-descargar {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--color-principal, #0056b3);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: background-color 0.2s ease;
+}
+
+.btn-descargar i {
+    margin-right: 5px;
+}
+
+.btn-descargar:hover {
+    background-color: #003f80;
+}
+
+/* Responsividad */
+@media (max-width: 992px) {
+    #tabla-cursos-externos {
+        font-size: 0.9rem;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}

@@ -2,12 +2,11 @@
 session_start();
 include 'conexion.php';
 
-// 🔹 Mostrar errores de PHP y MySQLi
+// Mostrar todos los errores
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-// --- PROCESAMIENTO DEL FORMULARIO (MÉTODO POST) ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = $_POST['token'] ?? '';
     $nombre = $_POST['nombre'] ?? '';
@@ -26,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     mysqli_begin_transaction($conexion);
 
     try {
-        // 🔸 1. Insertar curso
+        // 1️⃣ Insertar el curso
         $sql_insert = "INSERT INTO curso 
             (Nombre_Curso, Modalidad, Docente, Carga_Horaria, Descripcion, Requisitos, Categoria, Tipo)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -34,65 +33,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mysqli_stmt_bind_param($stmt_insert, "sssissss", 
             $nombre, $modalidad, $docente, $carga, $descripcion, $requisitos, $categoria, $tipo
         );
-
-        if (!mysqli_stmt_execute($stmt_insert)) {
-            throw new Exception("Error al registrar el curso: " . mysqli_stmt_error($stmt_insert));
-        }
+        mysqli_stmt_execute($stmt_insert);
 
         $id_curso = mysqli_insert_id($conexion);
 
-        // 🔸 2. Procesar la subida del archivo (guardar ruta o contenido)
+        // 2️⃣ Procesar el archivo PDF (guardar como LONGBLOB)
         $archivo_evaluacion = null;
-        if (isset($_FILES['archivo_evaluacion']) && $_FILES['archivo_evaluacion']['error'] === UPLOAD_ERR_OK) {
-            $nombre_archivo = uniqid() . '_' . basename($_FILES['archivo_evaluacion']['name']);
-            $ruta_destino = '../cert_uploads/' . $nombre_archivo;
 
-            if (move_uploaded_file($_FILES['archivo_evaluacion']['tmp_name'], $ruta_destino)) {
-                // OPCIÓN A: Guardar la ruta del archivo (si cambias el campo a VARCHAR)
-                $archivo_evaluacion = $ruta_destino;
+        if (
+            isset($_FILES['archivo_evaluacion']) &&
+            $_FILES['archivo_evaluacion']['error'] === UPLOAD_ERR_OK
+        ) {
+            // Validar tipo MIME
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $mime_type = $finfo->file($_FILES['archivo_evaluacion']['tmp_name']);
 
-                // OPCIÓN B: Guardar el contenido del archivo (si mantenés longblob)
-                // $archivo_evaluacion = file_get_contents($_FILES['archivo_evaluacion']['tmp_name']);
-            } else {
-                throw new Exception("Error al subir el archivo de evaluación.");
+            if ($mime_type !== 'application/pdf') {
+                throw new Exception("El archivo debe ser un PDF válido.");
             }
+
+            // Leer el contenido binario directamente
+            $archivo_evaluacion = file_get_contents($_FILES['archivo_evaluacion']['tmp_name']);
         }
 
-        // 🔸 3. Invalidar el token
+        // 3️⃣ Invalidar token de acceso
         $sql_update = "UPDATE acceso_externo SET usado = 1 WHERE token = ?";
         $stmt_update = mysqli_prepare($conexion, $sql_update);
         mysqli_stmt_bind_param($stmt_update, "s", $token);
-        if (!mysqli_stmt_execute($stmt_update)) {
-            throw new Exception("Error al invalidar el token de acceso.");
-        }
+        mysqli_stmt_execute($stmt_update);
 
-        // 🔸 4. Insertar evaluación del curso externo
+        // 4️⃣ Insertar en evaluacion_curso_externo
         $sql_evaluacion = "INSERT INTO evaluacion_curso_externo 
             (ID_Curso, Estado_Evaluacion, Archivo_Evaluacion, Institucion1, Institucion2, Institucion3)
             VALUES (?, ?, ?, ?, ?, ?)";
         $stmt_evaluacion = mysqli_prepare($conexion, $sql_evaluacion);
-        mysqli_stmt_bind_param($stmt_evaluacion, "isssss", 
-            $id_curso, $estado_evaluacion, $archivo_evaluacion, $institucion1, $institucion2, $institucion3
+
+        // Definimos variable nula para el blob
+        $null = NULL;
+        mysqli_stmt_bind_param(
+            $stmt_evaluacion,
+            "isbsss",
+            $id_curso,
+            $estado_evaluacion,
+            $null,  // marcador temporal
+            $institucion1,
+            $institucion2,
+            $institucion3
         );
 
-        if (!mysqli_stmt_execute($stmt_evaluacion)) {
-            throw new Exception("Error al guardar la evaluación del curso externo: " . mysqli_stmt_error($stmt_evaluacion));
+        // Enviar el archivo como BLOB (solo si existe)
+        if ($archivo_evaluacion !== null) {
+            mysqli_stmt_send_long_data($stmt_evaluacion, 2, $archivo_evaluacion);
         }
 
-        // 🔸 5. Confirmar transacción
+        mysqli_stmt_execute($stmt_evaluacion);
+
+        // 5️⃣ Confirmar transacción
         mysqli_commit($conexion);
 
-        $_SESSION['status_message'] = "El curso '" . htmlspecialchars($nombre) . "' ha sido registrado correctamente.";
+        $_SESSION['status_message'] = "El curso '" . htmlspecialchars($nombre) . "' fue registrado correctamente.";
         $_SESSION['status_type'] = 'success';
+
     } catch (Exception $e) {
         mysqli_rollback($conexion);
-        $_SESSION['status_message'] = $e->getMessage();
+        $_SESSION['status_message'] = "Error: " . $e->getMessage();
         $_SESSION['status_type'] = 'error';
     }
 
     header('Location: guardar_curso_externo.php');
     exit;
 }
+
+
 
 // --- VISUALIZACIÓN DEL RESULTADO (MÉTODO GET) ---
 $status_message = $_SESSION['status_message'] ?? null;

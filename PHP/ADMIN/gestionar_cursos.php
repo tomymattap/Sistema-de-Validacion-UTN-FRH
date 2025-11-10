@@ -85,6 +85,8 @@ $resultado = mysqli_query($conexion, $consulta);
                         <a href="filtrar_cursos.php" class="menu-btn"><i class="fas fa-filter"></i> FILTRAR</a>
                         <a href="editar_duracion_cursos.php" class="menu-btn"><i class="fas fa-calendar-alt"></i> ACTUALIZAR FECHAS</a>
                         <a href="generar_link.php" class="menu-btn"><i class="fas fa-share-alt"></i> COMPARTIR FORMULARIO</a>
+                        <a href="descargar_encuesta_form.php" class="menu-btn"><i class="fas fa-download"></i> DESCARGAR ENCUESTA</a>
+                        
                         
                     </div>
 

@@ -124,13 +124,17 @@ textarea {
 }
 
 .form-actions {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
     margin-top: 2rem;
+    flex-wrap: wrap;
 }
 
 .submit-btn {
     width: auto;
-    background-color: var(--color-secundario-2);
+    background-color: var(--color-principal);
     color: white;
     padding: 0.8rem 2rem;
     border: none;
@@ -142,7 +146,7 @@ textarea {
 }
 
 .submit-btn:hover {
-    background-color: #7ab830;
+    background-color: var(--color-secundario-2);
     transform: translateY(-2px);
 }
 
@@ -181,13 +185,47 @@ textarea {
 }
 
 .btn-descargar:hover {
-    background-color: #003345;
+    background-color: var(--color-secundario-2);
     transform: scale(1.05);
 }
 
 .btn-volver {
-    display: block;
-    margin-top: 1rem;
-    color: #555;
-    text-decoration: underline;
+    display: inline-block;
+    background-color: var(--color-principal);
+    color: white !important; /* Use important to override link color if necessary */
+    padding: 0.7rem 1.5rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+    border: none; /* Remove underline */
+}
+
+.btn-volver:hover {
+    background-color: var(--color-secundario-4);
+    transform: translateY(-2px);
+}
+
+.btn-volver-prominente {
+    display: inline-block;
+    background-color: var(--color-principal); 
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-bottom: 1.5rem; /* Add some space below */
+}
+
+.btn-volver-prominente:hover {
+    background-color: var(--color-secundario-4);
+    transform: translateY(-2px);
+}
+
+.btn-volver-prominente i {
+    margin-right: 0.5rem;
 }

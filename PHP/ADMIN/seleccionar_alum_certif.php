@@ -131,6 +131,12 @@ $current_page = 'seleccionar_alum_certif.php';
                     </select>
                 </div>
 
+                <!-- Comision -->
+                <div class="form-group">
+                    <label for="comision">Comisión:</label>
+                    <input type="text" id="comision" name="comision" placeholder="Ej: A, B, C, D, etc." required>
+                </div>
+
                 <div class="form-buttons">
                     <button type="submit">Continuar</button>
                     <button type="reset" class="reset-btn">Limpiar</button>

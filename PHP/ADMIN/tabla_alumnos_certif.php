@@ -5,23 +5,30 @@ $resultado = null; // Inicializar resultado
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validar que los datos esperados existen
-    if (isset($_POST["curso"], $_POST["anio"], $_POST["cuatrimestre"])) {
+    if (isset($_POST["curso"], $_POST["anio"], $_POST["cuatrimestre"], $_POST["comision"])) {
         $curso_id = $_POST["curso"];
         $anio = $_POST["anio"];
         $cuatrimestre = $_POST["cuatrimestre"];
+        $comision = $_POST["comision"];
 
         // Consulta segura con sentencias preparadas para evitar inyección SQL
         $consulta = $conexion->prepare("
             SELECT a.ID_Cuil_Alumno, a.Nombre_Alumno, a.Apellido_Alumno
             FROM INSCRIPCION i
             JOIN ALUMNO a ON i.ID_Cuil_Alumno = a.ID_Cuil_Alumno
-            WHERE i.ID_Curso = ?
-            AND i.Anio = ?
-            AND i.Cuatrimestre = ?
+            WHERE i.ID_Curso = ? 
+            AND i.Anio = ? 
+            AND i.Cuatrimestre = ? 
+            AND i.Comision = ?
             AND i.Estado_Cursada = 'FINALIZADO'
         ");
-        // "iss" indica que los tipos de datos son: integer, string, string
-        $consulta->bind_param("iss", $curso_id, $anio, $cuatrimestre);
+
+    if (!$consulta) {
+        die("Error en la preparación de la consulta: " . $conexion->error);
+    }
+
+        // "isss" indica que los tipos de datos son: integer, string, string, string
+        $consulta->bind_param("isss", $curso_id, $anio, $cuatrimestre, $comision);
         $consulta->execute();
         $resultado = $consulta->get_result();
     }
@@ -98,6 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <input type="hidden" name="id_curso" value="<?php echo htmlspecialchars($_POST['curso']); ?>">
                         <input type="hidden" name="anio" value="<?php echo htmlspecialchars($_POST['anio']); ?>">
                         <input type="hidden" name="cuatrimestre" value="<?php echo htmlspecialchars($_POST['cuatrimestre']); ?>">
+                        <input type="hidden" name="comision" value="<?php echo htmlspecialchars($_POST['comision']); ?>">
 
                         <table id="results-table" class="tabla-certificaciones">
                             <thead>

@@ -105,7 +105,7 @@ if ($id_curso) {
             </aside>
 
             <div class="contenido-principal">
-                <h1 class="main-title">Editar Curso #<?= htmlspecialchars($curso['ID_Curso']) ?></h1>
+                <h1 class="main-title">Editar Curso <?= htmlspecialchars($curso['Nombre_Curso']) ?></h1>
                 <div class="form-container">
                     <form action="editar_curso.php" method="POST" class="form-grid">
                         <input type="hidden" name="id_curso" value="<?= htmlspecialchars($curso['ID_Curso']) ?>">

@@ -116,9 +116,13 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <li><a href="${phpPath}logout.php">Cerrar Sesión</a></li>
                             </ul>`;
                         footerMenu = `<h4>Admin</h4><ul>
+                            <br>
                             <li><a href="${phpPath}ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                            <br>
                             <li><a href="${phpPath}ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                            <br>
                             <li><a href="${phpPath}ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                            <br>
                             <li><a href="${phpPath}ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
                         </ul>`;
 
@@ -135,8 +139,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <li><a href="${phpPath}ALUMNO/certificaciones.php">Certificaciones</a></li>
                                 <li><a href="${phpPath}logout.php">Cerrar Sesión</a></li></ul>`;
                         footerMenu = `<h4>Estudiante</h4><ul>
+                            <br>
                             <li><a href="${phpPath}ALUMNO/perfil.php">Mi Perfil</a></li>
+                            <br>
                             <li><a href="${phpPath}ALUMNO/inscripciones.php">Inscripciones</a></li>
+                            <br>
                             <li><a href="${phpPath}ALUMNO/certificaciones.php">Certificaciones</a></li></ul>`;
                     }
 

@@ -342,13 +342,20 @@ document.querySelectorAll('.tabs-container .tab').forEach(tab => {
     });
 });
 
-// Script para manejar las pestañas secundarias (dentro de Agregar)
-document.querySelectorAll('.tabs-secondary button').forEach(tab => {
-    tab.addEventListener('click', () => {
-        document.querySelectorAll('.tabs-secondary button').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        document.querySelectorAll('.tab-panel-secondary').forEach(c => c.style.display = 'none');
-        document.querySelector(`#${tab.dataset.tab}`).style.display = 'block';
+// Script para manejar las pestañas secundarias (dentro de "Agregar Inscriptos")
+document.querySelectorAll('.tabs-secondary button').forEach(btn => {
+    btn.addEventListener('click', () => {
+        // quitar la clase active de todos los botones
+        document.querySelectorAll('.tabs-secondary button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // ocultar todos los paneles
+        document.querySelectorAll('.tab-panel-secondary').forEach(panel => panel.classList.remove('active'));
+
+        // mostrar el panel correspondiente
+        const tabId = 'tab-' + btn.dataset.tab; // ej: "tab-manual" o "tab-archivo"
+        const panelToShow = document.getElementById(tabId);
+        if (panelToShow) panelToShow.classList.add('active');
     });
 });
 </script>

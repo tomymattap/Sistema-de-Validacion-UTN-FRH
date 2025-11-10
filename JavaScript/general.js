@@ -152,5 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     footerDynamicNav.innerHTML = `<h4>Acceso</h4><ul><li><a href="${loginPath}">Iniciar Sesión</a></li></ul>`;
                 }
             });
+        }
     }
-});
+);

@@ -1,25 +1,24 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-
 include("../conexion.php");
 
-// --- Recolección de parámetros ---
-$q = trim($_GET['q'] ?? '');
-$curso_id = filter_input(INPUT_GET, 'curso', FILTER_VALIDATE_INT);
+// Parámetros esperados
+$search = trim($_GET['search'] ?? '');
+$curso = trim($_GET['curso'] ?? '');
 $estado = trim($_GET['estado'] ?? '');
-$anio = filter_input(INPUT_GET, 'anio', FILTER_VALIDATE_INT);
+$anio = trim($_GET['anio'] ?? '');
 $cuatr = trim($_GET['cuatr'] ?? '');
-$show_all = isset($_GET['all']);
+$show_all = isset($_GET['all']) && $_GET['all'] === '1';
 
-// --- Construcción de la consulta ---
+// Preparar consulta base
 $sql = "SELECT 
-            i.ID_Inscripcion, 
-            a.Nombre_Alumno, 
-            a.Apellido_Alumno, 
-            a.ID_Cuil_Alumno, 
-            c.Nombre_Curso, 
-            i.Cuatrimestre, 
-            i.Anio, 
+            i.ID_Inscripcion,
+            a.Nombre_Alumno,
+            a.Apellido_Alumno,
+            a.ID_Cuil_Alumno,
+            c.Nombre_Curso,
+            i.Cuatrimestre,
+            i.Anio,
             i.Estado_Cursada
         FROM inscripcion i
         JOIN alumno a ON i.ID_Cuil_Alumno = a.ID_Cuil_Alumno
@@ -29,81 +28,100 @@ $conditions = [];
 $params = [];
 $types = '';
 
-// Si no se pide la lista completa y no hay filtros, devolver vacío.
-if (!$show_all && empty($q) && !$curso_id && empty($estado) && !$anio && empty($cuatr)) {
-    echo json_encode([]);
+// Si no piden "all" y no hay filtros -> devolver vacío (evita consultas masivas)
+if (!$show_all && $search === '' && $curso === '' && $estado === '' && $anio === '' && $cuatr === '') {
+    echo json_encode([], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-// Búsqueda general (live search)
-if (!empty($q)) {
+// Aplicar search (busqueda general)
+if ($search !== '') {
+    $like = "%{$search}%";
     $conditions[] = "(a.Nombre_Alumno LIKE ? OR a.Apellido_Alumno LIKE ? OR a.ID_Cuil_Alumno LIKE ? OR c.Nombre_Curso LIKE ?)";
-    $searchTerm = "%{$q}%";
-    // Se necesita una variable por cada placeholder en el bind_param
-    $params[] = $searchTerm;
-    $params[] = $searchTerm;
-    $params[] = $searchTerm;
-    $params[] = $searchTerm;
+    $params[] = $like;
+    $params[] = $like;
+    $params[] = $like;
+    $params[] = $like;
     $types .= 'ssss';
 }
 
-// Filtro por ID de curso
-if ($curso_id) {
-    $conditions[] = "c.ID_Curso = ?";
-    $params[] = $curso_id;
-    $types .= 'i';
+// filtro curso (si viene el nombre o id)
+if ($curso !== '') {
+    // Si es numérico, asumimos ID, sino filtramos por nombre exacto o LIKE
+    if (ctype_digit($curso)) {
+        $conditions[] = "c.ID_Curso = ?";
+        $params[] = (int)$curso;
+        $types .= 'i';
+    } else {
+        $conditions[] = "c.Nombre_Curso = ?";
+        $params[] = $curso;
+        $types .= 's';
+    }
 }
 
-// Filtro por estado de cursada
-if (!empty($estado)) {
+// filtro estado
+if ($estado !== '') {
     $conditions[] = "i.Estado_Cursada = ?";
     $params[] = $estado;
     $types .= 's';
 }
 
-// Filtro por año
-if ($anio) {
-    $conditions[] = "i.Anio = ?";
-    $params[] = $anio;
-    $types .= 'i';
+// filtro año
+if ($anio !== '') {
+    if (ctype_digit($anio)) {
+        $conditions[] = "i.Anio = ?";
+        $params[] = (int)$anio;
+        $types .= 'i';
+    }
 }
 
-// Filtro por cuatrimestre
-if (!empty($cuatr)) {
+// filtro cuatrimestre
+if ($cuatr !== '') {
     $conditions[] = "i.Cuatrimestre = ?";
     $params[] = $cuatr;
     $types .= 's';
 }
 
-// Unir todas las condiciones
+// Unir condiciones si existen
 if (!empty($conditions)) {
     $sql .= " WHERE " . implode(' AND ', $conditions);
 }
 
 $sql .= " ORDER BY i.Anio DESC, a.Apellido_Alumno ASC, a.Nombre_Alumno ASC";
 
-// --- Preparación y ejecución de la consulta ---
+// Preparar statement
 $stmt = $conexion->prepare($sql);
-
 if ($stmt === false) {
     http_response_code(500);
-    // En un entorno de producción, sería mejor loguear el error que mostrarlo.
-    echo json_encode(['error' => 'Error en la preparación de la consulta: ' . $conexion->error]);
+    echo json_encode(['error' => 'Error en la preparación de la consulta: ' . $conexion->error], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-// Vincular parámetros si existen
+// Bind de parámetros dinámico
 if (!empty($params)) {
-    $stmt->bind_param($types, ...$params);
+    // mysqli_stmt::bind_param requiere variables por referencia
+    $bind_names[] = $types;
+    for ($i = 0; $i < count($params); $i++) {
+        $bind_name = 'bind' . $i;
+        $$bind_name = $params[$i];
+        $bind_names[] = &$$bind_name;
+    }
+    call_user_func_array([$stmt, 'bind_param'], $bind_names);
 }
 
-$stmt->execute();
+// Ejecutar
+if (!$stmt->execute()) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Error en la ejecución: ' . $stmt->error], JSON_UNESCAPED_UNICODE);
+    $stmt->close();
+    $conexion->close();
+    exit;
+}
+
 $result = $stmt->get_result();
 $data = $result->fetch_all(MYSQLI_ASSOC);
 
 $stmt->close();
 $conexion->close();
 
-// Devolver los datos en formato JSON
 echo json_encode($data, JSON_UNESCAPED_UNICODE);
-?>

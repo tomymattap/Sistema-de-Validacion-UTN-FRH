@@ -262,7 +262,6 @@ $current_page = 'gestionarinscriptos.php';
 
                         <form id="upload-form" method="POST" enctype="multipart/form-data" action="insertar_inscriptos_csv.php">
                             <div class="form-group">
-                                <label for="archivo">Seleccionar archivo CSV:</label>
                                 <div class="dropzone" id="dropzone">
                                     <input type="file" id="archivo" name="archivo" accept=".csv" hidden>
                                     <p class="dz-message">Arrastrá el archivo aquí o hacé clic para seleccionarlo</p>

@@ -228,6 +228,19 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
+/* Dropzone visible y delimitado */
+.dropzone {
+    border: 3px dashed var(--color-principal);
+    border-radius: 14px;
+    padding: 40px;
+    text-align: center;
+    cursor: pointer;
+    background: #fbfdff;
+    position: relative;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
 .info-bar {
     display:flex;
     justify-content:space-between;
@@ -244,23 +257,43 @@
 }
 .info-btn:hover { background:var(--color-principal); color:#fff; }
 
-.dropzone {
-    border:2px dashed var(--color-secundario);
-    border-radius:12px;
-    padding:28px;
-    text-align:center;
-    cursor:pointer;
-    background:#fbfdff;
+
+.dropzone::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 2px dashed rgba(0, 69, 92, 0.2);
+    border-radius: 14px;
+    pointer-events: none;
 }
 
-.dropzone .dz-message { font-weight:600; color:var(--color-texto-gris); }
+/* Texto dentro */
+.dropzone .dz-message {
+    font-weight: 600;
+    color: var(--color-texto-gris);
+    font-size: 1rem;
+}
 
-.dz-drag-hover { background:#eef7ff; border-color:#0056b3; }
+/* Efecto al pasar o arrastrar archivo */
+.dropzone:hover,
+.dz-drag-hover {
+    background: #eef7ff;
+    border-color: var(--color-principal);
+    box-shadow: 0 0 0 3px rgba(0, 69, 92, 0.15);
+}
 
-.preview-container { margin-top:1rem; }
-.preview-table { width:100%; border-collapse:collapse; font-size:0.9rem; }
-.preview-table th, .preview-table td { padding:0.6rem; border:1px solid #eee; text-align:center; }
-.preview-table thead { background:var(--color-principal); color:#fff; }
+.dz-drag-hover::before {
+    border-color: rgba(0, 69, 92, 0.5);
+}
+
+/* -------------------------------------------
+    Preview y botones
+------------------------------------------- */
+.preview-container { margin-top: 1rem; }
+.preview-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.preview-table th, .preview-table td { padding: 0.6rem; border: 1px solid #eee; text-align: center; }
+.preview-table thead { background: var(--color-principal); color: #fff; }
+
 
 /* Form buttons */
 .form-buttons { display:flex; justify-content:center; gap:0.8rem; margin-top:1rem; }

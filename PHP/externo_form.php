@@ -67,8 +67,8 @@ if (empty($token)) {
                                 <input type="text" id="nombre" name="nombre" required>
                             </div>
                             <div class="form-group">
-                                <label for="categoria">Institución</label>
-                                <input type="text" id="categoria" name="categoria" placeholder="Ej: Cámara Argentina de Instaladores Matriculados" required>
+                                <label for="categoria">Categoría</label>
+                                <input type="text" id="categoria" name="categoria" placeholder="Ej: Aeronáutico, Ferrocarril, etc." required>
                             </div>
                             <div class="form-group">
                                 <label for="modalidad">Modalidad</label>
@@ -91,6 +91,21 @@ if (empty($token)) {
                                 <textarea id="requisitos" name="requisitos" rows="3"></textarea>
                             </div>
 
+                            <div class="form-group">
+                                <label for="institucion1">Institución 1</label>
+                                <input type="text" id="institucion1" name="institucion1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="institucion2">Institución 2 (Opcional)</label>
+                                <input type="text" id="institucion2" name="institucion2">
+                            </div>
+                            <div class="form-group">
+                                <label for="institucion3">Institución 3 (Opcional)</label>
+                                <input type="text" id="institucion3" name="institucion3">
+                            </div>
+                             <div class="form-group">
+                                <label for="archivo_evaluacion">Archivo de Evaluación (Opcional)</label>
+                                <input type="file" id="archivo_evaluacion" name="archivo_evaluacion">
                             <input type="hidden" name="tipo" value="Certificación">
 
                             <div class="form-actions">

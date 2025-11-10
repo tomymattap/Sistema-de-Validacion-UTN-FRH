@@ -2,10 +2,14 @@
 session_start();
 include 'conexion.php';
 
+// 🔹 Mostrar errores de PHP y MySQLi
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
 // --- PROCESAMIENTO DEL FORMULARIO (MÉTODO POST) ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = $_POST['token'] ?? '';
-    // ... (resto de la recolección de datos)
     $nombre = $_POST['nombre'] ?? '';
     $modalidad = $_POST['modalidad'] ?? '';
     $docente = $_POST['docente'] ?? null;
@@ -13,19 +17,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $descripcion = $_POST['descripcion'] ?? '';
     $requisitos = $_POST['requisitos'] ?? null;
     $categoria = $_POST['categoria'] ?? '';
+    $institucion1 = $_POST['institucion1'] ?? '';
+    $institucion2 = $_POST['institucion2'] ?? null;
+    $institucion3 = $_POST['institucion3'] ?? null;
+    $estado_evaluacion = 'PENDIENTE';
     $tipo = "CERTIFICACIÓN";
-    
+
     mysqli_begin_transaction($conexion);
+
     try {
+        // 🔸 1. Insertar curso
         $sql_insert = "INSERT INTO curso 
             (Nombre_Curso, Modalidad, Docente, Carga_Horaria, Descripcion, Requisitos, Categoria, Tipo)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt_insert = mysqli_prepare($conexion, $sql_insert);
-        mysqli_stmt_bind_param($stmt_insert, "sssissss", $nombre, $modalidad, $docente, $carga, $descripcion, $requisitos, $categoria, $tipo);
+        mysqli_stmt_bind_param($stmt_insert, "sssissss", 
+            $nombre, $modalidad, $docente, $carga, $descripcion, $requisitos, $categoria, $tipo
+        );
+
         if (!mysqli_stmt_execute($stmt_insert)) {
             throw new Exception("Error al registrar el curso: " . mysqli_stmt_error($stmt_insert));
         }
 
+        $id_curso = mysqli_insert_id($conexion);
+
+        // 🔸 2. Procesar la subida del archivo (guardar ruta o contenido)
+        $archivo_evaluacion = null;
+        if (isset($_FILES['archivo_evaluacion']) && $_FILES['archivo_evaluacion']['error'] === UPLOAD_ERR_OK) {
+            $nombre_archivo = uniqid() . '_' . basename($_FILES['archivo_evaluacion']['name']);
+            $ruta_destino = '../cert_uploads/' . $nombre_archivo;
+
+            if (move_uploaded_file($_FILES['archivo_evaluacion']['tmp_name'], $ruta_destino)) {
+                // OPCIÓN A: Guardar la ruta del archivo (si cambias el campo a VARCHAR)
+                $archivo_evaluacion = $ruta_destino;
+
+                // OPCIÓN B: Guardar el contenido del archivo (si mantenés longblob)
+                // $archivo_evaluacion = file_get_contents($_FILES['archivo_evaluacion']['tmp_name']);
+            } else {
+                throw new Exception("Error al subir el archivo de evaluación.");
+            }
+        }
+
+        // 🔸 3. Invalidar el token
         $sql_update = "UPDATE acceso_externo SET usado = 1 WHERE token = ?";
         $stmt_update = mysqli_prepare($conexion, $sql_update);
         mysqli_stmt_bind_param($stmt_update, "s", $token);
@@ -33,20 +66,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Error al invalidar el token de acceso.");
         }
 
+        // 🔸 4. Insertar evaluación del curso externo
+        $sql_evaluacion = "INSERT INTO evaluacion_curso_externo 
+            (ID_Curso, Estado_Evaluacion, Archivo_Evaluacion, Institucion1, Institucion2, Institucion3)
+            VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt_evaluacion = mysqli_prepare($conexion, $sql_evaluacion);
+        mysqli_stmt_bind_param($stmt_evaluacion, "isssss", 
+            $id_curso, $estado_evaluacion, $archivo_evaluacion, $institucion1, $institucion2, $institucion3
+        );
+
+        if (!mysqli_stmt_execute($stmt_evaluacion)) {
+            throw new Exception("Error al guardar la evaluación del curso externo: " . mysqli_stmt_error($stmt_evaluacion));
+        }
+
+        // 🔸 5. Confirmar transacción
         mysqli_commit($conexion);
-        
-        // Guardar mensaje de éxito en la sesión
+
         $_SESSION['status_message'] = "El curso '" . htmlspecialchars($nombre) . "' ha sido registrado correctamente.";
         $_SESSION['status_type'] = 'success';
-
     } catch (Exception $e) {
         mysqli_rollback($conexion);
-        // Guardar mensaje de error en la sesión
         $_SESSION['status_message'] = $e->getMessage();
         $_SESSION['status_type'] = 'error';
     }
 
-    // Redirigir a la misma página para mostrar el resultado (Patrón PRG)
     header('Location: guardar_curso_externo.php');
     exit;
 }
@@ -55,10 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $status_message = $_SESSION['status_message'] ?? null;
 $status_type = $_SESSION['status_type'] ?? null;
 
-// Limpiar los mensajes de la sesión para que no se muestren de nuevo al recargar
 unset($_SESSION['status_message']);
 unset($_SESSION['status_type']);
-
 ?>
 
 <!DOCTYPE html>
@@ -71,10 +112,13 @@ unset($_SESSION['status_type']);
     <link rel="stylesheet" href="../CSS/general.css">
     <link rel="stylesheet" href="../CSS/gestionar_cursos.css">
 </head>
+
 <body class="fade-in">
     <header class="site-header">
         <div class="header-container">
-            <div class="logo"><a href="../index.html"><img src="../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a></div>
+            <div class="logo">
+                <a href="../index.html"><img src="../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
+            </div>
         </div>
     </header>
 
@@ -92,6 +136,7 @@ unset($_SESSION['status_type']);
                         <p style="text-align: center;">Gracias por su colaboración. El token de acceso ha sido utilizado y ya no es válido.</p>
                         <p style="text-align: center; font-size: 0.95rem; color: #666;">Será redirigido a la página principal en <span id="countdown">5</span> segundos...</p>
                     </div>
+
                 <?php elseif ($status_message && $status_type === 'error'): ?>
                     <div class="confirmacion-container" style="border-left-color: var(--color-secundario-4); max-width: 700px; margin: 2rem auto;">
                         <div class="confirmacion-header" style="justify-content: center;">
@@ -113,6 +158,7 @@ unset($_SESSION['status_type']);
     <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 
     <script src="../JavaScript/general.js"></script>
+
     <?php if ($status_message && $status_type === 'success'): ?>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

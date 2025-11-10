@@ -453,16 +453,25 @@ ul {
         gap: 2rem;
     }
 
-    .footer-logo-info, .footer-social-legal, .footer-nav, .footer-dynamic-nav {
-        flex: 1;
-        min-width: 0;
-    }
-
     .footer-logo-info {
+        flex: 1.5; /* Give more space to the first column */
         display: flex;
         align-items: flex-start;
         gap: 2.5rem;
-        flex: 1.5;
+        min-width: 0;
+    }
+
+    .footer-social-legal {
+        flex: 1;
+        min-width: 0; /* Prevent overflow */
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* Align items to the top */
+    }
+
+    .footer-nav, .footer-dynamic-nav {
+        flex: 1;
+        min-width: 0; /* Prevent overflow */
     }
 
     .footer-info {

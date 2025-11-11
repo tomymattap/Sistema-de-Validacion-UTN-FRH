@@ -1,8 +1,27 @@
 /*
     ARCHIVO: perfil.css
     DESCRIPCIÓN: Estilos para la página de perfil del usuario (alumno).
-    Define la apariencia de la información del perfil y los campos editables.
+    Define la apariencia de la información del perfil, campos editables, botones de acción y mensajes de feedback.
 */
+
+/* -------------------------------------------
+    Variables de Diseño (consistentes con general.css)
+------------------------------------------- */
+:root {
+    --profile-bg: #ffffff;
+    --profile-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+    --field-bg: #f8f9fa;
+    --field-border: #dee2e6;
+    --input-focus-border: var(--color-secundario-1);
+    --btn-save-bg: #28a745; /* Verde para guardar */
+    --btn-cancel-bg: #6c757d; /* Gris para cancelar */
+    --success-bg: #e6f9f0;
+    --success-border: #28a745;
+    --success-text: #0b6623;
+    --error-bg: #fdeeee;
+    --error-border: #dc3545;
+    --error-text: #b30000;
+}
 
 /* -------------------------------------------
     Contenedor Principal del Perfil
@@ -12,15 +31,17 @@
     max-width: 800px;
     margin: 2rem auto; /* Centrado horizontal */
     padding: 1rem;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra sutil */
+    background-color: var(--profile-bg);
+    border-radius: 12px;
+    box-shadow: var(--profile-shadow);
+    border: 1px solid #e9ecef;
 }
 
 .profile-container h1 {
     text-align: center;
-    color: #333;
+    color: var(--color-principal);
     margin-bottom: 2rem;
+    font-size: 2rem;
 }
 
 /* -------------------------------------------
@@ -42,43 +63,131 @@
 
 .profile-field label {
     font-weight: bold;
-    color: #555;
+    color: var(--color-texto-gris);
     margin-bottom: 0.5rem;
+    font-size: 0.9rem;
 }
 
 /* Estilo del valor del campo */
 .profile-field .value {
     padding: 0.8rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #f9f9f9; /* Fondo gris claro para indicar que no es un input directo */
+    border: 1px solid var(--field-border);
+    border-radius: 6px;
+    background-color: var(--field-bg);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    min-height: 50px;
 }
 
 .profile-field .value span {
     flex-grow: 1;
     word-break: break-all; /* Evita que textos largos rompan el diseño */
-}
-
-/* Botón para editar un campo */
-.edit-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #007bff; /* Color azul para indicar acción */
-    font-size: 1rem;
-    margin-left: 1rem;
-}
-
-.edit-btn:hover {
-    color: #0056b3;
+    color: var(--color-principal);
 }
 
 /* Estilo para campos que no son editables */
 .profile-field .value.non-editable {
     cursor: not-allowed;
+    background-color: #e9ecef;
+    color: var(--color-texto-gris);
+}
+
+/* Estilo para los inputs en modo edición */
+.edit-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 2px solid var(--field-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: var(--font-principal);
+    transition: border-color 0.3s;
+}
+
+.edit-input:focus {
+    outline: none;
+    border-color: var(--input-focus-border);
+}
+
+/* -------------------------------------------
+    Botones de Acción del Perfil
+------------------------------------------- */
+
+.profile-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.profile-actions button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 25px; /* Botones tipo píldora */
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.profile-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.btn-edit {
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+}
+
+.btn-edit:hover {
+    background-color: var(--color-secundario-1);
+}
+
+.btn-save {
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+}
+
+.btn-save:hover {
+    background-color: var(--btn-save-bg);
+}
+
+.btn-cancel {
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+}
+
+.btn-cancel:hover {
+    background-color: var(--color-secundario-4);
+}
+/* -------------------------------------------
+    Contenedor de Mensajes de Feedback
+------------------------------------------- */
+
+.message-container {
+    padding: 1rem;
+    margin-top: 1.5rem;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: bold;
+    display: none; /* Oculto por defecto */
+}
+
+.message-container.success {
+    background-color: var(--success-bg);
+    border: 1px solid var(--success-border);
+    color: var(--success-text);
+}
+
+.message-container.error {
+    background-color: var(--error-bg);
+    border: 1px solid var(--error-border);
+    color: var(--error-text);
 }
 
 /* -------------------------------------------
@@ -92,6 +201,6 @@
 
     /* Muestra los campos en dos columnas */
     .profile-info {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr 1fr;
     }
 }

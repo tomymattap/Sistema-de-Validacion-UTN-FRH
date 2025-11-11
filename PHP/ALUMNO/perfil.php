@@ -82,40 +82,48 @@ $conexion->close();
     <main>
         <div class="profile-container">
             <h1>Perfil de Estudiante</h1>
-            <div class="profile-info">
-                <div class="profile-field">
-                    <label for="nombre">Nombre</label>
-                    <div class="value non-editable">
-                        <span id="nombre"><?php echo htmlspecialchars($alumno['Nombre_Alumno']); ?></span>
+            <form id="profile-form">
+                <div class="profile-info">
+                    <div class="profile-field">
+                        <label for="nombre">Nombre</label>
+                        <div class="value non-editable">
+                            <span id="nombre"><?php echo htmlspecialchars($alumno['Nombre_Alumno']); ?></span>
+                        </div>
+                    </div>
+                    <div class="profile-field">
+                        <label for="apellido">Apellido</label>
+                        <div class="value non-editable">
+                            <span id="apellido"><?php echo htmlspecialchars($alumno['Apellido_Alumno']); ?></span>
+                        </div>
+                    </div>
+                    <div class="profile-field">
+                        <label for="dni">DNI</label>
+                        <div class="value non-editable">
+                            <span id="dni"><?php echo htmlspecialchars($alumno['DNI_Alumno']); ?></span>
+                        </div>
+                    </div>
+                    <div class="profile-field">
+                        <label for="email">Correo electrónico</label>
+                        <div class="value" data-field="email">
+                            <span class="display-value"><?php echo htmlspecialchars($alumno['Email_Alumno']); ?></span>
+                            <input type="email" name="email" class="edit-input" value="<?php echo htmlspecialchars($alumno['Email_Alumno']); ?>" style="display:none;" disabled>
+                        </div>
+                    </div>
+                    <div class="profile-field">
+                        <label for="telefono">Número de contacto</label>
+                        <div class="value" data-field="telefono">
+                            <span class="display-value"><?php echo htmlspecialchars($alumno['Telefono']); ?></span>
+                            <input type="text" name="telefono" class="edit-input" value="<?php echo htmlspecialchars($alumno['Telefono']); ?>" style="display:none;" disabled>
+                        </div>
                     </div>
                 </div>
-                <div class="profile-field">
-                    <label for="apellido">Apellido</label>
-                    <div class="value non-editable">
-                        <span id="apellido"><?php echo htmlspecialchars($alumno['Apellido_Alumno']); ?></span>
-                    </div>
+                <div id="message-container" class="message-container"></div>
+                <div class="profile-actions">
+                    <button type="button" id="edit-btn" class="btn-edit"><i class="fas fa-pencil-alt"></i> Editar</button>
+                    <button type="submit" id="save-btn" class="btn-save" style="display:none;"><i class="fas fa-save"></i> Guardar Cambios</button>
+                    <button type="button" id="cancel-btn" class="btn-cancel" style="display:none;"><i class="fas fa-times"></i> Cancelar</button>
                 </div>
-                <div class="profile-field">
-                    <label for="dni">DNI</label>
-                    <div class="value non-editable">
-                        <span id="dni"><?php echo htmlspecialchars($alumno['DNI_Alumno']); ?></span>
-                    </div>
-                </div>
-                <div class="profile-field">
-                    <label for="email">Correo electrónico</label>
-                    <div class="value">
-                        <span id="email"><?php echo htmlspecialchars($alumno['Email_Alumno']); ?></span>
-                        <button class="edit-btn"><i class="fas fa-pencil-alt"></i></button>
-                    </div>
-                </div>
-                <div class="profile-field">
-                    <label for="telefono">Número de contacto</label>
-                    <div class="value">
-                        <span id="telefono"><?php echo htmlspecialchars($alumno['Telefono']); ?></span>
-                        <button class="edit-btn"><i class="fas fa-pencil-alt"></i></button>
-                    </div>
-                </div>
-            </div>
+            </form>
         </div>
     </main>
 

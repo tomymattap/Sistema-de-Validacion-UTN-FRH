@@ -565,67 +565,86 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Crear y mostrar overlay de confirmación de eliminación
-    function abrirModalEliminar(idInscripcion) {
+    function abrirModalEliminar(idInscripcion, nombreEstudiante) {
+        // Eliminar modales previos si existen
+        const existingModal = document.querySelector('.modal-advertencia');
+        if (existingModal) existingModal.remove();
+
+        const contenido = `
+            <div class="icono-advertencia">⚠️</div>
+            <p class="advertencia-titulo"><strong>Advertencia: estás por eliminar una inscripción.</strong></p>
+            <p>¿Está seguro de que desea eliminar la inscripción del estudiante <strong>${escapeHTML(nombreEstudiante)}</strong>? Esta acción no se podrá deshacer.</p>
+            <div class="botones-confirmacion">
+                <button type="button" class="btn-confirmar-eliminar">Confirmar eliminación</button>
+                <button type="button" class="btn-cancelar-eliminar">Cancelar</button>
+            </div>
+        `;
+        
         const modal = document.createElement('div');
         modal.className = 'modal-advertencia';
         modal.innerHTML = `
             <div class="modal-contenido-advertencia">
                 <span class="cerrar-advertencia">&times;</span>
-                <div class="icono-advertencia"><i class="fas fa-exclamation-triangle"></i></div>
-                <h3 class="advertencia-titulo">¿Eliminar este inscripto?</h3>
-                <p>Esta acción no puede deshacerse. Si eliminás la inscripción, el registro se perderá definitivamente.</p>
-                <div class="botones-confirmacion">
-                    <button class="btn-confirmar-eliminar">Eliminar</button>
-                    <button class="btn-cancelar-eliminar">Cancelar</button>
-                </div>
+                ${contenido}
             </div>
         `;
         document.body.appendChild(modal);
 
-        setTimeout(() => modal.classList.add('active'), 10);
-
-        const closeModal = () => {
-            modal.classList.remove('active');
-            setTimeout(() => modal.remove(), 300);
-        };
-
-        modal.querySelector('.cerrar-advertencia').onclick = closeModal;
-        modal.querySelector('.btn-cancelar-eliminar').onclick = closeModal;
+        const cerrarModal = () => modal.remove();
+        modal.querySelector('.cerrar-advertencia').onclick = cerrarModal;
+        modal.querySelector('.btn-cancelar-eliminar').onclick = cerrarModal;
 
         modal.querySelector('.btn-confirmar-eliminar').onclick = async () => {
             try {
                 const formData = new FormData();
                 formData.append('ID_Inscripcion', idInscripcion);
 
-                const res = await fetch('eliminar_inscripto.php', { method: 'POST', body: formData });
-                if (res.ok) {
-                    closeModal();
-                    fetchInscriptos({ all: '1' }); // refrescar lista
+                const response = await fetch('eliminar_inscripto.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                // Asumimos que una respuesta OK significa que se eliminó.
+                if (response.ok) {
+                    // Podríamos añadir una notificación de éxito aquí.
+                    fetchInscriptos({ all: '1' }); // Recargar la tabla para ver los cambios
                 } else {
-                    throw new Error('Error en la respuesta del servidor');
+                    // Intentar leer un mensaje de error del cuerpo de la respuesta
+                    const result = await response.text();
+                    throw new Error(result || 'Error al eliminar.');
                 }
-            } catch (err) {
-                console.error(err);
-                alert('❌ Ocurrió un error al eliminar el inscripto.');
+            } catch (error) {
+                console.error('Error de conexión al intentar eliminar:', error);
+                // Podríamos mostrar un modal de error más amigable
+                alert(`Error: ${error.message}`);
+            } finally {
+                cerrarModal();
             }
         };
     }
 
     // Delegación de eventos: detectar click en editar o eliminar
     resultadosContainer.addEventListener('click', (e) => {
-        const editarBtn = e.target.closest('.btn-accion.editar');
-        const eliminarForm = e.target.closest('.form-eliminar');
-
+        const targetElement = e.target;
+        
+        const editarBtn = targetElement.closest('.btn-accion.editar');
         if (editarBtn) {
             e.preventDefault();
             const id = editarBtn.dataset.id;
             abrirOverlayEdicion(id);
         }
 
-        if (eliminarForm) {
+        const eliminarBtn = targetElement.closest('.btn-accion.eliminar');
+        if (eliminarBtn) {
             e.preventDefault(); 
-            const id = eliminarForm.querySelector('input[name="ID_Inscripcion"]').value;
-            abrirModalEliminar(id);
+            const form = eliminarBtn.closest('form');
+            const id = form.querySelector('input[name="ID_Inscripcion"]').value;
+            
+            // Obtener el nombre del estudiante desde la fila de la tabla
+            const row = eliminarBtn.closest('tr');
+            const studentName = row.cells[1].textContent.trim(); // La segunda celda (índice 1) contiene el nombre
+
+            abrirModalEliminar(id, studentName);
         }
     });
 });

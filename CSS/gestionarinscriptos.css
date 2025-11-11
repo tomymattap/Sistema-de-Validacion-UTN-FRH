@@ -597,10 +597,111 @@
     color: white;
 }
 
-/* Modal de advertencia reutiliza estilos dados */
+/* -------------------------------------------------
+    Modal de Advertencia para Eliminación
+------------------------------------------------- */
 .modal-advertencia {
+    position: fixed;
+    inset: 0;
     background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10001; /* Por encima del modal de edición */
     animation: fadeIn 0.3s ease-out;
+}
+
+.modal-contenido-advertencia {
+    background-color: #fff;
+    border-radius: 10px;
+    border: 2px solid #dc3545; /* Rojo de advertencia */
+    box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+    text-align: center;
+    padding: 2.5rem;
+    width: 90%;
+    max-width: 450px;
+    position: relative;
+    animation: slideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.cerrar-advertencia {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 2rem;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.cerrar-advertencia:hover {
+    color: #333;
+}
+
+.icono-advertencia {
+    font-size: 3rem;
+    color: #dc3545;
+    margin-bottom: 1rem;
+}
+
+.advertencia-titulo {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.modal-contenido-advertencia p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+.botones-confirmacion {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.btn-confirmar-eliminar,
+.btn-cancelar-eliminar {
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.btn-confirmar-eliminar {
+    background-color: #dc3545; /* Rojo */
+    color: white;
+}
+
+.btn-confirmar-eliminar:hover {
+    background-color: #c82333; /* Rojo más oscuro */
+    transform: translateY(-2px);
+}
+
+.btn-cancelar-eliminar {
+    background-color: white;
+    color: #dc3545;
+    border: 2px solid #dc3545;
+}
+
+.btn-cancelar-eliminar:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 /* -------------------------------------------

@@ -1,6 +1,11 @@
 <?php
 header('Content-Type: application/json');
-include("../../conexion.php");
+@include("../../conexion.php");
+
+if (!$conexion) {
+    echo json_encode(['success' => false, 'message' => 'Error de conexión a la base de datos.']);
+    exit;
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cuil = $_POST['ID_Cuil_Alumno'] ?? null;

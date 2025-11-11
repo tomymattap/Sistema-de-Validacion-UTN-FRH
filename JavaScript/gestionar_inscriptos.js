@@ -626,12 +626,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // -------------------------------------------------------
     // 11. LÓGICA PARA FORMULARIO MULTI-STEP
     // -------------------------------------------------------
-    const multiStepContainer = document.querySelector('.multistep-form-container');
-    if (multiStepContainer) {
+    const initMultiStepForm = () => {
+        const multiStepContainer = document.querySelector('.multistep-form-container');
+        if (!multiStepContainer) return;
+
         const progressBar = multiStepContainer.querySelector('.progress-bar');
         const steps = multiStepContainer.querySelectorAll('.form-step');
         const formStep1 = multiStepContainer.querySelector('#form-step-1');
-        const formStep2 = multistepContainer.querySelector('#form-step-2');
+        const formStep2 = multiStepContainer.querySelector('#form-step-2');
         const successMessage = multiStepContainer.querySelector('#inscripcion-exitosa-mensaje');
 
         let currentStep = 1;
@@ -673,7 +675,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // PASO 1: Registrar y Continuar
         formStep1.addEventListener('submit', async (e) => {
             e.preventDefault();
-        const formData = new FormData(formStep1);
+            const formData = new FormData(formStep1);
             const btn = formStep1.querySelector('.btn-continuar');
             btn.disabled = true;
             btn.textContent = 'Registrando...';
@@ -781,7 +783,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             });
         });
-    }
+    };
+    initMultiStepForm();
 
     // Delegación de eventos para la tabla de resultados (Editar y Eliminar)
     if (resultadosContainer) {

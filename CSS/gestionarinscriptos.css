@@ -602,3 +602,181 @@
     background-color: rgba(0, 0, 0, 0.6);
     animation: fadeIn 0.3s ease-out;
 }
+
+/* -------------------------------------------
+    NUEVO: Modal de Edición General (Estilos Mejorados)
+------------------------------------------- */
+.edit-modal {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 1rem;
+}
+
+.edit-modal.active {
+    opacity: 1;
+}
+
+.edit-modal-content {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    width: 100%;
+    max-width: 600px; /* Ancho base */
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    padding: 1.5rem 2rem;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.edit-modal.active .edit-modal-content {
+    transform: scale(1);
+}
+
+.close-modal-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #888;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+}
+.close-modal-btn:hover {
+    color: #333;
+}
+
+/* Estilos para el contenido del form inyectado */
+#edit-modal-body .edit-form-container {
+    padding: 0;
+    box-shadow: none;
+    max-width: 100%;
+    margin: 0;
+}
+
+#edit-modal-body .main-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+#edit-modal-body .form-group {
+    margin-bottom: 1.25rem;
+}
+
+#edit-modal-body .form-group label {
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+#edit-modal-body .form-group input,
+#edit-modal-body .form-group select,
+#edit-modal-body .form-group p {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#edit-modal-body .form-group input:focus,
+#edit-modal-body .form-group select:focus {
+    outline: none;
+    border-color: var(--color-principal);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+#edit-modal-body .form-group input[readonly] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+    color: #6c757d;
+}
+
+#edit-modal-body .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+}
+
+/* Estilo de botón solicitado por el usuario */
+.btn-modal-action {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: white;
+    color: var(--color-principal);
+    border: 1px solid var(--color-principal);
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-modal-action:hover {
+    background-color: var(--color-principal);
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* Específico para el botón de guardar (submit) */
+.btn-modal-action.submit {
+    background-color: var(--color-principal);
+    color: white;
+}
+.btn-modal-action.submit:hover {
+    background-color: #003a4f; /* Un poco más oscuro */
+}
+
+
+/* --- Media Queries para Responsividad del Modal --- */
+
+/* Tablet Vertical (y más pequeños) */
+@media (max-width: 768px) {
+    .edit-modal-content {
+        padding: 1.5rem;
+        max-height: 85vh;
+    }
+    #edit-modal-body .main-title {
+        font-size: 1.3rem;
+    }
+    #edit-modal-body .form-actions {
+        flex-direction: column;
+    }
+    .btn-modal-action {
+        width: 100%;
+        justify-content: center; /* Centra el texto y el ícono */
+    }
+}
+
+/* Móviles Grandes */
+@media (max-width: 480px) {
+    .edit-modal-content {
+        padding: 1rem;
+        border-radius: 8px;
+    }
+    #edit-modal-body .main-title {
+        font-size: 1.2rem;
+    }
+}

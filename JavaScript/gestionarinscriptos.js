@@ -382,15 +382,140 @@ document.addEventListener('DOMContentLoaded', () => {
     // fetchInscriptos({ all: '1' });
 
     // -------------------------------------------------------
-    // 10. OVERLAY DE EDICIÓN Y MODAL DE ELIMINACIÓN (FUNCIONAL)
+    // 10. OVERLAY DE EDICIÓN Y MODAL DE ELIMINACIÓN (NUEVA IMPLEMENTACIÓN)
     // -------------------------------------------------------
+
+    const editModal = document.getElementById('edit-modal');
+    const editModalBody = document.getElementById('edit-modal-body');
+    const closeEditModalBtn = document.getElementById('close-edit-modal');
+
+    // Función para cerrar el modal de edición
+    const cerrarModalEdicion = () => {
+        if (editModal) {
+            editModal.classList.remove('active');
+            setTimeout(() => {
+                editModal.style.display = 'none';
+                if (editModalBody) editModalBody.innerHTML = ''; // Limpiar contenido
+            }, 300);
+        }
+    };
+
+    if (editModal) {
+        closeEditModalBtn.addEventListener('click', cerrarModalEdicion);
+        editModal.addEventListener('click', (e) => {
+            if (e.target === editModal) {
+                cerrarModalEdicion();
+            }
+        });
+    }
+    
+    // Cargar y mostrar el formulario de edición en el modal
+    const cargarFormularioEnModal = async (url, idInscripcion) => {
+        if (!editModal || !editModalBody) return;
+
+        editModalBody.innerHTML = '<p class="loading">Cargando formulario...</p>';
+        editModal.style.display = 'flex';
+        setTimeout(() => editModal.classList.add('active'), 10);
+
+        try {
+            const response = await fetch(`${url}?ID_Inscripcion=${idInscripcion}`);
+            if (!response.ok) throw new Error(`Error al cargar el formulario: ${response.statusText}`);
+            
+            const html = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const formContainer = doc.querySelector('.edit-form-container');
+
+            if (!formContainer) throw new Error('No se pudo encontrar el contenedor del formulario en la respuesta.');
+
+            editModalBody.innerHTML = '';
+            editModalBody.appendChild(formContainer);
+
+            const form = editModalBody.querySelector('form');
+            if (form) {
+                const formActions = form.querySelector('.form-actions');
+                const submitButton = form.querySelector('button[type="submit"]');
+
+                // 1. Estilizar el botón de submit existente
+                if (submitButton) {
+                    submitButton.classList.add('btn-modal-action', 'submit');
+                }
+
+                // 2. Crear y añadir el botón de cancelar
+                if (formActions) {
+                    // Quitar el link de cancelar original si existe
+                    const oldCancelLink = formActions.querySelector('a.btn-cancel');
+                    if (oldCancelLink) oldCancelLink.remove();
+                    
+                    const cancelButton = document.createElement('button');
+                    cancelButton.type = 'button';
+                    cancelButton.textContent = 'Cancelar';
+                    cancelButton.className = 'btn-modal-action';
+                    cancelButton.addEventListener('click', cerrarModalEdicion);
+                    
+                    // Insertar antes del botón de guardar para que quede a la izquierda
+                    formActions.insertBefore(cancelButton, submitButton);
+                }
+
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(form);
+                    const originalButtonText = submitButton.innerHTML;
+                    submitButton.innerHTML = 'Guardando...';
+                    submitButton.disabled = true;
+
+                    try {
+                        const postResponse = await fetch(form.action, {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        if (postResponse.ok || (postResponse.redirected && postResponse.url.includes('gestionarinscriptos.php'))) {
+                            cerrarModalEdicion();
+                            fetchInscriptos({ all: '1' }); // Recargar la tabla
+                        } else {
+                           const errorText = await postResponse.text();
+                           throw new Error(`La actualización falló: ${errorText}`);
+                        }
+
+                    } catch (error) {
+                        console.error('Error al enviar el formulario:', error);
+                        let errorMsg = form.querySelector('.form-error-msg');
+                        if (!errorMsg) {
+                            errorMsg = document.createElement('p');
+                            errorMsg.className = 'form-error-msg';
+                            errorMsg.style.color = 'red';
+                            errorMsg.style.marginTop = '10px';
+                            formActions.insertAdjacentElement('afterend', errorMsg);
+                        }
+                        errorMsg.textContent = 'Error al guardar. Por favor, intente de nuevo.';
+                    } finally {
+                        if(submitButton) {
+                            submitButton.innerHTML = originalButtonText;
+                            submitButton.disabled = false;
+                        }
+                    }
+                });
+            }
+
+        } catch (error) {
+            console.error('Error en cargarFormularioEnModal:', error);
+            editModalBody.innerHTML = `<p class="no-results error-message">${error.message}</p>`;
+        }
+    };
+
 
     // Crear y mostrar overlay de edición con dos opciones
     function abrirOverlayEdicion(idInscripcion) {
+        // Eliminar overlays previos si existen
+        const existingOverlay = document.querySelector('.overlay-edicion');
+        if (existingOverlay) existingOverlay.remove();
+
         const overlay = document.createElement('div');
         overlay.className = 'overlay-edicion';
         overlay.innerHTML = `
             <div class="overlay-edicion-content">
+                <button class="close-btn" title="Cerrar">&times;</button>
                 <h2>¿Qué deseas editar?</h2>
                 <div class="opciones-edicion">
                     <div class="opcion-editar" data-tipo="alumno">
@@ -402,31 +527,39 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p>Editar datos de la inscripción</p>
                     </div>
                 </div>
-                <div class="botones-edicion">
-                    <button class="menu-btn cancelar">Cancelar</button>
-                </div>
             </div>
         `;
         document.body.appendChild(overlay);
 
-        // Efecto fade-in
-        setTimeout(() => overlay.classList.add('active'), 10);
-
-        // Cerrar overlay
-        overlay.querySelector('.cancelar').addEventListener('click', () => {
+        const close = () => {
             overlay.classList.remove('active');
             setTimeout(() => overlay.remove(), 300);
+        };
+
+        setTimeout(() => overlay.classList.add('active'), 10);
+
+        overlay.querySelector('.close-btn').addEventListener('click', close);
+        
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                close();
+            }
         });
 
-        // Acción al seleccionar tipo
         overlay.querySelectorAll('.opcion-editar').forEach(opt => {
             opt.addEventListener('click', () => {
                 const tipo = opt.dataset.tipo;
+                let url;
                 if (tipo === 'inscripcion') {
-                    window.location.href = `editar_inscripto.php?ID_Inscripcion=${idInscripcion}`;
+                    url = 'editar_inscripto.php';
                 } else if (tipo === 'alumno') {
-                    window.location.href = `editar_alumno.php?ID_Inscripcion=${idInscripcion}`;
+                    url = 'editar_alumno.php';
                 }
+                
+                if (url) {
+                    cargarFormularioEnModal(url, idInscripcion);
+                }
+                close();
             });
         });
     }
@@ -449,17 +582,16 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         document.body.appendChild(modal);
 
-        // Animación de entrada
         setTimeout(() => modal.classList.add('active'), 10);
 
-        // Cerrar modal
-        modal.querySelector('.cerrar-advertencia').onclick =
-        modal.querySelector('.btn-cancelar-eliminar').onclick = () => {
+        const closeModal = () => {
             modal.classList.remove('active');
             setTimeout(() => modal.remove(), 300);
         };
 
-        // Confirmar eliminación → enviar a PHP
+        modal.querySelector('.cerrar-advertencia').onclick = closeModal;
+        modal.querySelector('.btn-cancelar-eliminar').onclick = closeModal;
+
         modal.querySelector('.btn-confirmar-eliminar').onclick = async () => {
             try {
                 const formData = new FormData();
@@ -467,14 +599,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const res = await fetch('eliminar_inscripto.php', { method: 'POST', body: formData });
                 if (res.ok) {
-                    modal.querySelector('.advertencia-titulo').textContent = '✅ Inscripto eliminado correctamente';
-                    modal.querySelector('.botones-confirmacion').innerHTML = `
-                        <button class="btn-cerrar-exito">Cerrar</button>
-                    `;
-                    modal.querySelector('.btn-cerrar-exito').onclick = () => {
-                        modal.remove();
-                        fetchInscriptos({ all: '1' }); // refrescar lista
-                    };
+                    closeModal();
+                    fetchInscriptos({ all: '1' }); // refrescar lista
                 } else {
                     throw new Error('Error en la respuesta del servidor');
                 }
@@ -488,16 +614,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Delegación de eventos: detectar click en editar o eliminar
     resultadosContainer.addEventListener('click', (e) => {
         const editarBtn = e.target.closest('.btn-accion.editar');
-        const eliminarBtn = e.target.closest('.btn-accion.eliminar');
+        const eliminarForm = e.target.closest('.form-eliminar');
 
         if (editarBtn) {
+            e.preventDefault();
             const id = editarBtn.dataset.id;
             abrirOverlayEdicion(id);
         }
 
-        if (eliminarBtn) {
-            const id = eliminarBtn.closest('form').querySelector('input[name="ID_Inscripcion"]').value;
-            e.preventDefault(); // Evita el envío del form inmediato
+        if (eliminarForm) {
+            e.preventDefault(); 
+            const id = eliminarForm.querySelector('input[name="ID_Inscripcion"]').value;
             abrirModalEliminar(id);
         }
     });

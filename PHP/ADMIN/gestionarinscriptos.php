@@ -315,6 +315,15 @@ $current_page = 'gestionarinscriptos.php';
     </div>
 </main>
 
+
+<!-- Modal para edición -->
+<div id="edit-modal" class="edit-modal" style="display:none;">
+    <div class="edit-modal-content">
+        <button id="close-edit-modal" class="close-modal-btn" title="Cerrar">&times;</button>
+        <div id="edit-modal-body"></div>
+    </div>
+</div>
+
 <!-- ======================= FOOTER ========================= -->
 <footer class="site-footer">
     <div class="footer-container">

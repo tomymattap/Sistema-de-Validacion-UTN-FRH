@@ -69,14 +69,6 @@ if (isset($_GET['ID_Inscripcion'])) {
 </head>
 <body class="fade-in">
 
-<header class="site-header">
-    <div class="header-container">
-        <div class="logo">
-            <a href="../../index.html"><img src="../../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
-        </div>
-    </div>
-</header>
-
 <main>
 <section class="admin-section">
 <div class="admin-container">

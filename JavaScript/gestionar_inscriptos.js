@@ -1,4 +1,4 @@
-// File: JavaScript/gestionarinscriptos.js
+// File: JavaScript/gestionar_inscriptos.js
 document.addEventListener('DOMContentLoaded', () => {
 
     // ---------------------------
@@ -470,7 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             body: formData
                         });
 
-                        if (postResponse.ok || (postResponse.redirected && postResponse.url.includes('gestionarinscriptos.php'))) {
+                        if (postResponse.ok || (postResponse.redirected && postResponse.url.includes('gestionar_inscriptos.php'))) {
                             cerrarModalEdicion();
                             fetchInscriptos({ all: '1' }); // Recargar la tabla
                         } else {
@@ -623,28 +623,189 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // Delegación de eventos: detectar click en editar o eliminar
-    resultadosContainer.addEventListener('click', (e) => {
-        const targetElement = e.target;
-        
-        const editarBtn = targetElement.closest('.btn-accion.editar');
-        if (editarBtn) {
+    // -------------------------------------------------------
+    // 11. LÓGICA PARA FORMULARIO MULTI-STEP
+    // -------------------------------------------------------
+    const multiStepContainer = document.querySelector('.multistep-form-container');
+    if (multiStepContainer) {
+        const progressBar = multiStepContainer.querySelector('.progress-bar');
+        const steps = multiStepContainer.querySelectorAll('.form-step');
+        const formStep1 = multiStepContainer.querySelector('#form-step-1');
+        const formStep2 = multistepContainer.querySelector('#form-step-2');
+        const successMessage = multiStepContainer.querySelector('#inscripcion-exitosa-mensaje');
+
+        let currentStep = 1;
+        let registeredCuil = null;
+
+        const updateStepUI = () => {
+            steps.forEach(step => step.classList.remove('active'));
+            multiStepContainer.querySelector(`#step-${currentStep}`).classList.add('active');
+
+            progressBar.querySelectorAll('.progress-step').forEach(stepEl => {
+                const stepNum = parseInt(stepEl.dataset.step, 10);
+                if (stepNum <= currentStep) {
+                    stepEl.classList.add('active');
+                } else {
+                    stepEl.classList.remove('active');
+                }
+            });
+        };
+
+        const resetToStep1 = () => {
+            currentStep = 1;
+            registeredCuil = null;
+            formStep1.reset();
+            formStep2.reset();
+            multiStepContainer.querySelector('#mensaje-step-1').style.display = 'none';
+            multiStepContainer.querySelector('#mensaje-step-2').style.display = 'none';
+            updateStepUI();
+        };
+
+        const showStepMessage = (step, message, isError = true) => {
+            const msgElement = multiStepContainer.querySelector(`#mensaje-step-${step}`);
+            msgElement.textContent = message;
+            msgElement.style.color = isError ? '#dc3545' : '#155724';
+            msgElement.style.display = 'block';
+        };
+
+        // --- Event Listeners ---
+
+        // PASO 1: Registrar y Continuar
+        formStep1.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const id = editarBtn.dataset.id;
-            abrirOverlayEdicion(id);
-        }
+        const formData = new FormData(formStep1);
+            const btn = formStep1.querySelector('.btn-continuar');
+            btn.disabled = true;
+            btn.textContent = 'Registrando...';
 
-        const eliminarBtn = targetElement.closest('.btn-accion.eliminar');
-        if (eliminarBtn) {
-            e.preventDefault(); 
-            const form = eliminarBtn.closest('form');
-            const id = form.querySelector('input[name="ID_Inscripcion"]').value;
+            try {
+                const response = await fetch('acciones/registrar_alumno_solo.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    registeredCuil = result.cuil;
+                    currentStep = 2;
+                    updateStepUI();
+                } else {
+                    showStepMessage(1, result.message || 'Error desconocido.');
+                }
+            } catch (error) {
+                showStepMessage(1, 'Error de conexión. Intente de nuevo.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Registrar y Continuar';
+            }
+        });
+
+        // PASO 2: Finalizar Inscripción
+        formStep2.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!registeredCuil) {
+                showStepMessage(2, 'Error: No se encontró el CUIL del estudiante. Por favor, vuelva al paso 1.');
+                return;
+            }
+        
+            const formData = new FormData(formStep2);
+            formData.append('ID_Cuil_Alumno', registeredCuil);
+
+            const btn = formStep2.querySelector('.btn-finalizar');
+            btn.disabled = true;
+            btn.textContent = 'Finalizando...';
+            try {
+                const response = await fetch('acciones/registrar_inscripcion_solo.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    successMessage.style.display = 'flex';
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                        resetToStep1();
+                        fetchInscriptos({ all: '1' }); // Actualizar tabla principal
+                    }, 3000);
+                } else {
+                    showStepMessage(2, result.message || 'Error al finalizar la inscripción.');
+                }
+            } catch (error) {
+                showStepMessage(2, 'Error de conexión. Intente de nuevo.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Finalizar Inscripción';
+            }
+        });
+
+        // Botones de Cancelar
+        multiStepContainer.querySelectorAll('.btn-cancelar-paso').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const modal = document.createElement('div');
+                modal.className = 'modal-advertencia';
+                modal.innerHTML = `
+                    <div class="modal-contenido-advertencia">
+                        <span class="cerrar-advertencia">&times;</span>
+                        <div class="icono-advertencia">⚠️</div>
+                        <p class="advertencia-titulo"><strong>¿Seguro que quiere cancelar?</strong></p>
+                        <p>Perderá todos los cambios realizados.</p>
+                        <div class="botones-confirmacion">
+                            <button class="btn-confirmar-eliminar">Sí, cancelar</button>
+                            <button class="btn-cancelar-eliminar">No, continuar</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+
+                const closeModal = () => modal.remove();
+                modal.querySelector('.cerrar-advertencia').onclick = closeModal;
+                modal.querySelector('.btn-cancelar-eliminar').onclick = closeModal;
+                
+                modal.querySelector('.btn-confirmar-eliminar').onclick = async () => {
+                    // Si estamos en el paso 2 y ya se registró un alumno, hay que borrarlo
+                    if (currentStep === 2 && registeredCuil) {
+                        const formData = new FormData();
+                        formData.append('ID_Cuil_Alumno', registeredCuil);
+                        try {
+                            await fetch('acciones/eliminar_alumno_solo.php', {
+                                method: 'POST',
+                                body: formData
+                            });
+                        } catch (error) {
+                            console.error('No se pudo eliminar el alumno temporal:', error);
+                        }
+                    }
+                    resetToStep1();
+                    closeModal();
+                };
+            });
+        });
+    }
+
+    // Delegación de eventos para la tabla de resultados (Editar y Eliminar)
+    if (resultadosContainer) {
+        resultadosContainer.addEventListener('click', (e) => {
+            const targetElement = e.target;
             
-            // Obtener el nombre del estudiante desde la fila de la tabla
-            const row = eliminarBtn.closest('tr');
-            const studentName = row.cells[1].textContent.trim(); // La segunda celda (índice 1) contiene el nombre
+            const editarBtn = targetElement.closest('.btn-accion.editar');
+            if (editarBtn) {
+                e.preventDefault();
+                const id = editarBtn.dataset.id;
+                abrirOverlayEdicion(id);
+            }
 
-            abrirModalEliminar(id, studentName);
-        }
-    });
+            const eliminarBtn = targetElement.closest('.btn-accion.eliminar');
+            if (eliminarBtn) {
+                e.preventDefault(); 
+                const form = eliminarBtn.closest('form');
+                const id = form.querySelector('input[name="ID_Inscripcion"]').value;
+                
+                const row = eliminarBtn.closest('tr');
+                const studentName = row.cells[1].textContent.trim();
+
+                abrirModalEliminar(id, studentName);
+            }
+        });
+    }
 });

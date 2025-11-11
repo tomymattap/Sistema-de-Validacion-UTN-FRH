@@ -198,7 +198,7 @@ $current_page = 'gestionar_admin.php';
 <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 
 <script src="<?php echo $js_path; ?>general.js"></script>
-<script src="<?php echo $js_path; ?>gestionar_admin.js"></script>
+<script src="<?php echo $js_path; ?>ADMIN/gestionar_admin.js"></script>
 
 </body>
 </html>

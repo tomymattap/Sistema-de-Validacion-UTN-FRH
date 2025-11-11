@@ -46,8 +46,8 @@ $current_page = 'seleccionar_alum_certif.php'; // Se mantiene para marcar el men
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="<?php echo $css_path; ?>general.css">
     <link rel="stylesheet" href="<?php echo $css_path; ?>dropzone.css">
-    <link rel="stylesheet" href="<?php echo $css_path; ?>gestionar_cursos.css"> <!-- Reutilizamos algunos estilos de formularios -->
-    <link rel="stylesheet" href="<?php echo $css_path; ?>subir_archivos.css"> <!-- Nuevos estilos -->
+    <link rel="stylesheet" href="<?php echo $css_path; ?>ADMIN/gestionar_cursos.css"> <!-- Reutilizamos algunos estilos de formularios -->
+    <link rel="stylesheet" href="<?php echo $css_path; ?>ADMIN/subir_archivos.css"> <!-- Nuevos estilos -->
     <script src="../../JavaScript/dropzone-min.js"></script>
 </head>
 <body>

@@ -12,7 +12,7 @@ session_start();
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css">
-    <link rel="stylesheet" href="../../CSS/generar_certificado.css">
+    <link rel="stylesheet" href="../../CSS/ADMIN/generar_certificado.css">
 </head>
 <body class="fade-in">
     <div class="preloader">
@@ -210,7 +210,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script src="../../JavaScript/general.js"></script>
-    <script src="../../JavaScript/emitir_certificados.js"></script>
+    <script src="../../JavaScript/ADMIN/emitir_certificados.js"></script>
     <script>
         fetch('../get_user_name.php')
             .then(response => response.json())

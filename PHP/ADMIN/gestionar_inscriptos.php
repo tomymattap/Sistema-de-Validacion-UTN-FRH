@@ -49,7 +49,7 @@ $current_page = 'gestionar_inscriptos.php';
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="<?php echo $css_path; ?>general.css">
-    <link rel="stylesheet" href="<?php echo $css_path; ?>gestionar_inscriptos.css">
+    <link rel="stylesheet" href="<?php echo $css_path; ?>ADMIN/gestionar_inscriptos.css">
 </head>
 <body>
 
@@ -431,7 +431,7 @@ $current_page = 'gestionar_inscriptos.php';
 <!-- ===================== FIN FOOTER ======================= -->
 
 <script src="<?php echo $js_path; ?>general.js"></script>
-<script src="<?php echo $js_path; ?>gestionar_inscriptos.js"></script>
+<script src="<?php echo $js_path; ?>ADMIN/gestionar_inscriptos.js"></script>
 <script>
 // Script para manejar las pestañas principales
 document.querySelectorAll('.tabs-container .tab').forEach(tab => {

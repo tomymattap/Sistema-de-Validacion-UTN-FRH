@@ -76,8 +76,8 @@ $js_path = $base_path . 'JavaScript/';
     <title>Detalle de Evaluación Externa</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="<?php echo $css_path; ?>general.css">
-    <link rel="stylesheet" href="<?php echo $css_path; ?>gestionar_cursos.css">
-    <link rel="stylesheet" href="<?php echo $css_path; ?>ver_evaluacion.css">
+    <link rel="stylesheet" href="<?php echo $css_path; ?>ADMIN/gestionar_cursos.css">
+    <link rel="stylesheet" href="<?php echo $css_path; ?>ADMIN/ver_evaluacion.css">
 </head>
 <body class="fade-in">
 
@@ -186,4 +186,3 @@ $js_path = $base_path . 'JavaScript/';
 <script src="<?php echo $js_path; ?>general.js"></script>
 </body>
 </html>
-

@@ -53,7 +53,7 @@ $conexion->close();
     <title>Encuesta de Satisfacción - UTN FRH</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css">
-    <link rel="stylesheet" href="../../CSS/encuesta.css">
+    <link rel="stylesheet" href="../../CSS/ALUMNO/encuesta.css">
 </head>
 <body>
     <header class="site-header">

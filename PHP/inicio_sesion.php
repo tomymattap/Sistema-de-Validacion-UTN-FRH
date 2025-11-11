@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <title>Iniciar Sesión - UTN FRH</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="stylesheet" href="../CSS/general.css"> <!-- Ruta correcta -->
-<link rel="stylesheet" href="../CSS/inicio_sesion.css"> <!-- Ruta correcta -->
+<link rel="stylesheet" href="../CSS/INICIO/inicio_sesion.css"> <!-- Ruta correcta -->
 </head>
 <body>
 

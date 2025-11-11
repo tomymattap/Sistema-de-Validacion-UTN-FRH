@@ -26,8 +26,8 @@ $resultado = mysqli_query($conexion, $consulta);
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css"> <!-- Estilos generales -->
-    <link rel="stylesheet" href="../../CSS/ver_inscriptos.css"> <!-- Estilos para tablas -->
-    <link rel="stylesheet" href="../../CSS/gestionar_cursos.css"> 
+    <link rel="stylesheet" href="../../CSS/ADMIN/gestionar_inscriptos.css"> <!-- Estilos para tablas -->
+    <link rel="stylesheet" href="../../CSS/ADMIN/gestionar_cursos.css"> 
 </head>
 <body class="fade-in">
     <div class="preloader">
@@ -208,7 +208,7 @@ $resultado = mysqli_query($conexion, $consulta);
 </a>
 
     <script src="../../JavaScript/general.js"></script>
-    <script src="../../JavaScript/gestionar_cursos.js"></script>
+    <script src="../../JavaScript/ADMIN/gestionar_cursos.js"></script>
     <script>
         fetch('../get_user_name.php')
             .then(response => response.json())

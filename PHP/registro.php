@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario - UTN FRH</title>
     <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/inicio_sesion.css">
+    <link rel="stylesheet" href="../CSS/INICIO/inicio_sesion.css">
 </head>
 <body>
     <header class="site-header">

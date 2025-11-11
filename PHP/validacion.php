@@ -45,7 +45,7 @@ if (!empty($codigo)) {
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/validacion.css">
+    <link rel="stylesheet" href="../CSS/INICIO/validacion.css">
     
 </head>
 <body>

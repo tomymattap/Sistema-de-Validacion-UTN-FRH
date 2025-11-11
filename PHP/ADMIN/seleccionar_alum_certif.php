@@ -35,7 +35,7 @@ $current_page = 'seleccionar_alum_certif.php';
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="<?php echo $css_path; ?>general.css">
-    <link rel="stylesheet" href="<?php echo $css_path; ?>emitir_certificados.css">
+    <link rel="stylesheet" href="<?php echo $css_path; ?>ADMIN/emitir_certificados.css">
 </head>
 <body>
 
@@ -214,7 +214,7 @@ $current_page = 'seleccionar_alum_certif.php';
 </a>
 
 <script src="<?php echo $js_path; ?>general.js"></script>
-<script src="<?php echo $js_path; ?>emitir_certificados.js"></script>
+<script src="<?php echo $js_path; ?>ADMIN/emitir_certificados.js"></script>
 
 </body>
 </html>

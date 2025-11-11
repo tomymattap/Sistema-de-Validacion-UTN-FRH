@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </nav>
             <div class="session-controls" id="session-controls">
                 <!-- Contenido dinámico por JS -->
-                <a href="../../HTML/inicio_sesion.html" class="login-btn">Iniciar Sesión</a>
+                <a href="../../PHP/inicio_sesion.php" class="login-btn">Iniciar Sesión</a>
             </div>
             <button class="hamburger-menu" aria-label="Abrir menú">
                 <span></span>

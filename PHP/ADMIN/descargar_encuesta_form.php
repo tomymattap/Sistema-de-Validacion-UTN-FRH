@@ -26,8 +26,8 @@ $cursos_result = mysqli_query($conexion, $cursos_query);
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css">
-    <link rel="stylesheet" href="../../CSS/ver_inscriptos.css">
-    <link rel="stylesheet" href="../../CSS/gestionar_cursos.css">
+    <link rel="stylesheet" href="../../CSS/ADMIN/ver_inscriptos.css">
+    <link rel="stylesheet" href="../../CSS/ADMIN/gestionar_cursos.css">
     <style>
         /* Estilos para mejorar el despliegue del select */
         #id_curso[size] {

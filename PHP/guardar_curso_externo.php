@@ -122,7 +122,7 @@ unset($_SESSION['status_type']);
     <title>Resultado del Registro de Curso</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/gestionar_cursos.css">
+    <link rel="stylesheet" href="../CSS/ADMIN/gestionar_cursos.css">
 </head>
 
 <body class="fade-in">

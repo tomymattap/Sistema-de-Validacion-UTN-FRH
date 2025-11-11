@@ -497,3 +497,108 @@
 .close-btn:hover {
     color: var(--color-principal);
 }
+
+/* -------------------------------------------
+    NUEVA SECCIÓN: Overlays y Modales de Acción
+------------------------------------------- */
+
+/* Columna de acciones */
+.acciones {
+    text-align: center;
+}
+.btn-accion {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    margin: 0 4px;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+.btn-accion.editar { color: var(--color-principal); }
+.btn-accion.eliminar { color: #dc3545; }
+.btn-accion:hover { transform: translateY(-2px); }
+
+/* Overlay de edición */
+.overlay-edicion {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.overlay-edicion.active { opacity: 1; }
+
+.overlay-edicion-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 900px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    text-align: center;
+    position: relative;
+}
+
+.overlay-edicion-content h2 {
+    color: var(--color-principal);
+    margin-bottom: 1.5rem;
+}
+
+.opciones-edicion {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.opcion-editar {
+    flex: 1 1 300px;
+    background-color: var(--color-tarjeta, #f9f9f9);
+    border-radius: 16px;
+    padding: 1.2rem;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.opcion-editar:hover {
+    background-color: #00D2F2;
+    color: white;
+    transform: translateY(-3px);
+}
+.opcion-editar i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+.opcion-editar p {
+    font-weight: 700;
+}
+
+/* Botones en overlay */
+.botones-edicion {
+    display: flex;
+    justify-content: center;
+}
+.menu-btn.cancelar {
+    background-color: white;
+    color: var(--color-principal);
+    border: 1px solid var(--color-principal);
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.menu-btn.cancelar:hover {
+    background-color: var(--color-principal);
+    color: white;
+}
+
+/* Modal de advertencia reutiliza estilos dados */
+.modal-advertencia {
+    background-color: rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.3s ease-out;
+}

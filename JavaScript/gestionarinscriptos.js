@@ -144,14 +144,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${escapeHTML(r.Cuatrimestre || '')}</td>
                 <td>${escapeHTML(r.Anio || '')}</td>
                 <td><span class="status-badge ${statusClass}">${escapeHTML(r.Estado_Cursada || '')}</span></td>
+                <td class="acciones">
+                    <!-- Botón editar: redirige a tu PHP -->
+                    <button class="btn-accion editar" data-id="${r.ID_Inscripcion}" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <!-- Botón eliminar: envía form oculto -->
+                    <form class="form-eliminar" method="POST" action="eliminar_inscripto.php" style="display:inline;">
+                        <input type="hidden" name="ID_Inscripcion" value="${r.ID_Inscripcion}">
+                        <button type="submit" class="btn-accion eliminar" title="Eliminar" onclick="return confirmarEliminacion(event)">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </td>
             </tr>`;
+
         }).join('');
         resultadosContainer.innerHTML = `
             <table id="results-table">
                 <thead>
                     <tr>
                         <th>ID</th><th>Alumno</th><th>CUIL</th><th>Curso</th><th>Comisión</th>
-                        <th>Cuatrimestre</th><th>Año</th><th>Estado</th>
+                        <th>Cuatrimestre</th><th>Año</th><th>Estado</th><th>Acciones</th>
+
                     </tr>
                 </thead>
                 <tbody>${rows}</tbody>
@@ -365,4 +380,125 @@ document.addEventListener('DOMContentLoaded', () => {
     // ---------------------------
     // (si querés que cargue todo al entrar, descomentá:)
     // fetchInscriptos({ all: '1' });
+
+    // -------------------------------------------------------
+    // 10. OVERLAY DE EDICIÓN Y MODAL DE ELIMINACIÓN (FUNCIONAL)
+    // -------------------------------------------------------
+
+    // Crear y mostrar overlay de edición con dos opciones
+    function abrirOverlayEdicion(idInscripcion) {
+        const overlay = document.createElement('div');
+        overlay.className = 'overlay-edicion';
+        overlay.innerHTML = `
+            <div class="overlay-edicion-content">
+                <h2>¿Qué deseas editar?</h2>
+                <div class="opciones-edicion">
+                    <div class="opcion-editar" data-tipo="alumno">
+                        <i class="fas fa-user"></i>
+                        <p>Editar datos del estudiante</p>
+                    </div>
+                    <div class="opcion-editar" data-tipo="inscripcion">
+                        <i class="fas fa-book-open"></i>
+                        <p>Editar datos de la inscripción</p>
+                    </div>
+                </div>
+                <div class="botones-edicion">
+                    <button class="menu-btn cancelar">Cancelar</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+
+        // Efecto fade-in
+        setTimeout(() => overlay.classList.add('active'), 10);
+
+        // Cerrar overlay
+        overlay.querySelector('.cancelar').addEventListener('click', () => {
+            overlay.classList.remove('active');
+            setTimeout(() => overlay.remove(), 300);
+        });
+
+        // Acción al seleccionar tipo
+        overlay.querySelectorAll('.opcion-editar').forEach(opt => {
+            opt.addEventListener('click', () => {
+                const tipo = opt.dataset.tipo;
+                if (tipo === 'inscripcion') {
+                    window.location.href = `editar_inscripto.php?ID_Inscripcion=${idInscripcion}`;
+                } else if (tipo === 'alumno') {
+                    window.location.href = `editar_alumno.php?ID_Inscripcion=${idInscripcion}`;
+                }
+            });
+        });
+    }
+
+    // Crear y mostrar overlay de confirmación de eliminación
+    function abrirModalEliminar(idInscripcion) {
+        const modal = document.createElement('div');
+        modal.className = 'modal-advertencia';
+        modal.innerHTML = `
+            <div class="modal-contenido-advertencia">
+                <span class="cerrar-advertencia">&times;</span>
+                <div class="icono-advertencia"><i class="fas fa-exclamation-triangle"></i></div>
+                <h3 class="advertencia-titulo">¿Eliminar este inscripto?</h3>
+                <p>Esta acción no puede deshacerse. Si eliminás la inscripción, el registro se perderá definitivamente.</p>
+                <div class="botones-confirmacion">
+                    <button class="btn-confirmar-eliminar">Eliminar</button>
+                    <button class="btn-cancelar-eliminar">Cancelar</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        // Animación de entrada
+        setTimeout(() => modal.classList.add('active'), 10);
+
+        // Cerrar modal
+        modal.querySelector('.cerrar-advertencia').onclick =
+        modal.querySelector('.btn-cancelar-eliminar').onclick = () => {
+            modal.classList.remove('active');
+            setTimeout(() => modal.remove(), 300);
+        };
+
+        // Confirmar eliminación → enviar a PHP
+        modal.querySelector('.btn-confirmar-eliminar').onclick = async () => {
+            try {
+                const formData = new FormData();
+                formData.append('ID_Inscripcion', idInscripcion);
+
+                const res = await fetch('eliminar_inscripto.php', { method: 'POST', body: formData });
+                if (res.ok) {
+                    modal.querySelector('.advertencia-titulo').textContent = '✅ Inscripto eliminado correctamente';
+                    modal.querySelector('.botones-confirmacion').innerHTML = `
+                        <button class="btn-cerrar-exito">Cerrar</button>
+                    `;
+                    modal.querySelector('.btn-cerrar-exito').onclick = () => {
+                        modal.remove();
+                        fetchInscriptos({ all: '1' }); // refrescar lista
+                    };
+                } else {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('❌ Ocurrió un error al eliminar el inscripto.');
+            }
+        };
+    }
+
+    // Delegación de eventos: detectar click en editar o eliminar
+    resultadosContainer.addEventListener('click', (e) => {
+        const editarBtn = e.target.closest('.btn-accion.editar');
+        const eliminarBtn = e.target.closest('.btn-accion.eliminar');
+
+        if (editarBtn) {
+            const id = editarBtn.dataset.id;
+            abrirOverlayEdicion(id);
+        }
+
+        if (eliminarBtn) {
+            const id = eliminarBtn.closest('form').querySelector('input[name="ID_Inscripcion"]').value;
+            e.preventDefault(); // Evita el envío del form inmediato
+            abrirModalEliminar(id);
+        }
+    });
 });

@@ -59,7 +59,7 @@ if (!empty($codigo)) {
                 <ul>
                     <li><a href="../index.html">VALIDAR</a></li>
                     <!--<li> <a href="../HTML/cursos.html">CURSOS</a> </li>-->
-                    <li><a href="../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
@@ -81,7 +81,7 @@ if (!empty($codigo)) {
             <ul>
                 <li><a href="../index.html">VALIDAR</a></li>
                 <!--<li> <a href="../HTML/cursos.html">CURSOS</a> </li>-->
-                <li><a href="../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="../HTML/contacto.html">CONTACTO</a></li>
             </ul>
         </nav>
@@ -159,7 +159,7 @@ if (!empty($codigo)) {
                 <ul>
                     <li><a href="../index.html">Inicio</a></li>
                     <!-- <li><a href="../HTML/cursos.html">Cursos</a></li> -->
-                    <li><a href="../HTML/sobrenosotros.html">Sobre Nosotros</a></li>
+                    <li><a href="../HTML/sobre_nosotros.html">Sobre Nosotros</a></li>
                     <li><a href="../HTML/contacto.html">Contacto</a></li>
                 </ul>
             </div>
@@ -190,14 +190,15 @@ if (!empty($codigo)) {
                             <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                             <div class="dropdown-menu">
                                 <ul>
-                                    <li><a href="ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                                    <li><a href="ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                                     <li><a href="ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                                     <li><a href="ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                    <li><a href="ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
                                     <li><a href="logout.php">Cerrar Sesión</a></li>
                                 </ul>
                             </div>`;
                         sessionHTML = `
-                            <li><a href="ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                            <li><a href="ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                             <li><a href="ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                             <li><a href="logout.php">Cerrar Sesión</a></li>`;
@@ -220,8 +221,8 @@ if (!empty($codigo)) {
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
-                    sessionControls.innerHTML = '<a href="iniciosesion.php" class="login-btn">INICIAR SESIÓN</a>';
-                    sessionHTML = '<li><a href="iniciosesion.php">INICIAR SESIÓN</a></li>';
+                    sessionControls.innerHTML = '<a href="inicio_sesion.php" class="login-btn">INICIAR SESIÓN</a>';
+                    sessionHTML = '<li><a href="inicio_sesion.php">INICIAR SESIÓN</a></li>';
                 }
 
                 // Añadir al menú móvil

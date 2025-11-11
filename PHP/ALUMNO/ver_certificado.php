@@ -4,7 +4,7 @@ require '../conexion.php';
 
 // --- BLOQUES DE SEGURIDAD ---
 if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 2) {
-    header("Location: ../iniciosesion.php?error=acceso_denegado");
+    header("Location: ../inicio_sesion.php?error=acceso_denegado");
     exit();
 }
 if (isset($_SESSION['force_password_change'])) {

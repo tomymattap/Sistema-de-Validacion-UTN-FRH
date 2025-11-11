@@ -28,7 +28,7 @@ session_start();
                 <ul>
                     <li><a href="../../index.html">VALIDAR</a></li>
                     <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
@@ -50,7 +50,7 @@ session_start();
             <ul>
                 <li><a href="../../index.html">VALIDAR</a></li>
                 <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
             </ul>
         </nav>
@@ -149,7 +149,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $mail->isHTML(true);
                     $mail->Subject = 'Tu certificado del curso esta listo para descargar';
                     $mail->CharSet = 'UTF-8'; // ¡Esta es la línea clave!
-                    $login_link = "http://{$_SERVER['HTTP_HOST']}/Sistema-De-Validacion-UTN-FRH/PHP/iniciosesion.php";
+                    $login_link = "http://{$_SERVER['HTTP_HOST']}/Sistema-De-Validacion-UTN-FRH/PHP/inicio_sesion.php";
                     $mail->Body    = "Hola " . htmlspecialchars($alumno_data['Nombre_Alumno']) . ",<br><br>Te informamos que tu certificado para el curso <strong>\"" . htmlspecialchars($nombre_curso) . "\"</strong> ya se encuentra disponible en tu perfil.<br><br>Puedes acceder a la plataforma para descargarlo haciendo clic en el siguiente enlace:<br><a href='$login_link'>Iniciar Sesión y ver mis certificados</a><br><br>Saludos,<br>Equipo de Extensión Universitaria - UTN FRH.";
 
                     $mail->send();
@@ -210,7 +210,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script src="../../JavaScript/general.js"></script>
-    <script src="../../JavaScript/emitircertificados.js"></script>
+    <script src="../../JavaScript/emitir_certificados.js"></script>
     <script>
         fetch('../get_user_name.php')
             .then(response => response.json())
@@ -226,16 +226,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                             <div class="dropdown-menu">
                                 <ul>
-                                    <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                                    <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                                     <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                                     <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                    <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
                                     <li><a href="../logout.php">Cerrar Sesión</a></li>
                                 </ul>
                             </div>`;
                         sessionHTML = `
-                            <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                            <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                             <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                            <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
                             <li><a href="../logout.php">Cerrar Sesión</a></li>`;
                     } else if (data.user_rol === 2) { // Alumno
                         // Redirigir si no es admin
@@ -243,8 +245,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
-                    // Redirigir si no está logueado
-                    window.location.href = '../iniciosesion.php?error=acceso_denegado';
+                    // Redirigir si no está logueado o la sesión expiró
+                    window.location.href = '../inicio_sesion.php?error=session_expired';
                 }
 
                 // Añadir al menú móvil

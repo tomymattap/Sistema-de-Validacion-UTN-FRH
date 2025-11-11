@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
-    header("Location: ../iniciosesion.php");
+    header("Location: ../inicio_sesion.php");
     exit();
 }
 

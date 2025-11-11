@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Validar que solo los administradores puedan acceder
 if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
-    header('Location: ../iniciosesion.php?error=acceso_denegado');
+    header('Location: ../inicio_sesion.php?error=acceso_denegado');
     exit;
 }
 
@@ -16,7 +16,7 @@ $img_path = $base_path . 'Imagenes/';
 $js_path = $base_path . 'JavaScript/';
 $html_path = $base_path . 'HTML/';
 $php_path = $base_path . 'PHP/';
-$current_page = 'gestionaradmin.php';
+$current_page = 'gestionar_admin.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -29,7 +29,7 @@ $current_page = 'gestionaradmin.php';
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="<?php echo $css_path; ?>general.css">
-    <link rel="stylesheet" href="<?php echo $css_path; ?>gestionaradmin.css">
+    <link rel="stylesheet" href="<?php echo $css_path; ?>gestionar_admin.css">
 </head>
 <body>
 
@@ -42,7 +42,7 @@ $current_page = 'gestionaradmin.php';
         <nav class="main-nav hide-on-mobile">
             <ul>
                 <li><a href="<?php echo $base_path; ?>index.html">VALIDAR</a></li>
-                <li><a href="<?php echo $html_path; ?>sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="<?php echo $html_path; ?>sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="<?php echo $html_path; ?>contacto.html">CONTACTO</a></li>
             </ul>
         </nav>
@@ -52,16 +52,16 @@ $current_page = 'gestionaradmin.php';
                     <a href="#" class="btn-sesion user-menu-toggle">Hola, <?php echo htmlspecialchars($_SESSION['user_name']); ?> <i class="fas fa-chevron-down"></i></a>
                     <div class="dropdown-menu">
                         <ul>
-                            <li><a href="<?php echo $php_path; ?>ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                            <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                             <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                            <li><a href="<?php echo $php_path; ?>ADMIN/gestionaradmin.php" class="active">Gestionar Administradores</a></li>
+                            <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_admin.php" class="active">Gestionar Administradores</a></li>
                             <li><a href="<?php echo $php_path; ?>logout.php">Cerrar Sesión</a></li>
                         </ul>
                     </div>
                 </div>
             <?php else: ?>
-                <a href="<?php echo $php_path; ?>iniciosesion.php" class="btn-sesion">INICIAR SESIÓN</a>
+                <a href="<?php echo $php_path; ?>inicio_sesion.php" class="btn-sesion">INICIAR SESIÓN</a>
             <?php endif; ?>
         </div>
         <button class="hamburger-menu" aria-label="Abrir menú">
@@ -77,20 +77,20 @@ $current_page = 'gestionaradmin.php';
     <nav>
         <ul>
             <li><a href="<?php echo $base_path; ?>index.html">VALIDAR</a></li>
-            <li><a href="<?php echo $html_path; ?>sobrenosotros.html">SOBRE NOSOTROS</a></li>
+            <li><a href="<?php echo $html_path; ?>sobre_nosotros.html">SOBRE NOSOTROS</a></li>
             <li><a href="<?php echo $html_path; ?>contacto.html">CONTACTO</a></li>
             <li id="mobile-session-section">
                 <?php if (isset($_SESSION['user_name'])): ?>
                     <a href="#" class="user-menu-toggle-mobile">Hola, <?php echo htmlspecialchars($_SESSION['user_name']); ?> <i class="fas fa-chevron-down"></i></a>
                     <ul class="submenu">
-                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                         <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                         <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionaradmin.php" class="active">Gestionar Administradores</a></li>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_admin.php" class="active">Gestionar Administradores</a></li>
                         <li><a href="<?php echo $php_path; ?>logout.php">Cerrar Sesión</a></li>
                     </ul>
                 <?php else: ?>
-                    <a href="<?php echo $php_path; ?>iniciosesion.php">INICIAR SESIÓN</a>
+                    <a href="<?php echo $php_path; ?>inicio_sesion.php">INICIAR SESIÓN</a>
                 <?php endif; ?>
             </li>
         </ul>
@@ -159,7 +159,7 @@ $current_page = 'gestionaradmin.php';
             <h4>Navegación</h4>
             <ul>
                 <li><a href="<?php echo $base_path; ?>index.html">Validar</a></li>
-                <li><a href="<?php echo $html_path; ?>sobrenosotros.html">Sobre Nosotros</a></li>
+                <li><a href="<?php echo $html_path; ?>sobre_nosotros.html">Sobre Nosotros</a></li>
                 <li><a href="<?php echo $html_path; ?>contacto.html">Contacto</a></li>
             </ul>
         </div>
@@ -173,13 +173,13 @@ $current_page = 'gestionaradmin.php';
                 <ul>
                     <?php if ($is_admin): ?>
                         <br>
-                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                         <br>
                         <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                         <br>
                         <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                         <br>
-                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
                     <?php else: ?>
                         <li><a href="#">Mi Perfil</a></li>
                         <li><a href="#">Inscripciones</a></li>
@@ -189,7 +189,7 @@ $current_page = 'gestionaradmin.php';
             <?php else: ?>
                 <h4>Acceso</h4>
                 <ul>
-                    <li><a href="<?php echo $php_path; ?>iniciosesion.php">Iniciar Sesión</a></li>
+                    <li><a href="<?php echo $php_path; ?>inicio_sesion.php">Iniciar Sesión</a></li>
                 </ul>
             <?php endif; ?>
         </div>
@@ -198,7 +198,7 @@ $current_page = 'gestionaradmin.php';
 <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 
 <script src="<?php echo $js_path; ?>general.js"></script>
-<script src="<?php echo $js_path; ?>gestionaradmin.js"></script>
+<script src="<?php echo $js_path; ?>gestionar_admin.js"></script>
 
 </body>
 </html>

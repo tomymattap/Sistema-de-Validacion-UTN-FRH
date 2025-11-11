@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     mysqli_stmt_bind_param($stmt, "isisi", $ID_Curso, $Cuatrimestre, $Anio, $Estado_Cursada, $id);
     
     if (mysqli_stmt_execute($stmt)) {
-        header('Location: gestionarinscriptos.php?update=success');
+        header('Location: gestionar_inscriptos.php?update=success');
         exit;
     } else {
         die('Error al actualizar: ' . mysqli_error($conexion));
@@ -33,7 +33,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
     $res = mysqli_stmt_get_result($stmt);
 
     if (mysqli_num_rows($res) == 0) { 
-        header('Location: gestionarinscriptos.php?error=notfound');
+        header('Location: gestionar_inscriptos.php?error=notfound');
         exit;
     }
     $inscripcion = mysqli_fetch_assoc($res);
@@ -41,7 +41,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
     $cursos_res = mysqli_query($conexion, "SELECT ID_Curso, Nombre_Curso FROM curso ORDER BY Nombre_Curso");
     $estados = ['En curso', 'Finalizado', 'CERTIFICADA', 'ASISTIDO'];
 } else {
-    header('Location: gestionarinscriptos.php');
+    header('Location: gestionar_inscriptos.php');
     exit;
 }
 ?>
@@ -56,7 +56,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css">
-    <link rel="stylesheet" href="../../CSS/verinscriptos.css">
+    <link rel="stylesheet" href="../../CSS/ver_inscriptos.css">
     <style>
         .edit-form-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background-color: #f8f9fa; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
         .form-group { margin-bottom: 1.5rem; }
@@ -118,7 +118,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
             </div>
             
             <div class="form-actions">
-                <a href="gestionarinscriptos.php" class="btn-cancel">Cancelar</a>
+                <a href="gestionar_inscriptos.php" class="btn-cancel">Cancelar</a>
                 <button type="submit" name="action" value="update" class="btn-submit">Guardar Cambios</button>
             </div>
         </form>

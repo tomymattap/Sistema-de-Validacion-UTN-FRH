@@ -26,7 +26,7 @@ $resultado = mysqli_query($conexion, $consulta);
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css"> <!-- Estilos generales -->
-    <link rel="stylesheet" href="../../CSS/verinscriptos.css"> <!-- Estilos para tablas -->
+    <link rel="stylesheet" href="../../CSS/ver_inscriptos.css"> <!-- Estilos para tablas -->
     <link rel="stylesheet" href="../../CSS/gestionar_cursos.css"> 
 </head>
 <body class="fade-in">
@@ -43,7 +43,7 @@ $resultado = mysqli_query($conexion, $consulta);
                 <ul>
                     <li><a href="../../index.html">VALIDAR</a></li>
                     <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
@@ -65,7 +65,7 @@ $resultado = mysqli_query($conexion, $consulta);
             <ul>
                 <li><a href="../../index.html">VALIDAR</a></li>
                 <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
             </ul>
         </nav>
@@ -167,7 +167,7 @@ $resultado = mysqli_query($conexion, $consulta);
             <h4>Navegación</h4>
             <ul>
                 <li><a href="../../index.html">Validar</a></li>
-                <li><a href="../../HTML/sobrenosotros.html">Sobre Nosotros</a></li>
+                <li><a href="../../HTML/sobre_nosotros.html">Sobre Nosotros</a></li>
                 <li><a href="../../HTML/contacto.html">Contacto</a></li>
             </ul>
         </div>
@@ -178,13 +178,13 @@ $resultado = mysqli_query($conexion, $consulta);
                 <ul>
                     <?php if ($_SESSION['user_rol'] == 1): ?>
                         <br>
-                        <li><a href="../../PHP/ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                        <li><a href="../../PHP/ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                         <br>
                         <li><a href="../../PHP/ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                         <br>
                         <li><a href="../../PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                         <br>
-                        <li><a href="../../PHP/ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
+                        <li><a href="../../PHP/ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
                     <?php else: ?>
                         <br>
                         <li><a href="#">Mi Perfil</a></li>
@@ -197,7 +197,7 @@ $resultado = mysqli_query($conexion, $consulta);
             <?php else: ?>
                 <h4>Acceso</h4>
                 <ul>
-                    <li><a href="../../PHP/iniciosesion.php">Iniciar Sesión</a></li>
+                    <li><a href="../../PHP/inicio_sesion.php">Iniciar Sesión</a></li>
                 </ul>
             <?php endif; ?>
         </div>
@@ -224,17 +224,18 @@ $resultado = mysqli_query($conexion, $consulta);
                             <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                             <div class="dropdown-menu">
                                 <ul>
-                                    <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                                    <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                                     <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                                     <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                                    <li><a href="gestionaradmin.php">Gestionar Administradores</a></li>
+                                    <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
                                     <li><a href="../logout.php">Cerrar Sesión</a></li>
                                 </ul>
                             </div>`;
                         sessionHTML = `
-                            <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                            <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                             <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                            <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
                             <li><a href="../logout.php">Cerrar Sesión</a></li>`;
                     } else if (data.user_rol === 2) { // Alumno
                         // Redirigir si no es admin
@@ -243,7 +244,7 @@ $resultado = mysqli_query($conexion, $consulta);
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
                     // Redirigir si no está logueado
-                    window.location.href = '../iniciosesion.php?error=acceso_denegado';
+                    window.location.href = '../inicio_sesion.php?error=acceso_denegado';
                 }
 
                 // Añadir al menú móvil

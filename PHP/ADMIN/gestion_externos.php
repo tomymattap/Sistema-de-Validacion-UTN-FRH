@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Validar que solo los administradores puedan acceder
 if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
-    header('Location: ../iniciosesion.php?error=acceso_denegado');
+    header('Location: ../inicio_sesion.php?error=acceso_denegado');
     exit;
 }
 
@@ -61,7 +61,7 @@ $php_path = $base_path . 'PHP/';
         <nav class="main-nav hide-on-mobile">
             <ul>
                 <li><a href="<?php echo $base_path; ?>index.html">VALIDAR</a></li>
-                <li><a href="<?php echo $html_path; ?>sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="<?php echo $html_path; ?>sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="<?php echo $html_path; ?>contacto.html">CONTACTO</a></li>
             </ul>
         </nav>
@@ -197,22 +197,22 @@ $php_path = $base_path . 'PHP/';
                     <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                     <div class="dropdown-menu">
                         <ul>
-                            <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                            <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                             <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                            <li><a href="gestionaradmin.php">Gestionar Administradores</a></li>
+                            <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
                             <li><a href="../logout.php">Cerrar Sesión</a></li>
                         </ul>
                     </div>`;
                 sessionHTML = `
-                    <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                    <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                     <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                     <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
                     <li><a href="../logout.php">Cerrar Sesión</a></li>`;
                 sessionControls.innerHTML = dropdownMenu;
                 mobileNav.innerHTML += sessionHTML; // Usar += para no sobreescribir los links estáticos
             } else {
-                window.location.href = '../iniciosesion.php?error=acceso_denegado';
+                window.location.href = '../inicio_sesion.php?error=acceso_denegado';
             }
         });
 </script>

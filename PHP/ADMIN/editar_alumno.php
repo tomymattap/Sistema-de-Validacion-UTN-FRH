@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     mysqli_stmt_bind_param($stmt, "ssssss", $nombre, $apellido, $email, $direccion, $telefono, $cuil);
 
     if (mysqli_stmt_execute($stmt)) {
-        header('Location: gestionarinscriptos.php?update=success');
+        header('Location: gestionar_inscriptos.php?update=success');
         exit;
     } else {
         die('Error al actualizar: ' . mysqli_error($conexion));
@@ -36,13 +36,13 @@ if (isset($_GET['ID_Inscripcion'])) {
     $res = mysqli_stmt_get_result($stmt);
 
     if (mysqli_num_rows($res) == 0) {
-        header('Location: gestionarinscriptos.php?error=notfound');
+        header('Location: gestionar_inscriptos.php?error=notfound');
         exit;
     }
 
     $alumno = mysqli_fetch_assoc($res);
 } else {
-    header('Location: gestionarinscriptos.php');
+    header('Location: gestionar_inscriptos.php');
     exit;
 }
 ?>
@@ -53,7 +53,7 @@ if (isset($_GET['ID_Inscripcion'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Alumno - Admin</title>
     <link rel="stylesheet" href="../../CSS/general.css">
-    <link rel="stylesheet" href="../../CSS/verinscriptos.css">
+    <link rel="stylesheet" href="../../CSS/ver_inscriptos.css">
     <style>
         .edit-form-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: #f8f9fa; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
         .form-group { margin-bottom: 1.5rem; }
@@ -105,7 +105,7 @@ if (isset($_GET['ID_Inscripcion'])) {
                 <input type="text" name="Telefono_Alumno" value="<?= htmlspecialchars($alumno['Telefono']) ?>">
             </div>
             <div class="form-actions">
-                <a href="gestionarinscriptos.php" class="btn-cancel">Cancelar</a>
+                <a href="gestionar_inscriptos.php" class="btn-cancel">Cancelar</a>
                 <button type="submit" name="action" value="update" class="btn-submit">Guardar Cambios</button>
             </div>
         </form>

@@ -102,28 +102,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (data.user_rol === 1) { // Admin
                         desktopDropdownMenu = `${desktopMenu}
-                            <li><a href="${phpPath}ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                            <li><a href="${phpPath}ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                             <li><a href="${phpPath}ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="${phpPath}ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                            <li><a href="${phpPath}ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
+                            <li><a href="${phpPath}ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
                             <li><a href="${phpPath}logout.php">Cerrar Sesión</a></li></ul></div>`;
                         mobileSubmenu = `<a href="#" class="user-menu-toggle-mobile">Hola, ${userName} <i class="fas fa-chevron-down"></i></a>
                             <ul class="submenu">
-                                <li><a href="${phpPath}ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                                <li><a href="${phpPath}ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                                 <li><a href="${phpPath}ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                                 <li><a href="${phpPath}ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                                <li><a href="${phpPath}ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
+                                <li><a href="${phpPath}ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
                                 <li><a href="${phpPath}logout.php">Cerrar Sesión</a></li>
                             </ul>`;
                         footerMenu = `<h4>Admin</h4><ul>
                             <br>
-                            <li><a href="${phpPath}ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                            <li><a href="${phpPath}ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                             <br>
                             <li><a href="${phpPath}ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                             <br>
                             <li><a href="${phpPath}ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                             <br>
-                            <li><a href="${phpPath}ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
+                            <li><a href="${phpPath}ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
                         </ul>`;
 
                     } else if (data.user_rol === 2) { // Estudiante
@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 } else {
                     // Usuario no logueado (invitado)
-                    const loginPath = `${basePath}PHP/iniciosesion.php`;
+                    const loginPath = `${basePath}PHP/inicio_sesion.php`;
                     sessionControls.innerHTML = `<a href="${loginPath}" class="btn-sesion">INICIAR SESIÓN</a>`;
                     mobileSessionSection.innerHTML = `<a href="${loginPath}">INICIAR SESIÓN</a>`;
                     footerDynamicNav.innerHTML = `<h4>Acceso</h4><ul><li><a href="${loginPath}">Iniciar Sesión</a></li></ul>`;

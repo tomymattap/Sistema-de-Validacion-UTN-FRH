@@ -4,7 +4,7 @@ include("../conexion.php");
 
 // Validar que solo los administradores puedan acceder
 if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
-    header('Location: ../iniciosesion.php?error=acceso_denegado');
+    header('Location: ../inicio_sesion.php?error=acceso_denegado');
     exit;
 }
 
@@ -38,7 +38,7 @@ $resultado = mysqli_query($conexion, $consulta);
             <nav class="main-nav">
                 <ul>
                     <li><a href="../../index.html">VALIDAR</a></li>
-                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
@@ -129,7 +129,7 @@ $resultado = mysqli_query($conexion, $consulta);
             <h4>Navegación</h4>
             <ul>
                 <li><a href="../../index.html">Validar</a></li>
-                <li><a href="../../HTML/sobrenosotros.html">Sobre Nosotros</a></li>
+                <li><a href="../../HTML/sobre_nosotros.html">Sobre Nosotros</a></li>
                 <li><a href="../../HTML/contacto.html">Contacto</a></li>
             </ul>
         </div>
@@ -140,7 +140,7 @@ $resultado = mysqli_query($conexion, $consulta);
                 <ul>
                     <?php if ($_SESSION['user_rol'] == 1): ?>
                         <br>
-                        <li><a href="../../PHP/ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                        <li><a href="../../PHP/ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                         <br>
                         <li><a href="../../PHP/ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                         <br>
@@ -159,7 +159,7 @@ $resultado = mysqli_query($conexion, $consulta);
             <?php else: ?>
                 <h4>Acceso</h4>
                 <ul>
-                    <li><a href="../../PHP/iniciosesion.php">Iniciar Sesión</a></li>
+                    <li><a href="../../PHP/inicio_sesion.php">Iniciar Sesión</a></li>
                 </ul>
             <?php endif; ?>
         </div>
@@ -190,21 +190,21 @@ $resultado = mysqli_query($conexion, $consulta);
                         <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                         <div class="dropdown-menu">
                             <ul>
-                                <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                                <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                                 <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                                 <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
                                 <li><a href="../logout.php">Cerrar Sesión</a></li>
                             </ul>
                         </div>`;
                     sessionHTML = `
-                        <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                        <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                         <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                         <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
                         <li><a href="../logout.php">Cerrar Sesión</a></li>`;
                     sessionControls.innerHTML = dropdownMenu;
                     mobileNav.innerHTML = sessionHTML;
                 } else {
-                    window.location.href = '../iniciosesion.php';
+                    window.location.href = '../inicio_sesion.php';
                 }
             });
         });

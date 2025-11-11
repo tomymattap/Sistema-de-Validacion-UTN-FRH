@@ -125,7 +125,7 @@ if (empty($cursos_a_eliminar) && empty($error_message)) {
             .then(response => response.json())
             .then(data => {
                 if (!data.user_name || data.user_rol !== 1) {
-                    window.location.href = '../../HTML/iniciosesion.html';
+                    window.location.href = '../../HTML/inicio_sesion.html';
                 }
             });
     </script>

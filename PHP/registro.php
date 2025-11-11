@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario - UTN FRH</title>
     <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/iniciosesion.css">
+    <link rel="stylesheet" href="../CSS/inicio_sesion.css">
 </head>
 <body>
     <header class="site-header">
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <button type="submit" class="submit-btn">CONTINUAR</button>
                 <div class="form-options" style="text-align: center; margin-top: 1rem;">
-                    <a href="iniciosesion.php">¿Ya tienes una cuenta? Inicia Sesión</a>
+                    <a href="inicio_sesion.php">¿Ya tienes una cuenta? Inicia Sesión</a>
                 </div>
             </form>
         </div>

@@ -95,7 +95,7 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css">
-    <link rel="stylesheet" href="../../CSS/verinscriptos.css"> 
+    <link rel="stylesheet" href="../../CSS/ver_inscriptos.css"> 
     <link rel="stylesheet" href="../../CSS/gestionar_cursos.css"> 
 </head>
 <body class="fade-in">
@@ -111,7 +111,7 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
             <nav class="main-nav">
                 <ul>
                     <li><a href="../../index.html">VALIDAR</a></li>
-                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
@@ -129,7 +129,7 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
         <nav>
             <ul>
                 <li><a href="../../index.html">VALIDAR</a></li>
-                <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
             </ul>
         </nav>
@@ -315,23 +315,25 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
                             <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                             <div class="dropdown-menu">
                                 <ul>
-                                    <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                                    <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                                     <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                                     <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                    <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
                                     <li><a href="../logout.php">Cerrar Sesión</a></li>
                                 </ul>
                             </div>`;
                         sessionHTML = `
-                            <li><a href="verinscriptos.php">Ver Inscriptos</a></li>
+                            <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                             <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                            <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
                             <li><a href="../logout.php">Cerrar Sesión</a></li>`;
                     } else {
                         window.location.href = '../../index.html';
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
-                    window.location.href = '../../HTML/iniciosesion.html';
+                    window.location.href = '../inicio_sesion.php';
                 }
                 mobileNav.insertAdjacentHTML('beforeend', sessionHTML);
             });

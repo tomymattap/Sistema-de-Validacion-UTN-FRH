@@ -4,7 +4,7 @@ require '../conexion.php';
 
 // Verificar si el usuario está logueado y es un alumno
 if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 2) {
-    header("Location: ../iniciosesion.php?error=acceso_denegado");
+    header("Location: ../inicio_sesion.php?error=acceso_denegado");
     exit();
 }
 
@@ -51,7 +51,7 @@ $conexion->close();
                 <ul>
                     <li><a href="../../index.html">VALIDAR</a></li>
                     <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
@@ -73,7 +73,7 @@ $conexion->close();
             <ul>
                 <li><a href="../../index.html">VALIDAR</a></li>
                 <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
             </ul>
         </nav>
@@ -148,7 +148,7 @@ $conexion->close();
                 <h4>Navegación</h4>
                 <ul>
                     <li><a href="../../index.html">Inicio</a></li>
-                    <li><a href="../../HTML/sobrenosotros.html">Sobre Nosotros</a></li>
+                    <li><a href="../../HTML/sobre_nosotros.html">Sobre Nosotros</a></li>
                     <li><a href="../../HTML/contacto.html">Contacto</a></li>                    
                 </ul>
             </div>
@@ -198,12 +198,12 @@ $conexion->close();
                             <li><a href="../logout.php">Cerrar Sesión</a></li>`;
                     } else if (data.user_rol === 1) { // Admin
                         // Redirigir si no es alumno
-                        window.location.href = '../ADMIN/gestionarinscriptos.php';
+                        window.location.href = '../ADMIN/gestionar_inscriptos.php';
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
                     // Redirigir si no está logueado
-                    window.location.href = '../iniciosesion.php?error=acceso_denegado';
+                    window.location.href = '../inicio_sesion.php?error=acceso_denegado';
                 }
 
                 // Añadir al menú móvil

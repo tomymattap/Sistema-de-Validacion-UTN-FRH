@@ -11,7 +11,7 @@ $csrf_token = $_SESSION['csrf_token'];
 
 // Redirige si el usuario ya ha iniciado sesión
 if (isset($_SESSION['user_rol'])) {
-    $redirect_url = ($_SESSION['user_rol'] == 1) ? 'ADMIN/gestionarinscriptos.php' : 'ALUMNO/perfil.php';
+    $redirect_url = ($_SESSION['user_rol'] == 1) ? 'ADMIN/gestionar_inscriptos.php' : 'ALUMNO/perfil.php';
     header('Location: ' . $redirect_url);
     exit;
 }
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['user_id'] = $user['ID_Admin'];
                     $_SESSION['user_name'] = $user['Nombre'];
                     $_SESSION['user_rol'] = 1; // Rol Admin
-                    header('Location: ADMIN/gestionarinscriptos.php');
+                    header('Location: ADMIN/gestionar_inscriptos.php');
                 }
             } else {
                 if ($user['first_login_done'] == 0) {
@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <title>Iniciar Sesión - UTN FRH</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="stylesheet" href="../CSS/general.css"> <!-- Ruta correcta -->
-<link rel="stylesheet" href="../CSS/iniciosesion.css"> <!-- Ruta correcta -->
+<link rel="stylesheet" href="../CSS/inicio_sesion.css"> <!-- Ruta correcta -->
 </head>
 <body>
 
@@ -112,12 +112,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <nav class="main-nav">
                 <ul>
                     <li><a href="../index.html">VALIDAR</a></li>
-                    <li><a href="../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
             <div class="session-controls" id="session-controls">
-                <a href="iniciosesion.php" class="btn-sesion">INICIAR SESIÓN</a>
+                <a href="inicio_sesion.php" class="btn-sesion">INICIAR SESIÓN</a>
             </div>
             <button class="hamburger-menu" aria-label="Abrir menú">
                 <span></span>
@@ -133,9 +133,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <nav>
             <ul>
                 <li><a href="../index.html">VALIDAR</a></li>
-                <li><a href="../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="../HTML/contacto.html">CONTACTO</a></li>
-                <li><a href="iniciosesion.php" class="btn-sesion">INICIAR SESIÓN</a></li>
+                <li><a href="inicio_sesion.php" class="btn-sesion">INICIAR SESIÓN</a></li>
             </ul>
         </nav>
     </div>
@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php if ($error): ?>
                 <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
             <?php endif; ?>
-            <form class="login-form" action="iniciosesion.php" method="POST">
+            <form class="login-form" action="inicio_sesion.php" method="POST">
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 <div class="form-group">
                     <label for="login-input">Legajo (Admin) o CUIL (Estudiante)</label>
@@ -199,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h4>Navegación</h4>
                 <ul>
                     <li><a href="../index.html">Validar</a></li>
-                    <li><a href="../HTML/sobrenosotros.html">Sobre Nosotros</a></li>
+                    <li><a href="../HTML/sobre_nosotros.html">Sobre Nosotros</a></li>
                     <li><a href="../HTML/contacto.html">Contacto</a></li>
                 </ul>
             </div>
@@ -207,7 +207,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="footer-dynamic-nav" id="footer-dynamic-nav">
                 <h4>Acceso</h4>
                 <ul>
-                    <li><a href="iniciosesion.php">Iniciar Sesión</a></li>
+                    <li><a href="inicio_sesion.php">Iniciar Sesión</a></li>
                 </ul>
             </div>
         </div>
@@ -218,6 +218,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </a>
 
     <script src="../JavaScript/general.js"></script>
-    <script src="../JavaScript/iniciosesion.js"></script>
+    <script src="../JavaScript/inicio_sesion.js"></script>
 </body>
 </html>

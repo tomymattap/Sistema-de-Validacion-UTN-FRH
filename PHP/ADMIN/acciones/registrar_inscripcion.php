@@ -81,7 +81,7 @@ if (!$alumno_existe) {
     mysqli_stmt_close($stmt_insert_alumno);
 } else {
     // Si el alumno existe, verificar si ya está inscripto en el mismo curso y cuatrimestre/año
-    $stmt_check_inscripcion = mysqli_prepare($conexion, "SELECT ID_Inscripcion FROM inscripcion WHERE ID_Cuil_Alumno = ? AND ID_Curso_Inscrip = ? AND Cuatrimestre = ? AND Anio = ?");
+    $stmt_check_inscripcion = mysqli_prepare($conexion, "SELECT ID_Inscripcion FROM inscripcion WHERE ID_Cuil_Alumno = ? AND ID_Curso = ? AND Cuatrimestre = ? AND Anio = ?");
     mysqli_stmt_bind_param($stmt_check_inscripcion, "sisi", $cuil, $curso, $cuatrimestre, $anio);
     mysqli_stmt_execute($stmt_check_inscripcion);
     mysqli_stmt_store_result($stmt_check_inscripcion);
@@ -97,7 +97,7 @@ if (!$alumno_existe) {
 }
 
 // Insertar en la tabla de inscripción
-$sql_insert_inscripcion = "INSERT INTO inscripcion (ID_Cuil_Alumno, ID_Curso_Inscrip, Cuatrimestre, Anio, Estado_Cursada) VALUES (?, ?, ?, ?, ?)";
+$sql_insert_inscripcion = "INSERT INTO inscripcion (ID_Cuil_Alumno, ID_Curso, Cuatrimestre, Anio, Estado_Cursada) VALUES (?, ?, ?, ?, ?)";
 $stmt_insert_inscripcion = mysqli_prepare($conexion, $sql_insert_inscripcion);
 mysqli_stmt_bind_param($stmt_insert_inscripcion, "sisss", $cuil, $curso, $cuatrimestre, $anio, $estado_cursada);
 

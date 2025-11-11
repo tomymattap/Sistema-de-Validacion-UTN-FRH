@@ -29,9 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 
     // Insertar la inscripción
-    $sql = "INSERT INTO inscripcion (ID_Cuil_Alumno, ID_Curso, Comision, Cuatrimestre, Anio, Estado_Cursada) VALUES (?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO inscripcion (ID_Cuil_Alumno, ID_Curso, Cuatrimestre, Anio, Estado_Cursada, Comision) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conexion->prepare($sql);
-    $stmt->bind_param("sissss", $cuil, $id_curso, $comision, $cuatrimestre, $anio, $estado);
+    $stmt->bind_param("sissss", $cuil, $id_curso, $cuatrimestre, $anio, $estado, $comision);
 
     if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => '¡Inscripción realizada con éxito!']);

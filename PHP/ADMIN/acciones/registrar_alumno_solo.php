@@ -36,9 +36,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 
     // Insertar nuevo alumno
-    $sql = "INSERT INTO alumno (ID_Cuil_Alumno, DNI_Alumno, Nombre_Alumno, Apellido_Alumno, Email_Alumno, Direccion, Telefono) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $password_por_defecto = password_hash($cuil, PASSWORD_DEFAULT); // Usamos el CUIL como contraseña inicial
+    $rol_alumno = 2; // ID_Rol para Alumno
+
+    $sql = "INSERT INTO alumno (ID_Cuil_Alumno, DNI_Alumno, Nombre_Alumno, Apellido_Alumno, Email_Alumno, Direccion, Telefono, ID_Rol, Password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conexion->prepare($sql);
-    $stmt->bind_param("sssssss", $cuil, $dni, $nombre, $apellido, $email, $direccion, $telefono);
+    // s: string, i: integer
+    $stmt->bind_param("sssssssis", $cuil, $dni, $nombre, $apellido, $email, $direccion, $telefono, $rol_alumno, $password_por_defecto);
 
     if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => 'Estudiante registrado correctamente.', 'cuil' => $cuil]);

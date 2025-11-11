@@ -30,12 +30,38 @@ $curso_query->close();
 $sql = "SELECT
             a.Nombre_Alumno,
             a.Apellido_Alumno,
+            a.ID_Cuil_Alumno,
             a.Email_Alumno,
-            es.desempeno_formador,
-            es.claridad_temas,
-            es.ejemplos_practicos,
-            es.respuesta_dudas,
-            es.cumplimiento_horarios,
+            CASE es.desempeno_formador
+                WHEN 'Malo' THEN 1
+                WHEN 'Regular' THEN 2
+                WHEN 'Bien' THEN 3
+                WHEN 'Muy bien' THEN 4
+            END AS desempeno_formador,
+            CASE es.claridad_temas
+                WHEN 'Malo' THEN 1
+                WHEN 'Regular' THEN 2
+                WHEN 'Bien' THEN 3
+                WHEN 'Muy bien' THEN 4
+            END AS claridad_temas,
+            CASE es.ejemplos_practicos
+                WHEN 'Malo' THEN 1
+                WHEN 'Regular' THEN 2
+                WHEN 'Bien' THEN 3
+                WHEN 'Muy bien' THEN 4
+            END AS ejemplos_practicos,
+            CASE es.respuesta_dudas
+                WHEN 'Malo' THEN 1
+                WHEN 'Regular' THEN 2
+                WHEN 'Bien' THEN 3
+                WHEN 'Muy bien' THEN 4
+            END AS respuesta_dudas,
+            CASE es.cumplimiento_horarios
+                WHEN 'Malo' THEN 1
+                WHEN 'Regular' THEN 2
+                WHEN 'Bien' THEN 3
+                WHEN 'Muy bien' THEN 4
+            END AS cumplimiento_horarios,
             es.satisfaccion_curso,
             es.contribucion_laboral,
             es.recomienda_frh,
@@ -63,10 +89,14 @@ if ($resultado->num_rows > 0) {
 
     $output = fopen('php://output', 'w');
 
+    // --- Añadir BOM para compatibilidad con Excel y UTF-8 ---
+    fwrite($output, "\xEF\xBB\xBF");
+
     // --- Add headers to CSV ---
     fputcsv($output, [
         'Nombre Alumno',
         'Apellido Alumno',
+        'CUIL',
         'Email Alumno',
         'Desempeño del Formador',
         'Claridad de los Temas',
@@ -78,11 +108,11 @@ if ($resultado->num_rows > 0) {
         'Recomienda UTN FRH',
         'Tema que faltó',
         'Sugerencias'
-    ]);
+    ], ';');
 
     // --- Add data to CSV ---
     while ($fila = $resultado->fetch_assoc()) {
-        fputcsv($output, $fila);
+        fputcsv($output, $fila, ';');
     }
 
     fclose($output);

@@ -28,6 +28,24 @@ $cursos_result = mysqli_query($conexion, $cursos_query);
     <link rel="stylesheet" href="../../CSS/general.css">
     <link rel="stylesheet" href="../../CSS/verinscriptos.css">
     <link rel="stylesheet" href="../../CSS/gestionar_cursos.css">
+    <style>
+        /* Estilos para mejorar el despliegue del select */
+        #id_curso[size] {
+            position: absolute; /* Permite que flote sobre el contenido */
+            top: 100%; /* Se posiciona justo debajo del contenedor del label y el select original */
+            left: 0;
+            right: 0;
+            z-index: 10; /* Asegura que esté por encima de otros elementos */
+            border: 1px solid var(--color-secundario-1); /* Borde con color de acento */
+            border-top: none; /* Quitamos el borde superior para que parezca una continuación */
+            border-radius: 0 0 8px 8px; /* Bordes redondeados solo abajo */
+            box-shadow: 0 5px 10px rgba(0,0,0,0.15); /* Sombra para dar profundidad */
+            background-color: white;
+        }
+        #id_curso[size] option {
+            padding: 10px; /* Más espacio interno para cada opción */
+        }
+    </style>
     
 </head>
 <body class="fade-in">
@@ -80,8 +98,15 @@ $cursos_result = mysqli_query($conexion, $cursos_query);
                 
                 <div class="form-container">
                     <form action="descargar_encuesta_csv.php" method="POST" class="form-grid">
+                        <!-- Campo de búsqueda manual -->
                         <div class="form-group full-width">
-                            <label for="id_curso">Seleccione un Curso</label>
+                            <label for="buscador_curso">Buscar Curso por Nombre</label>
+                            <input type="text" id="buscador_curso" placeholder="Escriba para filtrar..." style="width: 100%;">
+                        </div>
+
+                        <!-- Contenedor del menú desplegable con posicionamiento relativo para el despliegue absoluto -->
+                        <div class="form-group full-width" style="position: relative;">
+                             <label for="id_curso">Seleccione un Curso</label>
                             <select id="id_curso" name="id_curso" required>
                                 <option value="">-- Seleccionar Curso --</option>
                                 <?php
@@ -150,6 +175,64 @@ $cursos_result = mysqli_query($conexion, $cursos_query);
                 const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');
                 mobileMenuUl.insertAdjacentHTML('beforeend', sessionHTML);
             });
+
+        // --- Lógica para el buscador de cursos que filtra el select ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const buscador = document.getElementById('buscador_curso');
+            const selectCursos = document.getElementById('id_curso');
+            const opcionesOriginales = Array.from(selectCursos.options);
+
+            // Función para normalizar texto (quitar tildes y a minúsculas)
+            const normalizarTexto = (texto) => {
+                return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+            };
+
+            buscador.addEventListener('input', function() {
+                const textoBusquedaNormalizado = normalizarTexto(this.value);
+                
+                // Limpiar el select actual
+                selectCursos.innerHTML = '';
+
+                // Filtrar y añadir opciones que coincidan
+                const opcionesFiltradas = opcionesOriginales.filter(opcion => {
+                    // Siempre incluir la opción por defecto
+                    if (opcion.value === "") return true;
+                    // Comparar textos normalizados
+                    return normalizarTexto(opcion.text).includes(textoBusquedaNormalizado);
+                });
+
+                // Si hay texto en el buscador, expandir el select para mostrar resultados
+                if (this.value.length > 0) {
+                    // Mostrar hasta 5 resultados, o menos si hay menos (mínimo 2 para que se vea como lista)
+                    selectCursos.size = Math.max(2, Math.min(opcionesFiltradas.length, 6));
+                } else {
+                    // Si el buscador está vacío, volver al tamaño normal
+                    selectCursos.size = 1;
+                }
+
+                // Si hay más de una opción (la de "Seleccionar Curso" + al menos un resultado)
+                if (opcionesFiltradas.length > 1) {
+                    opcionesFiltradas.forEach(opcion => {
+                        // Clonar la opción para no moverla del array original
+                        selectCursos.add(opcion.cloneNode(true));
+                    });
+                } else {
+                    // Si solo queda la opción por defecto, mostrar mensaje de no resultados
+                    const opcionNoResultados = document.createElement('option');
+                    opcionNoResultados.value = "";
+                    opcionNoResultados.textContent = "No se encontraron cursos";
+                    opcionNoResultados.disabled = true;
+                    selectCursos.add(opcionNoResultados);
+                }
+            });
+
+            // Opcional: Al hacer clic en una opción, contraer el menú
+            selectCursos.addEventListener('click', function() {
+                if (this.size > 1) {
+                    this.size = 1;
+                }
+            });
+        });
     </script>
 </body>
 </html>

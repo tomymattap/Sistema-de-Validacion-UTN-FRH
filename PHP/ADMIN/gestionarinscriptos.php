@@ -293,8 +293,8 @@ $current_page = 'gestionarinscriptos.php';
                                     <li><strong>Apellido</strong></li>
                                     <li><strong>Nombre</strong></li>
                                     <li><strong>Email</strong></li>
-                                    <li>Dirección (opcional)</li>
-                                    <li>Teléfono (opcional)</li>
+                                    <li><strong>Dirección</strong></li>
+                                    <li><strong>Teléfono</strong></li>
                                     <li><strong>Curso</strong> (nombre o ID_Curso, preferible ID_Curso)</li>
                                     <li><strong>Cuatrimestre</strong></li>
                                     <li><strong>Año</strong></li>

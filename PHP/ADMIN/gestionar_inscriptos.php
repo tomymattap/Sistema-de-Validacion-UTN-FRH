@@ -196,59 +196,98 @@ $current_page = 'gestionar_inscriptos.php';
 
                 <!-- ======== CARGA MANUAL ======== -->
                 <div id="tab-manual" class="tab-panel-secondary active">
-                    <h2>Carga Manual de Inscripción</h2>
-                    <form id="formCargaManual" method="POST" action="insertar_inscripto.php" class="form-carga-manual">
-                        <div class="form-grid">
-                            <div class="campo-form"><label for="cuil">CUIL del estudiante *</label><input type="text" id="cuil" name="ID_Cuil_Alumno" required pattern="[0-9]{10,11}" title="Solo números"></div>
-                            <div class="campo-form"><label for="dni">DNI del estudiante *</label><input type="text" id="dni" name="DNI_Alumno" required pattern="[0-9]{7,8}"></div>
-                            <div class="campo-form"><label for="nombre">Nombre *</label><input type="text" id="nombre" name="Nombre_Alumno" required></div>
-                            <div class="campo-form"><label for="apellido">Apellido *</label><input type="text" id="apellido" name="Apellido_Alumno" required></div>
-                            <div class="campo-form"><label for="email">Email *</label><input type="email" id="email" name="Email_Alumno" required></div>
-                            <div class="campo-form"><label for="direccion">Dirección</label><input type="text" id="direccion" name="Direccion"></div>
-                            <div class="campo-form"><label for="telefono">Teléfono</label><input type="tel" id="telefono" name="Telefono"></div>
-
-                            <div class="campo-form">
-                                <label for="curso">Curso a inscribir *</label>
-                                <select id="curso" name="ID_Curso" required>
-                                    <option value="">Seleccione un curso</option>
-                                    <?php foreach ($cursos as $curso): ?>
-                                        <option value="<?php echo $curso['ID_Curso']; ?>"><?php echo htmlspecialchars($curso['Nombre_Curso']); ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-
-                            <div class="campo-form">
-                                <label for="comision">Comisión *</label>
-                                <input type="text" id="comision" name="Comision" placeholder="Ej: A, B o 1" required>
-                            </div>
-
-                            <div class="campo-form"><label for="cuatrimestre">Cuatrimestre *</label>
-                                <select id="cuatrimestre" name="Cuatrimestre" required>
-                                    <option value="Primer Cuatrimestre">Primer Cuatrimestre</option>
-                                    <option value="Segundo Cuatrimestre">Segundo Cuatrimestre</option>
-                                </select>
-                            </div>
-
-                            <div class="campo-form"><label for="anio">Año *</label><input type="number" id="anio" name="Anio" value="<?php echo date('Y'); ?>" required min="2000" max="2100"></div>
-
-                            <div class="campo-form">
-                                <label for="estado_cursada">Estado de la Cursada</label>
-                                <select id="estado_cursada" name="Estado_Cursada" required>
-                                    <option value="Pendiente">Pendiente</option>
-                                    <option value="En Curso">En Curso</option>
-                                    <option value="Finalizada">Finalizada</option>
-                                    <option value="Certificada">Certificada</option>
-                                </select>
+                    <div class="multistep-form-container">
+                        <!-- Barra de progreso -->
+                        <div class="progress-bar-container">
+                            <div class="progress-bar">
+                                <div class="progress-step active" data-step="1">
+                                    <div class="step-label">Paso 1</div>
+                                    <div class="step-title">Registrar Estudiante</div>
+                                </div>
+                                <div class="progress-step" data-step="2">
+                                    <div class="step-label">Paso 2</div>
+                                    <div class="step-title">Registrar Inscripción</div>
+                                </div>
                             </div>
                         </div>
 
-                        <div id="mensaje-carga-manual" class="mensaje-form" style="display:none;"></div>
-                        <div class="botones-form-carga">
-                            <button type="submit" class="btn-registrar">Registrar Inscripción</button>
-                            <button type="reset" class="btn-cancelar-cert">Cancelar</button>
+                        <!-- Mensaje de éxito -->
+                        <div id="inscripcion-exitosa-mensaje" class="mensaje-exito" style="display: none;">
+                            <i class="fas fa-check-circle"></i>
+                            <span>¡Inscripción realizada con éxito!</span>
                         </div>
-                    </form>
+
+                        <!-- Paso 1: Datos del Alumno -->
+                        <div id="step-1" class="form-step active">
+                            <h2 class="step-main-title">Paso 1: Registrar Estudiante</h2>
+                            <form id="form-step-1" class="form-carga-pasos">
+                                <div class="form-grid">
+                                    <div class="campo-form"><label for="cuil">CUIL del estudiante *</label><input type="text" id="cuil" name="ID_Cuil_Alumno" required pattern="[0-9]{10,11}" title="Solo números (11 dígitos sin guiones)"></div>
+                                    <div class="campo-form"><label for="dni">DNI del estudiante *</label><input type="text" id="dni" name="DNI_Alumno" required pattern="[0-9]{7,8}" title="Solo números (7 u 8 dígitos)"></div>
+                                    <div class="campo-form"><label for="nombre">Nombre *</label><input type="text" id="nombre" name="Nombre_Alumno" required></div>
+                                    <div class="campo-form"><label for="apellido">Apellido *</label><input type="text" id="apellido" name="Apellido_Alumno" required></div>
+                                    <div class="campo-form"><label for="email">Email *</label><input type="email" id="email" name="Email_Alumno" required></div>
+                                    <div class="campo-form"><label for="direccion">Dirección</label><input type="text" id="direccion" name="Direccion"></div>
+                                    <div class="campo-form"><label for="telefono">Teléfono</label><input type="tel" id="telefono" name="Telefono"></div>
+                                </div>
+                                <div id="mensaje-step-1" class="mensaje-form" style="display:none;"></div>
+                                <div class="botones-form-pasos">
+                                    <button type="button" class="btn-cancelar-paso">Cancelar</button>
+                                    <button type="submit" class="btn-continuar">Registrar y Continuar</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Paso 2: Datos de la Inscripción -->
+                        <div id="step-2" class="form-step">
+                            <h2 class="step-main-title">Paso 2: Registrar Inscripción</h2>
+                            <form id="form-step-2" class="form-carga-pasos">
+                                <div class="form-grid">
+                                    <div class="campo-form">
+                                        <label for="curso-insc">Curso a inscribir *</label>
+                                        <select id="curso-insc" name="ID_Curso" required>
+                                            <option value="">Seleccione un curso</option>
+                                            <?php foreach ($cursos as $curso): ?>
+                                                <option value="<?php echo $curso['ID_Curso']; ?>"><?php echo htmlspecialchars($curso['Nombre_Curso']); ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="campo-form">
+                                        <label for="comision-insc">Comisión *</label>
+                                        <input type="text" id="comision-insc" name="Comision" placeholder="Ej: A, B o 1" required>
+                                    </div>
+                                    <div class="campo-form">
+                                        <label for="cuatrimestre-insc">Cuatrimestre *</label>
+                                        <select id="cuatrimestre-insc" name="Cuatrimestre" required>
+                                            <option value="Primer Cuatrimestre">Primer Cuatrimestre</option>
+                                            <option value="Segundo Cuatrimestre">Segundo Cuatrimestre</option>
+                                            <option value="Anual">Anual</option>
+                                        </select>
+                                    </div>
+                                    <div class="campo-form">
+                                        <label for="anio-insc">Año *</label>
+                                        <input type="number" id="anio-insc" name="Anio" value="<?php echo date('Y'); ?>" required min="2000" max="2100">
+                                    </div>
+                                    <div class="campo-form">
+                                        <label for="estado-cursada-insc">Estado de la Cursada</label>
+                                        <select id="estado-cursada-insc" name="Estado_Cursada" required>
+                                            <option value="Pendiente">Pendiente</option>
+                                            <option value="En Curso">En Curso</option>
+                                            <option value="Finalizada">Finalizada</option>
+                                            <option value="Certificada">Certificada</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="mensaje-step-2" class="mensaje-form" style="display:none;"></div>
+                                <div class="botones-form-pasos">
+                                    <button type="button" class="btn-cancelar-paso">Cancelar</button>
+                                    <button type="submit" class="btn-finalizar">Finalizar Inscripción</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
                 <!-- ======== CARGA CON ARCHIVO ======== -->
                 <div id="tab-archivo" class="tab-panel-secondary">

@@ -148,16 +148,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td><span class="status-badge ${statusClass}">${escapeHTML(r.Estado_Cursada || '')}</span></td>
                 <td class="acciones">
                     <!-- Botón editar: redirige a tu PHP -->
-                    <button class="btn-accion editar" data-id="${r.ID_Inscripcion}" title="Editar">
+                    <button class="btn-accion editar" data-id="${r.ID_Inscripcion}" title="Editar" onclick="event.preventDefault();">
                         <i class="fas fa-edit"></i>
                     </button>
                     <!-- Botón eliminar: envía form oculto -->
-                    <form class="form-eliminar" method="POST" action="eliminar_inscripto.php" style="display:inline;">
-                        <input type="hidden" name="ID_Inscripcion" value="${r.ID_Inscripcion}">
-                        <button type="submit" class="btn-accion eliminar" title="Eliminar" onclick="return confirmarEliminacion(event)">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </form>
+                    <button class="btn-accion eliminar" data-id="${r.ID_Inscripcion}" title="Eliminar" onclick="event.preventDefault();">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
                 </td>
             </tr>`;
 
@@ -822,11 +819,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const eliminarBtn = targetElement.closest('.btn-accion.eliminar');
             if (eliminarBtn) {
                 e.preventDefault(); 
-                const form = eliminarBtn.closest('form');
-                const id = form.querySelector('input[name="ID_Inscripcion"]').value;
+                const id = eliminarBtn.dataset.id;
                 
                 const row = eliminarBtn.closest('tr');
-                const studentName = row.cells[1].textContent.trim();
+                const studentName = row ? row.cells[1].textContent.trim() : 'este registro';
 
                 abrirModalEliminar(id, studentName);
             }

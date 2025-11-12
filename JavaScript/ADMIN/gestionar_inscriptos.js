@@ -358,8 +358,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 const res = await fetch('insertar_inscriptos_csv.php', { method: 'POST', body: formData });
-                if (!res.ok) throw new Error('HTTP ' + res.status);
-                const json = await res.json();
+                const json = await res.json(); // Get JSON regardless of status
+                
+                if (!res.ok) {
+                    // If not ok, the json should contain the error message
+                    throw new Error(json.error || 'Error HTTP ' + res.status);
+                }
+
+                // This part handles cases where status is 200 but there's a logical error from the backend
                 if (json.error) {
                     mensajeArchivo.textContent = json.error;
                     mensajeArchivo.style.color = '#b30000';
@@ -376,7 +382,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (err) {
                 console.error(err);
-                mensajeArchivo.textContent = '❌ Error al procesar el archivo. Revisa la consola.';
+                // The message will be from the server's JSON response or from a parsing failure
+                mensajeArchivo.textContent = '❌ ' + err.message;
                 mensajeArchivo.style.color = '#b30000';
             }
         });

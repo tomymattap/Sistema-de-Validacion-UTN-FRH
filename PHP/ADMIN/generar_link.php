@@ -54,8 +54,8 @@ try {
             <div class="contenido-principal">
 
                 <div id="header-container">
-                    
-                    <a href="gestionar_cursos.php" class="menu-btn volver-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
+                    <h1 class="main-title" style="color: transparent; user-select: none;">.</h1>
+                    <a href="gestion_externos.php" class="menu-btn volver-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
                 </div>
 
                 <div class="link-generation-container">

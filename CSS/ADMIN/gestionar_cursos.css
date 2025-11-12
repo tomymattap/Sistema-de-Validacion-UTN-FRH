@@ -721,6 +721,15 @@ tr.modified, tr.modified:hover {
     background-color: #c82333;
 }
 
+/* Estilos para la zona de subida de archivo */
+.file-upload-zone {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
 
 /* Estilos para la zona de arrastre */
         .drop-zone_gc {
@@ -781,21 +790,22 @@ tr.modified, tr.modified:hover {
 
 #tabla-cursos-externos thead th {
     padding: 0.8rem 1rem;
-    text-transform: uppercase;
+    text-transform: none; /* No usar mayúsculas */
     letter-spacing: 0.5px;
-    font-weight: 600;
+    font-size: 0.9rem; /* Fuente más pequeña */
     border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 #tabla-cursos-externos .sub-header {
     background-color: #e9f2ff;
     color: #333;
-    text-transform: none;
-    font-size: 0.9rem;
+    text-transform: none; /* Mantener el texto sin transformar */
+    font-size: 0.8rem; /* Reducir el tamaño de la fuente */
 }
 
 #tabla-cursos-externos .sub-header th {
     text-align: center; /* Centra el texto del sub-header */
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
 }
 
 #tabla-cursos-externos tbody tr:nth-child(even) {
@@ -814,19 +824,28 @@ tr.modified, tr.modified:hover {
 }
 
 /* Estados visuales */
+.status-badge {
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #fff;
+    text-align: center;
+    display: inline-block;
+    min-width: 90px;
+}
+
 .estado-pendiente {
-    color: var(--color-secundario-1, #ffb703);
-    font-weight: bold;
+    background-color: var(--color-secundario-1, #ffb703);
+    color: #333;
 }
 
 .estado-aceptado {
-    color: var(--color-secundario-2, #0a8754);
-    font-weight: bold;
+    background-color: var(--color-secundario-2, #0a8754);
 }
 
 .estado-rechazado {
-    color: var(--color-secundario-4, #c1121f);
-    font-weight: bold;
+    background-color: var(--color-secundario-4, #c1121f);
 }
 
 .sin-archivo {

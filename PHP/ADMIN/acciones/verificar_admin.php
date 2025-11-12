@@ -5,7 +5,7 @@ function verificarAccesoAdmin() {
             echo json_encode(['success' => false, 'message' => 'Acceso denegado']);
             exit;
         } else {
-            header('Location: ../../iniciosesion.php?error=acceso_denegado');
+            header('Location: ../../inicio_sesion.php?error=acceso_denegado');
             exit;
         }
     }

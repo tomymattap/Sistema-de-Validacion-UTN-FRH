@@ -1,4 +1,13 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+// Validar que solo los administradores puedan acceder
+if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
+    header('Location: ../inicio_sesion.php?error=acceso_denegado');
+    exit;
+}
+
 include("../conexion.php");
 
 $resultado = null; // Inicializar resultado
@@ -12,15 +21,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Consulta segura con sentencias preparadas para evitar inyección SQL
         $consulta = $conexion->prepare("
-            SELECT a.ID_Cuil_Alumno, a.Nombre_Alumno, a.Apellido_Alumno
+            SELECT a.ID_Cuil_Alumno, a.Nombre_Alumno, a.Apellido_Alumno, i.Comision
             FROM INSCRIPCION i
             JOIN ALUMNO a ON i.ID_Cuil_Alumno = a.ID_Cuil_Alumno
-            WHERE i.ID_Curso = ?
-            AND i.Anio = ?
-            AND i.Cuatrimestre = ?
-            AND i.Estado_Cursada = 'FINALIZADO'
+            WHERE i.ID_Curso = ? 
+            AND i.Anio = ? 
+            AND i.Cuatrimestre = ? 
+            AND i.Estado_Cursada IN ('FINALIZADO', 'APROBADO')
         ");
-        // "iss" indica que los tipos de datos son: integer, string, string
+
+    if (!$consulta) {
+        die("Error en la preparación de la consulta: " . $conexion->error);
+    }
+
+        // "isss" indica que los tipos de datos son: integer, string, string, string
         $consulta->bind_param("iss", $curso_id, $anio, $cuatrimestre);
         $consulta->execute();
         $resultado = $consulta->get_result();
@@ -39,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css">
-    <link rel="stylesheet" href="../../CSS/tabla_alumnos_certif.css">
+    <link rel="stylesheet" href="../../CSS/ADMIN/tabla_alumnos_certif.css">
 </head>
 <body class="fade-in">
     <div class="preloader">
@@ -55,13 +69,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <ul>
                     <li><a href="../../index.html">VALIDAR</a></li>
                     <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
             <div class="session-controls" id="session-controls">
                 <!-- Contenido dinámico por JS -->
-                <!--<a href="../../HTML/iniciosesion.html" class="login-btn">Iniciar Sesión</a>-->
+                <a href="../../HTML/iniciosesion.html" class="login-btn">Iniciar Sesión</a>
             </div>
             <button class="hamburger-menu" aria-label="Abrir menú">
                 <span></span>
@@ -78,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <ul>
                 <li><a href="../../index.html">VALIDAR</a></li>
                 <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
             </ul>
         </nav>
@@ -98,7 +112,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <input type="hidden" name="id_curso" value="<?php echo htmlspecialchars($_POST['curso']); ?>">
                         <input type="hidden" name="anio" value="<?php echo htmlspecialchars($_POST['anio']); ?>">
                         <input type="hidden" name="cuatrimestre" value="<?php echo htmlspecialchars($_POST['cuatrimestre']); ?>">
-
                         <table id="results-table" class="tabla-certificaciones">
                             <thead>
                                 <tr>
@@ -106,6 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <th class="cuil-header">CUIL</th>
                                     <th class="nombre-header">Nombre</th>
                                     <th class="apellido-header">Apellido</th>
+                                    <th class="comision-header">Comisión</th>
                                     <th class="estado-header">Tipo de Certificado</th>
                                 </tr>
                             </thead>
@@ -118,6 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <td><?php echo $cuil; ?></td>
                                         <td><?php echo htmlspecialchars($fila['Nombre_Alumno']); ?></td>
                                         <td><?php echo htmlspecialchars($fila['Apellido_Alumno']); ?></td>
+                                        <td><?php echo htmlspecialchars($fila['Comision'] ?: 'Única'); ?></td>
                                         <td>
                                             <select name="alumnos[<?php echo $cuil; ?>][estado]">
                                                 <option value="APROBADO" selected>APROBADO</option>
@@ -175,7 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h4>Navegación</h4>
             <ul>
                 <li><a href="<?php echo $base_path; ?>index.html">Validar</a></li>
-                <li><a href="<?php echo $html_path; ?>sobrenosotros.html">Sobre Nosotros</a></li>
+                <li><a href="<?php echo $html_path; ?>sobre_nosotros.html">Sobre Nosotros</a></li>
                 <li><a href="<?php echo $html_path; ?>contacto.html">Contacto</a></li>
             </ul>
         </div>
@@ -186,13 +201,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <ul>
                     <?php if ($_SESSION['user_rol'] == 1): ?>
                         <br>
-                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                         <br>
                         <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                         <br>
                         <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                         <br>
-                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
                     <?php else: ?>
                         <br>
                         <li><a href="#">Mi Perfil</a></li>
@@ -205,7 +220,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <?php else: ?>
                 <h4>Acceso</h4>
                 <ul>
-                    <li><a href="<?php echo $php_path; ?>iniciosesion.php">Iniciar Sesión</a></li>
+                    <li><a href="<?php echo $php_path; ?>inicio_sesion.php">Iniciar Sesión</a></li>
                 </ul>
             <?php endif; ?>
         </div>
@@ -224,6 +239,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 const sessionControls = document.getElementById('session-controls');
                 const mobileNav = document.querySelector('.off-canvas-menu nav ul');
                 let sessionHTML = '';
+
+                if (data.user_name) {
+                    let dropdownMenu;
+                    if (data.user_rol === 1) { // Admin
+                        dropdownMenu = `
+                            <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
+                            <div class="dropdown-menu">
+                                <ul>
+                                    <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
+                                    <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
+                                    <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                    <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
+                                    <li><a href="../logout.php">Cerrar Sesión</a></li>
+                                </ul>
+                            </div>`;
+                        sessionHTML = `
+                            <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
+                            <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
+                            <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                            <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
+                            <li><a href="../logout.php">Cerrar Sesión</a></li>`;
+                    } else {
+                        window.location.href = '../../index.html';
+                    }
+                    sessionControls.innerHTML = dropdownMenu;
+                    mobileNav.insertAdjacentHTML('beforeend', sessionHTML);
+                } else {
+                    window.location.href = '../inicio_sesion.php?error=session_expired';
+                }
+            });
+    </script>
 
                 if (data.user_name) {
                     let dropdownMenu;

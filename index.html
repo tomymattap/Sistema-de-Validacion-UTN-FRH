@@ -13,7 +13,7 @@
 
     <!-- Hojas de estilo CSS -->
     <link rel="stylesheet" href="CSS/general.css">
-    <link rel="stylesheet" href="CSS/inicio.css">
+    <link rel="stylesheet" href="CSS/INICIO/inicio.css">
 </head>
 
 <body>
@@ -32,7 +32,7 @@
             <nav class="main-nav">
                 <ul>
                     <li><a href="index.html">VALIDAR</a></li>
-                    <li><a href="HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
@@ -60,7 +60,7 @@
         <nav>
             <ul>
                 <li><a href="index.html">VALIDAR</a></li>
-                <li><a href="HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="HTML/contacto.html">CONTACTO</a></li>
                 <!-- Sección para el menú de usuario o iniciar sesión en móvil -->
                 <li class="has-submenu" id="mobile-session-section">
@@ -132,8 +132,8 @@
             <div class="footer-nav">
                 <h4>Navegación</h4>
                 <ul>
-                    <li><a href="../index.html">Validar</a></li>
-                    <li><a href="HTML/sobrenosotros.html">Sobre Nosotros</a></li>
+                    <li><a href="index.html">Validar</a></li>
+                    <li><a href="HTML/sobre_nosotros.html">Sobre Nosotros</a></li>
                     <li><a href="HTML/contacto.html">Contacto</a></li>
                 </ul>
             </div>
@@ -153,118 +153,7 @@
     <!-- =======================
         SCRIPTS
     ======================== -->
-    <script src="JavaScript/inicio.js"></script> <!-- Scripts específicos de la página de inicio -->
+    <script src="JavaScript/INICIO/inicio.js"></script> <!-- Scripts específicos de la página de inicio -->
     <script src="JavaScript/general.js"></script> <!-- Scripts generales para todo el sitio -->
-    
-    <!-- Script para gestionar la sesión del usuario -->
-    <script>
-        // Se ejecuta cuando el DOM está completamente cargado
-        document.addEventListener('DOMContentLoaded', function() {
-            // Petición al servidor para obtener la información del usuario actual
-            fetch('PHP/get_user_name.php')
-                .then(response => response.json())
-                .then(data => {
-                    // Elementos del DOM que se van a modificar
-                    const sessionControls = document.getElementById('session-controls');
-                    const mobileSessionSection = document.getElementById('mobile-session-section');
-                    const footerDynamicNav = document.getElementById('footer-dynamic-nav');
-
-                    // Si el usuario está logueado (existe data.user_name)
-                    if (data.user_name) {
-                        let desktopDropdownMenu, mobileSubmenu, footerMenu;
-                        const userName = data.user_name;
-
-                        // Plantilla base para el menú de escritorio
-                        const desktopMenu = `
-                            <a href="#" class="btn-sesion user-menu-toggle">Hola, ${userName} <i class="fas fa-chevron-down"></i></a>
-                            <div class="dropdown-menu"><ul>`;
-
-                        // Si el rol es 1 (Administrador)
-                        if (data.user_rol === 1) { 
-                            // Menú de escritorio para Admin
-                            desktopDropdownMenu = `
-                                ${desktopMenu}
-                                <li><a href="PHP/ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
-                                <li><a href="PHP/ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
-                                <li><a href="PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                                <li><a href="PHP/ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
-                                <li><a href="PHP/logout.php">Cerrar Sesión</a></li>
-                            </ul></div>`;
-
-                            // Menú móvil para Admin
-                            mobileSubmenu = `
-                                <a href="#" class="user-menu-toggle-mobile">Hola, ${userName} <i class="fas fa-chevron-down"></i></a>
-                                <ul class="submenu">
-                                    <li><a href="PHP/ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
-                                    <li><a href="PHP/ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
-                                    <li><a href="PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                                    <li><a href="PHP/ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
-                                    <li><a href="PHP/logout.php">Cerrar Sesión</a></li>
-                                </ul>`;
-
-                            // Menú del pie de página para Admin
-                            footerMenu = `
-                                <h4>Admin</h4>
-                                <ul>
-                                    <br>
-                                    <li><a href="PHP/ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
-                                    <br>
-                                    <li><a href="PHP/ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
-                                    <br>
-                                    <li><a href="PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                                    <br>
-                                    <li><a href="PHP/ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
-                                </ul>`;
-
-                        // Si el rol es 2 (Alumno)
-                        } else if (data.user_rol === 2) { 
-                            // Menú de escritorio para Alumno
-                            desktopDropdownMenu = `
-                                ${desktopMenu}
-                                <br>
-                                <li><a href="PHP/ALUMNO/perfil.php">Mi Perfil</a></li>
-                                <br>
-                                <li><a href="PHP/ALUMNO/inscripciones.php">Inscripciones</a></li>
-                                <br>
-                                <li><a href="PHP/ALUMNO/certificaciones.php">Certificaciones</a></li>
-                                <br>
-                                <li><a href="PHP/logout.php">Cerrar Sesión</a></li>
-                            </ul></div>`;
-
-                            // Menú móvil para Alumno
-                            mobileSubmenu = `
-                                <a href="#" class="user-menu-toggle-mobile">Hola, ${userName} <i class="fas fa-chevron-down"></i></a>
-                                <ul class="submenu">
-                                    <li><a href="PHP/ALUMNO/perfil.php">Mi Perfil</a></li>
-                                    <li><a href="PHP/ALUMNO/inscripciones.php">Inscripciones</a></li>
-                                    <li><a href="PHP/ALUMNO/certificaciones.php">Certificaciones</a></li>
-                                    <li><a href="PHP/logout.php">Cerrar Sesión</a></li>
-                                </ul>`;
-
-                            // Menú del pie de página para Alumno
-                            footerMenu = `
-                                <h4>Alumno</h4>
-                                <ul>
-                                    <li><a href="PHP/ALUMNO/perfil.php">Mi Perfil</a></li>
-                                    <li><a href="PHP/ALUMNO/inscripciones.php">Inscripciones</a></li>
-                                    <li><a href="PHP/ALUMNO/certificaciones.php">Certificaciones</a></li>
-                                </ul>`;
-                        }
-
-                        // Inserta el HTML generado en los contenedores correspondientes
-                        sessionControls.innerHTML = desktopDropdownMenu;
-                        mobileSessionSection.innerHTML = mobileSubmenu;
-                        footerDynamicNav.innerHTML = footerMenu;
-
-                    } else {
-                        // Si el usuario NO está logueado
-                        // Muestra el botón "INICIAR SESIÓN" en la cabecera, menú móvil y pie de página
-                        sessionControls.innerHTML = '<a href="PHP/iniciosesion.php" class="btn-sesion">INICIAR SESIÓN</a>';
-                        mobileSessionSection.innerHTML = '<a href="PHP/iniciosesion.php">INICIAR SESIÓN</a>';
-                        footerDynamicNav.innerHTML = '<h4>Acceso</h4><br><ul><li><a href="PHP/iniciosesion.php">Iniciar Sesión</a></li></ul>';
-                    }
-                });
-        });
-    </script>
 </body>
 </html>

@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // La única condición para estar aquí es que se haya iniciado sesión por primera vez
 // y se deba forzar el cambio de contraseña.
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['force_password_change'])) {
-    header('Location: ../iniciosesion.php');
+    header('Location: ../inicio_sesion.php');
     exit;
 }
 
@@ -65,8 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['user_rol'] = 1; // Establecer el rol de admin
                 unset($_SESSION['force_password_change']);
                 
-                $success = "Su contraseña ha sido actualizada. Será redirigido al panel de administración.";
-                header('Refresh: 3; URL=gestionarinscriptos.php');
+                $success = "Su contraseña ha sido actualizada correctamente. Será redirigido al panel de administración.";
+                header('Refresh: 2; URL=gestionar_inscriptos.php');
             } else {
                 $error = "Hubo un error al actualizar su contraseña.";
             }
@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cambio de Contraseña Obligatorio - Admin</title>
     <link rel="stylesheet" href="<?php echo $css_path; ?>general.css">
-    <link rel="stylesheet" href="<?php echo $css_path; ?>iniciosesion.css"> <!-- Reutilizamos estilos -->
+    <link rel="stylesheet" href="<?php echo $css_path; ?>INICIO/inicio_sesion.css"> <!-- Reutilizamos estilos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -101,8 +101,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p style="text-align: center; margin-bottom: 1.5rem;">Por seguridad, debe cambiar su contraseña inicial.</p>
 
             <?php if ($error) echo "<div class='error-message'>" . htmlspecialchars($error) . "</div>"; ?>
-            <?php if ($success) echo "<div class='success-message' style='background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 1rem; margin-bottom: 1rem; border-radius: 5px;'>" . htmlspecialchars($success) . "</div>"; ?>
+            <?php if ($success) echo "<div class='success-message'>" . htmlspecialchars($success) . "</div>"; ?>
 
+            <?php if (!$success): ?>
             <form class="login-form" action="cambiar_contrasena_obligatorio.php" method="POST">
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 <div class="form-group">
@@ -128,6 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <button type="submit" class="submit-btn">CAMBIAR CONTRASEÑA</button>
             </form>
+            <?php endif; ?>
         </div>
     </main>
     <script>

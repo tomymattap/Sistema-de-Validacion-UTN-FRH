@@ -13,7 +13,7 @@
 
     <!-- Hojas de estilo CSS -->
     <link rel="stylesheet" href="../CSS/general.css"> <!-- Estilos generales del sitio -->
-    <link rel="stylesheet" href="../CSS/cursos.css">  <!-- Estilos específicos para la página de cursos -->
+    <link rel="stylesheet" href="../CSS/INICIO/cursos.css">  <!-- Estilos específicos para la página de cursos -->
 </head>
 <body>
 
@@ -28,7 +28,7 @@
             <nav class="main-nav">
                 <ul>
                     <li><a href="../index.html">VALIDAR</a></li>
-                    <li><a href="sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
@@ -52,7 +52,7 @@
         <nav>
             <ul>
                 <li><a href="../index.html">VALIDAR</a></li>
-                <li><a href="sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="contacto.html">CONTACTO</a></li>
                 <!-- El menú de sesión móvil se añade aquí con JS -->
             </ul>
@@ -194,7 +194,7 @@
     <!-- =======================
         SCRIPTS
     ======================== -->
-    <script src="../JavaScript/inicio.js"></script>
+    <script src="../JavaScript/INICIO/inicio.js"></script>
     <script src="../JavaScript/general.js"></script>
     <!-- Script para gestionar la sesión del usuario -->
     <script>
@@ -210,8 +210,8 @@
                 if (data.user_name) {
                     // ... Lógica para usuario logueado (Admin o Alumno) ...
                 } else {
-                    sessionControls.innerHTML = '<a href="../PHP/iniciosesion.php" class="btn-sesion">INICIAR SESIÓN</a>';
-                    sessionHTML = '<li><a href="../PHP/iniciosesion.php">INICIAR SESIÓN</a></li>';
+                    sessionControls.innerHTML = '<a href="../PHP/inicio_sesion.php" class="btn-sesion">INICIAR SESIÓN</a>';
+                    sessionHTML = '<li><a href="../PHP/inicio_sesion.php">INICIAR SESIÓN</a></li>';
                 }
 
                 const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');

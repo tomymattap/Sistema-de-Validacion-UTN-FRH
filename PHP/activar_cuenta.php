@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($tipo === 'admin') {
             $stmt = $conexion->prepare("UPDATE admin SET Password = ? WHERE Legajo = ?"); // Admin no tiene first_login_done
         } else {
-            $stmt = $conexion->prepare("UPDATE alumno SET Password = ?, first_login_done = 1 WHERE ID_Cuil_Alumno = ?");
+            $stmt = $conexion->prepare("UPDATE alumno SET Password = ?, first_login_done = 1 WHERE ID_Cuil_Alumno = ?"); // La tabla sigue siendo 'alumno'
         }
 
         $stmt->bind_param("ss", $hashed_password, $identificador);
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             unset($_SESSION['activacion_identificador']);
             unset($_SESSION['activacion_tipo']);
             session_destroy();
-            header('Location: iniciosesion.php?registro=exitoso');
+            header('Location: inicio_sesion.php?registro=exitoso');
             exit;
         } else {
             $error = "Hubo un error al activar su cuenta. Por favor, intente de nuevo.";
@@ -72,14 +72,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Contraseña - UTN FRH</title>
     <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/iniciosesion.css">
+    <link rel="stylesheet" href="../CSS/INICIO/inicio_sesion.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header class="site-header">
         <div class="header-container">
             <div class="logo">
-                <a href="../index.html"><img src="../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
+                <a href="<?php echo $base_path; ?>index.html"><img src="<?php echo $img_path; ?>UTNLogo.png" alt="Logo UTN FRH"></a>
             </div>
         </div>
     </header>

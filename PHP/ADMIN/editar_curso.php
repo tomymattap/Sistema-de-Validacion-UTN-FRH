@@ -65,8 +65,7 @@ if ($id_curso) {
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css">
-    <link rel="stylesheet" href="../../CSS/verinscriptos.css">
-    <link rel="stylesheet" href="../../CSS/gestionar_cursos.css">
+    <link rel="stylesheet" href="../../CSS/ADMIN/gestionar_cursos.css">
    
 </head>
 <body class="fade-in">
@@ -78,7 +77,7 @@ if ($id_curso) {
             <nav class="main-nav">
                 <ul>
                     <li><a href="../../index.html">VALIDAR</a></li>
-                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
@@ -96,7 +95,7 @@ if ($id_curso) {
         <nav>
             <ul>
                 <li><a href="../../index.html">VALIDAR</a></li>
-                <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
             </ul>
         </nav>
@@ -104,12 +103,12 @@ if ($id_curso) {
 
     <main class="admin-section" style="padding-top: 2rem; padding-bottom: 2rem;">
         <div class="gestion-cursos-container">
-            <aside class="menu-lateral">
-                <a href="gestionar_cursos.php" class="menu-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
-            </aside>
 
             <div class="contenido-principal">
-                <h1 class="main-title">Editar Curso #<?= htmlspecialchars($curso['ID_Curso']) ?></h1>
+                <div id="header-container">
+                    <h1 class="main-title">Editar Curso: <?= htmlspecialchars($curso['Nombre_Curso']) ?></h1>
+                    <a href="gestionar_cursos.php" class="menu-btn volver-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
+                </div>
                 <div class="form-container">
                     <form action="editar_curso.php" method="POST" class="form-grid">
                         <input type="hidden" name="id_curso" value="<?= htmlspecialchars($curso['ID_Curso']) ?>">
@@ -134,13 +133,36 @@ if ($id_curso) {
                             <label for="carga_horaria">Carga Horaria (opcional)</label>
                             <input type="text" id="carga_horaria" name="carga_horaria" value="<?= htmlspecialchars($curso['Carga_Horaria']) ?>" placeholder="Ej: 40 horas">
                         </div>
+
                         <div class="form-group">
                             <label for="tipo">Tipo</label>
                             <select id="tipo" name="tipo" required>
-                                <option value="GENUINO" <?= $curso['Tipo'] == 'GENUINO' ? 'selected' : '' ?>>Genuino</option>
-                                <option value="CERTIFICACION" <?= $curso['Tipo'] == 'CERTIFICACION' ? 'selected' : '' ?>>Certificación</option>
+                                <?php
+                                // Convertimos el valor actual del registro a mayúsculas para comparación uniforme
+                                $tipo_actual = strtoupper(trim($curso['Tipo'] ?? ''));
+
+                                // Opciones válidas
+                                $opciones = [
+                                    'GENUINO' => 'Genuino',
+                                    'CERTIFICACION' => 'Certificación'
+                                ];
+
+                                // Si el valor actual no coincide con ninguna de las opciones esperadas,
+                                // mostramos el valor tal cual, pero deshabilitado (para no romper el flujo)
+                                if (!array_key_exists($tipo_actual, $opciones)) {
+                                    echo '<option value="" selected disabled>' . htmlspecialchars($curso['Tipo']) . '</option>';
+                                }
+
+                                // Recorremos las opciones estándar
+                                foreach ($opciones as $valor => $texto) {
+                                    $selected = ($tipo_actual === $valor) ? 'selected' : '';
+                                    echo "<option value='$valor' $selected>$texto</option>";
+                                }
+                                ?>
                             </select>
                         </div>
+
+
                         <div class="form-group full-width">
                             <label for="descripcion">Descripción (opcional)</label>
                             <textarea id="descripcion" name="descripcion"><?= htmlspecialchars($curso['Descripcion']) ?></textarea>
@@ -179,14 +201,14 @@ if ($id_curso) {
                             <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                             <div class="dropdown-menu">
                                 <ul>
-                                    <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                                    <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                                     <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                                     <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
                                     <li><a href="../logout.php">Cerrar Sesión</a></li>
                                 </ul>
                             </div>`;
                         sessionHTML = `
-                            <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                            <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                             <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
                             <li><a href="../logout.php">Cerrar Sesión</a></li>`;
@@ -195,7 +217,7 @@ if ($id_curso) {
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
-                    window.location.href = '../iniciosesion.php';
+                    window.location.href = '../inicio_sesion.php';
                 }
 
                 const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');

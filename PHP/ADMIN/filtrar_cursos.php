@@ -5,12 +5,14 @@ include("../conexion.php");
 // Obtener valores distintos para los filtros
 $modalidades = mysqli_query($conexion, "SELECT DISTINCT Modalidad FROM curso ORDER BY Modalidad");
 $categorias = mysqli_query($conexion, "SELECT DISTINCT Categoria FROM curso ORDER BY Categoria");
+$comisiones = mysqli_query($conexion, "SELECT DISTINCT COALESCE(Comision, 'Unica') AS Comision FROM inscripcion ORDER BY Comision");
 $tipos = mysqli_query($conexion, "SELECT DISTINCT Tipo FROM curso ORDER BY Tipo");
 
 // Obtener los filtros enviados por GET
 $filtro_general = isset($_GET['filtro_general']) ? mysqli_real_escape_string($conexion, $_GET['filtro_general']) : '';
 $modalidad = isset($_GET['modalidad']) ? mysqli_real_escape_string($conexion, $_GET['modalidad']) : '';
 $categoria = isset($_GET['categoria']) ? mysqli_real_escape_string($conexion, $_GET['categoria']) : '';
+$comision = isset($_GET['comision']) ? mysqli_real_escape_string($conexion, $_GET['comision']) : '';
 $tipo = isset($_GET['tipo']) ? mysqli_real_escape_string($conexion, $_GET['tipo']) : '';
 $ver_sin_docente = isset($_GET['sin_docente']); // <-- nuevo botón
 
@@ -52,6 +54,16 @@ if ($ver_sin_docente) {
         $types .= 's';
     }
 
+    if (!empty($comision)) {
+        if ($comision === 'Unica') {
+            $where_clauses[] = "c.ID_Curso IN (SELECT DISTINCT ID_Curso FROM inscripcion WHERE Comision IS NULL)";
+        } else {
+            $where_clauses[] = "c.ID_Curso IN (SELECT DISTINCT ID_Curso FROM inscripcion WHERE Comision = ?)";
+            $params[] = &$comision;
+            $types .= 's';
+        }
+    }
+
     if (!empty($tipo)) {
         $where_clauses[] = "Tipo = ?";
         $params[] = &$tipo;
@@ -59,7 +71,7 @@ if ($ver_sin_docente) {
     }
 
     // Construcción final de la consulta
-    $consulta_sql = "SELECT * FROM curso";
+    $consulta_sql = "SELECT c.* FROM curso c";
     if (!empty($where_clauses)) {
         $consulta_sql .= " WHERE " . implode(' AND ', $where_clauses);
     }
@@ -95,8 +107,7 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css">
-    <link rel="stylesheet" href="../../CSS/verinscriptos.css"> 
-    <link rel="stylesheet" href="../../CSS/gestionar_cursos.css"> 
+    <link rel="stylesheet" href="../../CSS/ADMIN/gestionar_cursos.css"> 
 </head>
 <body class="fade-in">
     <div class="preloader">
@@ -111,7 +122,7 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
             <nav class="main-nav">
                 <ul>
                     <li><a href="../../index.html">VALIDAR</a></li>
-                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
@@ -129,7 +140,7 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
         <nav>
             <ul>
                 <li><a href="../../index.html">VALIDAR</a></li>
-                <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
             </ul>
         </nav>
@@ -170,6 +181,15 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
                             </select>
                         </div>
                         <div class="filter-group">
+                            <label for="comision">Comisión:</label>
+                            <select name="comision" id="comision">
+                                <option value="">Todas</option>
+                                <?php while ($fila = mysqli_fetch_assoc($comisiones)): ?>
+                                    <option value="<?= htmlspecialchars($fila['Comision']) ?>" <?= $comision == $fila['Comision'] ? 'selected' : '' ?>><?= htmlspecialchars($fila['Comision']) ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                        </div>
+                        <div class="filter-group">
                             <label for="tipo">Tipo:</label>
                             <select name="tipo" id="tipo">
                                 <option value="">Todos</option>
@@ -204,62 +224,156 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
                         <?php endif; ?>
                     </div>
 
-
-                    
-
-                    <table id="tabla-cursos">
-                        <thead>
-                            <tr>
-                                <th>ID Curso</th>
-                                <th>Nombre</th>
-                                <th>Docente</th>
-                                <th>Modalidad</th>
-                                <th>Categoría</th>
-                                <th>Carga Horaria</th>
-                                <th>Descripción</th>
-                                <th>Requisitos</th>
-                                <th>Tipo</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if ($resultado && mysqli_num_rows($resultado) > 0): ?>
-                                <?php while ($fila = mysqli_fetch_assoc($resultado)): ?>
-                                    <tr>
-                                        <td><?= htmlspecialchars($fila['ID_Curso']); ?></td>
-                                        <td><?= htmlspecialchars($fila['Nombre_Curso']); ?></td>
-                                        <td><?= htmlspecialchars($fila['Docente']); ?></td>
-                                        <td><?= htmlspecialchars($fila['Modalidad']); ?></td>
-                                        <td><?= htmlspecialchars($fila['Categoria']); ?></td>
-                                        <td><?= htmlspecialchars($fila['Carga_Horaria']); ?></td>
-                                        <td><?= htmlspecialchars($fila['Descripcion']); ?></td>
-                                        <td class="col-descripcion"><?= htmlspecialchars($fila['Requisitos']); ?></td>
-                                        <td><?= htmlspecialchars($fila['Tipo']); ?></td>
-                                        <td class="actions">
-                                            <a href="editar_curso.php?id=<?= $fila['ID_Curso'] ?>" class="btn-edit" title="Editar"><i class="fas fa-pencil-alt"></i></a>
-                                            <a href="confirmar_eliminar_curso.php?id=<?= $fila['ID_Curso'] ?>" class="btn-delete" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
-                                        </td>
-                                    </tr>
-                                <?php endwhile; ?>
-                            <?php else: ?>
+                    <form action="confirmar_eliminar_curso.php" method="POST" id="form-eliminar-multiple">
+                        <table id="tabla-cursos">
+                            <thead>
                                 <tr>
-                                    <td colspan="10" style="text-align: center; padding: 2rem;">No se encontraron cursos con los filtros aplicados.</td>
+                                    <th><input type="checkbox" id="seleccionar-todos" title="Seleccionar todos"></th>
+                                    <th>ID Curso</th>
+                                    <th>Nombre</th>
+                                    <th>Docente</th>
+                                    <th>Modalidad</th>
+                                    <th>Categoría</th>
+                                    <th>Carga Horaria</th>
+                                    <th>Tipo</th>
+                                    <th>Acciones</th>
                                 </tr>
-                            <?php endif; ?> 
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php if ($resultado && mysqli_num_rows($resultado) > 0): ?>
+                                    <?php while ($fila = mysqli_fetch_assoc($resultado)): ?>
+                                        <tr>
+                                            <td class="col-checkbox"><input type="checkbox" name="cursos_a_eliminar[]" value="<?= $fila['ID_Curso'] ?>" class="checkbox-curso"></td>
+                                            <td><?= htmlspecialchars($fila['ID_Curso']); ?></td>
+                                            <td><?= htmlspecialchars($fila['Nombre_Curso']); ?></td>
+                                            <td><?= htmlspecialchars($fila['Docente']); ?></td>
+                                            <td><?= htmlspecialchars($fila['Modalidad']); ?></td>
+                                            <td><?= htmlspecialchars($fila['Categoria']); ?></td>
+                                            <td><?= htmlspecialchars($fila['Carga_Horaria']); ?></td>
+                                            <td><?= htmlspecialchars($fila['Tipo']); ?></td>
+                                            <td class="actions">
+                                                <a href="editar_curso.php?id=<?= $fila['ID_Curso'] ?>" class="btn-edit" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                                <a href="confirmar_eliminar_curso.php?id=<?= $fila['ID_Curso'] ?>" class="btn-delete" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
+                                            </td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="9" style="text-align: center; padding: 2rem;">No se encontraron cursos con los filtros aplicados.</td>
+                                    </tr>
+                                <?php endif; ?> 
+                            </tbody>
+                        </table>
+                        <button type="submit" id="btn-eliminar-flotante" class="btn-flotante-eliminar" style="display:none;">
+                            <i class="fas fa-trash-alt"></i> Eliminar Seleccionados (<span id="contador-seleccion">0</span>)
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer class="site-footer"></footer>
-
-    <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba">
-        <i class="fas fa-arrow-up"></i>
-    </a>
+    <footer class="site-footer">
+    <div class="footer-container">
+        <div class="footer-logo-info">
+            <img src="../../Imagenes/UTNLogo_footer.webp" alt="Logo UTN" class="footer-logo">
+            <div class="footer-info">
+                <p>París 532, Haedo (1706)</p>
+                <p>Buenos Aires, Argentina</p><br>
+                <p>Número de teléfono del depto.</p><br>
+                <p>extension@frh.utn.edu.ar</p>
+            </div>
+        </div>
+        <div class="footer-social-legal">
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <div class="footer-legal">
+                <a href="#">Contacto</a><br>
+                <a href="#">Políticas de Privacidad</a>
+            </div>
+        </div>
+        <div class="footer-separator"></div>
+        <div class="footer-nav">
+            <h4>Navegación</h4>
+            <ul>
+                <li><a href="<?php echo $base_path; ?>index.html">Validar</a></li>
+                <li><a href="<?php echo $html_path; ?>sobre_nosotros.html">Sobre Nosotros</a></li>
+                <li><a href="<?php echo $html_path; ?>contacto.html">Contacto</a></li>
+            </ul>
+        </div>
+        <div class="footer-separator"></div>
+        <div class="footer-dynamic-nav">
+            <?php if (isset($_SESSION['user_name'])): ?>
+                <h4><?php echo $_SESSION['user_rol'] == 1 ? 'Admin' : 'Estudiante'; ?></h4>
+                <ul>
+                    <?php if ($_SESSION['user_rol'] == 1): ?>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
+                    <?php else: ?>
+                        <br>
+                        <li><a href="#">Mi Perfil</a></li>
+                        <br>
+                        <li><a href="#">Inscripciones</a></li>
+                        <br>
+                        <li><a href="#">Certificaciones</a></li>
+                    <?php endif; ?>
+                </ul>
+            <?php else: ?>
+                <h4>Acceso</h4>
+                <ul>
+                    <li><a href="<?php echo $php_path; ?>inicio_sesion.php">Iniciar Sesión</a></li>
+                </ul>
+            <?php endif; ?>
+        </div>
+    </div>
+    </footer>
+    <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 
     <script src="../../JavaScript/general.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnFlotante = document.getElementById('btn-eliminar-flotante');
+            const contadorSpan = document.getElementById('contador-seleccion');
+            const checkboxes = document.querySelectorAll('.checkbox-curso');
+            const seleccionarTodos = document.getElementById('seleccionar-todos');
+
+            function actualizarBotonFlotante() {
+                const seleccionados = document.querySelectorAll('.checkbox-curso:checked').length;
+                contadorSpan.textContent = seleccionados;
+                if (seleccionados > 0) {
+                    btnFlotante.style.display = 'flex';
+                } else {
+                    btnFlotante.style.display = 'none';
+                }
+            }
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', actualizarBotonFlotante);
+            });
+
+            seleccionarTodos.addEventListener('change', function() {
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+                actualizarBotonFlotante();
+            });
+
+            document.getElementById('form-eliminar-multiple').addEventListener('submit', function(e) {
+                if (document.querySelectorAll('.checkbox-curso:checked').length === 0) {
+                    alert('Debe seleccionar al menos un curso para eliminar.');
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
     <script>
         fetch('../get_user_name.php')
             .then(response => response.json())
@@ -275,23 +389,25 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
                             <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                             <div class="dropdown-menu">
                                 <ul>
-                                    <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                                    <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                                     <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                                     <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                    <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
                                     <li><a href="../logout.php">Cerrar Sesión</a></li>
                                 </ul>
                             </div>`;
                         sessionHTML = `
-                            <li><a href="verinscriptos.php">Ver Inscriptos</a></li>
+                            <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                             <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                            <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
                             <li><a href="../logout.php">Cerrar Sesión</a></li>`;
                     } else {
                         window.location.href = '../../index.html';
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
-                    window.location.href = '../../HTML/iniciosesion.html';
+                    window.location.href = '../inicio_sesion.php';
                 }
                 mobileNav.insertAdjacentHTML('beforeend', sessionHTML);
             });

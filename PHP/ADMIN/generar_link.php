@@ -4,7 +4,7 @@ include '../conexion.php';
 
 // Validar que solo los administradores puedan acceder
 if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
-    header('Location: ../iniciosesion.php?error=acceso_denegado');
+    header('Location: ../inicio_sesion.php?error=acceso_denegado');
     exit;
 }
 
@@ -40,7 +40,7 @@ try {
     <title>Generar Enlace Externo - Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css">
-    <link rel="stylesheet" href="../../CSS/gestionar_cursos.css">
+    <link rel="stylesheet" href="../../CSS/ADMIN/gestionar_cursos.css">
 </head>
 <body class="fade-in">
     <header class="site-header">
@@ -54,8 +54,8 @@ try {
             <div class="contenido-principal">
 
                 <div id="header-container">
-                    
-                    <a href="gestionar_cursos.php" class="menu-btn volver-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
+                    <h1 class="main-title" style="color: transparent; user-select: none;">.</h1>
+                    <a href="gestion_externos.php" class="menu-btn volver-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
                 </div>
 
                 <div class="link-generation-container">
@@ -84,7 +84,14 @@ try {
         </div>
     </main>
 
-    <footer class="site-footer"></footer>
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-info" style="text-align: center; width: 100%;">
+                <p>París 532, Haedo (1706) | Buenos Aires, Argentina</p>
+                <p>extension@frh.utn.edu.ar</p>
+            </div>
+        </div>
+    </footer>
     <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 
     <script src="../../JavaScript/general.js"></script>

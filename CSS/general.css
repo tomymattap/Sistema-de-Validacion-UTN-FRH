@@ -143,10 +143,17 @@ ul {
 
 /* Ajustes para el menú desplegable del usuario */
 .user-menu-toggle {
-    padding: 0;
-    border: none;
-    background: none;
-    color: inherit;
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+    padding: 0.85rem 1.7rem;
+    border: 2px solid var(--color-principal);
+    border-radius: 25px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     font: inherit;
 }
 
@@ -453,16 +460,25 @@ ul {
         gap: 2rem;
     }
 
-    .footer-logo-info, .footer-social-legal, .footer-nav, .footer-dynamic-nav {
-        flex: 1;
-        min-width: 0;
-    }
-
     .footer-logo-info {
+        flex: 1.5; /* Give more space to the first column */
         display: flex;
         align-items: flex-start;
         gap: 2.5rem;
-        flex: 1.5;
+        min-width: 0;
+    }
+
+    .footer-social-legal {
+        flex: 1;
+        min-width: 0; /* Prevent overflow */
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* Align items to the top */
+    }
+
+    .footer-nav, .footer-dynamic-nav {
+        flex: 1;
+        min-width: 0; /* Prevent overflow */
     }
 
     .footer-info {

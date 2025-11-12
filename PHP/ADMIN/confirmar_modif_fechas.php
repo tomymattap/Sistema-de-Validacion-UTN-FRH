@@ -4,7 +4,7 @@ include("../conexion.php");
 
 // Validar que solo los administradores puedan acceder
 if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
-    header('Location: ../iniciosesion.php?error=acceso_denegado');
+    header('Location: ../inicio_sesion.php?error=acceso_denegado');
     exit;
 }
 
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cursos'])) {
     <title>Confirmación de Cambios - Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css">
-    <link rel="stylesheet" href="../../CSS/gestionar_cursos.css">
+    <link rel="stylesheet" href="../../CSS/ADMIN/gestionar_cursos.css">
 </head>
 <body class="fade-in">
     <header class="site-header">

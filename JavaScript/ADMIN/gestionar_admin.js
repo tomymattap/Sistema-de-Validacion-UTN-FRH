@@ -13,6 +13,19 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => container.remove(), 3500);
     };
 
+    // Función para obtener el rol del usuario actual desde el servidor
+    const obtenerRolUsuario = async () => {
+        try {
+            const response = await fetch('../get_user_name.php'); // Revertido al endpoint genérico
+            if (!response.ok) return null;
+            const data = await response.json();
+            // Devuelve tanto el rol como el ID del admin logueado
+            return { rol: parseInt(data.user_rol, 10), id: data.user_id };
+        } catch (error) {
+            return null;
+        }
+    };
+
     // Función para renderizar la tabla
     const renderizarTabla = (admins) => {
         tablaAdminsBody.innerHTML = '';
@@ -33,13 +46,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 return text.replace(regex, '<mark>$1</mark>');
             };
 
+            let rolTexto = 'Otro'; // Valor por defecto
+            if (admin.ID_Rol == 1) {
+                rolTexto = 'Admin';
+            } else if (admin.ID_Rol == 3) {
+                rolTexto = 'Secretario';
+            }
+
+
             row.innerHTML = `
                 <td>${admin.ID_Admin}</td>
                 <td>${highlight(String(admin.Legajo))}</td>
                 <td>${highlight(admin.Nombre)}</td>
                 <td>${highlight(admin.Apellido)}</td>
                 <td>${admin.Email}</td>
-                <td>${admin.ID_Rol == 1 ? 'Admin' : 'Otro'}</td>
+                <td>${rolTexto}</td>
                 <td class="acciones-admin">
                     <button class="btn-editar" data-id="${admin.ID_Admin}" title="Editar">✎</button>
                     <button class="btn-eliminar" data-id="${admin.ID_Admin}" title="Eliminar">🗑️</button>
@@ -107,29 +128,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // Abrir modal para AGREGAR
     btnAgregar.addEventListener('click', () => {
         const contenido = `
-            <form id="formAgregarAdmin">
-                <div class="campo-form">
-                    <label for="legajo">Legajo:</label>
-                    <input type="text" id="legajo" name="legajo" required pattern="[0-9]*" inputmode="numeric" placeholder="Ingrese solo números">
-                </div>
-                <div class="campo-form">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre" required>
-                </div>
-                <div class="campo-form">
-                    <label for="apellido">Apellido:</label>
-                    <input type="text" id="apellido" name="apellido" required>
-                </div>
-                <div class="campo-form">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <input type="hidden" name="rol" value="1">
-                <div class="botones-form">
-                    <button type="submit" class="btn-guardar">Guardar</button>
-                    <button type="button" class="btn-cancelar">Cancelar</button>
-                </div>
-            </form>
+        <form id="formAgregarAdmin">
+            <div class="campo-form">
+                <label for="legajo">Legajo:</label>
+                <input type="text" id="legajo" name="legajo" required pattern="[0-9]*" inputmode="numeric" placeholder="Ingrese solo números">
+            </div>
+            <div class="campo-form">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+            <div class="campo-form">
+                <label for="apellido">Apellido:</label>
+                <input type="text" id="apellido" name="apellido" required>
+            </div>
+            <div class="campo-form">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <input type="hidden" name="rol" value="1">
+            <div class="botones-form">
+                <button type="submit" class="btn-guardar">Guardar</button>
+                <button type="button" class="btn-cancelar">Cancelar</button>
+            </div>
+        </form>
         `;
         mostrarModal('Agregar Administrador', contenido, async (form) => {
             const formData = new FormData(form);
@@ -158,9 +179,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // EDITAR
         if (button.classList.contains('btn-editar')) {
+            const sesion = await obtenerRolUsuario();
             try {
                 const response = await fetch(`acciones/obtener_admin.php?id=${id}`);
                 const result = await response.json();
+
+                if (sesion && result.data && result.data.ID_Admin === sesion.id) {
+                    mostrarMensaje('No puede editar su propio perfil desde esta interfaz.', 'error');
+                    return;
+                }
+
                 if (!result.success) throw new Error(result.message);
                 const admin = result.data;
 
@@ -187,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <label for="rol">Rol:</label>
                             <select id="rol" name="rol" required>
                                 <option value="1" ${admin.ID_Rol == 1 ? 'selected' : ''}>Admin</option>
-                                <option value="2" ${admin.ID_Rol == 2 ? 'selected' : ''}>Otro</option>
+                                <option value="3" ${admin.ID_Rol == 3 ? 'selected' : ''}>Secretario</option>
                             </select>
                         </div>
                         <div class="botones-form">
@@ -220,6 +248,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // ELIMINAR
         if (button.classList.contains('btn-eliminar')) {
             const idAdmin = button.dataset.id;
+            const sesion = await obtenerRolUsuario();
+            if (sesion && idAdmin === sesion.id) {
+                mostrarMensaje('No puede eliminarse a sí mismo desde esta interfaz.', 'error');
+                return;
+            }
+
             const contenido = `
                 <div class="modal-confirmacion-institucional">
                     <div class="icono-advertencia">⚠️</div>

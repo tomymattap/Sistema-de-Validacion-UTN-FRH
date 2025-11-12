@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Validar rol de administrador
 if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
-    header('Location: ../iniciosesion.php?error=acceso_denegado');
+    header('Location: ../inicio_sesion.php?error=acceso_denegado');
     exit;
 }
 
@@ -160,7 +160,7 @@ $php_path = $base_path . 'PHP/';
         <nav class="main-nav hide-on-mobile">
             <ul>
                 <li><a href="<?php echo $base_path; ?>index.html">VALIDAR</a></li>
-                <li><a href="<?php echo $html_path; ?>sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="<?php echo $html_path; ?>sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="<?php echo $html_path; ?>contacto.html">CONTACTO</a></li>
             </ul>
         </nav>
@@ -169,10 +169,10 @@ $php_path = $base_path . 'PHP/';
                 <a href="#" class="btn-sesion user-menu-toggle">Hola, <?php echo htmlspecialchars($_SESSION['user_name']); ?> <i class="fas fa-chevron-down"></i></a>
                 <div class="dropdown-menu">
                     <ul>
-                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                         <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                         <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php" class="active">Emitir Certificados</a></li>
-                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
                         <li><a href="<?php echo $php_path; ?>logout.php">Cerrar Sesión</a></li>
                     </ul>
                 </div>
@@ -187,15 +187,15 @@ $php_path = $base_path . 'PHP/';
     <nav>
         <ul>
             <li><a href="<?php echo $base_path; ?>index.html">VALIDAR</a></li>
-            <li><a href="<?php echo $html_path; ?>sobrenosotros.html">SOBRE NOSOTROS</a></li>
+            <li><a href="<?php echo $html_path; ?>sobre_nosotros.html">SOBRE NOSOTROS</a></li>
             <li><a href="<?php echo $html_path; ?>contacto.html">CONTACTO</a></li>
             <li id="mobile-session-section">
                 <a href="#" class="user-menu-toggle-mobile">Hola, <?php echo htmlspecialchars($_SESSION['user_name']); ?> <i class="fas fa-chevron-down"></i></a>
                 <ul class="submenu">
-                    <li><a href="<?php echo $php_path; ?>ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                    <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                     <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                     <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php" class="active">Emitir Certificados</a></li>
-                    <li><a href="<?php echo $php_path; ?>ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
+                    <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
                     <li><a href="<?php echo $php_path; ?>logout.php">Cerrar Sesión</a></li>
                 </ul>
             </li>
@@ -482,9 +482,39 @@ document.addEventListener('DOMContentLoaded', function() {
             <h4>Navegación</h4>
             <ul>
                 <li><a href="<?php echo $base_path; ?>index.html">Validar</a></li>
-                <li><a href="<?php echo $html_path; ?>sobrenosotros.html">Sobre Nosotros</a></li>
+                <li><a href="<?php echo $html_path; ?>sobre_nosotros.html">Sobre Nosotros</a></li>
                 <li><a href="<?php echo $html_path; ?>contacto.html">Contacto</a></li>
             </ul>
+        </div>
+        <div class="footer-separator"></div>
+        <div class="footer-dynamic-nav">
+            <?php if (isset($_SESSION['user_name'])): ?>
+                <h4><?php echo $_SESSION['user_rol'] == 1 ? 'Admin' : 'Alumno'; ?></h4>
+                <ul>
+                    <?php if ($_SESSION['user_rol'] == 1): ?>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
+                    <?php else: ?>
+                        <br>
+                        <li><a href="#">Mi Perfil</a></li>
+                        <br>
+                        <li><a href="#">Inscripciones</a></li>
+                        <br>
+                        <li><a href="#">Certificaciones</a></li>
+                    <?php endif; ?>
+                </ul>
+            <?php else: ?>
+                <h4>Acceso</h4>
+                <ul>
+                    <li><a href="<?php echo $php_path; ?>inicio_sesion.php">Iniciar Sesión</a></li>
+                </ul>
+            <?php endif; ?>
         </div>
     </div>
 </footer>

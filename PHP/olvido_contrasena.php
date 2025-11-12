@@ -98,7 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $mail->addAddress($email, $nombre);
 
                     $mail->isHTML(true);
-                    $mail->Subject = 'Restablecimiento de Contrasena';
+                    $mail->Subject = 'Restablecimiento de Contraseña';
+                    $mail->CharSet = 'UTF-8'; // ¡Esta es la línea clave!
                     $reset_link = "http://{$_SERVER['HTTP_HOST']}/Sistema-De-Validacion-UTN-FRH/PHP/reset_contrasena.php?token=$token";
                     $mail->Body    = "Hola $nombre,<br><br>Hemos recibido una solicitud para restablecer tu contraseña. Haz clic en el siguiente enlace para continuar:<br><a href='$reset_link'>Restablecer Contraseña</a><br><br>Si no solicitaste esto, puedes ignorar este correo.<br><br>Saludos,<br>Equipo de UTN FRH.";
 
@@ -124,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperar Contraseña - UTN FRH</title>
     <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/iniciosesion.css">
+    <link rel="stylesheet" href="../CSS/INICIO/inicio_sesion.css">
 </head>
 <body>
     <header class="site-header">
@@ -154,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <button type="submit" class="submit-btn">ENVIAR ENLACE</button>
                 <div class="form-options" style="text-align: center; margin-top: 1rem;">
-                    <a href="iniciosesion.php">Volver a Iniciar Sesión</a>
+                    <a href="inicio_sesion.php">Volver a Iniciar Sesión</a>
                 </div>
             </form>
         </div>

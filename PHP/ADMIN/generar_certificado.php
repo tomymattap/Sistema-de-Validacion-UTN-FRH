@@ -12,7 +12,7 @@ session_start();
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css">
-    <link rel="stylesheet" href="../../CSS/generar_certificado.css">
+    <link rel="stylesheet" href="../../CSS/ADMIN/generar_certificado.css">
 </head>
 <body class="fade-in">
     <div class="preloader">
@@ -28,7 +28,7 @@ session_start();
                 <ul>
                     <li><a href="../../index.html">VALIDAR</a></li>
                     <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
@@ -50,7 +50,7 @@ session_start();
             <ul>
                 <li><a href="../../index.html">VALIDAR</a></li>
                 <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
             </ul>
         </nav>
@@ -100,7 +100,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_curso = $_POST["id_curso"];
     $anio = $_POST["anio"];
     $cuatrimestre = $_POST["cuatrimestre"];
-    $alumnos = $_POST["alumnos"];
 
     $alumnos_a_certificar = [];
 
@@ -108,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     mysqli_begin_transaction($conexion);
 
     try {
-        foreach ($alumnos as $cuil => $alumno) {
+        foreach ($_POST["alumnos"] as $cuil => $alumno) {
             if (!isset($alumno['cuil'])) continue; // solo los alumnos seleccionados
 
             $estado = $alumno['estado'];
@@ -122,21 +121,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     CASE WHEN c.Tipo = 'GENUINO' THEN 'G' ELSE 'C' END,
                     YEAR(CURDATE()),
                     LPAD(i.ID_Curso, 2, '0'),
-                    LPAD(COALESCE(MAX(CAST(SUBSTRING(ce.ID_CUV, 8) AS UNSIGNED)), 0) + 1, 4, '0')
-                ) FROM INSCRIPCION i JOIN CURSO c ON i.ID_Curso = c.ID_Curso LEFT JOIN CERTIFICACION ce ON ce.ID_CUV LIKE CONCAT(CASE WHEN c.Tipo = 'GENUINO' THEN 'G' ELSE 'C' END, YEAR(CURDATE()), LPAD(i.ID_Curso, 2, '0'), '%') WHERE i.ID_Cuil_Alumno = ? AND i.ID_Curso = ? AND i.Anio = ? AND i.Cuatrimestre = ?),
+                    LPAD(COALESCE(MAX(CAST(SUBSTRING(ce.ID_CUV, 8) AS UNSIGNED)), 0) + 1, 4, '0') 
+                ) FROM INSCRIPCION i JOIN CURSO c ON i.ID_Curso = c.ID_Curso LEFT JOIN CERTIFICACION ce ON ce.ID_CUV LIKE CONCAT(CASE WHEN c.Tipo = 'GENUINO' THEN 'G' ELSE 'C' END, YEAR(CURDATE()), LPAD(i.ID_Curso, 2, '0'), '%') WHERE i.ID_Cuil_Alumno = ? AND i.ID_Curso = ? AND i.Anio = ?),
                 i.ID_Inscripcion
             FROM INSCRIPCION i
-            WHERE i.ID_Cuil_Alumno = ? AND i.ID_Curso = ? AND i.Anio = ? AND i.Cuatrimestre = ? AND i.Estado_Cursada <> 'CERTIFICADA'
+            WHERE i.ID_Cuil_Alumno = ? AND i.ID_Curso = ? AND i.Anio = ? AND i.Estado_Cursada <> 'CERTIFICADA'
             ");
-            $stmt_insert->bind_param("ssiiisiiis", $estado, $id_admin, $cuil, $id_curso, $anio, $cuatrimestre, $cuil, $id_curso, $anio, $cuatrimestre);
+            $stmt_insert->bind_param("ssiiisii", $estado, $id_admin, $cuil, $id_curso, $anio, $cuil, $id_curso, $anio);
 
             if (!$stmt_insert->execute()) {
                 throw new Exception("Error al generar certificación para $cuil: " . $stmt_insert->error);
             }
 
             // 2️⃣ ACTUALIZA el estado de cursada
-            $stmt_update = $conexion->prepare("UPDATE INSCRIPCION SET Estado_Cursada = 'CERTIFICADA' WHERE ID_Cuil_Alumno = ? AND ID_Curso = ? AND Anio = ? AND Cuatrimestre = ?");
-            $stmt_update->bind_param("siss", $cuil, $id_curso, $anio, $cuatrimestre);
+            $stmt_update = $conexion->prepare("UPDATE INSCRIPCION SET Estado_Cursada = 'CERTIFICADA' WHERE ID_Cuil_Alumno = ? AND ID_Curso = ? AND Anio = ?");
+            $stmt_update->bind_param("sii", $cuil, $id_curso, $anio);
 
             if (!$stmt_update->execute()) {
                 throw new Exception("Error al actualizar estado para $cuil: " . $stmt_update->error);
@@ -165,7 +164,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $mail->isSMTP();
                     $mail->Host       = 'smtp.gmail.com';
                     $mail->SMTPAuth   = true;
-                    $mail->Username   = 'sollione2004@gmail.com'; // Tu correo de Gmail
+                    $mail->Username   = 'sollione2004@gmail.com'; // Cambiar al mail de la secretaria
                     $mail->Password   = 'masu hqty zqfc pudz';      // Tu contraseña de aplicación de Gmail
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port       = 587;
@@ -177,7 +176,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // Contenido del mail
                     $mail->isHTML(true);
                     $mail->Subject = 'Tu certificado del curso esta listo para descargar';
-                    $login_link = "http://{$_SERVER['HTTP_HOST']}/Sistema-De-Validacion-UTN-FRH/PHP/iniciosesion.php";
+                    $mail->CharSet = 'UTF-8'; // ¡Esta es la línea clave!
+                    $login_link = "http://{$_SERVER['HTTP_HOST']}/Sistema-De-Validacion-UTN-FRH/PHP/inicio_sesion.php";
                     $mail->Body    = "Hola " . htmlspecialchars($alumno_data['Nombre_Alumno']) . ",<br><br>Te informamos que tu certificado para el curso <strong>\"" . htmlspecialchars($nombre_curso) . "\"</strong> ya se encuentra disponible en tu perfil.<br><br>Puedes acceder a la plataforma para descargarlo haciendo clic en el siguiente enlace:<br><a href='$login_link'>Iniciar Sesión y ver mis certificados</a><br><br>Saludos,<br>Equipo de Extensión Universitaria - UTN FRH.";
 
                     $mail->send();
@@ -238,7 +238,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script src="../../JavaScript/general.js"></script>
-    <script src="../../JavaScript/emitircertificados.js"></script>
+    <script src="../../JavaScript/ADMIN/emitir_certificados.js"></script>
     <script>
         fetch('../get_user_name.php')
             .then(response => response.json())
@@ -254,16 +254,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                             <div class="dropdown-menu">
                                 <ul>
-                                    <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                                    <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                                     <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                                     <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                    <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
                                     <li><a href="../logout.php">Cerrar Sesión</a></li>
                                 </ul>
                             </div>`;
                         sessionHTML = `
-                            <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                            <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                             <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                             <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                            <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
                             <li><a href="../logout.php">Cerrar Sesión</a></li>`;
                     } else if (data.user_rol === 2) { // Alumno
                         // Redirigir si no es admin
@@ -271,8 +273,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
-                    // Redirigir si no está logueado
-                    window.location.href = '../../PHP/iniciosesion.php';
+                    // Redirigir si no está logueado o la sesión expiró
+                    window.location.href = '../inicio_sesion.php?error=session_expired';
                 }
 
                 // Añadir al menú móvil

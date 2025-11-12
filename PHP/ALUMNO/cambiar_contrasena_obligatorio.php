@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // La única condición para estar aquí es que se haya iniciado sesión por primera vez
 // y se deba forzar el cambio de contraseña. No se debe verificar el rol aún.
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['force_password_change'])) {
-    header('Location: ../iniciosesion.php'); // Si no se cumplen, se va a iniciar sesión.
+    header('Location: ../inicio_sesion.php'); // Si no se cumplen, se va a iniciar sesión.
     exit;
 }
 
@@ -70,9 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['user_rol'] = 2; // Se establece el rol de alumno.
                 unset($_SESSION['force_password_change']); // Eliminar la bandera de cambio forzado
                 
-                $success = "Su contraseña ha sido actualizada exitosamente. Será redirigido a su perfil.";
+                $success = "Su contraseña ha sido actualizada correctamente. Será redirigido a su perfil.";
                 // Redirigir después de un breve retraso para mostrar el mensaje de éxito
-                header('Refresh: 3; URL=perfil.php');
+                header('Refresh: 2; URL=perfil.php');
             } else {
                 $error = "Hubo un error al actualizar su contraseña. Por favor, intente de nuevo.";
             }
@@ -91,10 +91,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cambio de Contraseña Obligatorio - UTN FRH</title>
     <link rel="stylesheet" href="<?php echo $css_path; ?>general.css">
-    <link rel="stylesheet" href="<?php echo $css_path; ?>iniciosesion.css"> <!-- Reutilizamos estilos de inicio de sesión -->
+    <link rel="stylesheet" href="<?php echo $css_path; ?>INICIO/inicio_sesion.css"> <!-- Reutilizamos estilos de inicio de sesión -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body>
+<body class="login-page">
     <header class="site-header">
         <div class="header-container">
             <div class="logo">
@@ -110,13 +110,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h1 class="login-title">Cambiar Contraseña</h1>
             <p style="text-align: center; margin-bottom: 1.5rem;">Por seguridad, debe cambiar su contraseña inicial.</p>
 
-            <?php if ($error): ?>
-                <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
-            <?php endif; ?>
-            <?php if ($success): ?>
-                <div class="success-message"><?php echo htmlspecialchars($success); ?></div>
-            <?php endif; ?>
+            <?php if ($error) echo "<div class='error-message'>" . htmlspecialchars($error) . "</div>"; ?>
+            <?php if ($success) echo "<div class='success-message'>" . htmlspecialchars($success) . "</div>"; ?>
 
+            <?php if (!$success): ?>
             <form class="login-form" action="cambiar_contrasena_obligatorio.php" method="POST">
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 <div class="form-group">
@@ -141,20 +138,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
                 <button type="submit" class="submit-btn">CAMBIAR CONTRASEÑA</button>
-                <div class="form-options" style="text-align: center; margin-top: 1rem;">
-                    <a href="../logout.php">Cerrar Sesión</a>
-                </div>
             </form>
+            <?php endif; ?>
         </div>
     </main>
-    <footer class="site-footer">
-        <div class="footer-container">
-            <div class="footer-info" style="text-align: center; width: 100%;">
-                <p>París 532, Haedo (1706) | Buenos Aires, Argentina</p>
-                <p>extension@frh.utn.edu.ar</p>
-            </div>
-        </div>
-    </footer>
     <script>
         // Script para mostrar/ocultar contraseña
         document.querySelectorAll('.password-wrapper i[data-toggle-for]').forEach(icon => {

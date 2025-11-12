@@ -38,8 +38,10 @@ $user_type = '';
 if ($result_admin->num_rows > 0) {
     $user = $result_admin->fetch_assoc();
     $user_type = 'admin';
-} else {
-    $stmt_admin->close();
+}
+$stmt_admin->close(); // Se cierra la consulta del admin en todos los casos.
+
+if (!$user) { // Solo si no se encontró un admin, se busca en alumnos.
     $sql_alumno = "SELECT * FROM alumno WHERE reset_token_hash = ?";
     $stmt_alumno = $conexion->prepare($sql_alumno);
     $stmt_alumno->bind_param("s", $token_hash);
@@ -88,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("ss", $hashed_password, $id_value);
 
         if ($stmt->execute()) {
-            header('Location: iniciosesion.php?reset=exitoso');
+            header('Location: inicio_sesion.php?reset=exitoso');
             exit;
         } else {
             $error = "Hubo un error al actualizar la contraseña.";
@@ -103,14 +105,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restablecer Contraseña - UTN FRH</title>
     <link rel="stylesheet" href="../CSS/general.css">
-    <link rel="stylesheet" href="../CSS/iniciosesion.css">
+    <link rel="stylesheet" href="../CSS/INICIO/inicio_sesion.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header class="site-header">
         <div class="header-container">
             <div class="logo">
-                <a href="../index.html"><img src="../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
+                <a href="<?php echo $base_path; ?>index.html"><img src="<?php echo $img_path; ?>UTNLogo.png" alt="Logo UTN FRH"></a>
             </div>
         </div>
     </header>

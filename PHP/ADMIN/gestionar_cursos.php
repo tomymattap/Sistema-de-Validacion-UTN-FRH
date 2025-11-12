@@ -11,7 +11,7 @@ if (!empty($search_term)) {
 }
 
 // Consulta para obtener los cursos, filtrados si hay un término de búsqueda
-$consulta = "SELECT * FROM curso $where_sql ORDER BY ID_Curso";
+$consulta = "SELECT * FROM curso $where_sql ORDER BY ID_Curso ASC";
 $resultado = mysqli_query($conexion, $consulta);
 ?>
 
@@ -26,8 +26,8 @@ $resultado = mysqli_query($conexion, $consulta);
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css"> <!-- Estilos generales -->
-    <link rel="stylesheet" href="../../CSS/verinscriptos.css"> <!-- Estilos para tablas -->
-    <link rel="stylesheet" href="../../CSS/gestionar_cursos.css"> 
+    <link rel="stylesheet" href="../../CSS/ADMIN/gestionar_inscriptos.css"> <!-- Estilos para tablas -->
+    <link rel="stylesheet" href="../../CSS/ADMIN/gestionar_cursos.css"> 
 </head>
 <body class="fade-in">
     <div class="preloader">
@@ -43,7 +43,7 @@ $resultado = mysqli_query($conexion, $consulta);
                 <ul>
                     <li><a href="../../index.html">VALIDAR</a></li>
                     <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                     <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
@@ -58,18 +58,38 @@ $resultado = mysqli_query($conexion, $consulta);
         </div>
     </header>
 
-    <!-- Menú Off-canvas -->
-    <div class="off-canvas-menu" id="off-canvas-menu">
-        <button class="close-btn" aria-label="Cerrar menú">&times;</button>
-        <nav>
-            <ul>
-                <li><a href="../../index.html">VALIDAR</a></li>
-                <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
-            </ul>
-        </nav>
-    </div>
+<div class="off-canvas-menu" id="off-canvas-menu">
+    <button class="close-btn" aria-label="Cerrar menú">&times;</button>
+    <nav>
+        <ul>
+            <li><a href="../../index.html">VALIDAR</a></li>
+            <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
+            <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
+            <li id="mobile-session-section">
+                <?php if (isset($_SESSION['user_name'])):
+                    $user_rol = $_SESSION['user_rol'];
+                ?>
+                    <a href="#" class="user-menu-toggle-mobile">Hola, <?php echo htmlspecialchars($_SESSION['user_name']); ?> <i class="fas fa-chevron-down"></i></a>
+                    <ul class="submenu">
+                        <?php if ($user_rol == 1): // Admin ?>
+                            <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
+                            <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
+                            <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                            <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
+                        <?php else: // Estudiante ?>
+                            <li><a href="../ALUMNO/perfil.php">Mi Perfil</a></li>
+                            <li><a href="../ALUMNO/inscripciones.php">Inscripciones</a></li> 
+                            <li><a href="../ALUMNO/certificaciones.php">Certificaciones</a></li>
+                        <?php endif; ?>
+                        <li><a href="../logout.php">Cerrar Sesión</a></li>
+                    </ul>
+                <?php else: ?>
+                    <a href="../inicio_sesion.php">INICIAR SESIÓN</a>
+                <?php endif; ?>
+            </li>
+        </ul>
+    </nav>
+</div>
 
     <main class="admin-section" style="padding-top: 2rem; padding-bottom: 2rem;">
         <div class="gestion-cursos-container">
@@ -84,8 +104,8 @@ $resultado = mysqli_query($conexion, $consulta);
                         <a href="agregar_curso.php" class="menu-btn"><i class="fas fa-plus"></i> AGREGAR</a>
                         <a href="filtrar_cursos.php" class="menu-btn"><i class="fas fa-filter"></i> FILTRAR</a>
                         <a href="editar_duracion_cursos.php" class="menu-btn"><i class="fas fa-calendar-alt"></i> ACTUALIZAR FECHAS</a>
-                        <a href="generar_link.php" class="menu-btn"><i class="fas fa-share-alt"></i> COMPARTIR FORMULARIO</a>
-                        
+                        <a href="gestion_externos.php" class="menu-btn"><i class="fas fa-info-circle"></i> EXTERNOS</a>
+                        <a href="descargar_encuesta_form.php" class="menu-btn"><i class="fas fa-download"></i> DESCARGAR ENCUESTA</a>
                     </div>
 
                 </div>
@@ -167,7 +187,7 @@ $resultado = mysqli_query($conexion, $consulta);
             <h4>Navegación</h4>
             <ul>
                 <li><a href="../../index.html">Validar</a></li>
-                <li><a href="../../HTML/sobrenosotros.html">Sobre Nosotros</a></li>
+                <li><a href="../../HTML/sobre_nosotros.html">Sobre Nosotros</a></li>
                 <li><a href="../../HTML/contacto.html">Contacto</a></li>
             </ul>
         </div>
@@ -178,13 +198,13 @@ $resultado = mysqli_query($conexion, $consulta);
                 <ul>
                     <?php if ($_SESSION['user_rol'] == 1): ?>
                         <br>
-                        <li><a href="../../PHP/ADMIN/gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                        <li><a href="../../PHP/ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                         <br>
                         <li><a href="../../PHP/ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                         <br>
                         <li><a href="../../PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                         <br>
-                        <li><a href="../../PHP/ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
+                        <li><a href="../../PHP/ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
                     <?php else: ?>
                         <br>
                         <li><a href="#">Mi Perfil</a></li>
@@ -197,7 +217,7 @@ $resultado = mysqli_query($conexion, $consulta);
             <?php else: ?>
                 <h4>Acceso</h4>
                 <ul>
-                    <li><a href="../../PHP/iniciosesion.php">Iniciar Sesión</a></li>
+                    <li><a href="../../PHP/inicio_sesion.php">Iniciar Sesión</a></li>
                 </ul>
             <?php endif; ?>
         </div>
@@ -208,14 +228,12 @@ $resultado = mysqli_query($conexion, $consulta);
 </a>
 
     <script src="../../JavaScript/general.js"></script>
-    <script src="../../JavaScript/gestionar_cursos.js"></script>
+    <script src="../../JavaScript/ADMIN/gestionar_cursos.js"></script>
     <script>
         fetch('../get_user_name.php')
             .then(response => response.json())
             .then(data => {
                 const sessionControls = document.getElementById('session-controls');
-                const mobileNav = document.querySelector('.off-canvas-menu nav ul');
-                let sessionHTML = '';
 
                 if (data.user_name) {
                     let dropdownMenu;
@@ -224,31 +242,20 @@ $resultado = mysqli_query($conexion, $consulta);
                             <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
                             <div class="dropdown-menu">
                                 <ul>
-                                    <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
+                                    <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                                     <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                                     <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                                    <li><a href="gestionaradmin.php">Gestionar Administradores</a></li>
+                                    <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
                                     <li><a href="../logout.php">Cerrar Sesión</a></li>
                                 </ul>
                             </div>`;
-                        sessionHTML = `
-                            <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
-                            <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
-                            <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                            <li><a href="../logout.php">Cerrar Sesión</a></li>`;
                     } else if (data.user_rol === 2) { // Alumno
-                        // Redirigir si no es admin
                         window.location.href = '../../index.html';
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
-                    // Redirigir si no está logueado
-                    window.location.href = '../iniciosesion.php';
+                    window.location.href = '../inicio_sesion.php?error=acceso_denegado';
                 }
-
-                // Añadir al menú móvil
-                const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');
-                mobileMenuUl.insertAdjacentHTML('beforeend', sessionHTML);
             });
     </script>
 </body>

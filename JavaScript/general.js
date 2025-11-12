@@ -36,116 +36,149 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ----- Resaltar Opción de Menú Activa -----
-    const currentPath = window.location.pathname.split('/').pop();
-    const navLinks = document.querySelectorAll('.main-nav a, .off-canvas-menu a');
+    const highlightActiveLink = () => {
+        const currentPath = window.location.pathname.split('/').pop();
+        const navLinks = document.querySelectorAll('.main-nav a, .off-canvas-menu a');
 
-    navLinks.forEach(link => {
-        const linkPath = link.getAttribute('href').split('/').pop();
-        if (linkPath === currentPath) {
-            link.classList.add('active');
-        }
-    });
-
-    // ----- Lógica para desplegar el submenú en móvil -----
-    const setupMobileSubmenu = (mobileMenuToggle) => {
-        mobileMenuToggle.addEventListener('click', (e) => {
-            e.preventDefault();
-            const submenu = mobileMenuToggle.nextElementSibling;
-            submenu.classList.toggle('active');
-            const icon = mobileMenuToggle.querySelector('i');
-            icon.classList.toggle('fa-chevron-down');
-            icon.classList.toggle('fa-chevron-up');
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            const linkPath = link.getAttribute('href').split('/').pop();
+            // No marcar como activas las anclas vacías o los botones de submenú
+            if (linkPath === currentPath && currentPath !== '' && link.getAttribute('href') !== '#') {
+                link.classList.add('active');
+            }
         });
     };
 
-    const mobileSessionSection = document.getElementById('mobile-session-section');
-    if (mobileSessionSection) {
-        const observer = new MutationObserver((mutationsList, observer) => {
-            for (const mutation of mutationsList) {
-                if (mutation.type === 'childList') {
-                    const mobileMenuToggle = document.querySelector('.user-menu-toggle-mobile');
-                    if (mobileMenuToggle) {
-                        setupMobileSubmenu(mobileMenuToggle);
-                        observer.disconnect(); // Detener el observador una vez que el elemento se ha encontrado y configurado
-                    }
+    highlightActiveLink(); // Ejecutar al cargar la página
+
+    // ----- Lógica para desplegar el submenú en móvil -----
+    const setupMobileSubmenu = (mobileMenuToggle) => {
+        // Prevenir doble asignación de eventos
+        if (mobileMenuToggle.dataset.menuInitialized) return;
+        mobileMenuToggle.dataset.menuInitialized = 'true';
+
+        mobileMenuToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            const submenu = mobileMenuToggle.nextElementSibling;
+            if (submenu && submenu.classList.contains('submenu')) {
+                submenu.classList.toggle('active');
+                const icon = mobileMenuToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-chevron-down');
+                    icon.classList.toggle('fa-chevron-up');
                 }
             }
+        });
+    };
+
+    // Función para buscar y configurar el menú. Se puede llamar en cualquier momento.
+    const initializeMobileSubmenu = () => {
+        const mobileMenuToggle = document.querySelector('.user-menu-toggle-mobile');
+        if (mobileMenuToggle) {
+            setupMobileSubmenu(mobileMenuToggle);
+        }
+    };
+
+    // 1. Ejecutar al cargar el DOM para los menús renderizados por el servidor (PHP)
+    initializeMobileSubmenu();
+
+    // 2. Usar MutationObserver para menús cargados dinámicamente (JS/AJAX)
+    const mobileSessionSection = document.getElementById('mobile-session-section');
+    if (mobileSessionSection) {
+        const observer = new MutationObserver((mutationsList) => {
+            // Cuando el contenido cambie, inicializar el submenú y resaltar el link activo.
+            initializeMobileSubmenu();
+            highlightActiveLink();
         });
 
         observer.observe(mobileSessionSection, { childList: true, subtree: true });
     }
 
-    // --- SIMULACIÓN DE SESIÓN DE USUARIO ---
-    // En una aplicación real, esta información vendría del servidor.
-    // Cambia el valor de 'userRole' para probar los diferentes estados:
-    // 'GUEST', 'ALUMNO', 'ADMIN'
-    const user = {
-        role: 'GUEST', // O 'ALUMNO', 'ADMIN'
-        name: 'Juan Pérez'
-    };
-
-    const sessionControls = document.getElementById('session-controls');
+    // ----- Lógica de Sesión de Usuario para Páginas Estáticas -----
+    // Este bloque se encarga de mostrar "Iniciar Sesión" o el menú de usuario.
+    const sessionControls = document.getElementById('session-controls');    
     const footerDynamicNav = document.getElementById('footer-dynamic-nav');
 
-    function updateUIForUserRole(user) {
-        // Limpiar contenedores
-        sessionControls.innerHTML = '';
-        footerDynamicNav.innerHTML = '';
+    // Solo ejecutar si los elementos existen (para no interferir con páginas de admin/estudiante que tienen su propia lógica)
+    if (sessionControls && mobileSessionSection && footerDynamicNav) {
 
-        const currentPage = window.location.pathname.split('/').pop();
-        const loginPagePath = currentPage.includes('index.html') || currentPage === '' ? 'HTML/iniciosesion.php' : 'iniciosesion.php';
+        // Determinar la ruta base correcta para el fetch
+        const path = window.location.pathname;
+        const fetchPath = path.includes('/HTML/') ? '../PHP/get_user_name.php' : 'PHP/get_user_name.php';
+        const basePath = path.includes('/HTML/') ? '../' : '';
 
-        if (user.role === 'GUEST') {
-            // Header
-            sessionControls.innerHTML = `<a href="${loginPagePath}" class="btn-sesion">Iniciar Sesión</a>`;
-            
-            // Footer
-            footerDynamicNav.innerHTML = `
-                <h4>Acceso</h4>
-                <ul>
-                <br>
-                    <li><a href="${loginPagePath}">Iniciar Sesión</a></li>
-                </ul>
-            `;
-        } else {
-            let menuItems = '';
-            let roleName = '';
+        fetch(fetchPath)
+            .then(response => response.json())
+            .then(data => {
+                if (data.user_name) {
+                    let desktopDropdownMenu, mobileSubmenu, footerMenu;
+                    const userName = data.user_name;
+                    const phpPath = `${basePath}PHP/`; // Asegura que siempre apunte a la carpeta PHP
 
-            if (user.role === 'ADMIN') {
-                roleName = 'ADMIN';
-                menuItems = `
-                    <li><a href="#gestionarinscriptos">Gesionar Inscriptos</a></li>
-                    <li><a href="#gestionar-cursos">Gestionar Cursos</a></li>
-                    <li><a href="#emitir-certificados">Emitir Certificados</a></li>
-                    <li><a href="#gestionaradmins">Gestionar Administradores</a></li>
-                `;
-            } else if (user.role === 'ALUMNO') {
-                roleName = 'ALUMNO';
-                menuItems = `
-                    <li><a href="#mi-perfil">Mi Perfil</a></li>
-                    <li><a href="#certificados">Certificados</a></li>
-                    <li><a href="#inscripciones">Inscripciones</a></li>
-                `;
-            }
+                    const desktopMenu = `
+                        <a href="#" class="btn-sesion user-menu-toggle">Hola, ${userName} <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-menu"><ul>`;
 
-            // Header
-            sessionControls.innerHTML = `
-                <div class="user-menu-toggle">
-                    <span>Hola, ${user.name.split(' ')[0]}</span> | <strong>${roleName}</strong>
-                </div>
-                <div class="dropdown-menu">
-                    <ul>${menuItems}</ul>
-                </div>
-            `;
+                    if (data.user_rol === 1) { // Admin
+                        desktopDropdownMenu = `${desktopMenu}
+                            <li><a href="${phpPath}ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
+                            <li><a href="${phpPath}ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                            <li><a href="${phpPath}ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                            <li><a href="${phpPath}ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
+                            <li><a href="${phpPath}logout.php">Cerrar Sesión</a></li></ul></div>`;
+                        mobileSubmenu = `<a href="#" class="user-menu-toggle-mobile">Hola, ${userName} <i class="fas fa-chevron-down"></i></a>
+                            <ul class="submenu">
+                                <li><a href="${phpPath}ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
+                                <li><a href="${phpPath}ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                                <li><a href="${phpPath}ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                <li><a href="${phpPath}ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
+                                <li><a href="${phpPath}logout.php">Cerrar Sesión</a></li>
+                            </ul>`;
+                        footerMenu = `<h4>Admin</h4><ul>
+                            <br>
+                            <li><a href="${phpPath}ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
+                            <br>
+                            <li><a href="${phpPath}ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                            <br>
+                            <li><a href="${phpPath}ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                            <br>
+                            <li><a href="${phpPath}ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
+                        </ul>`;
 
-            // Footer
-            footerDynamicNav.innerHTML = `
-                <h4>${roleName}</h4>
-                <ul>${menuItems}</ul>
-            `;
+                    } else if (data.user_rol === 2) { // Estudiante
+                        desktopDropdownMenu = `${desktopMenu}
+                            <li><a href="${phpPath}ALUMNO/perfil.php">Mi Perfil</a></li>
+                            <li><a href="${phpPath}ALUMNO/inscripciones.php">Inscripciones</a></li>
+                            <li><a href="${phpPath}ALUMNO/certificaciones.php">Certificaciones</a></li>
+                            <li><a href="${phpPath}logout.php">Cerrar Sesión</a></li></ul></div>`;
+                        mobileSubmenu = `<a href="#" class="user-menu-toggle-mobile">Hola, ${userName} <i class="fas fa-chevron-down"></i></a>
+                            <ul class="submenu">
+                                <li><a href="${phpPath}ALUMNO/perfil.php">Mi Perfil</a></li>
+                                <li><a href="${phpPath}ALUMNO/inscripciones.php">Inscripciones</a></li>
+                                <li><a href="${phpPath}ALUMNO/certificaciones.php">Certificaciones</a></li>
+                                <li><a href="${phpPath}logout.php">Cerrar Sesión</a></li></ul>`;
+                        footerMenu = `<h4>Estudiante</h4><ul>
+                            <br>
+                            <li><a href="${phpPath}ALUMNO/perfil.php">Mi Perfil</a></li>
+                            <br>
+                            <li><a href="${phpPath}ALUMNO/inscripciones.php">Inscripciones</a></li>
+                            <br>
+                            <li><a href="${phpPath}ALUMNO/certificaciones.php">Certificaciones</a></li></ul>`;
+                    }
+
+                    sessionControls.innerHTML = desktopDropdownMenu;
+                    mobileSessionSection.innerHTML = mobileSubmenu;
+                    footerDynamicNav.innerHTML = footerMenu;
+
+                } else {
+                    // Usuario no logueado (invitado)
+                    const loginPath = `${basePath}PHP/inicio_sesion.php`;
+                    sessionControls.innerHTML = `<a href="${loginPath}" class="btn-sesion">INICIAR SESIÓN</a>`;
+                    mobileSessionSection.innerHTML = `<a href="${loginPath}">INICIAR SESIÓN</a>`;
+                    footerDynamicNav.innerHTML = `<h4>Acceso</h4><ul><li><a href="${loginPath}">Iniciar Sesión</a></li></ul>`;
+                }
+            });
         }
     }
-
-    // Inicializar la UI con el rol de usuario simulado
-    updateUIForUserRole(user);
-});
+);

@@ -26,6 +26,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         hideMessages(); // Oculta mensajes previos antes de un nuevo envío.
 
+        // --- VALIDACIÓN DEL LADO DEL CLIENTE ---
+        let isValid = true;
+        const requiredFields = contactForm.querySelectorAll('[required]');
+
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                isValid = false;
+            }
+        });
+
+        if (!isValid) {
+            errorMessage.textContent = "Por favor, complete todos los campos requeridos.";
+            errorMessage.classList.add('visible');
+            return; // Detiene la ejecución si el formulario no es válido.
+        }
+
         // Recolecta los datos del formulario.
         const formData = new FormData(contactForm);
 
@@ -39,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Respuesta del servidor:', data); // Muestra la respuesta en consola para depuración.
 
             // Comprueba si la respuesta del servidor indica éxito.
-            if (data.includes('✅')) { // El backend (enviar.php) debería devolver este emoji en caso de éxito.
+            if (data.includes('✅')) { // El backend (guardar_contacto.php) debería devolver este emoji en caso de éxito.
                 successMessage.textContent = "Mensaje enviado correctamente.";
                 successMessage.classList.add('visible'); // Muestra el mensaje de éxito.
                 contactForm.reset(); // Limpia los campos del formulario.

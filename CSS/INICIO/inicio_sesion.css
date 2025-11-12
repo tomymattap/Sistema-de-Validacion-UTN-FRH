@@ -16,12 +16,12 @@ body {
 
 /* Contenedor que centra el formulario en la página */
 .login-page {
-    flex-grow: 1; /* Ocupa el espacio disponible */
+    flex-grow: 1; /* Asegura que el main ocupe el espacio disponible */
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 2rem 1rem;
-    background-color: #f8f9fa; /* Fondo gris claro */
+    background-color: #f8f9fa; /* Fondo blanco/gris claro */
 }
 
 /* -------------------------------------------
@@ -35,8 +35,8 @@ body {
     padding: 2rem;
     background-color: #ffffff;
     border-radius: 12px;
-    border: 1px solid #537b89;
-    outline: 4px solid rgba(83, 123, 137, 0.1); /* Borde exterior sutil */
+    border: 1px solid #dee2e6;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 .login-logo {
@@ -52,10 +52,9 @@ body {
 .login-title {
     font-size: 1.8rem;
     font-weight: 700;
-    color: #00455C; /* Color institucional */
+    color: var(--color-principal);
     margin-bottom: 1.5rem;
     text-align: center;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra de texto sutil */
 }
 
 .login-form .form-group {
@@ -76,12 +75,14 @@ body {
     border-radius: 8px;
     font-size: 1rem;
     transition: border-color 0.2s, box-shadow 0.2s;
+    background-color: #fff;
+    color: #495057;
 }
 
 .login-form input:focus {
     outline: none;
-    border-color: #537b89;
-    box-shadow: 0 0 0 3px rgba(83, 123, 137, 0.2); /* Resplandor al enfocar */
+    border-color: var(--color-principal);
+    box-shadow: 0 0 0 3px rgba(0, 69, 92, 0.2); /* Resplandor al enfocar */
 }
 
 /* -------------------------------------------
@@ -108,7 +109,7 @@ body {
 }
 
 .password-wrapper i:hover {
-    color: #00455C;
+    color: var(--color-principal);
 }
 
 /* -------------------------------------------
@@ -122,7 +123,7 @@ body {
 
 /* Enlace "¿Olvidaste tu contraseña?" */
 .forgot-password {
-    color: #00455C;
+    color: var(--color-principal);
     font-size: 0.9rem;
     text-decoration: none;
     transition: text-decoration 0.2s;
@@ -132,11 +133,23 @@ body {
     text-decoration: underline;
 }
 
+/* Estilo para mensajes de éxito */
+.success-message {
+    background-color: #d4edda; /* Verde claro */
+    color: #155724; /* Verde oscuro */
+    padding: 1rem;
+    border: 1px solid #c3e6cb; /* Borde verde */
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-weight: 600;
+}
+
 /* Botón "INICIAR SESIÓN" */
 .submit-btn {
     width: 100%;
     padding: 1rem;
-    background-color: #00455C;
+    background-color: var(--color-principal);
     color: #ffffff;
     border: none;
     border-radius: 8px;

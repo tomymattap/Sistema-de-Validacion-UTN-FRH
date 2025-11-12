@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     mysqli_stmt_bind_param($stmt, "isisi", $ID_Curso, $Cuatrimestre, $Anio, $Estado_Cursada, $id);
     
     if (mysqli_stmt_execute($stmt)) {
-        header('Location: gestionarinscriptos.php?update=success');
+        header('Location: gestionar_inscriptos.php?update=success');
         exit;
     } else {
         die('Error al actualizar: ' . mysqli_error($conexion));
@@ -38,7 +38,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
     $res = mysqli_stmt_get_result($stmt);
 
     if (mysqli_num_rows($res) == 0) { 
-        header('Location: gestionarinscriptos.php?error=notfound');
+        header('Location: gestionar_inscriptos.php?error=notfound');
         exit;
     }
     $inscripcion = mysqli_fetch_assoc($res);
@@ -46,7 +46,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
     $cursos_res = mysqli_query($conexion, "SELECT ID_Curso, Nombre_Curso FROM curso ORDER BY Nombre_Curso");
     $estados = ['En curso', 'Finalizado', 'CERTIFICADA', 'ASISTIDO'];
 } else {
-    header('Location: gestionarinscriptos.php');
+    header('Location: gestionar_inscriptos.php');
     exit;
 }
 ?>
@@ -61,7 +61,6 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css">
-    <link rel="stylesheet" href="../../CSS/verinscriptos.css">
     <style>
         .edit-form-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background-color: #f8f9fa; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
         .form-group { margin-bottom: 1.5rem; }
@@ -78,43 +77,6 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
 </head>
 <body class="fade-in">
     <div class="preloader"><div class="spinner"></div></div>
-
-    <header class="site-header">
-        <div class="header-container">
-            <div class="logo">
-                <a href="../../index.html"><img src="../../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
-            </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="../../index.html">VALIDAR</a></li>
-                    <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                    <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                    <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
-                </ul>
-            </nav>
-            <div class="session-controls" id="session-controls">
-                <!-- Contenido dinámico por JS -->
-            </div>
-            <button class="hamburger-menu" aria-label="Abrir menú">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </header>
-
-    <!-- Menú Off-canvas -->
-    <div class="off-canvas-menu" id="off-canvas-menu">
-        <button class="close-btn" aria-label="Cerrar menú">&times;</button>
-        <nav>
-            <ul>
-                <li><a href="../../index.html">VALIDAR</a></li>
-                <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                <li><a href="../../HTML/sobrenosotros.html">SOBRE NOSOTROS</a></li>
-                <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
-            </ul>
-        </nav>
-    </div>
 
 <main>
 <section class="admin-section">
@@ -160,8 +122,8 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
             </div>
             
             <div class="form-actions">
-                <a href="gestionarinscriptos.php" class="btn-cancel"><i class="fas fa-times"></i> Cancelar</a>
-                <button type="submit" name="action" value="update" class="btn-submit"><i class="fas fa-save"></i> Guardar Cambios</button>
+                <a href="gestionar_inscriptos.php" class="btn-cancel">Cancelar</a>
+                <button type="submit" name="action" value="update" class="btn-submit">Guardar Cambios</button>
             </div>
         </form>
     </div>
@@ -169,55 +131,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
 </section>
 </main>
 
-<footer class="site-footer">
-    <!-- Contenido del pie de página -->
-</footer>
+<script src="../../JavaScript/general.js"></script>
 
-    <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba">
-        <i class="fas fa-arrow-up"></i>
-    </a>
-
-    <script src="../../JavaScript/general.js"></script>
-    <script>
-        fetch('../get_user_name.php')
-            .then(response => response.json())
-            .then(data => {
-                const sessionControls = document.getElementById('session-controls');
-                const mobileNav = document.querySelector('.off-canvas-menu nav ul');
-                let sessionHTML = '';
-
-                if (data.user_name) {
-                    let dropdownMenu;
-                    if (data.user_rol === 1) { // Admin
-                        dropdownMenu = `
-                            <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
-                            <div class="dropdown-menu">
-                                <ul>
-                                    <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
-                                    <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
-                                    <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                                    <li><a href="../logout.php">Cerrar Sesión</a></li>
-                                </ul>
-                            </div>`;
-                        sessionHTML = `
-                            <li><a href="gestionarinscriptos.php">Gestionar Inscriptos</a></li>
-                            <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
-                            <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                            <li><a href="../logout.php">Cerrar Sesión</a></li>`;
-                    } else if (data.user_rol === 2) { // Alumno
-                        // Redirigir si no es admin
-                        window.location.href = '../../index.html';
-                    }
-                    sessionControls.innerHTML = dropdownMenu;
-                } else {
-                    // Redirigir si no está logueado
-                    window.location.href = '../iniciosesion.php';
-                }
-
-                // Añadir al menú móvil
-                const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');
-                mobileMenuUl.insertAdjacentHTML('beforeend', sessionHTML);
-            });
-    </script>
 </body>
 </html>

@@ -1,0 +1,206 @@
+/*
+    ARCHIVO: perfil.css
+    DESCRIPCIÓN: Estilos para la página de perfil del usuario (alumno).
+    Define la apariencia de la información del perfil, campos editables, botones de acción y mensajes de feedback.
+*/
+
+/* -------------------------------------------
+    Variables de Diseño (consistentes con general.css)
+------------------------------------------- */
+:root {
+    --profile-bg: #ffffff;
+    --profile-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+    --field-bg: #f8f9fa;
+    --field-border: #dee2e6;
+    --input-focus-border: var(--color-secundario-1);
+    --btn-save-bg: #28a745; /* Verde para guardar */
+    --btn-cancel-bg: #6c757d; /* Gris para cancelar */
+    --success-bg: #e6f9f0;
+    --success-border: #28a745;
+    --success-text: #0b6623;
+    --error-bg: #fdeeee;
+    --error-border: #dc3545;
+    --error-text: #b30000;
+}
+
+/* -------------------------------------------
+    Contenedor Principal del Perfil
+------------------------------------------- */
+
+.profile-container {
+    max-width: 800px;
+    margin: 2rem auto; /* Centrado horizontal */
+    padding: 1rem;
+    background-color: var(--profile-bg);
+    border-radius: 12px;
+    box-shadow: var(--profile-shadow);
+    border: 1px solid #e9ecef;
+}
+
+.profile-container h1 {
+    text-align: center;
+    color: var(--color-principal);
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+/* -------------------------------------------
+    Información y Campos del Perfil
+------------------------------------------- */
+
+/* Grilla para organizar los campos del perfil */
+.profile-info {
+    display: grid;
+    grid-template-columns: 1fr; /* Una columna en móvil */
+    gap: 1.5rem;
+}
+
+/* Contenedor de un campo individual (etiqueta + valor) */
+.profile-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-field label {
+    font-weight: bold;
+    color: var(--color-texto-gris);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* Estilo del valor del campo */
+.profile-field .value {
+    padding: 0.8rem;
+    border: 1px solid var(--field-border);
+    border-radius: 6px;
+    background-color: var(--field-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 50px;
+}
+
+.profile-field .value span {
+    flex-grow: 1;
+    word-break: break-all; /* Evita que textos largos rompan el diseño */
+    color: var(--color-principal);
+}
+
+/* Estilo para campos que no son editables */
+.profile-field .value.non-editable {
+    cursor: not-allowed;
+    background-color: #e9ecef;
+    color: var(--color-texto-gris);
+}
+
+/* Estilo para los inputs en modo edición */
+.edit-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 2px solid var(--field-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: var(--font-principal);
+    transition: border-color 0.3s;
+}
+
+.edit-input:focus {
+    outline: none;
+    border-color: var(--input-focus-border);
+}
+
+/* -------------------------------------------
+    Botones de Acción del Perfil
+------------------------------------------- */
+
+.profile-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.profile-actions button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 25px; /* Botones tipo píldora */
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.profile-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.btn-edit {
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+}
+
+.btn-edit:hover {
+    background-color: var(--color-secundario-1);
+}
+
+.btn-save {
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+}
+
+.btn-save:hover {
+    background-color: var(--btn-save-bg);
+}
+
+.btn-cancel {
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+}
+
+.btn-cancel:hover {
+    background-color: var(--color-secundario-4);
+}
+/* -------------------------------------------
+    Contenedor de Mensajes de Feedback
+------------------------------------------- */
+
+.message-container {
+    padding: 1rem;
+    margin-top: 1.5rem;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: bold;
+    display: none; /* Oculto por defecto */
+}
+
+.message-container.success {
+    background-color: var(--success-bg);
+    border: 1px solid var(--success-border);
+    color: var(--success-text);
+}
+
+.message-container.error {
+    background-color: var(--error-bg);
+    border: 1px solid var(--error-border);
+    color: var(--error-text);
+}
+
+/* -------------------------------------------
+    Ajustes para Dispositivos Medianos y Grandes
+------------------------------------------- */
+
+@media (min-width: 768px) {
+    .profile-container {
+        padding: 2rem;
+    }
+
+    /* Muestra los campos en dos columnas */
+    .profile-info {
+        grid-template-columns: 1fr 1fr;
+    }
+}

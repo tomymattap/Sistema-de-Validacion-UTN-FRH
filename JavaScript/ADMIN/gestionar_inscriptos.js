@@ -378,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         fetchInscriptos({ all: '1' });
                     }
                     // limpiar
-                    resetUpload();
+                    setTimeout(resetUpload, 5000);
                 }
             } catch (err) {
                 console.error(err);

@@ -169,7 +169,7 @@ if (isset($_SESSION['force_password_change'])) {
     <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 
     <script src="../../JavaScript/general.js"></script>
-    <script src="../../JavaScript/ALUMNO/perfil.js"></script>
+    <script src="../../JavaScript/ALUMNO/inscripciones.js"></script>
     <script>
         fetch('../get_user_name.php')
             .then(response => response.json())

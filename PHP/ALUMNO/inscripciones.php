@@ -52,23 +52,33 @@ if (isset($_SESSION['force_password_change'])) {
         </div>
     </header>
 
-    <!-- =======================
-        MENÚ LATERAL (OFF-CANVAS)
-    ======================== -->
-    <div class="off-canvas-menu" id="off-canvas-menu">
-        <button class="close-btn" aria-label="Cerrar menú">&times;</button>
-        <nav>
-            <ul>
-                <li><a href="../../index.html">VALIDAR</a></li>
-                <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
-                <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
-                <!-- Sección para el menú de usuario o iniciar sesión en móvil -->
-                <li class="has-submenu" id="mobile-session-section">
-                    <!-- Contenido dinámico por JS -->
-                </li>
-            </ul>
-        </nav>
-    </div>
+<div class="off-canvas-menu" id="off-canvas-menu">
+    <button class="close-btn" aria-label="Cerrar menú">&times;</button>
+    <nav>
+        <ul>
+            <li><a href="../../index.html">VALIDAR</a></li>
+            <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
+            <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
+            <li id="mobile-session-section">
+                <?php if (isset($_SESSION['user_name'])):
+                    $user_rol = $_SESSION['user_rol'];
+                ?>
+                    <a href="#" class="user-menu-toggle-mobile">Hola, <?php echo htmlspecialchars($_SESSION['user_name']); ?> <i class="fas fa-chevron-down"></i></a>
+                    <ul class="submenu">
+                        <?php if ($user_rol == 2): // Estudiante ?>
+                            <li><a href="perfil.php">Mi Perfil</a></li>
+                            <li><a href="inscripciones.php">Inscripciones</a></li> 
+                            <li><a href="certificaciones.php">Certificaciones</a></li>
+                        <?php endif; ?>
+                        <li><a href="../logout.php">Cerrar Sesión</a></li>
+                    </ul>
+                <?php else: ?>
+                    <a href="../inicio_sesion.php">INICIAR SESIÓN</a>
+                <?php endif; ?>
+            </li>
+        </ul>
+    </nav>
+</div>
 
     <main class="inscripciones-container">
         <div class="cursos-list">
@@ -180,8 +190,6 @@ if (isset($_SESSION['force_password_change'])) {
             .then(response => response.json())
             .then(data => {
                 const sessionControls = document.getElementById('session-controls');
-                const mobileNav = document.querySelector('.off-canvas-menu nav ul');
-                let sessionHTML = '';
 
                 if (data.user_name) {
                     let dropdownMenu;
@@ -196,11 +204,6 @@ if (isset($_SESSION['force_password_change'])) {
                                     <li><a href="../logout.php">Cerrar Sesión</a></li>
                                 </ul>
                             </div>`;
-                        sessionHTML = `
-                            <li><a href="perfil.php">Mi Perfil</a></li>
-                            <li><a href="inscripciones.php">Inscripciones</a></li>
-                            <li><a href="certificaciones.php">Certificaciones</a></li>
-                            <li><a href="../logout.php">Cerrar Sesión</a></li>`;
                     } else if (data.user_rol === 1) { // Admin
                         // Redirigir si no es alumno
                         window.location.href = '../ADMIN/gestionar_inscriptos.php';
@@ -210,10 +213,6 @@ if (isset($_SESSION['force_password_change'])) {
                     // Redirigir si no está logueado
                     window.location.href = '../inicio_sesion.php?error=acceso_denegado';
                 }
-
-                // Añadir al menú móvil
-                const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');
-                mobileMenuUl.insertAdjacentHTML('beforeend', sessionHTML);
             });
     </script>
 </body>

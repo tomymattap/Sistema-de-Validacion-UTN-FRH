@@ -36,15 +36,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ----- Resaltar Opción de Menú Activa -----
-    const currentPath = window.location.pathname.split('/').pop();
-    const navLinks = document.querySelectorAll('.main-nav a, .off-canvas-menu a');
+    const highlightActiveLink = () => {
+        const currentPath = window.location.pathname.split('/').pop();
+        const navLinks = document.querySelectorAll('.main-nav a, .off-canvas-menu a');
 
-    navLinks.forEach(link => {
-        const linkPath = link.getAttribute('href').split('/').pop();
-        if (linkPath === currentPath) {
-            link.classList.add('active');
-        }
-    });
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            const linkPath = link.getAttribute('href').split('/').pop();
+            // No marcar como activas las anclas vacías o los botones de submenú
+            if (linkPath === currentPath && currentPath !== '' && link.getAttribute('href') !== '#') {
+                link.classList.add('active');
+            }
+        });
+    };
+
+    highlightActiveLink(); // Ejecutar al cargar la página
 
     // ----- Lógica para desplegar el submenú en móvil -----
     const setupMobileSubmenu = (mobileMenuToggle) => {
@@ -81,8 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileSessionSection = document.getElementById('mobile-session-section');
     if (mobileSessionSection) {
         const observer = new MutationObserver((mutationsList) => {
-            // Cuando el contenido cambie, intentar inicializar de nuevo.
+            // Cuando el contenido cambie, inicializar el submenú y resaltar el link activo.
             initializeMobileSubmenu();
+            highlightActiveLink();
         });
 
         observer.observe(mobileSessionSection, { childList: true, subtree: true });

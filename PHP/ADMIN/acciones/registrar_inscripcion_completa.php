@@ -26,10 +26,9 @@ $id_curso = $_POST['ID_Curso'] ?? '';
 $comision = trim($_POST['Comision'] ?? 'A'); // Por defecto 'A' si no se envía
 $cuatrimestre = $_POST['Cuatrimestre'] ?? '';
 $anio = $_POST['Anio'] ?? '';
-$estado_cursada = $_POST['Estado_Cursada'] ?? '';
 
 // --- Validaciones del backend ---
-if (empty($cuil) || empty($dni) || empty($nombre) || empty($apellido) || empty($email) || empty($id_curso) || empty($cuatrimestre) || empty($anio) || empty($estado_cursada)) {
+if (empty($cuil) || empty($dni) || empty($nombre) || empty($apellido) || empty($email) || empty($id_curso) || empty($cuatrimestre) || empty($anio)) {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'Faltan campos obligatorios.']);
     exit;
@@ -49,6 +48,32 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 mysqli_begin_transaction($conexion);
 
 try {
+    // --- LÓGICA PARA DETERMINAR EL ESTADO DE CURSADA AUTOMÁTICAMENTE ---
+    $estado_cursada = 'Pendiente'; // Estado por defecto
+    $stmt_fechas = mysqli_prepare($conexion, "SELECT Inicio_Curso, Fin_Curso FROM duracion_curso WHERE ID_Curso = ?");
+    mysqli_stmt_bind_param($stmt_fechas, "i", $id_curso);
+    mysqli_stmt_execute($stmt_fechas);
+    $result_fechas = mysqli_stmt_get_result($stmt_fechas);
+    $fechas_curso = mysqli_fetch_assoc($result_fechas);
+    mysqli_stmt_close($stmt_fechas);
+
+    if ($fechas_curso && !empty($fechas_curso['Inicio_Curso']) && !empty($fechas_curso['Fin_Curso'])) {
+        $fecha_actual = new DateTime();
+        $fecha_inicio = new DateTime($fechas_curso['Inicio_Curso']);
+        $fecha_fin = new DateTime($fechas_curso['Fin_Curso']);
+
+        // Ajustar la hora a 00:00:00 para comparaciones de día completo
+        $fecha_actual->setTime(0, 0, 0);
+
+        if ($fecha_actual < $fecha_inicio) {
+            $estado_cursada = 'Pendiente';
+        } elseif ($fecha_actual >= $fecha_inicio && $fecha_actual <= $fecha_fin) {
+            $estado_cursada = 'En Curso';
+        } else {
+            $estado_cursada = 'Finalizado';
+        }
+    }
+
     // --- VALIDACIÓN ADICIONAL: CURSOS EXTERNOS ---
     // 1. Obtener el tipo de curso.
     $stmt_check_curso = mysqli_prepare($conexion, "SELECT Tipo FROM curso WHERE ID_Curso = ?");
@@ -62,8 +87,8 @@ try {
         throw new Exception('El curso seleccionado no existe.');
     }
 
-    // 2. Si el curso no es 'GENUINO', verificar que su evaluación esté 'ACEPTADO'.
-    if ($curso_data['Tipo'] !== 'GENUINO') {
+    // 2. Si el curso no es 'GENUINO' (insensible a mayúsculas), verificar que su evaluación esté 'ACEPTADO'.
+    if (strtoupper($curso_data['Tipo']) !== 'GENUINO') {
         $stmt_check_eval = mysqli_prepare($conexion, "SELECT Estado_Evaluacion FROM evaluacion_curso_externo WHERE ID_Curso = ?");
         mysqli_stmt_bind_param($stmt_check_eval, "i", $id_curso);
         mysqli_stmt_execute($stmt_check_eval);

@@ -268,15 +268,6 @@ $current_page = 'gestionar_inscriptos.php';
                                         <label for="anio-insc">Año *</label>
                                         <input type="number" id="anio-insc" name="Anio" value="<?php echo date('Y'); ?>" required min="2000" max="2100">
                                     </div>
-                                    <div class="campo-form">
-                                        <label for="estado-cursada-insc">Estado de la Cursada</label>
-                                        <select id="estado-cursada-insc" name="Estado_Cursada" required>
-                                            <option value="Pendiente">Pendiente</option>
-                                            <option value="En Curso">En Curso</option>
-                                            <option value="Finalizado">Finalizado</option>
-                                            <option value="Certificada">Certificada</option>
-                                        </select>
-                                    </div>
                                 </div>
                                 <div id="mensaje-step-2" class="mensaje-form" style="display:none;"></div>
                                 <div class="botones-form-pasos">

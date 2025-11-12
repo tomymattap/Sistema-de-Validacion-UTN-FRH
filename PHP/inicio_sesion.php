@@ -166,6 +166,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <a href="olvido_contrasena.php" class="forgot-password">¿Olvidó su contraseña?</a>
                 </div>
                 <button type="submit" class="submit-btn">ACCEDER</button>
+                <div class="first-time-info-container">
+                    <p><strong>¿Primera vez iniciando sesión?</strong><br>Su contraseña por defecto es su CUIL (alumnos) o Legajo (admins).</p>
+                </div>
             </form>
         </div>
     </main>

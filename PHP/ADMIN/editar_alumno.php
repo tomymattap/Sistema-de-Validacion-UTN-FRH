@@ -1,33 +1,37 @@
 <?php
 include("../conexion.php");
 
-// Procesar actualización
+// === SI LLEGA POR POST, ACTUALIZA ===
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update') {
-    header('Content-Type: application/json');
-    $cuil = $_POST['ID_Cuil_Alumno'];
-    $nombre = $_POST['Nombre_Alumno'];
-    $apellido = $_POST['Apellido_Alumno'];
-    $email = $_POST['Email_Alumno'];
-    $direccion = $_POST['Direccion'];
-    $telefono = $_POST['Telefono'];
+    header('Content-Type: application/json; charset=utf-8');
 
-    $sql = "UPDATE alumno 
-            SET Nombre_Alumno = ?, Apellido_Alumno = ?, Email_Alumno = ?, Direccion = ?, Telefono = ?
-            WHERE ID_Cuil_Alumno = ?";
+    $cuil = $_POST['ID_Cuil_Alumno'] ?? '';
+    $nombre = $_POST['Nombre_Alumno'] ?? '';
+    $apellido = $_POST['Apellido_Alumno'] ?? '';
+    $email = $_POST['Email_Alumno'] ?? '';
+    $direccion = $_POST['Direccion'] ?? '';
+    $telefono = $_POST['Telefono'] ?? '';
+
+    if ($cuil === '' || $nombre === '' || $apellido === '' || $email === '') {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Datos incompletos.']);
+        exit;
+    }
+
+    $sql = "UPDATE alumno SET Nombre_Alumno=?, Apellido_Alumno=?, Email_Alumno=?, Direccion=?, Telefono=? WHERE ID_Cuil_Alumno=?";
     $stmt = mysqli_prepare($conexion, $sql);
     mysqli_stmt_bind_param($stmt, "ssssss", $nombre, $apellido, $email, $direccion, $telefono, $cuil);
 
     if (mysqli_stmt_execute($stmt)) {
-        echo json_encode(['success' => true, 'message' => 'Datos del alumno actualizados.']);
-        exit();
+        echo json_encode(['success' => true, 'message' => 'Datos del alumno actualizados correctamente.']);
     } else {
         http_response_code(500);
         echo json_encode(['success' => false, 'message' => 'Error al actualizar: ' . mysqli_stmt_error($stmt)]);
-        exit();
     }
+    exit;
 }
 
-// Mostrar formulario de edición
+// === SI LLEGA POR GET, MUESTRA EL FORMULARIO ===
 if (isset($_GET['ID_Inscripcion'])) {
     $idInscripcion = intval($_GET['ID_Inscripcion']);
     $query = "SELECT a.* FROM alumno a
@@ -39,82 +43,52 @@ if (isset($_GET['ID_Inscripcion'])) {
     $res = mysqli_stmt_get_result($stmt);
 
     if (mysqli_num_rows($res) == 0) {
-        header('Location: gestionar_inscriptos.php?error=notfound');
-        exit;
+        exit('<p>No se encontró el alumno.</p>');
     }
 
     $alumno = mysqli_fetch_assoc($res);
 } else {
-    header('Location: gestionar_inscriptos.php');
-    exit;
+    exit('<p>Error: Falta el ID de inscripción.</p>');
 }
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Alumno - Admin</title>
-    <link rel="stylesheet" href="../../CSS/general.css">
-    <style>
-        .edit-form-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: #f8f9fa; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
-        .form-group { margin-bottom: 1.5rem; }
-        .form-group label { display: block; margin-bottom: .5rem; font-weight: 700; color: var(--color-principal); }
-        .form-group input { width: 100%; padding: .75rem; border: 1px solid #ced4da; border-radius: 6px; }
-        .form-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; }
-        .btn-submit { background: var(--color-secundario-2); color: #fff; padding: .75rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .btn-submit:hover { background: #7ab831; }
-        .btn-cancel { background: #6c757d; color: #fff; padding: .75rem 1.5rem; border: none; border-radius: 6px; text-decoration: none; display: inline-block; }
-        .btn-cancel:hover { background: #5a6268; }
-        input[readonly] { background-color: #e9ecef; cursor: not-allowed; }
-    </style>
-</head>
-<body class="fade-in">
 
-<main>
-<section class="admin-section">
-<div class="admin-container">
-    <div class="edit-form-container">
-        <h1 class="main-title">Editar Alumno</h1>
-        <form method="post" action="editar_alumno.php">
-            <input type="hidden" name="action" value="update">
-            <input type="hidden" name="ID_Cuil_Alumno" value="<?= htmlspecialchars($alumno['ID_Cuil_Alumno']) ?>">
-            <div class="form-group">
-                <label>CUIL (no editable)</label>
-                <input type="text" value="<?= htmlspecialchars($alumno['ID_Cuil_Alumno']) ?>" readonly>
-            </div>
-            <div class="form-group">
-                <label>DNI (no editable)</label>
-                <input type="text" value="<?= htmlspecialchars($alumno['DNI_Alumno']) ?>" readonly>
-            </div>
-            <div class="form-group">
-                <label>Nombre</label>
-                <input type="text" name="Nombre_Alumno" value="<?= htmlspecialchars($alumno['Nombre_Alumno']) ?>" required>
-            </div>
-            <div class="form-group">
-                <label>Apellido</label>
-                <input type="text" name="Apellido_Alumno" value="<?= htmlspecialchars($alumno['Apellido_Alumno']) ?>" required>
-            </div>
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" name="Email_Alumno" value="<?= htmlspecialchars($alumno['Email_Alumno']) ?>" required>
-            </div>
-            <div class="form-group">
-                <label>Dirección</label>
-                <input type="text" name="Direccion" value="<?= htmlspecialchars($alumno['Direccion']) ?>">
-            </div>
-            <div class="form-group">
-                <label>Teléfono</label>
-                <input type="text" name="Telefono" value="<?= htmlspecialchars($alumno['Telefono']) ?>">
-            </div>
-            <div class="form-actions">
-                <a href="gestionar_inscriptos.php" class="btn-cancel">Cancelar</a>
-                <button type="submit" class="btn-submit">Guardar Cambios</button>
-            </div>
-        </form>
-    </div>
+<div class="edit-form-container">
+    <h1 class="main-title">Editar Alumno</h1>
+    <form method="post" action="../../PHP/ADMIN/editar_alumno.php">
+        <input type="hidden" name="action" value="update">
+        <input type="hidden" name="ID_Cuil_Alumno" value="<?= htmlspecialchars($alumno['ID_Cuil_Alumno']) ?>">
+
+        <div class="form-group">
+            <label>CUIL</label>
+            <input type="text" value="<?= htmlspecialchars($alumno['ID_Cuil_Alumno']) ?>" readonly>
+        </div>
+        <div class="form-group">
+            <label>DNI</label>
+            <input type="text" value="<?= htmlspecialchars($alumno['DNI_Alumno']) ?>" readonly>
+        </div>
+        <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" name="Nombre_Alumno" value="<?= htmlspecialchars($alumno['Nombre_Alumno']) ?>" required>
+        </div>
+        <div class="form-group">
+            <label>Apellido</label>
+            <input type="text" name="Apellido_Alumno" value="<?= htmlspecialchars($alumno['Apellido_Alumno']) ?>" required>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="Email_Alumno" value="<?= htmlspecialchars($alumno['Email_Alumno']) ?>" required>
+        </div>
+        <div class="form-group">
+            <label>Dirección</label>
+            <input type="text" name="Direccion" value="<?= htmlspecialchars($alumno['Direccion']) ?>">
+        </div>
+        <div class="form-group">
+            <label>Teléfono</label>
+            <input type="text" name="Telefono" value="<?= htmlspecialchars($alumno['Telefono']) ?>">
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-submit">Guardar Cambios</button>
+        </div>
+    </form>
 </div>
-</section>
-</main>
-</body>
-</html>

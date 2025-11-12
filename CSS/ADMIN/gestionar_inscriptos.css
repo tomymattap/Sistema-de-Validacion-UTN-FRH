@@ -1056,3 +1056,113 @@
         font-size: 1.2rem;
     }
 }
+
+/* === Estilos para formularios de edición (alumno/inscripción) === */
+.edit-form-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    color: var(--color-principal);
+}
+
+.form-group input,
+.form-group select,
+.form-group p {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.form-group p {
+    background-color: #e9ecef;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-submit {
+    background-color: var(--color-secundario-2);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background-color: #7ab831;
+}
+
+input[readonly] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+/* ✅ Overlay de confirmación de guardado exitoso */
+.overlay-success {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(30, 30, 30, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 9999;
+}
+
+.overlay-success.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.overlay-success-content {
+    background: #ffffff;
+    padding: 2rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-family: 'Public Sans', sans-serif;
+    animation: scaleIn 0.3s ease;
+}
+
+.overlay-success-content i {
+    color: var(--color-secundario-2);
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.overlay-success-content p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-principal);
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}

@@ -9,6 +9,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['success' => false, 'message' => 'ID de inscripción no válido.']);
         exit;
     }
+    if (isset($_SESSION['user_id'])) {
+        $id_admin = $_SESSION['user_id'];
+        // ✅ Registrar el admin en MySQL para los triggers
+        $stmt_admin = mysqli_prepare($conexion, "SET @current_admin = ?");
+        mysqli_stmt_bind_param($stmt_admin, "s", $id_admin);
+        mysqli_stmt_execute($stmt_admin);
+    }
 
     // 1. Obtener el CUIL del alumno antes de eliminar la inscripción
     $queryAlumno = $conexion->prepare("SELECT ID_Cuil_Alumno FROM inscripcion WHERE ID_Inscripcion = ?");

@@ -4,6 +4,15 @@ include("../conexion.php");
 // Procesar actualización
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update') {
     header('Content-Type: application/json');
+
+    if (isset($_SESSION['user_id'])) {
+        $id_admin = $_SESSION['user_id'];
+        // ✅ Registrar el admin en MySQL para los triggers
+        $stmt_admin = mysqli_prepare($conexion, "SET @current_admin = ?");
+        mysqli_stmt_bind_param($stmt_admin, "s", $id_admin);
+        mysqli_stmt_execute($stmt_admin);
+    }
+
     $cuil = $_POST['ID_Cuil_Alumno'];
     $nombre = $_POST['Nombre_Alumno'];
     $apellido = $_POST['Apellido_Alumno'];

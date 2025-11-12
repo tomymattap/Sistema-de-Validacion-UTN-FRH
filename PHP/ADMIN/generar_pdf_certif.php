@@ -3,9 +3,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once(__DIR__ . '/../../vendor/setasign/fpdf/fpdf.php');
-require_once(__DIR__ . '/../../vendor/setasign/fpdi/src/autoload.php');
-require_once(__DIR__ . '/../conexion.php');
+require_once(__DIR__ . '../../vendor/setasign/fpdf/fpdf.php');
+require_once(__DIR__ . '../../vendor/setasign/fpdi/src/autoload.php');
+require_once(__DIR__ . '../conexion.php');
 
 use setasign\Fpdi\Fpdi;
 
@@ -66,11 +66,11 @@ try {
 
         $template_path = '';
         if ($es_director && $nombre_instituto && $logo_camara_path && file_exists($logo_camara_path)) {
-            $template_path = __DIR__ . '/Modelos_certificados/certificado_externo.pdf';
+            $template_path = __DIR__ . 'Modelos_certificados/certificado_externo.pdf';
         } elseif ($estado == 'APROBADO') {
-            $template_path = __DIR__ . '/Modelos_certificados/certificado_aprobacion.pdf';
+            $template_path = __DIR__ . 'Modelos_certificados/certificado_aprobacion.pdf';
         } elseif ($estado == 'ASISTIDO') {
-            $template_path = __DIR__ . '/Modelos_certificados/certificado_asistencia.pdf';
+            $template_path = __DIR__ . 'Modelos_certificados/certificado_asistencia.pdf';
         } else {
             continue;
         }

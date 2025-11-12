@@ -177,7 +177,7 @@ $conexion->close();
     </a>
 
     <script src="../../JavaScript/general.js"></script>
-    <script src="../../JavaScript/perfil.js"></script>
+    <script src="../../JavaScript/ALUMNO/perfil.js"></script>
     <script>
         fetch('../get_user_name.php')
             .then(response => response.json())

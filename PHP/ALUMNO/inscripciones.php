@@ -154,7 +154,7 @@ if (isset($_SESSION['force_password_change'])) {
     </a>
 
     <script src="../../JavaScript/general.js"></script>
-    <script src="../../JavaScript/inscripciones.js"></script>
+    <script src="../../JavaScript/ALUMNO/inscripciones.js"></script>
     <script>
         fetch('../get_user_name.php')
             .then(response => response.json())

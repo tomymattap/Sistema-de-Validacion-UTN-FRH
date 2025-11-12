@@ -80,13 +80,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const sessionControls = document.getElementById('session-controls');    
     const footerDynamicNav = document.getElementById('footer-dynamic-nav');
 
+    // ----- Lógica para desplegar el menú de usuario en escritorio -----
+    const setupDesktopDropdown = () => {
+        const userMenuToggle = document.querySelector('.user-menu-toggle');
+        if (userMenuToggle) {
+            userMenuToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                const dropdownMenu = userMenuToggle.nextElementSibling;
+                dropdownMenu.classList.toggle('active');
+            });
+        }
+    };
+
     // Solo ejecutar si los elementos existen (para no interferir con páginas de admin/estudiante que tienen su propia lógica)
     if (sessionControls && mobileSessionSection && footerDynamicNav) {
         
         // Determinar la ruta base correcta para el fetch
         const path = window.location.pathname;
-        const fetchPath = path.includes('/HTML/') ? '../PHP/get_user_name.php' : 'PHP/get_user_name.php';
-        const basePath = path.includes('/HTML/') ? '../' : '';
+        
+        // Solución robusta: Usar una ruta absoluta desde la raíz del proyecto.
+        // 1. Encontrar el nombre de la carpeta raíz del proyecto en la URL.
+        const projectName = 'Sistema-De-Validacion-UTN-FRH';
+        const projectRootIndex = path.indexOf(projectName);
+        const rootPath = path.substring(0, projectRootIndex + projectName.length);
+
+        const fetchPath = `${rootPath}/PHP/get_user_name.php`;
+        const basePath = `${rootPath}/`;
 
         fetch(fetchPath)
             .then(response => response.json())
@@ -151,11 +170,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     mobileSessionSection.innerHTML = mobileSubmenu;
                     footerDynamicNav.innerHTML = footerMenu;
 
+                    // Ahora que los elementos existen, configuramos los listeners.
+                    setupDesktopDropdown();
+
                 } else {
                     // Usuario no logueado (invitado)
                     const loginPath = `${basePath}PHP/inicio_sesion.php`;
                     sessionControls.innerHTML = `<a href="${loginPath}" class="btn-sesion">INICIAR SESIÓN</a>`;
-                    mobileSessionSection.innerHTML = `<a href="${loginPath}">INICIAR SESIÓN</a>`;
+                    mobileSessionSection.innerHTML = `<a href="${loginPath}" class="btn-sesion">INICIAR SESIÓN</a>`;
                     footerDynamicNav.innerHTML = `<h4>Acceso</h4><ul><li><a href="${loginPath}">Iniciar Sesión</a></li></ul>`;
                 }
             });

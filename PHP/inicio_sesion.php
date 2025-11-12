@@ -218,6 +218,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </a>
 
     <script src="../JavaScript/general.js"></script>
-    <script src="../JavaScript/inicio_sesion.js"></script>
+    <script src="../JavaScript/INICIO/inicio_sesion.js"></script>
 </body>
 </html>

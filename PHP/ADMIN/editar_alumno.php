@@ -53,7 +53,6 @@ if (isset($_GET['ID_Inscripcion'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Alumno - Admin</title>
     <link rel="stylesheet" href="../../CSS/general.css">
-    <link rel="stylesheet" href="../../CSS/ver_inscriptos.css">
     <style>
         .edit-form-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: #f8f9fa; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
         .form-group { margin-bottom: 1.5rem; }

@@ -173,7 +173,7 @@ if (!empty($codigo)) {
         <i class="fas fa-arrow-up"></i>
     </a>
 
-    <script src="../JavaScript/inicio.js"></script>
+    <script src="../JavaScript/INICIO/inicio.js"></script>
     <script src="../JavaScript/general.js"></script>
     <script>
         fetch('get_user_name.php')

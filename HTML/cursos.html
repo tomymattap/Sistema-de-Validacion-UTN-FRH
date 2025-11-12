@@ -194,7 +194,7 @@
     <!-- =======================
         SCRIPTS
     ======================== -->
-    <script src="../JavaScript/inicio.js"></script>
+    <script src="../JavaScript/INICIO/inicio.js"></script>
     <script src="../JavaScript/general.js"></script>
     <!-- Script para gestionar la sesión del usuario -->
     <script>
@@ -210,8 +210,8 @@
                 if (data.user_name) {
                     // ... Lógica para usuario logueado (Admin o Alumno) ...
                 } else {
-                    sessionControls.innerHTML = '<a href="../PHP/iniciosesion.php" class="btn-sesion">INICIAR SESIÓN</a>';
-                    sessionHTML = '<li><a href="../PHP/iniciosesion.php">INICIAR SESIÓN</a></li>';
+                    sessionControls.innerHTML = '<a href="../PHP/inicio_sesion.php" class="btn-sesion">INICIAR SESIÓN</a>';
+                    sessionHTML = '<li><a href="../PHP/inicio_sesion.php">INICIAR SESIÓN</a></li>';
                 }
 
                 const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');

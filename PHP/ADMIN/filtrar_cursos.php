@@ -95,7 +95,6 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css">
-    <link rel="stylesheet" href="../../CSS/ver_inscriptos.css"> 
     <link rel="stylesheet" href="../../CSS/ADMIN/gestionar_cursos.css"> 
 </head>
 <body class="fade-in">

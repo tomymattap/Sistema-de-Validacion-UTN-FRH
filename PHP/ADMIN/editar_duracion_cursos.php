@@ -146,7 +146,7 @@ $resultado = mysqli_query($conexion, $consulta);
                         <br>
                         <li><a href="../../PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                         <br>
-                        <li><a href="../../PHP/ADMIN/gestionaradmin.php">Gestionar Administradores</a></li>
+                        <li><a href="../../PHP/ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
                     <?php else: ?>
                         <br>
                         <li><a href="#">Mi Perfil</a></li>

@@ -2,10 +2,19 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-$id_admin = $_SESSION['user_id'];
-// ✅ Registrar el admin en MySQL para los triggers
-mysqli_query($conexion, "SET @current_admin = '$id_admin'");
 
+require_once(__DIR__ . '/../conexion.php');
+
+// Validar que solo los administradores puedan acceder y obtener su ID
+if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1 || !isset($_SESSION['user_id'])) {
+    http_response_code(403);
+    die("Acceso denegado. Se requiere rol de administrador.");
+}
+
+$id_admin = $_SESSION['user_id'];
+$stmt_admin = mysqli_prepare($conexion, "SET @current_admin = ?");
+mysqli_stmt_bind_param($stmt_admin, "s", $id_admin);
+mysqli_stmt_execute($stmt_admin);
 // 1. --- SEGURIDAD Y VALIDACIÓN DE DATOS ---
 if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
     http_response_code(403);
@@ -18,7 +27,6 @@ if (empty($_SESSION['alumnos_para_certificar']) || empty($_SESSION['cert_data_fo
 }
 
 require_once(__DIR__ . '/../../vendor/autoload.php');
-require_once(__DIR__ . '/../conexion.php');
 
 // 2. --- INICIALIZACIÓN Y CONFIGURACIÓN ---
 $alumnos_a_certificar = $_SESSION['alumnos_para_certificar'];

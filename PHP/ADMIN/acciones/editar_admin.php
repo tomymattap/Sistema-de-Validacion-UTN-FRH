@@ -4,7 +4,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
+// Permitir acceso a Admin (1) y Secretario (3)
+if (!isset($_SESSION['user_rol']) || !in_array($_SESSION['user_rol'], [1, 3])) {
     http_response_code(403);
     echo json_encode(['success' => false, 'message' => 'Acceso denegado']);
     exit;

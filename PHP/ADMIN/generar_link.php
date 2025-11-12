@@ -84,7 +84,14 @@ try {
         </div>
     </main>
 
-    <footer class="site-footer"></footer>
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-info" style="text-align: center; width: 100%;">
+                <p>París 532, Haedo (1706) | Buenos Aires, Argentina</p>
+                <p>extension@frh.utn.edu.ar</p>
+            </div>
+        </div>
+    </footer>
     <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 
     <script src="../../JavaScript/general.js"></script>

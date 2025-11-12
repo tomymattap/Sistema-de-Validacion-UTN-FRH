@@ -214,8 +214,6 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
                                     <th>Modalidad</th>
                                     <th>Categoría</th>
                                     <th>Carga Horaria</th>
-                                    <th>Descripción</th>
-                                    <th>Requisitos</th>
                                     <th>Tipo</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -231,8 +229,6 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
                                             <td><?= htmlspecialchars($fila['Modalidad']); ?></td>
                                             <td><?= htmlspecialchars($fila['Categoria']); ?></td>
                                             <td><?= htmlspecialchars($fila['Carga_Horaria']); ?></td>
-                                            <td><?= htmlspecialchars($fila['Descripcion']); ?></td>
-                                            <td><?= htmlspecialchars($fila['Requisitos']); ?></td>
                                             <td><?= htmlspecialchars($fila['Tipo']); ?></td>
                                             <td class="actions">
                                                 <a href="editar_curso.php?id=<?= $fila['ID_Curso'] ?>" class="btn-edit" title="Editar"><i class="fas fa-pencil-alt"></i></a>
@@ -256,11 +252,69 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
         </div>
     </main>
 
-    <footer class="site-footer"></footer>
-
-    <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba">
-        <i class="fas fa-arrow-up"></i>
-    </a>
+    <footer class="site-footer">
+    <div class="footer-container">
+        <div class="footer-logo-info">
+            <img src="../../Imagenes/UTNLogo_footer.webp" alt="Logo UTN" class="footer-logo">
+            <div class="footer-info">
+                <p>París 532, Haedo (1706)</p>
+                <p>Buenos Aires, Argentina</p><br>
+                <p>Número de teléfono del depto.</p><br>
+                <p>extension@frh.utn.edu.ar</p>
+            </div>
+        </div>
+        <div class="footer-social-legal">
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <div class="footer-legal">
+                <a href="#">Contacto</a><br>
+                <a href="#">Políticas de Privacidad</a>
+            </div>
+        </div>
+        <div class="footer-separator"></div>
+        <div class="footer-nav">
+            <h4>Navegación</h4>
+            <ul>
+                <li><a href="<?php echo $base_path; ?>index.html">Validar</a></li>
+                <li><a href="<?php echo $html_path; ?>sobre_nosotros.html">Sobre Nosotros</a></li>
+                <li><a href="<?php echo $html_path; ?>contacto.html">Contacto</a></li>
+            </ul>
+        </div>
+        <div class="footer-separator"></div>
+        <div class="footer-dynamic-nav">
+            <?php if (isset($_SESSION['user_name'])): ?>
+                <h4><?php echo $_SESSION['user_rol'] == 1 ? 'Admin' : 'Estudiante'; ?></h4>
+                <ul>
+                    <?php if ($_SESSION['user_rol'] == 1): ?>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
+                    <?php else: ?>
+                        <br>
+                        <li><a href="#">Mi Perfil</a></li>
+                        <br>
+                        <li><a href="#">Inscripciones</a></li>
+                        <br>
+                        <li><a href="#">Certificaciones</a></li>
+                    <?php endif; ?>
+                </ul>
+            <?php else: ?>
+                <h4>Acceso</h4>
+                <ul>
+                    <li><a href="<?php echo $php_path; ?>inicio_sesion.php">Iniciar Sesión</a></li>
+                </ul>
+            <?php endif; ?>
+        </div>
+    </div>
+    </footer>
+    <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 
     <script src="../../JavaScript/general.js"></script>
     <script>

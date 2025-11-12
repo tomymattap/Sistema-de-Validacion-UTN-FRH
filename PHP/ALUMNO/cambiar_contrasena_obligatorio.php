@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $success = "Su contraseña ha sido actualizada correctamente. Será redirigido a su perfil.";
                 // Redirigir después de un breve retraso para mostrar el mensaje de éxito
-                header('Refresh: 3; URL=perfil.php');
+                header('Refresh: 2; URL=perfil.php');
             } else {
                 $error = "Hubo un error al actualizar su contraseña. Por favor, intente de nuevo.";
             }

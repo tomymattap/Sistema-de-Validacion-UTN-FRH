@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 unset($_SESSION['force_password_change']);
                 
                 $success = "Su contraseña ha sido actualizada correctamente. Será redirigido al panel de administración.";
-                header('Refresh: 3; URL=gestionar_inscriptos.php');
+                header('Refresh: 2; URL=gestionar_inscriptos.php');
             } else {
                 $error = "Hubo un error al actualizar su contraseña.";
             }

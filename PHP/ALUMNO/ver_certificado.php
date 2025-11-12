@@ -2,6 +2,12 @@
 session_start();
 require '../conexion.php';
 
+// --- Definición de rutas para el header/footer ---
+$base_path = '../../';
+$php_path = $base_path . 'PHP/';
+$html_path = $base_path . 'HTML/';
+
+
 // --- BLOQUES DE SEGURIDAD ---
 if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 2) {
     header("Location: ../inicio_sesion.php?error=acceso_denegado");
@@ -57,9 +63,25 @@ $conexion->close();
 </head>
 <body>
     <header class="site-header">
-        <!-- ... (código del header omitido por brevedad, es el mismo que en las otras páginas de alumno) ... -->
+        <div class="header-container">
+            <div class="logo">
+                <a href="../../index.html"><img src="../../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../../index.html">VALIDAR</a></li>
+                    <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
+                </ul>
+            </nav>
+            <div class="session-controls" id="session-controls">
+                <!-- Dynamic content by JS -->
+            </div>
+            <button class="hamburger-menu" aria-label="Abrir menú">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
     </header>
-
     <main class="encuesta-page">
         <div class="encuesta-container">
             <a href="certificaciones.php" class="btn-volver-prominente"><i class="fas fa-arrow-left"></i> Volver sin contestar</a>
@@ -182,11 +204,102 @@ $conexion->close();
         </div>
     </main>
 
-    <footer class="site-footer">
-        <!-- ... (código del footer omitido por brevedad) ... -->
+        <footer class="site-footer">
+    <div class="footer-container">
+        <div class="footer-logo-info">
+            <img src="../../Imagenes/UTNLogo_footer.webp" alt="Logo UTN" class="footer-logo">
+            <div class="footer-info">
+                <p>París 532, Haedo (1706)</p>
+                <p>Buenos Aires, Argentina</p><br>
+                <p>Número de teléfono del depto.</p><br>
+                <p>extension@frh.utn.edu.ar</p>
+            </div>
+        </div>
+        <div class="footer-social-legal">
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <div class="footer-legal">
+                <a href="#">Contacto</a><br>
+                <a href="#">Políticas de Privacidad</a>
+            </div>
+        </div>
+        <div class="footer-separator"></div>
+        <div class="footer-nav">
+            <h4>Navegación</h4>
+            <ul>
+                <li><a href="<?php echo $base_path; ?>index.html">Validar</a></li>
+                <li><a href="<?php echo $html_path; ?>sobre_nosotros.html">Sobre Nosotros</a></li>
+                <li><a href="<?php echo $html_path; ?>contacto.html">Contacto</a></li>
+            </ul>
+        </div>
+        <div class="footer-separator"></div>
+        <div class="footer-dynamic-nav">
+            <?php if (isset($_SESSION['user_name'])): ?>
+                <h4><?php echo $_SESSION['user_rol'] == 1 ? 'Admin' : 'Estudiante'; ?></h4>
+                <ul>
+                    <?php if ($_SESSION['user_rol'] == 1): ?>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                        <br>
+                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
+                    <?php else: ?>
+                        <br>
+                        <li><a href="#">Mi Perfil</a></li>
+                        <br>
+                        <li><a href="#">Inscripciones</a></li>
+                        <br>
+                        <li><a href="#">Certificaciones</a></li>
+                    <?php endif; ?>
+                </ul>
+            <?php else: ?>
+                <h4>Acceso</h4>
+                <ul>
+                    <li><a href="<?php echo $php_path; ?>inicio_sesion.php">Iniciar Sesión</a></li>
+                </ul>
+            <?php endif; ?>
+        </div>
+    </div>
     </footer>
+    <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 
     <script src="../../JavaScript/general.js"></script>
-    <!-- ... (script de sesión de usuario omitido por brevedad) ... -->
+    <script>
+        fetch('../get_user_name.php')
+            .then(response => response.json())
+            .then(data => {
+                const sessionControls = document.getElementById('session-controls');
+                const mobileNav = document.querySelector('.off-canvas-menu nav ul');
+                let sessionHTML = '';
+
+                if (data.user_name && data.user_rol === 2) {
+                    const dropdownMenu = `
+                        <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
+                        <div class="dropdown-menu">
+                            <ul>
+                                <li><a href="perfil.php">Mi Perfil</a></li>
+                                <li><a href="inscripciones.php">Inscripciones</a></li>
+                                <li><a href="certificaciones.php">Certificaciones</a></li>
+                                <li><a href="../logout.php">Cerrar Sesión</a></li>
+                            </ul>
+                        </div>`;
+                    sessionHTML = `
+                        <li><a href="perfil.php">Mi Perfil</a></li>
+                        <li><a href="inscripciones.php">Inscripciones</a></li>
+                        <li><a href="certificaciones.php">Certificaciones</a></li>
+                        <li><a href="../logout.php">Cerrar Sesión</a></li>`;
+                    
+                    sessionControls.innerHTML = dropdownMenu;
+                    mobileNav.insertAdjacentHTML('beforeend', sessionHTML);
+                } else {
+                    window.location.href = '../inicio_sesion.php?error=acceso_denegado';
+                }
+            });
+    </script>
 </body>
 </html>

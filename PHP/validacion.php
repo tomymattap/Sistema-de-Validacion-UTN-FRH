@@ -221,7 +221,7 @@ if (!empty($codigo)) {
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
-                    sessionControls.innerHTML = '<a href="inicio_sesion.php" class="login-btn">INICIAR SESIÓN</a>';
+                    sessionControls.innerHTML = '<a href="inicio_sesion.php" class="btn-sesion">INICIAR SESIÓN</a>';
                     sessionHTML = '<li><a href="inicio_sesion.php">INICIAR SESIÓN</a></li>';
                 }
 

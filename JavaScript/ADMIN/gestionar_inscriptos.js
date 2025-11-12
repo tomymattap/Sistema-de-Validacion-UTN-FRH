@@ -472,17 +472,42 @@ document.addEventListener('DOMContentLoaded', () => {
                     submitButton.disabled = true;
 
                     try {
-                        const postResponse = await fetch(form.action, {
+                        // asegurar que el action sea una URL válida absoluta
+                        let actionURL = form.getAttribute('action'); // toma el valor literal, no el objeto
+                        if (!actionURL.includes('/')) {
+                            // si es una ruta corta, la completamos con la ruta correcta
+                            actionURL = `../../PHP/ADMIN/${actionURL}`;
+                        }
+
+                        const postResponse = await fetch(actionURL, {
                             method: 'POST',
                             body: formData
                         });
 
-                        if (postResponse.ok || (postResponse.redirected && postResponse.url.includes('gestionar_inscriptos.php'))) {
-                            cerrarModalEdicion();
-                            fetchInscriptos({ all: '1' }); // Recargar la tabla
+                        if (postResponse.ok) {
+                            // Mostrar mensaje de éxito moderno antes de cerrar el modal
+                            const successMsg = document.createElement('div');
+                            successMsg.className = 'overlay-success';
+                            successMsg.innerHTML = `
+                                <div class="overlay-success-content">
+                                    <i class="fas fa-check-circle"></i>
+                                    <p>Los cambios han sido guardados con éxito.</p>
+                                </div>
+                            `;
+                            document.body.appendChild(successMsg);
+                            setTimeout(() => {
+                                successMsg.classList.add('active');
+                            }, 10);
+
+                            setTimeout(() => {
+                                successMsg.classList.remove('active');
+                                setTimeout(() => successMsg.remove(), 300);
+                                cerrarModalEdicion();
+                                fetchInscriptos({ all: '1' }); // Recargar la tabla
+                            }, 1800);
                         } else {
-                           const errorText = await postResponse.text();
-                           throw new Error(`La actualización falló: ${errorText}`);
+                            const errorText = await postResponse.text();
+                            throw new Error(`La actualización falló: ${errorText}`);
                         }
 
                     } catch (error) {
@@ -497,7 +522,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                         errorMsg.textContent = 'Error al guardar. Por favor, intente de nuevo.';
                     } finally {
-                        if(submitButton) {
+                        if (submitButton) {
                             submitButton.innerHTML = originalButtonText;
                             submitButton.disabled = false;
                         }

@@ -44,21 +44,22 @@ if ($curso_info['Tipo'] === 'Genuino') {
 }
 
 // 3. BUSCAR Y ENTREGAR EL ARCHIVO PDF
-$stmt_pdf = $conexion->prepare("SELECT ID_CUV FROM certificacion WHERE ID_Inscripcion_Certif = ?");
+$stmt_pdf = $conexion->prepare("SELECT ID_CUV, Archivo FROM certificacion WHERE ID_Inscripcion_Certif = ?");
 $stmt_pdf->bind_param("i", $id_inscripcion);
 $stmt_pdf->execute();
 $result_pdf = $stmt_pdf->get_result();
+
 if ($row = $result_pdf->fetch_assoc()) {
     $cuv = $row['ID_CUV'];
-    // Asumimos que los PDFs se guardan en una carpeta específica con un nombre predecible.
-    // DEBES AJUSTAR ESTA RUTA Y LÓGICA DE NOMBRE DE ARCHIVO A TU SISTEMA.
-    $file_path = "../ADMIN/cert_generated/" . $cuv . ".pdf";
+    $pdf_content = $row['Archivo'];
 
-    if (file_exists($file_path)) {
+    // Verificar que el contenido del BLOB no esté vacío
+    if (!empty($pdf_content)) {
+        $filename = "certificado_" . $cuv . ".pdf";
         header('Content-Type: application/pdf');
-        header('Content-Disposition: attachment; filename="' . basename($file_path) . '"');
-        header('Content-Length: ' . filesize($file_path));
-        readfile($file_path);
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Content-Length: ' . strlen($pdf_content));
+        echo $pdf_content;
         exit;
     }
 }

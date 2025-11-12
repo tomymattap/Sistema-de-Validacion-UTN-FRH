@@ -162,12 +162,12 @@ try {
         }
 
         // --- Construir HTML dinámico con CSS para posicionamiento de texto ---
-        $html_content = '
+        $css = '
         <style>
             /* Nombre del alumno */
             .nombre-alumno {
                 position: absolute;
-                top: 62.3mm; left: 25mm; right: 0;
+                left: 25mm; right: 0;
                 text-align: center;
                 font-family: times new roman, serif;
                 font-size: 22pt;
@@ -178,7 +178,6 @@ try {
             /* Texto principal del certificado */
             .main-certificate-text {
                 position: absolute;
-                top: 80mm;
                 left: 37.8mm;
                 width: 246.6mm;
                 height: auto;
@@ -191,15 +190,32 @@ try {
             /* Fecha inferior derecha */
             .fecha-emision {
                 position: absolute;
-                top: 110mm;
                 left: 240mm;
                 font-size: 14pt;
             }
         </style>';
 
-        $html_content .= '<div class="text-container nombre-alumno">' . htmlspecialchars($nombre_completo) . '</div>';
-        $html_content .= '<div class="text-container main-certificate-text">' . $main_certificate_text . '</div>';
-        $html_content .= '<div class="text-container fecha-emision"> Haedo, ' . htmlspecialchars($fecha_emision) . '</div>';
+        // --- Ajustes según el tipo de certificado ---
+        if ($cert_data['tipo_certificado'] === 'genuino') {
+            $css .= '
+            <style>
+                .nombre-alumno { top: 62.3mm; }
+                .main-certificate-text { top: 80mm; }
+                .fecha-emision { top: 110mm; }
+            </style>';
+        } elseif ($cert_data['tipo_certificado'] === 'externo') {
+            $css .= '
+            <style>
+                .nombre-alumno { top: 55.6mm; }
+                .main-certificate-text { top: 76mm; }
+                .fecha-emision { top: 118mm; }
+            </style>';
+        }
+        
+        $html_content = $css . '
+        <div class="text-container nombre-alumno">' . htmlspecialchars($nombre_completo) . '</div>
+        <div class="text-container main-certificate-text">' . $main_certificate_text . '</div>
+        <div class="text-container fecha-emision"> Haedo, ' . htmlspecialchars($fecha_emision) . '</div>';
 
         
         // Escribir el contenido HTML (solo texto) en el PDF
@@ -210,7 +226,7 @@ try {
             $mpdf->Image($logo_path, 33, 5, 250, 0, 'PNG');
         }
         if ($firma_secretario && file_exists($firma_secretario)) {
-            $mpdf->Image($firma_secretario, 225, 140, 50, 0, 'PNG');
+            $mpdf->Image($firma_secretario, 225, 135, 50, 0, 'PNG');
         }
 
         if ($cert_data['tipo_certificado'] === 'genuino') {

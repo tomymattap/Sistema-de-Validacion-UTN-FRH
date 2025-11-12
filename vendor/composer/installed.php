@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'usuario/sistema_validacion',
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
-        'reference' => '92cdd241235f37ac4ee56a2c76ecf734194e2ac3',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => null,
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -91,15 +91,6 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'setasign/fpdf' => array(
-            'pretty_version' => '1.8.2',
-            'version' => '1.8.2.0',
-            'reference' => 'd77904018090c17dc9f3ab6e944679a7a47e710a',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../setasign/fpdf',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
         'setasign/fpdi' => array(
             'pretty_version' => 'v2.6.4',
             'version' => '2.6.4.0',
@@ -110,9 +101,9 @@
             'dev_requirement' => false,
         ),
         'usuario/sistema_validacion' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => '92cdd241235f37ac4ee56a2c76ecf734194e2ac3',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => null,
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

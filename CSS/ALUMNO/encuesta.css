@@ -232,3 +232,12 @@ textarea {
 .btn-volver-prominente i {
     margin-right: 0.5rem;
 }
+
+/* Contenedor para los botones en la vista de encuesta completada */
+.botones-verticales {
+    display: flex;
+    flex-direction: column; /* Apila los botones verticalmente */
+    align-items: center;   /* Centra los botones horizontalmente */
+    gap: 1rem;             /* Espacio entre los botones */
+    margin-top: 2rem;      /* Espacio superior */
+}

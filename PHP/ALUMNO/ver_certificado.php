@@ -84,7 +84,6 @@ $conexion->close();
     </header>
     <main class="encuesta-page">
         <div class="encuesta-container">
-            <a href="certificaciones.php" class="btn-volver-prominente"><i class="fas fa-arrow-left"></i> Volver sin contestar</a>
             <?php if ($encuesta_completa): ?>
                 <!-- VISTA SI LA ENCUESTA YA FUE COMPLETADA -->
                 <div class="encuesta-completada">
@@ -92,13 +91,16 @@ $conexion->close();
                     <h1>¡Gracias por su opinión!</h1>
                     <p>Ya ha completado la encuesta de satisfacción para el curso "<?php echo htmlspecialchars($nombre_curso); ?>".</p>
                     <p>Ahora puede descargar su certificado.</p>
-                    <a href="descargar_certificado.php?id=<?php echo $id_inscripcion; ?>" class="btn-descargar">
-                        <i class="fas fa-download"></i> Descargar Certificado
-                    </a>
-                    <a href="certificaciones.php" class="btn-volver">Volver a mis certificaciones</a>
+                    <div class="botones-verticales">
+                        <a href="descargar_certificado.php?id=<?php echo $id_inscripcion; ?>" class="btn-descargar">
+                            <i class="fas fa-download"></i> Descargar Certificado
+                        </a>
+                        <a href="certificaciones.php" class="btn-volver">Volver a mis certificaciones</a>
+                    </div>
                 </div>
             <?php else: ?>
                 <!-- VISTA PARA MOSTRAR EL FORMULARIO DE LA ENCUESTA -->
+                <a href="certificaciones.php" class="btn-volver-prominente"><i class="fas fa-arrow-left"></i> Volver sin contestar</a>
                 <div class="encuesta-header">
                     <h1>Encuesta de Satisfacción</h1>
                     <p>Para descargar su certificado del curso "<strong><?php echo htmlspecialchars($nombre_curso); ?></strong>", por favor, complete la siguiente encuesta. Su opinión es muy valiosa para nosotros.</p>

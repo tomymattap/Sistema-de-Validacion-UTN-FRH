@@ -3,12 +3,13 @@ include("../conexion.php");
 
 // Procesar actualización
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update') {
-    $cuil = mysqli_real_escape_string($conexion, $_POST['ID_Cuil_Alumno']);
-    $nombre = mysqli_real_escape_string($conexion, $_POST['Nombre_Alumno']);
-    $apellido = mysqli_real_escape_string($conexion, $_POST['Apellido_Alumno']);
-    $email = mysqli_real_escape_string($conexion, $_POST['Email_Alumno']);
-    $direccion = mysqli_real_escape_string($conexion, $_POST['Direccion_Alumno']);
-    $telefono = mysqli_real_escape_string($conexion, $_POST['Telefono_Alumno']);
+    header('Content-Type: application/json');
+    $cuil = $_POST['ID_Cuil_Alumno'];
+    $nombre = $_POST['Nombre_Alumno'];
+    $apellido = $_POST['Apellido_Alumno'];
+    $email = $_POST['Email_Alumno'];
+    $direccion = $_POST['Direccion'];
+    $telefono = $_POST['Telefono'];
 
     $sql = "UPDATE alumno 
             SET Nombre_Alumno = ?, Apellido_Alumno = ?, Email_Alumno = ?, Direccion = ?, Telefono = ?
@@ -17,10 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     mysqli_stmt_bind_param($stmt, "ssssss", $nombre, $apellido, $email, $direccion, $telefono, $cuil);
 
     if (mysqli_stmt_execute($stmt)) {
-        header('Location: gestionar_inscriptos.php?update=success');
-        exit;
+        echo json_encode(['success' => true, 'message' => 'Datos del alumno actualizados.']);
+        exit();
     } else {
-        die('Error al actualizar: ' . mysqli_error($conexion));
+        http_response_code(500);
+        echo json_encode(['success' => false, 'message' => 'Error al actualizar: ' . mysqli_stmt_error($stmt)]);
+        exit();
     }
 }
 
@@ -74,6 +77,7 @@ if (isset($_GET['ID_Inscripcion'])) {
     <div class="edit-form-container">
         <h1 class="main-title">Editar Alumno</h1>
         <form method="post" action="editar_alumno.php">
+            <input type="hidden" name="action" value="update">
             <input type="hidden" name="ID_Cuil_Alumno" value="<?= htmlspecialchars($alumno['ID_Cuil_Alumno']) ?>">
             <div class="form-group">
                 <label>CUIL (no editable)</label>
@@ -97,15 +101,15 @@ if (isset($_GET['ID_Inscripcion'])) {
             </div>
             <div class="form-group">
                 <label>Dirección</label>
-                <input type="text" name="Direccion_Alumno" value="<?= htmlspecialchars($alumno['Direccion']) ?>">
+                <input type="text" name="Direccion" value="<?= htmlspecialchars($alumno['Direccion']) ?>">
             </div>
             <div class="form-group">
                 <label>Teléfono</label>
-                <input type="text" name="Telefono_Alumno" value="<?= htmlspecialchars($alumno['Telefono']) ?>">
+                <input type="text" name="Telefono" value="<?= htmlspecialchars($alumno['Telefono']) ?>">
             </div>
             <div class="form-actions">
                 <a href="gestionar_inscriptos.php" class="btn-cancel">Cancelar</a>
-                <button type="submit" name="action" value="update" class="btn-submit">Guardar Cambios</button>
+                <button type="submit" class="btn-submit">Guardar Cambios</button>
             </div>
         </form>
     </div>

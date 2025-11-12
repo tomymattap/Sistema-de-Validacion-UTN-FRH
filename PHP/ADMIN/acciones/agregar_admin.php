@@ -41,9 +41,13 @@ mysqli_stmt_close($stmt);
 // Generar ID_Admin
 $id_admin = strtolower($apellido) . '_' . $legajo;
 
-$sql = "INSERT INTO admin (ID_Admin, Legajo, Nombre, Apellido, Email, ID_Rol) VALUES (?, ?, ?, ?, ?, ?)";
+// Hashear la contraseña por defecto (el legajo)
+$password_por_defecto = password_hash($legajo, PASSWORD_DEFAULT);
+$first_login_done = 0; // Forzar cambio de contraseña
+
+$sql = "INSERT INTO admin (ID_Admin, Legajo, Nombre, Apellido, Email, ID_Rol, Password, first_login_done) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = mysqli_prepare($conexion, $sql);
-mysqli_stmt_bind_param($stmt, "sisssi", $id_admin, $legajo, $nombre, $apellido, $email, $rol);
+mysqli_stmt_bind_param($stmt, "sisssisi", $id_admin, $legajo, $nombre, $apellido, $email, $rol, $password_por_defecto, $first_login_done);
 
 if (mysqli_stmt_execute($stmt)) {
     echo json_encode(['success' => true]);

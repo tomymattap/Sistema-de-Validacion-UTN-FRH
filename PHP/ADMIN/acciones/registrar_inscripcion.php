@@ -64,12 +64,12 @@ mysqli_stmt_close($stmt_check_alumno);
 
 // Si el alumno no existe, insertarlo
 if (!$alumno_existe) {
-    $password_generico = password_hash("123456", PASSWORD_DEFAULT); // Contraseña genérica
+    $password_generico = password_hash($cuil, PASSWORD_DEFAULT); // Contraseña inicial es el CUIL
     $id_rol_alumno = 2; // Rol de Alumno
 
-    $sql_insert_alumno = "INSERT INTO alumno (ID_Cuil_Alumno, DNI_Alumno, Nombre_Alumno, Apellido_Alumno, Email_Alumno, Dirección, Teléfono, ID_Rol, Password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql_insert_alumno = "INSERT INTO alumno (ID_Cuil_Alumno, DNI_Alumno, Nombre_Alumno, Apellido_Alumno, Email_Alumno, Direccion, Telefono, ID_Rol, Password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt_insert_alumno = mysqli_prepare($conexion, $sql_insert_alumno);
-    mysqli_stmt_bind_param($stmt_insert_alumno, "sisssssis", $cuil, $dni, $nombre, $apellido, $email, $direccion, $telefono, $id_rol_alumno, $password_generico);
+    mysqli_stmt_bind_param($stmt_insert_alumno, "sssssssis", $cuil, $dni, $nombre, $apellido, $email, $direccion, $telefono, $id_rol_alumno, $password_generico);
 
     if (!mysqli_stmt_execute($stmt_insert_alumno)) {
         http_response_code(500);

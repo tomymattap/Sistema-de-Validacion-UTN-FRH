@@ -133,7 +133,7 @@ try {
 
             $sql_insert_alumno = "INSERT INTO alumno (ID_Cuil_Alumno, DNI_Alumno, Nombre_Alumno, Apellido_Alumno, Email_Alumno, Direccion, Telefono, ID_Rol, Password, first_login_done) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt_insert_alumno = mysqli_prepare($conexion, $sql_insert_alumno);
-            mysqli_stmt_bind_param($stmt_insert_alumno, "ssssssisii", $cuil, $dni, $nombre, $apellido, $email, $direccion, $telefono, $id_rol_alumno, $password_generico, $first_login_done);
+            mysqli_stmt_bind_param($stmt_insert_alumno, "sssssssisi", $cuil, $dni, $nombre, $apellido, $email, $direccion, $telefono, $id_rol_alumno, $password_generico, $first_login_done);
             
             if (!mysqli_stmt_execute($stmt_insert_alumno)) {
                 $errors[] = "Fila {$row_number}: Error al crear el alumno con CUIL {$cuil}.";

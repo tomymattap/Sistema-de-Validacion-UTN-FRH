@@ -48,6 +48,13 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 mysqli_begin_transaction($conexion);
 
 try {
+    // Establecer el ID del admin para la auditoría
+    if (isset($_SESSION['user_id'])) {
+        $id_admin = $_SESSION['user_id'];
+        $stmt_admin = mysqli_prepare($conexion, "SET @current_admin = ?");
+        mysqli_stmt_bind_param($stmt_admin, "s", $id_admin);
+        mysqli_stmt_execute($stmt_admin);
+    }
     // --- LÓGICA PARA DETERMINAR EL ESTADO DE CURSADA AUTOMÁTICAMENTE ---
     $estado_cursada = 'Pendiente'; // Estado por defecto
     $stmt_fechas = mysqli_prepare($conexion, "SELECT Inicio_Curso, Fin_Curso FROM duracion_curso WHERE ID_Curso = ?");

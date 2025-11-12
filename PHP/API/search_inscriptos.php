@@ -17,7 +17,6 @@ $sql = "SELECT
             a.Apellido_Alumno,
             a.ID_Cuil_Alumno,
             c.Nombre_Curso,
-            i.Comision,
             i.Cuatrimestre,
             i.Anio,
             i.Estado_Cursada

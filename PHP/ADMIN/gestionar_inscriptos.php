@@ -156,10 +156,6 @@ $current_page = 'gestionar_inscriptos.php';
                         <?php endforeach; ?>
                     </select>
 
-                    <select id="filtroComision" disabled>
-                        <option value="">Comisión</option>
-                    </select>
-
                     <select id="filtroEstado">
                         <option value="">Estado</option>
                         <?php foreach ($estados as $estado): ?><option value="<?php echo $estado; ?>"><?php echo $estado; ?></option><?php endforeach; ?>

@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isValid) {
             errorMessage.textContent = "Por favor, complete todos los campos requeridos.";
             errorMessage.classList.add('visible');
+            setTimeout(hideMessages, 3000); // Oculta el mensaje después de 3 segundos.
             return; // Detiene la ejecución si el formulario no es válido.
         }
 
@@ -59,12 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 successMessage.textContent = "Mensaje enviado correctamente.";
                 successMessage.classList.add('visible'); // Muestra el mensaje de éxito.
                 contactForm.reset(); // Limpia los campos del formulario.
-                setTimeout(hideMessages, 20000); // Oculta el mensaje de éxito después de 20 segundos.
+                setTimeout(hideMessages, 3000); // Oculta el mensaje de éxito después de 3 segundos.
             } else {
                 // Si la respuesta no indica éxito.
                 errorMessage.textContent = "Error al enviar el mensaje. Intente nuevamente.";
                 errorMessage.classList.add('visible'); // Muestra el mensaje de error.
-                setTimeout(hideMessages, 5000); // Oculta el mensaje después de 5 segundos.
+                setTimeout(hideMessages, 3000); // Oculta el mensaje después de 3 segundos.
             }
         })
         .catch(error => {
@@ -72,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error:', error); // Muestra el error en consola.
             errorMessage.textContent = "Error de conexión. Intente más tarde.";
             errorMessage.classList.add('visible'); // Muestra un error de conexión.
-            setTimeout(hideMessages, 5000);
+            setTimeout(hideMessages, 3000);
         });
     });
 });

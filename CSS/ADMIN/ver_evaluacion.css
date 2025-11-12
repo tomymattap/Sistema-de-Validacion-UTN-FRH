@@ -6,8 +6,8 @@
     background-color: #fff;
     padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    margin-top: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombreado más pronunciado */
+    margin-top: 2.5rem; /* Aumentar la separación con el H1 */
 }
 
 /* Columna de información (70%) */
@@ -35,7 +35,8 @@
 }
 
 .info-column h3 {
-    margin-top: 2rem;
+    margin-top: 2.5rem; /* Aumentar la separación para la sección de instituciones */
+    margin-bottom: 1rem; /* Aumentar aún más la separación para la sección de instituciones */
 }
 
 /* Grilla para la información */
@@ -43,6 +44,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .info-item {
@@ -102,17 +104,28 @@
 .btn-submit {
     width: 100%;
     margin-top: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.05rem; /* Letra más grande */
+    border-radius: 20px; /* Bordes redondeados */
 }
 
 .btn-descargar-pdf {
     display: block;
     width: 100%;
+    padding: 0.8rem 1.5rem;
+    border-radius: 20px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
     text-align: center;
     background-color: var(--color-principal);
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn-descargar-pdf:hover {
-    background-color: var(--color-principal-oscuro);
+    background-color: #003a4f; /* Un poco más oscuro */
+    transform: translateY(-2px);
 }
 
 /* Mensajes */

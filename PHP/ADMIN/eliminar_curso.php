@@ -1,7 +1,14 @@
 <?php
+session_start();
 include("../conexion.php");
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cursos_a_eliminar'])) {
+
+    $id_admin = $_SESSION['user_id'];
+    // ✅ Registrar el admin en MySQL para los triggers
+    mysqli_query($conexion, "SET @current_admin = '$id_admin'");
+
     $ids_a_eliminar = $_POST['cursos_a_eliminar'];
 
     if (!empty($ids_a_eliminar)) {

@@ -105,9 +105,9 @@ if (empty($token)) {
                                 <input type="text" id="institucion3" name="institucion3">
                             </div>
                             <div class="form-group">
-                                <label>Archivo con datos necesarios de la Certificación (Opcional, solo PDF)</label>
-                                <div class="drop-zone_gc" id="dropZone">
-                                    <p>Arrastra y suelta tu archivo PDF aquí o haz clic para seleccionarlo.</p>
+                                <label for="archivo_evaluacion">Archivo con datos necesarios de la Certificación (Opcional, solo PDF)</label>
+                                <div class="file-upload-zone" id="fileUploadZone">
+                                    <p>Haz clic para seleccionar un archivo PDF de tu máquina.</p>
                                     <input type="file" id="archivo_evaluacion" name="archivo_evaluacion" accept="application/pdf" style="display: none;">
                                 </div>
                                 <div id="fileDisplay" style="margin-top: 10px; display: none;">
@@ -133,43 +133,14 @@ if (empty($token)) {
     <script src="../JavaScript/general.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const dropZone = document.getElementById('dropZone');
+            const fileUploadZone = document.getElementById('fileUploadZone');
             const fileInput = document.getElementById('archivo_evaluacion');
             const fileDisplay = document.getElementById('fileDisplay');
             const fileNameSpan = document.getElementById('fileName');
             const removeFileBtn = document.getElementById('removeFileBtn');
 
-            // Prevenir comportamiento por defecto de arrastrar y soltar
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, preventDefaults, false);
-                document.body.addEventListener(eventName, preventDefaults, false); // Para evitar que se abra el archivo en el navegador
-            });
-
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-
-            // Resaltar zona de arrastre al arrastrar sobre ella
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropZone.addEventListener(eventName, () => dropZone.classList.add('drag-over'), false);
-            });
-
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, () => dropZone.classList.remove('drag-over'), false);
-            });
-
-            // Manejar archivo soltado
-            dropZone.addEventListener('drop', handleDrop, false);
-
-            function handleDrop(e) {
-                const dt = e.dataTransfer;
-                const files = dt.files;
-                handleFiles(files);
-            }
-
-            // Manejar clic en la zona de arrastre
-            dropZone.addEventListener('click', () => fileInput.click());
+            // Manejar clic en la zona de subida
+            fileUploadZone.addEventListener('click', () => fileInput.click());
 
             // Manejar selección de archivo (ya sea por clic o arrastre)
             fileInput.addEventListener('change', (e) => handleFiles(e.target.files));

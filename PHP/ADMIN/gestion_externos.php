@@ -143,7 +143,9 @@ $php_path = $base_path . 'PHP/';
                                 <td class="col-institucion"><?= htmlspecialchars($fila['Institucion2']); ?></td>
                                 <td class="col-institucion"><?= htmlspecialchars($fila['Institucion3']); ?></td>
 
-                                <td class="col-estado <?= $estado_class ?>"><?= $estado_evaluacion ?></td>
+                                <td class="col-estado">
+                                    <span class="status-badge <?= $estado_class ?>"><?= $estado_evaluacion ?></span>
+                                </td>
 
                                 <td class="col-info-extra">
                                     <?php if (!empty($fila['Archivo_Evaluacion'])): ?>

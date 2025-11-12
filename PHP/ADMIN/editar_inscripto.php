@@ -1,23 +1,35 @@
 <?php
+session_start();
 include("../conexion.php");
 
 // Proceso de actualización
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update') {
+    header('Content-Type: application/json');
+    if (isset($_SESSION['user_id'])) {
+        $id_admin = $_SESSION['user_id'];
+        // ✅ Registrar el admin en MySQL para los triggers
+        $stmt_admin = mysqli_prepare($conexion, "SET @current_admin = ?");
+        mysqli_stmt_bind_param($stmt_admin, "s", $id_admin);
+        mysqli_stmt_execute($stmt_admin);
+    }
+    
     $id = intval($_POST['ID_Inscripcion']);
     $ID_Curso = intval($_POST['ID_Curso']);
-    $Cuatrimestre = mysqli_real_escape_string($conexion, $_POST['Cuatrimestre']);
+    $Cuatrimestre = $_POST['Cuatrimestre'];
     $Anio = intval($_POST['Anio']);
-    $Estado_Cursada = mysqli_real_escape_string($conexion, $_POST['Estado_Cursada']);
+    $Estado_Cursada = $_POST['Estado_Cursada'];
 
     $sql = "UPDATE inscripcion SET ID_Curso = ?, Cuatrimestre = ?, Anio = ?, Estado_Cursada = ? WHERE ID_Inscripcion = ?";
     $stmt = mysqli_prepare($conexion, $sql);
     mysqli_stmt_bind_param($stmt, "isisi", $ID_Curso, $Cuatrimestre, $Anio, $Estado_Cursada, $id);
     
     if (mysqli_stmt_execute($stmt)) {
-        header('Location: gestionar_inscriptos.php?update=success');
-        exit;
+        echo json_encode(['success' => true, 'message' => 'Inscripción actualizada correctamente.']);
+        exit();
     } else {
-        die('Error al actualizar: ' . mysqli_error($conexion));
+        http_response_code(500);
+        echo json_encode(['success' => false, 'message' => 'Error al actualizar: ' . mysqli_error($conexion)]);
+        exit();
     }
 }
 
@@ -79,6 +91,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
     <div class="edit-form-container">
         <h1 class="main-title">Editar Inscripción <span style="color: var(--color-secundario-1);">#<?= htmlspecialchars($inscripcion['ID_Inscripcion']) ?></span></h1>
         <form method="post" action="editar_inscripto.php">
+            <input type="hidden" name="action" value="update">
             <input type="hidden" name="ID_Inscripcion" value="<?= htmlspecialchars($inscripcion['ID_Inscripcion'])?> ">
             
             <div class="form-group">
@@ -118,7 +131,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
             
             <div class="form-actions">
                 <a href="gestionar_inscriptos.php" class="btn-cancel">Cancelar</a>
-                <button type="submit" name="action" value="update" class="btn-submit">Guardar Cambios</button>
+                <button type="submit" class="btn-submit">Guardar Cambios</button>
             </div>
         </form>
     </div>

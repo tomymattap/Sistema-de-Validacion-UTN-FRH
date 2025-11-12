@@ -77,7 +77,15 @@ if (isset($_GET['ID_Inscripcion'])) {
 
         <div class="form-group">
             <label for="Cuatrimestre">Periodo</label>
-            <input type="text" name="Cuatrimestre" id="Cuatrimestre" value="<?= htmlspecialchars($inscripcion['Cuatrimestre']) ?>" required>
+            <select name="Cuatrimestre" id="Cuatrimestre" required>
+                <?php
+                $cuatrimestres_options = ['Primer Cuatrimestre', 'Segundo Cuatrimestre', 'Anual'];
+                foreach ($cuatrimestres_options as $option) {
+                    $selected = ($option == $inscripcion['Cuatrimestre']) ? 'selected' : '';
+                    echo "<option value=\"{$option}\" {$selected}>{$option}</option>";
+                }
+                ?>
+            </select>
         </div>
 
         <div class="form-group">

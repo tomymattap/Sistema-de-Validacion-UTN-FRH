@@ -6,6 +6,7 @@ include("../conexion.php");
 $search = trim($_GET['search'] ?? '');
 $curso = trim($_GET['curso'] ?? '');
 $estado = trim($_GET['estado'] ?? '');
+$comision = trim($_GET['comision'] ?? '');
 $anio = trim($_GET['anio'] ?? '');
 $cuatr = trim($_GET['cuatr'] ?? '');
 $show_all = isset($_GET['all']) && $_GET['all'] === '1';
@@ -17,6 +18,7 @@ $sql = "SELECT
             a.Apellido_Alumno,
             a.ID_Cuil_Alumno,
             c.Nombre_Curso,
+            i.Comision,
             i.Cuatrimestre,
             i.Anio,
             i.Estado_Cursada
@@ -29,7 +31,7 @@ $params = [];
 $types = '';
 
 // Si no piden "all" y no hay filtros -> devolver vacío (evita consultas masivas)
-if (!$show_all && $search === '' && $curso === '' && $estado === '' && $anio === '' && $cuatr === '') {
+if (!$show_all && $search === '' && $curso === '' && $estado === '' && $anio === '' && $cuatr === '' && $comision === '') {
     echo json_encode([], JSON_UNESCAPED_UNICODE);
     exit;
 }
@@ -63,6 +65,13 @@ if ($curso !== '') {
 if ($estado !== '') {
     $conditions[] = "i.Estado_Cursada = ?";
     $params[] = $estado;
+    $types .= 's';
+}
+
+// filtro comision
+if ($comision !== '') {
+    $conditions[] = "i.Comision = ?";
+    $params[] = $comision;
     $types .= 's';
 }
 

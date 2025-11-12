@@ -117,6 +117,15 @@ $cursos_result = mysqli_query($conexion, $cursos_query);
                                 ?>
                             </select>
                         </div>
+
+                        <!-- Nuevo desplegable para Comisiones -->
+                        <div class="form-group full-width">
+                            <label for="comision">Seleccione una Comisión</label>
+                            <select id="comision" name="comision" required disabled>
+                                <option value="">-- Primero seleccione un curso --</option>
+                            </select>
+                        </div>
+
                         <div class="form-actions">
                             <button type="submit" class="btn-submit"><i class="fas fa-download"></i> Descargar CSV</button>
                         </div>
@@ -231,13 +240,52 @@ $cursos_result = mysqli_query($conexion, $cursos_query);
                 mobileMenuUl.insertAdjacentHTML('beforeend', sessionHTML);
             });
 
-        // --- Lógica para el buscador de cursos que filtra el select ---
+        // --- Lógica para el buscador y el desplegable de comisiones ---
         document.addEventListener('DOMContentLoaded', function() {
             const buscador = document.getElementById('buscador_curso');
             const selectCursos = document.getElementById('id_curso');
+            const selectComision = document.getElementById('comision');
             const opcionesOriginales = Array.from(selectCursos.options);
 
-            // Función para normalizar texto (quitar tildes y a minúsculas)
+            // Función para cargar comisiones dinámicamente
+            const cargarComisiones = async (cursoId) => {
+                selectComision.innerHTML = '<option value="">Cargando...</option>';
+                selectComision.disabled = true;
+
+                if (!cursoId) {
+                    selectComision.innerHTML = '<option value="">-- Primero seleccione un curso --</option>';
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`../API/get_comisiones.php?curso_id=${cursoId}`);
+                    if (!response.ok) throw new Error('Error al cargar comisiones');
+                    
+                    const comisiones = await response.json();
+                    selectComision.innerHTML = ''; // Limpiar
+
+                    if (comisiones.length > 0) {
+                        selectComision.disabled = false;
+                        selectComision.add(new Option('Todas las comisiones', 'TODAS'));
+                        
+                        comisiones.forEach(com => {
+                            const option = new Option(com.Comision, com.Comision);
+                            selectComision.add(option);
+                        });
+
+                        if (comisiones.some(c => c.Comision === 'A')) {
+                            selectComision.value = 'A';
+                        }
+                    } else {
+                        selectComision.innerHTML = '<option value="">No hay comisiones para este curso</option>';
+                    }
+                } catch (error) {
+                    console.error(error);
+                    selectComision.innerHTML = '<option value="">Error al cargar</option>';
+                }
+            };
+
+            // --- Lógica para el buscador de cursos que filtra el select ---
             const normalizarTexto = (texto) => {
                 return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
             };
@@ -245,34 +293,24 @@ $cursos_result = mysqli_query($conexion, $cursos_query);
             buscador.addEventListener('input', function() {
                 const textoBusquedaNormalizado = normalizarTexto(this.value);
                 
-                // Limpiar el select actual
                 selectCursos.innerHTML = '';
 
-                // Filtrar y añadir opciones que coincidan
                 const opcionesFiltradas = opcionesOriginales.filter(opcion => {
-                    // Siempre incluir la opción por defecto
                     if (opcion.value === "") return true;
-                    // Comparar textos normalizados
                     return normalizarTexto(opcion.text).includes(textoBusquedaNormalizado);
                 });
 
-                // Si hay texto en el buscador, expandir el select para mostrar resultados
                 if (this.value.length > 0) {
-                    // Mostrar hasta 5 resultados, o menos si hay menos (mínimo 2 para que se vea como lista)
                     selectCursos.size = Math.max(2, Math.min(opcionesFiltradas.length, 6));
                 } else {
-                    // Si el buscador está vacío, volver al tamaño normal
                     selectCursos.size = 1;
                 }
 
-                // Si hay más de una opción (la de "Seleccionar Curso" + al menos un resultado)
                 if (opcionesFiltradas.length > 1) {
                     opcionesFiltradas.forEach(opcion => {
-                        // Clonar la opción para no moverla del array original
                         selectCursos.add(opcion.cloneNode(true));
                     });
                 } else {
-                    // Si solo queda la opción por defecto, mostrar mensaje de no resultados
                     const opcionNoResultados = document.createElement('option');
                     opcionNoResultados.value = "";
                     opcionNoResultados.textContent = "No se encontraron cursos";
@@ -281,11 +319,20 @@ $cursos_result = mysqli_query($conexion, $cursos_query);
                 }
             });
 
-            // Opcional: Al hacer clic en una opción, contraer el menú
-            selectCursos.addEventListener('click', function() {
+            // Al hacer clic, se actualiza el valor y se contrae la lista.
+            // Esto disparará el evento 'change'.
+            selectCursos.addEventListener('click', function(e) {
+                if (e.target.tagName === 'OPTION') {
+                    this.value = e.target.value;
+                }
                 if (this.size > 1) {
                     this.size = 1;
                 }
+            });
+
+            // El evento 'change' es el responsable final de cargar las comisiones.
+            selectCursos.addEventListener('change', function() {
+                cargarComisiones(this.value);
             });
         });
     </script>

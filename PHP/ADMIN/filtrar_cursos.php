@@ -5,12 +5,14 @@ include("../conexion.php");
 // Obtener valores distintos para los filtros
 $modalidades = mysqli_query($conexion, "SELECT DISTINCT Modalidad FROM curso ORDER BY Modalidad");
 $categorias = mysqli_query($conexion, "SELECT DISTINCT Categoria FROM curso ORDER BY Categoria");
+$comisiones = mysqli_query($conexion, "SELECT DISTINCT COALESCE(Comision, 'Unica') AS Comision FROM inscripcion ORDER BY Comision");
 $tipos = mysqli_query($conexion, "SELECT DISTINCT Tipo FROM curso ORDER BY Tipo");
 
 // Obtener los filtros enviados por GET
 $filtro_general = isset($_GET['filtro_general']) ? mysqli_real_escape_string($conexion, $_GET['filtro_general']) : '';
 $modalidad = isset($_GET['modalidad']) ? mysqli_real_escape_string($conexion, $_GET['modalidad']) : '';
 $categoria = isset($_GET['categoria']) ? mysqli_real_escape_string($conexion, $_GET['categoria']) : '';
+$comision = isset($_GET['comision']) ? mysqli_real_escape_string($conexion, $_GET['comision']) : '';
 $tipo = isset($_GET['tipo']) ? mysqli_real_escape_string($conexion, $_GET['tipo']) : '';
 $ver_sin_docente = isset($_GET['sin_docente']); // <-- nuevo botón
 
@@ -52,6 +54,16 @@ if ($ver_sin_docente) {
         $types .= 's';
     }
 
+    if (!empty($comision)) {
+        if ($comision === 'Unica') {
+            $where_clauses[] = "c.ID_Curso IN (SELECT DISTINCT ID_Curso FROM inscripcion WHERE Comision IS NULL)";
+        } else {
+            $where_clauses[] = "c.ID_Curso IN (SELECT DISTINCT ID_Curso FROM inscripcion WHERE Comision = ?)";
+            $params[] = &$comision;
+            $types .= 's';
+        }
+    }
+
     if (!empty($tipo)) {
         $where_clauses[] = "Tipo = ?";
         $params[] = &$tipo;
@@ -59,7 +71,7 @@ if ($ver_sin_docente) {
     }
 
     // Construcción final de la consulta
-    $consulta_sql = "SELECT * FROM curso";
+    $consulta_sql = "SELECT c.* FROM curso c";
     if (!empty($where_clauses)) {
         $consulta_sql .= " WHERE " . implode(' AND ', $where_clauses);
     }
@@ -169,6 +181,15 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
                             </select>
                         </div>
                         <div class="filter-group">
+                            <label for="comision">Comisión:</label>
+                            <select name="comision" id="comision">
+                                <option value="">Todas</option>
+                                <?php while ($fila = mysqli_fetch_assoc($comisiones)): ?>
+                                    <option value="<?= htmlspecialchars($fila['Comision']) ?>" <?= $comision == $fila['Comision'] ? 'selected' : '' ?>><?= htmlspecialchars($fila['Comision']) ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                        </div>
+                        <div class="filter-group">
                             <label for="tipo">Tipo:</label>
                             <select name="tipo" id="tipo">
                                 <option value="">Todos</option>
@@ -238,7 +259,7 @@ $totalCursos = $resultado ? mysqli_num_rows($resultado) : 0;
                                     <?php endwhile; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="11" style="text-align: center; padding: 2rem;">No se encontraron cursos con los filtros aplicados.</td>
+                                        <td colspan="9" style="text-align: center; padding: 2rem;">No se encontraron cursos con los filtros aplicados.</td>
                                     </tr>
                                 <?php endif; ?> 
                             </tbody>

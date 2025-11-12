@@ -26,7 +26,7 @@ $anios_res = mysqli_query($conexion, "SELECT DISTINCT Anio FROM inscripcion ORDE
 $anios = [];
 while ($row = mysqli_fetch_assoc($anios_res)) { $anios[] = $row['Anio']; }
 
-$estados = ['Pendiente', 'En Curso', 'Finalizada', 'Certificada'];
+$estados = ['Pendiente', 'En Curso', 'Finalizado', 'Certificada'];
 $cuatrimestres = ['Primer Cuatrimestre', 'Segundo Cuatrimestre', 'Anual'];
 
 // --- Definición de rutas para el header/footer temporal ---
@@ -156,6 +156,10 @@ $current_page = 'gestionar_inscriptos.php';
                         <?php endforeach; ?>
                     </select>
 
+                    <select id="filtroComision" disabled>
+                        <option value="">Comisión</option>
+                    </select>
+
                     <select id="filtroEstado">
                         <option value="">Estado</option>
                         <?php foreach ($estados as $estado): ?><option value="<?php echo $estado; ?>"><?php echo $estado; ?></option><?php endforeach; ?>
@@ -250,7 +254,7 @@ $current_page = 'gestionar_inscriptos.php';
                                     </div>
                                     <div class="campo-form">
                                         <label for="comision-insc">Comisión *</label>
-                                        <input type="text" id="comision-insc" name="Comision" placeholder="Ej: A, B o 1" required>
+                                        <input type="text" id="comision-insc" name="Comision" placeholder="A para primera o única, B, C, etc" required>
                                     </div>
                                     <div class="campo-form">
                                         <label for="cuatrimestre-insc">Cuatrimestre *</label>
@@ -263,15 +267,6 @@ $current_page = 'gestionar_inscriptos.php';
                                     <div class="campo-form">
                                         <label for="anio-insc">Año *</label>
                                         <input type="number" id="anio-insc" name="Anio" value="<?php echo date('Y'); ?>" required min="2000" max="2100">
-                                    </div>
-                                    <div class="campo-form">
-                                        <label for="estado-cursada-insc">Estado de la Cursada</label>
-                                        <select id="estado-cursada-insc" name="Estado_Cursada" required>
-                                            <option value="Pendiente">Pendiente</option>
-                                            <option value="En Curso">En Curso</option>
-                                            <option value="Finalizada">Finalizada</option>
-                                            <option value="Certificada">Certificada</option>
-                                        </select>
                                     </div>
                                 </div>
                                 <div id="mensaje-step-2" class="mensaje-form" style="display:none;"></div>

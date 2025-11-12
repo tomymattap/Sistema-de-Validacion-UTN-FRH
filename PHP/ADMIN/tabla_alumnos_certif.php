@@ -21,13 +21,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Consulta segura con sentencias preparadas para evitar inyección SQL
         $consulta = $conexion->prepare("
-            SELECT a.ID_Cuil_Alumno, a.Nombre_Alumno, a.Apellido_Alumno
+            SELECT a.ID_Cuil_Alumno, a.Nombre_Alumno, a.Apellido_Alumno, i.Comision
             FROM INSCRIPCION i
             JOIN ALUMNO a ON i.ID_Cuil_Alumno = a.ID_Cuil_Alumno
             WHERE i.ID_Curso = ? 
             AND i.Anio = ? 
             AND i.Cuatrimestre = ? 
-            AND i.Estado_Cursada = 'FINALIZADO'
+            AND i.Estado_Cursada IN ('FINALIZADO', 'APROBADO')
         ");
 
     if (!$consulta) {
@@ -118,6 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <th class="cuil-header">CUIL</th>
                                     <th class="nombre-header">Nombre</th>
                                     <th class="apellido-header">Apellido</th>
+                                    <th class="comision-header">Comisión</th>
                                     <th class="estado-header">Tipo de Certificado</th>
                                 </tr>
                             </thead>
@@ -130,6 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <td><?php echo $cuil; ?></td>
                                         <td><?php echo htmlspecialchars($fila['Nombre_Alumno']); ?></td>
                                         <td><?php echo htmlspecialchars($fila['Apellido_Alumno']); ?></td>
+                                        <td><?php echo htmlspecialchars($fila['Comision'] ?: 'Única'); ?></td>
                                         <td>
                                             <select name="alumnos[<?php echo $cuil; ?>][estado]">
                                                 <option value="APROBADO" selected>APROBADO</option>

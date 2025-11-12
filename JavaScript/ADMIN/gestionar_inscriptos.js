@@ -71,26 +71,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // ---------------------------
     // 3. FILTROS: obtener comisiones según curso
     // ---------------------------
-    const cargarComisiones = async (cursoId) => {
+    const cargarComisiones = (cursoId) => {
         if (!filtroComision) return;
+
+        // Limpiar y añadir la opción por defecto.
         filtroComision.innerHTML = '<option value="">Comisión</option>';
-        filtroComision.disabled = true;
-        if (!cursoId) return;
-        try {
-            const res = await fetch(`get_comisiones.php?curso_id=${encodeURIComponent(cursoId)}`);
-            if (!res.ok) return;
-            const coms = await res.json();
-            coms.forEach(c => {
-                const opt = document.createElement('option');
-                // asumimos campo 'Comision' en respuesta
-                opt.value = c.Comision;
-                opt.textContent = c.Comision;
-                filtroComision.appendChild(opt);
-            });
-            filtroComision.disabled = false;
-        } catch (e) {
-            console.error('Error cargando comisiones', e);
+
+        // Si no hay un curso seleccionado, el filtro de comisión permanece deshabilitado.
+        if (!cursoId) {
+            filtroComision.disabled = true;
+            return;
         }
+
+        // Si se selecciona un curso, se habilita el filtro y se puebla con las comisiones fijas.
+        filtroComision.disabled = false;
+        const comisionesFijas = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+        comisionesFijas.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c;
+            opt.textContent = c;
+            filtroComision.appendChild(opt);
+        });
     };
 
     if (filtroCurso) {
@@ -180,6 +182,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch(`../API/search_inscriptos.php?${q}`, {cache: 'no-store'});
             if (!res.ok) throw new Error('HTTP ' + res.status);
             const data = await res.json();
+            
+            // Ordenar los resultados por ID_Inscripcion de forma ascendente
+            data.sort((a, b) => parseInt(a.ID_Inscripcion) - parseInt(b.ID_Inscripcion));
+
             // Pasamos searchTerm para highlight (si existe)
             renderResultados(data, params.search || '');
         } catch (err) {
@@ -226,7 +232,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnLimpiar) btnLimpiar.addEventListener('click', (e) => {
         e.preventDefault();
         if (filtroCurso) filtroCurso.value = '';
-        if (filtroComision) { filtroComision.innerHTML = '<option value="">Comisión</option>'; filtroComision.disabled = true; }
+        if (filtroComision) { 
+            filtroComision.innerHTML = '<option value="">Comisión</option>'; 
+            filtroComision.value = '';
+            filtroComision.disabled = true; 
+        }
         if (filtroEstado) filtroEstado.value = '';
         if (filtroAnio) filtroAnio.value = '';
         if (filtroCuatrimestre) filtroCuatrimestre.value = '';
@@ -636,12 +646,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const formStep2 = multiStepContainer.querySelector('#form-step-2');
         const successMessage = multiStepContainer.querySelector('#inscripcion-exitosa-mensaje');
 
-        let currentStep = 1;
-        let registeredCuil = null;
+        let currentStep; // Se inicializará después
+        // Usaremos sessionStorage para guardar los datos del alumno entre pasos
 
         const updateStepUI = () => {
             steps.forEach(step => step.classList.remove('active'));
-            multiStepContainer.querySelector(`#step-${currentStep}`).classList.add('active');
+            if (multiStepContainer.querySelector(`#step-${currentStep}`)) {
+                multiStepContainer.querySelector(`#step-${currentStep}`).classList.add('active');
+            }
 
             progressBar.querySelectorAll('.progress-step').forEach(stepEl => {
                 const stepNum = parseInt(stepEl.dataset.step, 10);
@@ -655,11 +667,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const resetToStep1 = () => {
             currentStep = 1;
-            registeredCuil = null;
             formStep1.reset();
             formStep2.reset();
+            sessionStorage.removeItem('alumnoData'); // Limpiar datos temporales
+            sessionStorage.removeItem('currentFormStep'); // Limpiar el paso actual
             multiStepContainer.querySelector('#mensaje-step-1').style.display = 'none';
             multiStepContainer.querySelector('#mensaje-step-2').style.display = 'none';
+            updateStepUI();
+        };
+
+        const restoreFormState = () => {
+            const savedStep = sessionStorage.getItem('currentFormStep');
+            const savedData = sessionStorage.getItem('alumnoData');
+
+            if (savedStep === '2' && savedData) {
+                currentStep = 2;
+                const alumnoData = JSON.parse(savedData);
+                // Rellenar el formulario del paso 1 con los datos guardados
+                Object.keys(alumnoData).forEach(key => {
+                    const input = formStep1.querySelector(`[name="${key}"]`);
+                    if (input) {
+                        input.value = alumnoData[key];
+                    }
+                });
+            } else {
+                currentStep = 1;
+            }
             updateStepUI();
         };
 
@@ -673,62 +706,62 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Event Listeners ---
 
         // PASO 1: Registrar y Continuar
-        formStep1.addEventListener('submit', async (e) => {
+        formStep1.addEventListener('submit', (e) => {
             e.preventDefault();
             const formData = new FormData(formStep1);
-            const btn = formStep1.querySelector('.btn-continuar');
-            btn.disabled = true;
-            btn.textContent = 'Registrando...';
+            const alumnoData = Object.fromEntries(formData.entries());
 
-            try {
-                const response = await fetch('acciones/registrar_alumno_solo.php', {
-                    method: 'POST',
-                    body: formData
-                });
-                const result = await response.json();
-
-                if (result.success) {
-                    registeredCuil = result.cuil;
-                    currentStep = 2;
-                    updateStepUI();
-                } else {
-                    showStepMessage(1, result.message || 'Error desconocido.');
-                }
-            } catch (error) {
-                showStepMessage(1, 'Error de conexión. Intente de nuevo.');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Registrar y Continuar';
+            // Validaciones básicas en el cliente
+            if (!/^[0-9]{10,11}$/.test(alumnoData.ID_Cuil_Alumno)) {
+                showStepMessage(1, 'El CUIL debe tener 11 dígitos numéricos.');
+                return;
             }
+            if (!/^[0-9]{7,8}$/.test(alumnoData.DNI_Alumno)) {
+                showStepMessage(1, 'El DNI debe tener entre 7 y 8 dígitos.');
+                return;
+            }
+
+            // Guardar en sessionStorage y pasar al siguiente paso
+            sessionStorage.setItem('alumnoData', JSON.stringify(alumnoData));
+            currentStep = 2;
+            sessionStorage.setItem('currentFormStep', '2');
+            updateStepUI();
+            multiStepContainer.querySelector('#mensaje-step-1').style.display = 'none';
         });
 
         // PASO 2: Finalizar Inscripción
         formStep2.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!registeredCuil) {
-                showStepMessage(2, 'Error: No se encontró el CUIL del estudiante. Por favor, vuelva al paso 1.');
+            const alumnoDataString = sessionStorage.getItem('alumnoData');
+            if (!alumnoDataString) {
+                showStepMessage(2, 'Error: No se encontraron los datos del estudiante. Por favor, vuelva al paso 1.');
                 return;
             }
-        
-            const formData = new FormData(formStep2);
-            formData.append('ID_Cuil_Alumno', registeredCuil);
+
+            const alumnoData = JSON.parse(alumnoDataString);
+            const inscripcionData = new FormData(formStep2);
+
+            // Combinar datos del alumno y de la inscripción
+            for (const key in alumnoData) {
+                inscripcionData.append(key, alumnoData[key]);
+            }
 
             const btn = formStep2.querySelector('.btn-finalizar');
             btn.disabled = true;
             btn.textContent = 'Finalizando...';
             try {
-                const response = await fetch('acciones/registrar_inscripcion_solo.php', {
+                const response = await fetch('acciones/registrar_inscripcion_completa.php', {
                     method: 'POST',
-                    body: formData
+                    body: inscripcionData
                 });
                 const result = await response.json();
 
                 if (result.success) {
                     successMessage.style.display = 'flex';
                     setTimeout(() => {
-                        successMessage.style.display = 'none';
+                        successMessage.style.display = 'none'; // Ocultar el mensaje antes de resetear
                         resetToStep1();
-                        fetchInscriptos({ all: '1' }); // Actualizar tabla principal
+                        fetchInscriptos({ all: '1' });
                     }, 3000);
                 } else {
                     showStepMessage(2, result.message || 'Error al finalizar la inscripción.');
@@ -765,26 +798,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 modal.querySelector('.btn-cancelar-eliminar').onclick = closeModal;
                 
                 modal.querySelector('.btn-confirmar-eliminar').onclick = async () => {
-                    // Si estamos en el paso 2 y ya se registró un alumno, hay que borrarlo
-                    if (currentStep === 2 && registeredCuil) {
-                        const formData = new FormData();
-                        formData.append('ID_Cuil_Alumno', registeredCuil);
-                        try {
-                            await fetch('acciones/eliminar_alumno_solo.php', {
-                                method: 'POST',
-                                body: formData
-                            });
-                        } catch (error) {
-                            console.error('No se pudo eliminar el alumno temporal:', error);
-                        }
-                    }
-                    resetToStep1();
+                    resetToStep1(); // Ahora solo necesita resetear el formulario y sessionStorage
                     closeModal();
                 };
             });
         });
     };
-    initMultiStepForm();
+    
+    initMultiStepForm(); // Llama a la función principal
 
     // Delegación de eventos para la tabla de resultados (Editar y Eliminar)
     if (resultadosContainer) {

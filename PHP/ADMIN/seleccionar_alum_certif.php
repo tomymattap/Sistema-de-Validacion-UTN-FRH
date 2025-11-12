@@ -138,8 +138,8 @@ $current_page = 'seleccionar_alum_certif.php';
                 </div>
 
                 <div class="form-buttons">
-                    <button type="submit">Continuar</button>
-                    <button type="reset" class="reset-btn">Limpiar</button>
+                    <button type="submit">CONTINUAR</button>
+                    <button type="reset" class="reset-btn">LIMPIAR</button>
                 </div>
             </form>
         </div>

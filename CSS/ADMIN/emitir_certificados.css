@@ -18,10 +18,10 @@
 /* Contenedores para el formulario y la previsualización */
 .certificate-form-container,
 .certificate-preview-container {
-    background-color: #f9f9f9;
+    background-color: #fff;
     padding: 1.5rem;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
     width: 100%;
 }
 
@@ -32,7 +32,7 @@
     margin-bottom: 1.5rem;
     font-size: 1.5rem;
     color: #333;
-    border-bottom: 2px solid #005a9c; /* Línea decorativa */
+    border-bottom: 2px solid #00455c; /* Línea decorativa */
     padding-bottom: 0.5rem;
 }
 
@@ -65,21 +65,35 @@
     box-sizing: border-box;
 }
 
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--color-secundario-1);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
 /* Contenedor de los botones del formulario */
 .form-buttons {
     margin-top: 1.5rem;
 }
 
 .form-buttons button {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 4px;
+    background-color: white;
+    color: #00455c;
+    border: 1.2px solid #00455c;
+    padding: 0.8rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 700;
+    text-decoration: none;
     cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-    background-color: #005a9c;
-    color: white;
+    transition: all 0.3s ease;
     width: 100%; /* Ocupa todo el ancho en móvil */
+}
+
+.form-buttons button:hover {
+    background-color: #00455a;
+    color: white;
+    transform: translateY(-1px)
 }
 
 /* -------------------------------------------

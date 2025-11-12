@@ -148,7 +148,7 @@
 }
 
 .btn.filtrar { background: var(--color-principal); color: #fff; }
-.btn.mostrar-todos { background: #0a7c8a; color: #fff; }
+.btn.mostrar-todos { background: #01c5e4; color: #fff; }
 .btn.limpiar { background: #6c757d; color: #fff; }
 
 /* -------------------------------------------
@@ -976,7 +976,7 @@
 #edit-modal-body .form-group input:focus,
 #edit-modal-body .form-group select:focus {
     outline: none;
-    border-color: var(--color-principal);
+    border-color: var(--color-secundario-1);
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
 }
 

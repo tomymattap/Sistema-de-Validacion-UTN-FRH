@@ -1,7 +1,13 @@
 <?php
+session_start();
 include("../conexion.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+    $id_admin = $_SESSION['user_id'];
+    // ✅ Registrar el admin en MySQL para los triggers
+    mysqli_query($conexion, "SET @current_admin = '$id_admin'");
+
     // Recoger los datos del formulario
     $nombre_curso = $_POST['nombre_curso'] ?? '';
     $modalidad = $_POST['modalidad'] ?? null;

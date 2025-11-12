@@ -7,6 +7,10 @@ $id_curso = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
 // Proceso de actualización
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_curso'])) {
+    $id_admin = $_SESSION['user_id'];
+    // ✅ Registrar el admin en MySQL para los triggers
+    mysqli_query($conexion, "SET @current_admin = '$id_admin'");
+
     $id_curso_post = filter_input(INPUT_POST, 'id_curso', FILTER_VALIDATE_INT);
     $nombre_curso = $_POST['nombre_curso'] ?? '';
     $modalidad = $_POST['modalidad'] ?? null;

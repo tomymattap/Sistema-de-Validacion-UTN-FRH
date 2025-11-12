@@ -1,8 +1,13 @@
 <?php
+session_start();
 include("../conexion.php");
 
 // Proceso de actualización
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update') {
+    $id_admin = $_SESSION['user_id'];
+    // ✅ Registrar el admin en MySQL para los triggers
+    mysqli_query($conexion, "SET @current_admin = '$id_admin'");
+    
     $id = intval($_POST['ID_Inscripcion']);
     $ID_Curso = intval($_POST['ID_Curso']);
     $Cuatrimestre = mysqli_real_escape_string($conexion, $_POST['Cuatrimestre']);

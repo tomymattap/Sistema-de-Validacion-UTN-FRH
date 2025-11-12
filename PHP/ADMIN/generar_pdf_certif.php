@@ -2,6 +2,9 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+$id_admin = $_SESSION['user_id'];
+// ✅ Registrar el admin en MySQL para los triggers
+mysqli_query($conexion, "SET @current_admin = '$id_admin'");
 
 // 1. --- SEGURIDAD Y VALIDACIÓN DE DATOS ---
 if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {

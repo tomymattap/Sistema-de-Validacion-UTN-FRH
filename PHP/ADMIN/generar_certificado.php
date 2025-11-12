@@ -83,7 +83,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("<div class='message error'>❌ Su sesión ha expirado o es inválida. Por favor, inicie sesión de nuevo.</div>");
     }
     $id_admin = $_SESSION['user_id']; // Se obtiene el ID del admin logueado
+    // ✅ Registrar el admin en MySQL para los triggers
+    mysqli_query($conexion, "SET @current_admin = '$id_admin'");
 
+    
     // Recuperar datos de archivos y campos de texto del POST
     // Estos datos vienen de los campos ocultos en subir_archivos_certificado.php
     $tipo_certificado = $_POST['tipo_certificado'] ?? '';

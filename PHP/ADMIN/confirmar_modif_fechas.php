@@ -12,6 +12,10 @@ $cursos_modificados = [];
 $error_message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cursos'])) {
+    $id_admin = $_SESSION['user_id'];
+    // ✅ Registrar el admin en MySQL para los triggers
+    mysqli_query($conexion, "SET @current_admin = '$id_admin'");
+    
     $cursos_post = $_POST['cursos'];
 
     // Iniciar transacción para la actualización

@@ -58,18 +58,38 @@ $resultado = mysqli_query($conexion, $consulta);
         </div>
     </header>
 
-    <!-- Menú Off-canvas -->
-    <div class="off-canvas-menu" id="off-canvas-menu">
-        <button class="close-btn" aria-label="Cerrar menú">&times;</button>
-        <nav>
-            <ul>
-                <li><a href="../../index.html">VALIDAR</a></li>
-                <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
-                <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
-                <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
-            </ul>
-        </nav>
-    </div>
+<div class="off-canvas-menu" id="off-canvas-menu">
+    <button class="close-btn" aria-label="Cerrar menú">&times;</button>
+    <nav>
+        <ul>
+            <li><a href="../../index.html">VALIDAR</a></li>
+            <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
+            <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
+            <li id="mobile-session-section">
+                <?php if (isset($_SESSION['user_name'])):
+                    $user_rol = $_SESSION['user_rol'];
+                ?>
+                    <a href="#" class="user-menu-toggle-mobile">Hola, <?php echo htmlspecialchars($_SESSION['user_name']); ?> <i class="fas fa-chevron-down"></i></a>
+                    <ul class="submenu">
+                        <?php if ($user_rol == 1): // Admin ?>
+                            <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
+                            <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
+                            <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                            <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
+                        <?php else: // Estudiante ?>
+                            <li><a href="../ALUMNO/perfil.php">Mi Perfil</a></li>
+                            <li><a href="../ALUMNO/inscripciones.php">Inscripciones</a></li> 
+                            <li><a href="../ALUMNO/certificaciones.php">Certificaciones</a></li>
+                        <?php endif; ?>
+                        <li><a href="../logout.php">Cerrar Sesión</a></li>
+                    </ul>
+                <?php else: ?>
+                    <a href="../inicio_sesion.php">INICIAR SESIÓN</a>
+                <?php endif; ?>
+            </li>
+        </ul>
+    </nav>
+</div>
 
     <main class="admin-section" style="padding-top: 2rem; padding-bottom: 2rem;">
         <div class="gestion-cursos-container">
@@ -214,8 +234,6 @@ $resultado = mysqli_query($conexion, $consulta);
             .then(response => response.json())
             .then(data => {
                 const sessionControls = document.getElementById('session-controls');
-                const mobileNav = document.querySelector('.off-canvas-menu nav ul');
-                let sessionHTML = '';
 
                 if (data.user_name) {
                     let dropdownMenu;
@@ -231,25 +249,13 @@ $resultado = mysqli_query($conexion, $consulta);
                                     <li><a href="../logout.php">Cerrar Sesión</a></li>
                                 </ul>
                             </div>`;
-                        sessionHTML = `
-                            <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
-                            <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
-                            <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                            <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
-                            <li><a href="../logout.php">Cerrar Sesión</a></li>`;
                     } else if (data.user_rol === 2) { // Alumno
-                        // Redirigir si no es admin
                         window.location.href = '../../index.html';
                     }
                     sessionControls.innerHTML = dropdownMenu;
                 } else {
-                    // Redirigir si no está logueado
                     window.location.href = '../inicio_sesion.php?error=acceso_denegado';
                 }
-
-                // Añadir al menú móvil
-                const mobileMenuUl = document.querySelector('.off-canvas-menu nav ul');
-                mobileMenuUl.insertAdjacentHTML('beforeend', sessionHTML);
             });
     </script>
 </body>

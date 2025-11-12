@@ -52,15 +52,20 @@ if (isset($_SESSION['force_password_change'])) {
         </div>
     </header>
 
-    <!-- Menú Off-canvas -->
+    <!-- =======================
+        MENÚ LATERAL (OFF-CANVAS)
+    ======================== -->
     <div class="off-canvas-menu" id="off-canvas-menu">
         <button class="close-btn" aria-label="Cerrar menú">&times;</button>
         <nav>
             <ul>
                 <li><a href="../../index.html">VALIDAR</a></li>
-                <!--<li> <a href="../../HTML/cursos.html">CURSOS</a> </li>-->
                 <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
+                <!-- Sección para el menú de usuario o iniciar sesión en móvil -->
+                <li class="has-submenu" id="mobile-session-section">
+                    <!-- Contenido dinámico por JS -->
+                </li>
             </ul>
         </nav>
     </div>

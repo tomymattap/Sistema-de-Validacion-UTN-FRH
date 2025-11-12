@@ -48,28 +48,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ----- Lógica para desplegar el submenú en móvil -----
     const setupMobileSubmenu = (mobileMenuToggle) => {
+        // Prevenir doble asignación de eventos
+        if (mobileMenuToggle.dataset.menuInitialized) return;
+        mobileMenuToggle.dataset.menuInitialized = 'true';
+
         mobileMenuToggle.addEventListener('click', (e) => {
             e.preventDefault();
             const submenu = mobileMenuToggle.nextElementSibling;
-            submenu.classList.toggle('active');
-            const icon = mobileMenuToggle.querySelector('i');
-            icon.classList.toggle('fa-chevron-down');
-            icon.classList.toggle('fa-chevron-up');
+            if (submenu && submenu.classList.contains('submenu')) {
+                submenu.classList.toggle('active');
+                const icon = mobileMenuToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-chevron-down');
+                    icon.classList.toggle('fa-chevron-up');
+                }
+            }
         });
     };
 
+    // Función para buscar y configurar el menú. Se puede llamar en cualquier momento.
+    const initializeMobileSubmenu = () => {
+        const mobileMenuToggle = document.querySelector('.user-menu-toggle-mobile');
+        if (mobileMenuToggle) {
+            setupMobileSubmenu(mobileMenuToggle);
+        }
+    };
+
+    // 1. Ejecutar al cargar el DOM para los menús renderizados por el servidor (PHP)
+    initializeMobileSubmenu();
+
+    // 2. Usar MutationObserver para menús cargados dinámicamente (JS/AJAX)
     const mobileSessionSection = document.getElementById('mobile-session-section');
     if (mobileSessionSection) {
-        const observer = new MutationObserver((mutationsList, observer) => {
-            for (const mutation of mutationsList) {
-                if (mutation.type === 'childList') {
-                    const mobileMenuToggle = document.querySelector('.user-menu-toggle-mobile');
-                    if (mobileMenuToggle) {
-                        setupMobileSubmenu(mobileMenuToggle);
-                        observer.disconnect(); // Detener el observador una vez que el elemento se ha encontrado y configurado
-                    }
-                }
-            }
+        const observer = new MutationObserver((mutationsList) => {
+            // Cuando el contenido cambie, intentar inicializar de nuevo.
+            initializeMobileSubmenu();
         });
 
         observer.observe(mobileSessionSection, { childList: true, subtree: true });

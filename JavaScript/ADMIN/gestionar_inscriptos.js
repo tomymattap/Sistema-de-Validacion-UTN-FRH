@@ -485,16 +485,16 @@ document.addEventListener('DOMContentLoaded', () => {
                         });
 
                         if (postResponse.ok) {
-                            // Mostrar mensaje de éxito moderno antes de cerrar el modal
+                            // Mostrar mensaje de éxito moderno dentro del modal
                             const successMsg = document.createElement('div');
-                            successMsg.className = 'overlay-success';
+                            successMsg.className = 'modal-success-message'; // Nuevo nombre de clase
                             successMsg.innerHTML = `
-                                <div class="overlay-success-content">
+                                <div class="modal-success-content">
                                     <i class="fas fa-check-circle"></i>
                                     <p>Los cambios han sido guardados con éxito.</p>
                                 </div>
                             `;
-                            document.body.appendChild(successMsg);
+                            editModalBody.prepend(successMsg); // Insertar al principio del cuerpo del modal
                             setTimeout(() => {
                                 successMsg.classList.add('active');
                             }, 10);

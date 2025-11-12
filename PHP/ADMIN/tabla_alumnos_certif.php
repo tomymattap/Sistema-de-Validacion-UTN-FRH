@@ -14,11 +14,10 @@ $resultado = null; // Inicializar resultado
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validar que los datos esperados existen
-    if (isset($_POST["curso"], $_POST["anio"], $_POST["cuatrimestre"], $_POST["comision"])) {
+    if (isset($_POST["curso"], $_POST["anio"], $_POST["cuatrimestre"])) {
         $curso_id = $_POST["curso"];
         $anio = $_POST["anio"];
         $cuatrimestre = $_POST["cuatrimestre"];
-        $comision = $_POST["comision"];
 
         // Consulta segura con sentencias preparadas para evitar inyección SQL
         $consulta = $conexion->prepare("
@@ -28,7 +27,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             WHERE i.ID_Curso = ? 
             AND i.Anio = ? 
             AND i.Cuatrimestre = ? 
-            AND i.Comision = ?
             AND i.Estado_Cursada = 'FINALIZADO'
         ");
 
@@ -37,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
         // "isss" indica que los tipos de datos son: integer, string, string, string
-        $consulta->bind_param("isss", $curso_id, $anio, $cuatrimestre, $comision);
+        $consulta->bind_param("iss", $curso_id, $anio, $cuatrimestre);
         $consulta->execute();
         $resultado = $consulta->get_result();
     }
@@ -114,8 +112,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <input type="hidden" name="id_curso" value="<?php echo htmlspecialchars($_POST['curso']); ?>">
                         <input type="hidden" name="anio" value="<?php echo htmlspecialchars($_POST['anio']); ?>">
                         <input type="hidden" name="cuatrimestre" value="<?php echo htmlspecialchars($_POST['cuatrimestre']); ?>">
-                        <input type="hidden" name="comision" value="<?php echo htmlspecialchars($_POST['comision']); ?>">
-
                         <table id="results-table" class="tabla-certificaciones">
                             <thead>
                                 <tr>

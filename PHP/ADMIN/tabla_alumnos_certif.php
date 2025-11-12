@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </nav>
             <div class="session-controls" id="session-controls">
                 <!-- Contenido dinámico por JS -->
-                <a href="../../HTML/iniciosesion.html" class="login-btn">Iniciar Sesión</a>
+                <!--<a href="../../HTML/iniciosesion.html" class="login-btn">Iniciar Sesión</a>-->
             </div>
             <button class="hamburger-menu" aria-label="Abrir menú">
                 <span></span>
@@ -217,6 +217,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script src="../../JavaScript/general.js"></script>
+    <script>
+        fetch('../get_user_name.php')
+            .then(response => response.json())
+            .then(data => {
+                const sessionControls = document.getElementById('session-controls');
+                const mobileNav = document.querySelector('.off-canvas-menu nav ul');
+                let sessionHTML = '';
 
+                if (data.user_name) {
+                    let dropdownMenu;
+                    if (data.user_rol === 1) { // Admin
+                        dropdownMenu = `
+                            <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
+                            <div class="dropdown-menu">
+                                <ul>
+                                    <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
+                                    <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
+                                    <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                    <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
+                                    <li><a href="../logout.php">Cerrar Sesión</a></li>
+                                </ul>
+                            </div>`;
+                        sessionHTML = `
+                            <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
+                            <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
+                            <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                            <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
+                            <li><a href="../logout.php">Cerrar Sesión</a></li>`;
+                    } else {
+                        window.location.href = '../../index.html';
+                    }
+                    sessionControls.innerHTML = dropdownMenu;
+                    mobileNav.insertAdjacentHTML('beforeend', sessionHTML);
+                } else {
+                    window.location.href = '../inicio_sesion.php?error=session_expired';
+                }
+            });
+    </script>           
 </body>
 </html>

@@ -101,6 +101,15 @@ try {
         $id_inscripcion_certif = $inscripcion_result['ID_Inscripcion'];
         $inscripcion_query->close();
 
+        // Obtener CUV desde la tabla CERTIFICACION
+        $cuv_query = $conexion->prepare("SELECT ID_CUV FROM CERTIFICACION WHERE ID_Inscripcion_Certif = ?");
+        $cuv_query->bind_param("i", $id_inscripcion_certif);
+        $cuv_query->execute();
+        $cuv_result = $cuv_query->get_result()->fetch_assoc();
+        $cuv = $cuv_result ? $cuv_result['ID_CUV'] : 'CUV_NO_ENCONTRADO';
+        $cuv_query->close();
+
+
         // Obtener Fecha_Emision de la tabla CERTIFICACION
         $certificacion_query = $conexion->prepare("SELECT Fecha_Emision FROM CERTIFICACION WHERE ID_Inscripcion_Certif = ?");
         $certificacion_query->bind_param("i", $id_inscripcion_certif);
@@ -161,6 +170,12 @@ try {
             );
         }
 
+        // --- INICIO: Generar QR ---
+        // URL para el QR. Ajusta la URL base según sea necesario.
+        $validation_url = "http://localhost/Sistema_Validacion/index.html?cuv=" . urlencode($cuv);
+        $qrCodeImage = (new \chillerlan\QRCode\QRCode)->render($validation_url);
+
+
         // --- Construir HTML dinámico con CSS para posicionamiento de texto ---
         $css = '
         <style>
@@ -193,6 +208,16 @@ try {
                 left: 240mm;
                 font-size: 14pt;
             }
+            
+            .codigo-cuv {
+                position: absolute;
+                top: 169mm; /* ajustá esta coordenada según la posición real */
+                left: 137mm; /* centrado respecto al QR */
+                font-size: 11pt;
+                font-family: dejavusanscondensed, sans-serif;
+                font-weight: bold;
+                text-align: center;
+            }
         </style>';
 
         // --- Ajustes según el tipo de certificado ---
@@ -215,19 +240,21 @@ try {
         $html_content = $css . '
         <div class="text-container nombre-alumno">' . htmlspecialchars($nombre_completo) . '</div>
         <div class="text-container main-certificate-text">' . $main_certificate_text . '</div>
-        <div class="text-container fecha-emision"> Haedo, ' . htmlspecialchars($fecha_emision) . '</div>';
+        <div class="text-container fecha-emision"> Haedo, ' . htmlspecialchars($fecha_emision) . '</div>
+        <div class="codigo-cuv">Código: ' . htmlspecialchars($cuv) . '</div>';
 
-        
-        // Escribir el contenido HTML (solo texto) en el PDF
+
+        // Escribir el contenido HTML (texto y CUV) en el PDF
         $mpdf->WriteHTML($html_content);
 
-        // --- Añadir imágenes con posicionamiento absoluto ---
+        // --- Añadir imágenes y qr con posicionamiento absoluto ---
         if ($logo_path && file_exists($logo_path)) {
             $mpdf->Image($logo_path, 33, 5, 250, 0, 'PNG');
         }
         if ($firma_secretario && file_exists($firma_secretario)) {
             $mpdf->Image($firma_secretario, 225, 135, 50, 0, 'PNG');
         }
+        $mpdf->Image($qrCodeImage, 140, 130, 40, 40, 'png');
 
         if ($cert_data['tipo_certificado'] === 'genuino') {
             if ($firma_docente && file_exists($firma_docente)) {

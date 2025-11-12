@@ -188,6 +188,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Si todo salió bien, confirma los cambios
         mysqli_commit($conexion);
+        mysqli_close($conexion); // 🔹 Cierra la conexión y fuerza el flush del commit
+        sleep(1);                // 🔹 Espera un segundo para asegurar que el commit se propague
         echo "<div class='message info'>Todas las certificaciones fueron generadas correctamente.</div>";
 
         // Guardar datos en la sesión para generar_pdf_certif.php

@@ -71,26 +71,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // ---------------------------
     // 3. FILTROS: obtener comisiones según curso
     // ---------------------------
-    const cargarComisiones = async (cursoId) => {
+    const cargarComisiones = (cursoId) => {
         if (!filtroComision) return;
+
+        // Limpiar y añadir la opción por defecto.
         filtroComision.innerHTML = '<option value="">Comisión</option>';
-        filtroComision.disabled = true;
-        if (!cursoId) return;
-        try {
-            const res = await fetch(`get_comisiones.php?curso_id=${encodeURIComponent(cursoId)}`);
-            if (!res.ok) return;
-            const coms = await res.json();
-            coms.forEach(c => {
-                const opt = document.createElement('option');
-                // asumimos campo 'Comision' en respuesta
-                opt.value = c.Comision;
-                opt.textContent = c.Comision;
-                filtroComision.appendChild(opt);
-            });
-            filtroComision.disabled = false;
-        } catch (e) {
-            console.error('Error cargando comisiones', e);
+
+        // Si no hay un curso seleccionado, el filtro de comisión permanece deshabilitado.
+        if (!cursoId) {
+            filtroComision.disabled = true;
+            return;
         }
+
+        // Si se selecciona un curso, se habilita el filtro y se puebla con las comisiones fijas.
+        filtroComision.disabled = false;
+        const comisionesFijas = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+        comisionesFijas.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c;
+            opt.textContent = c;
+            filtroComision.appendChild(opt);
+        });
     };
 
     if (filtroCurso) {
@@ -180,6 +182,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch(`../API/search_inscriptos.php?${q}`, {cache: 'no-store'});
             if (!res.ok) throw new Error('HTTP ' + res.status);
             const data = await res.json();
+            
+            // Ordenar los resultados por ID_Inscripcion de forma ascendente
+            data.sort((a, b) => parseInt(a.ID_Inscripcion) - parseInt(b.ID_Inscripcion));
+
             // Pasamos searchTerm para highlight (si existe)
             renderResultados(data, params.search || '');
         } catch (err) {
@@ -226,7 +232,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnLimpiar) btnLimpiar.addEventListener('click', (e) => {
         e.preventDefault();
         if (filtroCurso) filtroCurso.value = '';
-        if (filtroComision) { filtroComision.innerHTML = '<option value="">Comisión</option>'; filtroComision.disabled = true; }
+        if (filtroComision) { 
+            filtroComision.innerHTML = '<option value="">Comisión</option>'; 
+            filtroComision.value = '';
+            filtroComision.disabled = true; 
+        }
         if (filtroEstado) filtroEstado.value = '';
         if (filtroAnio) filtroAnio.value = '';
         if (filtroCuatrimestre) filtroCuatrimestre.value = '';

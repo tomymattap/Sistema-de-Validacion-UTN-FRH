@@ -1,4 +1,13 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+// Validar que solo los administradores puedan acceder
+if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
+    header('Location: ../inicio_sesion.php?error=acceso_denegado');
+    exit;
+}
+
 include("../conexion.php");
 
 $resultado = null; // Inicializar resultado
@@ -68,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </nav>
             <div class="session-controls" id="session-controls">
                 <!-- Contenido dinámico por JS -->
-                <a href="../../PHP/inicio_sesion.php" class="login-btn">Iniciar Sesión</a>
+                <a href="../../PHP/inicio_sesion.php" class="btn-sesion">Iniciar Sesión</a>
             </div>
             <button class="hamburger-menu" aria-label="Abrir menú">
                 <span></span>

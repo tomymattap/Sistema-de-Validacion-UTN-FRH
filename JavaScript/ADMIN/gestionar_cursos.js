@@ -44,7 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const searchTerm = searchInput.value;
         
         try {
-            const response = await fetch(`acciones/search_cursos.php?search=${encodeURIComponent(searchTerm)}`);
+            // Usar la ruta relativa correcta desde la ubicación del PHP que incluye el JS
+            const response = await fetch(`../API/search_cursos.php?search=${encodeURIComponent(searchTerm)}`);
             if (!response.ok) {
                 throw new Error(`Error en la respuesta del servidor: ${response.statusText}`);
             }

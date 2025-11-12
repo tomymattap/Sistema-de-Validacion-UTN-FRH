@@ -26,7 +26,7 @@ $anios_res = mysqli_query($conexion, "SELECT DISTINCT Anio FROM inscripcion ORDE
 $anios = [];
 while ($row = mysqli_fetch_assoc($anios_res)) { $anios[] = $row['Anio']; }
 
-$estados = ['Pendiente', 'En Curso', 'Finalizada', 'Certificada'];
+$estados = ['Pendiente', 'En Curso', 'Finalizado', 'Certificada'];
 $cuatrimestres = ['Primer Cuatrimestre', 'Segundo Cuatrimestre', 'Anual'];
 
 // --- Definición de rutas para el header/footer temporal ---
@@ -254,7 +254,7 @@ $current_page = 'gestionar_inscriptos.php';
                                     </div>
                                     <div class="campo-form">
                                         <label for="comision-insc">Comisión *</label>
-                                        <input type="text" id="comision-insc" name="Comision" placeholder="Ej: A, B o 1" required>
+                                        <input type="text" id="comision-insc" name="Comision" placeholder="A para primera o única, B, C, etc" required>
                                     </div>
                                     <div class="campo-form">
                                         <label for="cuatrimestre-insc">Cuatrimestre *</label>
@@ -273,7 +273,7 @@ $current_page = 'gestionar_inscriptos.php';
                                         <select id="estado-cursada-insc" name="Estado_Cursada" required>
                                             <option value="Pendiente">Pendiente</option>
                                             <option value="En Curso">En Curso</option>
-                                            <option value="Finalizada">Finalizada</option>
+                                            <option value="Finalizado">Finalizado</option>
                                             <option value="Certificada">Certificada</option>
                                         </select>
                                     </div>

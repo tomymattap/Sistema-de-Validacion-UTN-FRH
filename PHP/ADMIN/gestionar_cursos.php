@@ -11,7 +11,7 @@ if (!empty($search_term)) {
 }
 
 // Consulta para obtener los cursos, filtrados si hay un término de búsqueda
-$consulta = "SELECT * FROM curso $where_sql ORDER BY ID_Curso";
+$consulta = "SELECT * FROM curso $where_sql ORDER BY ID_Curso ASC";
 $resultado = mysqli_query($conexion, $consulta);
 ?>
 

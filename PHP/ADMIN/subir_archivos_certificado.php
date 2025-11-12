@@ -281,7 +281,8 @@ $current_page = 'seleccionar_alum_certif.php'; // Se mantiene para marcar el men
         cancelButton.className = 'btn-cancelar-cert'; // Changed class name
         cancelButton.textContent = 'Cancelar';
         cancelButton.addEventListener('click', () => {
-            window.history.back();
+            // Redirigir directamente para evitar el error de reenvío de formulario
+            window.location.href = 'seleccionar_alum_certif.php';
         });
         
         // Insert the cancel button before the submit button

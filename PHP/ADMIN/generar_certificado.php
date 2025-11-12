@@ -78,7 +78,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_curso = $_POST["id_curso"];
     $anio = $_POST["anio"];
     $cuatrimestre = $_POST["cuatrimestre"];
-    $alumnos = $_POST["alumnos"];
 
     $alumnos_a_certificar = [];
 
@@ -86,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     mysqli_begin_transaction($conexion);
 
     try {
-        foreach ($alumnos as $cuil => $alumno) {
+        foreach ($_POST["alumnos"] as $cuil => $alumno) {
             if (!isset($alumno['cuil'])) continue; // solo los alumnos seleccionados
 
             $estado = $alumno['estado'];
@@ -100,21 +99,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     CASE WHEN c.Tipo = 'GENUINO' THEN 'G' ELSE 'C' END,
                     YEAR(CURDATE()),
                     LPAD(i.ID_Curso, 2, '0'),
-                    LPAD(COALESCE(MAX(CAST(SUBSTRING(ce.ID_CUV, 8) AS UNSIGNED)), 0) + 1, 4, '0')
-                ) FROM INSCRIPCION i JOIN CURSO c ON i.ID_Curso = c.ID_Curso LEFT JOIN CERTIFICACION ce ON ce.ID_CUV LIKE CONCAT(CASE WHEN c.Tipo = 'GENUINO' THEN 'G' ELSE 'C' END, YEAR(CURDATE()), LPAD(i.ID_Curso, 2, '0'), '%') WHERE i.ID_Cuil_Alumno = ? AND i.ID_Curso = ? AND i.Anio = ? AND i.Cuatrimestre = ?),
+                    LPAD(COALESCE(MAX(CAST(SUBSTRING(ce.ID_CUV, 8) AS UNSIGNED)), 0) + 1, 4, '0') 
+                ) FROM INSCRIPCION i JOIN CURSO c ON i.ID_Curso = c.ID_Curso LEFT JOIN CERTIFICACION ce ON ce.ID_CUV LIKE CONCAT(CASE WHEN c.Tipo = 'GENUINO' THEN 'G' ELSE 'C' END, YEAR(CURDATE()), LPAD(i.ID_Curso, 2, '0'), '%') WHERE i.ID_Cuil_Alumno = ? AND i.ID_Curso = ? AND i.Anio = ?),
                 i.ID_Inscripcion
             FROM INSCRIPCION i
-            WHERE i.ID_Cuil_Alumno = ? AND i.ID_Curso = ? AND i.Anio = ? AND i.Cuatrimestre = ? AND i.Estado_Cursada <> 'CERTIFICADA'
+            WHERE i.ID_Cuil_Alumno = ? AND i.ID_Curso = ? AND i.Anio = ? AND i.Estado_Cursada <> 'CERTIFICADA'
             ");
-            $stmt_insert->bind_param("ssiiisiiis", $estado, $id_admin, $cuil, $id_curso, $anio, $cuatrimestre, $cuil, $id_curso, $anio, $cuatrimestre);
+            $stmt_insert->bind_param("ssiiisii", $estado, $id_admin, $cuil, $id_curso, $anio, $cuil, $id_curso, $anio);
 
             if (!$stmt_insert->execute()) {
                 throw new Exception("Error al generar certificación para $cuil: " . $stmt_insert->error);
             }
 
             // 2️⃣ ACTUALIZA el estado de cursada
-            $stmt_update = $conexion->prepare("UPDATE INSCRIPCION SET Estado_Cursada = 'CERTIFICADA' WHERE ID_Cuil_Alumno = ? AND ID_Curso = ? AND Anio = ? AND Cuatrimestre = ?");
-            $stmt_update->bind_param("siss", $cuil, $id_curso, $anio, $cuatrimestre);
+            $stmt_update = $conexion->prepare("UPDATE INSCRIPCION SET Estado_Cursada = 'CERTIFICADA' WHERE ID_Cuil_Alumno = ? AND ID_Curso = ? AND Anio = ?");
+            $stmt_update->bind_param("sii", $cuil, $id_curso, $anio);
 
             if (!$stmt_update->execute()) {
                 throw new Exception("Error al actualizar estado para $cuil: " . $stmt_update->error);

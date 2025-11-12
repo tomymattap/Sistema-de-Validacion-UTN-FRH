@@ -68,7 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         searchCourses(); // Realizar búsqueda al presionar Enter o el botón
     });
-
-    // Carga inicial de todos los cursos al cargar la página
-    searchCourses();
+    
+    // Si el campo de búsqueda está vacío al cargar, no hacemos nada,
+    // para que se muestre la tabla ordenada por el servidor.
+    // Si se limpia la búsqueda, recargamos para obtener el orden original.
+    if (searchInput.value === '') {
+        document.querySelector('#reset-btn').addEventListener('click', () => window.location.href = 'gestionar_cursos.php');
+    }
 });

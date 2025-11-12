@@ -61,6 +61,16 @@ session_start();
 <?php
 include("../conexion.php");
 
+// --- INCLUSIÓN DE LIBRERÍAS PHPMailer (directa, como en olvido_contrasena.php) ---
+// Esto se hace para asegurar que PHPMailer se cargue correctamente en el entorno,
+require_once(__DIR__ . '/../phpmailer/src/Exception.php');
+require_once(__DIR__ . '/../phpmailer/src/PHPMailer.php');
+require_once(__DIR__ . '/../phpmailer/src/SMTP.php');
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
 // Validar que solo los administradores puedan acceder y obtener su ID
 if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1 || !isset($_SESSION['user_id'])) {
     echo "<div class='message error'>❌ Acceso denegado. No tiene permiso para realizar esta acción.</div>";
@@ -73,6 +83,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("<div class='message error'>❌ Su sesión ha expirado o es inválida. Por favor, inicie sesión de nuevo.</div>");
     }
     $id_admin = $_SESSION['user_id']; // Se obtiene el ID del admin logueado
+
+    // Recuperar datos de archivos y campos de texto del POST
+    // Estos datos vienen de los campos ocultos en subir_archivos_certificado.php
+    $tipo_certificado = $_POST['tipo_certificado'] ?? '';
+    $tipo_actividad = $_POST['tipo_actividad'] ?? '';
+    $camara_organizadora = $_POST['camara_organizadora'] ?? '';
+    $institutos_codictantes = $_POST['institutos_codictantes'] ?? '';
+    $uploaded_files = $_POST['files'] ?? []; // Rutas de archivos temporales
+
 
     // Variables del formulario
     $id_curso = $_POST["id_curso"];
@@ -129,6 +148,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $alumno_data = $query_email->get_result()->fetch_assoc();
             $query_email->close();
 
+            // Obtener el nombre del curso para el email
+            $query_curso = $conexion->prepare("SELECT Nombre_Curso FROM CURSO WHERE ID_Curso = ?");
+            $query_curso->bind_param("i", $id_curso);
+            $query_curso->execute();
+            $curso_data = $query_curso->get_result()->fetch_assoc();
+            $nombre_curso = $curso_data['Nombre_Curso'] ?? 'Curso no especificado';
+
             if ($alumno_data && !empty($alumno_data['Email_Alumno'])) {
                 $mail = new PHPMailer(true);
                 try {
@@ -164,31 +190,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         mysqli_commit($conexion);
         echo "<div class='message info'>Todas las certificaciones fueron generadas correctamente.</div>";
 
-        // Guardar datos en la sesión para el siguiente paso
+        // Guardar datos en la sesión para generar_pdf_certif.php
         $_SESSION['alumnos_para_certificar'] = $alumnos_a_certificar;
         $_SESSION['curso_info'] = [
             'id_curso' => $id_curso,
             'anio' => $anio,
             'cuatrimestre' => $cuatrimestre
         ];
-
-        // Guardar info de archivos para el PDF
-        $_SESSION['cert_files_info'] = [
-            'firma_secretario_path' => $_POST['firma_secretario_path'] ?? null,
-            'firma_docente_director_path' => $_POST['firma_docente_director_path'] ?? null,
-            'logo_camara_path' => $_POST['logo_camara_path'] ?? null,
-            'es_director' => isset($_POST['es_director']),
-            'nombre_instituto' => $_POST['nombre_instituto'] ?? null
+        // Reconstruir cert_data_for_pdf desde el POST y guardarlo en sesión
+        $_SESSION['cert_data_for_pdf'] = [
+            'tipo_certificado' => $tipo_certificado,
+            'tipo_actividad' => $tipo_actividad,
+            'camara_organizadora' => $camara_organizadora,
+            'institutos_codictantes' => $institutos_codictantes,
+            'files' => $uploaded_files
         ];
 
-        // Mostrar botón de descarga
+        // Mostrar botones de acción
         echo "
             <div class='button-container'>
                 <a href='seleccionar_alum_certif.php' class='btn'>Volver a Emitir Certificados</a>
-                <a href='generar_pdf_certif.php' class='btn'>Descargar Certificados</a>
+                <a href='generar_pdf_certif.php' class='btn' target='_blank'>Descargar Certificados</a>
             </div>
         ";
-
     } catch (Exception $e) {
         mysqli_rollback($conexion);
         echo "<div class='message error'>❌ Ocurrió un error: " . htmlspecialchars($e->getMessage()) . "</div>";

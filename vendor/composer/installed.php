@@ -3,7 +3,7 @@
         'name' => 'usuario/sistema_validacion',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '52ca6950fed5fbbb1567c8215e4348927638e9ae',
+        'reference' => '92cdd241235f37ac4ee56a2c76ecf734194e2ac3',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -112,7 +112,7 @@
         'usuario/sistema_validacion' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '52ca6950fed5fbbb1567c8215e4348927638e9ae',
+            'reference' => '92cdd241235f37ac4ee56a2c76ecf734194e2ac3',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

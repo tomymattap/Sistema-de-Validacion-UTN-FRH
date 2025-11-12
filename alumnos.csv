@@ -1,0 +1,6 @@
+﻿CUIL,DNI,Apellido,Nombre,Email,Dirección,Teléfono,Curso,Cuatrimestre,Año,Comisión
+20431223444,43122344,Fernández,Mateo,mateo@mail.com,Calle Falsa 123,1123456789,23,Primer Cuatrimestre,2025,A
+27345678901,34567890,González,Lucía,lucia.gonzalez@example.com,Avenida Siempre Viva 742,1167894321,24,Segundo Cuatrimestre,2025,B
+20321122334,32112233,Pérez,Juan,juanperez@mail.com,San Martín 555,1133344455,25,Anual,2025,C
+27456789012,45678901,López,María,maria.lopez@mail.com,Belgrano 820,1178901234,26,Primer Cuatrimestre,2025,A
+27321098765,32109876,Ramírez,Diego,diego.ramirez@mail.com,Sarmiento 900,1145678901,27,Segundo Cuatrimestre,2025,B

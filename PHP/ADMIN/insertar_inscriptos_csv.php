@@ -49,17 +49,40 @@ try {
         throw new Exception("El archivo CSV está vacío o la cabecera no es legible.");
     }
 
-    // Mapeo flexible de columnas (insensible a mayúsculas/minúsculas y espacios)
-    $header = array_map('trim', $header);
-    $header = array_map('strtolower', $header);
-    $expected_headers = ['cuil', 'dni', 'nombre', 'apellido', 'email', 'direccion', 'telefono', 'id_curso', 'comision', 'cuatrimestre', 'anio'];
+    // --- Normalización de cabeceras ---
+
+    // Eliminar BOM (Byte Order Mark) del primer elemento si existe
+    if (isset($header[0])) {
+        $header[0] = preg_replace('/^\x{FEFF}/u', '', $header[0]);
+    }
+
+    // Función para normalizar los encabezados (quitar acentos, espacios, minúsculas)
+    function normalize_header_name($str) {
+        $str = trim($str);
+        $str = strtolower($str);
+        $unwanted_array = ['á'=>'a', 'é'=>'e', 'í'=>'i', 'ó'=>'o', 'ú'=>'u', 'ñ'=>'n'];
+        return strtr($str, $unwanted_array);
+    }
+
+    $normalized_header = array_map('normalize_header_name', $header);
+
+    // Cabeceras esperadas (normalizadas). Se cambia 'id_curso' por 'curso'.
+    $expected_headers = ['cuil', 'dni', 'nombre', 'apellido', 'email', 'direccion', 'telefono', 'curso', 'comision', 'cuatrimestre', 'anio'];
+    
     $col_indices = [];
+    $missing_headers = [];
     foreach ($expected_headers as $expected) {
-        $index = array_search($expected, $header);
+        $index = array_search($expected, $normalized_header);
         if ($index === false) {
-            throw new Exception("Falta la columna requerida en el CSV: '{$expected}'.");
+            $missing_headers[] = $expected;
+        } else {
+            $col_indices[$expected] = $index;
         }
-        $col_indices[$expected] = $index;
+    }
+
+    // Si faltan cabeceras, lanzar excepción que será capturada y mostrada al usuario.
+    if (!empty($missing_headers)) {
+        throw new Exception("El archivo CSV no tiene las columnas requeridas. Faltan: " . implode(', ', $missing_headers));
     }
 
     // 4. Procesar cada fila del CSV
@@ -74,7 +97,7 @@ try {
         $email = trim($row[$col_indices['email']]);
         $direccion = trim($row[$col_indices['direccion']]);
         $telefono = trim($row[$col_indices['telefono']]);
-        $id_curso = trim($row[$col_indices['id_curso']]);
+        $id_curso = trim($row[$col_indices['curso']]); // Se usa 'curso' como key
         $comision = trim($row[$col_indices['comision']]);
         $cuatrimestre = trim($row[$col_indices['cuatrimestre']]);
         $anio = trim($row[$col_indices['anio']]);

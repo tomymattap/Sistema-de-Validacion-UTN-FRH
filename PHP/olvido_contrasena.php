@@ -89,8 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $mail->isSMTP();
                     $mail->Host       = 'smtp.gmail.com';
                     $mail->SMTPAuth   = true;
-                    $mail->Username   = 'sollione2004@gmail.com'; // tu correo
-                    $mail->Password   = 'masu hqty zqfc pudz'; // tu contraseña de aplicación
+                    $mail->Username   = 'sollione2004@gmail.com'; 
+                    $mail->Password   = 'masu hqty zqfc pudz';
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port       = 587;
 
@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     $mail->isHTML(true);
                     $mail->Subject = 'Restablecimiento de Contraseña';
-                    $mail->CharSet = 'UTF-8'; // ¡Esta es la línea clave!
+                    $mail->CharSet = 'UTF-8';
                     $reset_link = "http://{$_SERVER['HTTP_HOST']}/Sistema-De-Validacion-UTN-FRH/PHP/reset_contrasena.php?token=$token";
                     $mail->Body    = "Hola $nombre,<br><br>Hemos recibido una solicitud para restablecer tu contraseña. Haz clic en el siguiente enlace para continuar:<br><a href='$reset_link'>Restablecer Contraseña</a><br><br>Si no solicitaste esto, puedes ignorar este correo.<br><br>Saludos,<br>Equipo de UTN FRH.";
 

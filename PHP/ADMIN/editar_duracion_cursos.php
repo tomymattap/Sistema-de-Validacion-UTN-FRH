@@ -131,13 +131,13 @@ $resultado = mysqli_query($conexion, $consulta);
                                         $nombre_curso = htmlspecialchars($fila['Nombre_Curso']);
                                     ?>
                                         <tr data-id-curso="<?= $id_curso ?>">
-                                            <td><?= $id_curso ?></td>
-                                            <td><?= $nombre_curso ?></td>
-                                            <td>
+                                            <td data-label="ID Curso"><?= $id_curso ?></td>
+                                            <td data-label="Nombre"><?= $nombre_curso ?></td>
+                                            <td data-label="Fecha Inicio">
                                                 <input type="hidden" name="cursos[<?= $id_curso ?>][nombre]" value="<?= $nombre_curso ?>">
                                                 <input type="date" name="cursos[<?= $id_curso ?>][inicio]" value="<?= htmlspecialchars($fila['Inicio_Curso'] ?? '') ?>" class="date-input">
                                             </td>
-                                            <td>
+                                            <td data-label="Fecha Fin">
                                                 <input type="date" name="cursos[<?= $id_curso ?>][fin]" value="<?= htmlspecialchars($fila['Fin_Curso'] ?? '') ?>" class="date-input">
                                             </td>
                                         </tr>

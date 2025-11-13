@@ -182,3 +182,27 @@ body {
         max-width: 100%;
     }
 }
+
+/* Estilo para el mensaje de primer inicio de sesión */
+.first-time-info-container {
+    width: 100%;
+    max-width: 450px;
+    padding: 1rem; /* Reducido para un look más compacto */
+    margin-top: 1.5rem; /* Ajustado */
+    background-color: #e0f7fa; /* Tono celeste claro */
+    border: 1px solid #b3e5fc; /* Borde celeste un poco más oscuro */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.first-time-info-container p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #005662; /* Un color azul/verde oscuro para el texto */
+}
+
+.first-time-info-container p strong {
+    color: #003d44; /* Un tono más oscuro para el énfasis */
+}

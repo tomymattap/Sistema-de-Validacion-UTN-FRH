@@ -179,20 +179,20 @@ $php_path = $base_path . 'PHP/';
                                 }
                             ?>
                             <tr>
-                                <td><?= htmlspecialchars($fila['Nombre_Curso']); ?></td>
-                                <td><?= htmlspecialchars($fila['Carga_Horaria']); ?> hs</td>
-                                <td><?= htmlspecialchars($fila['Descripcion']); ?></td>
-                                <td><?= htmlspecialchars($fila['Requisitos']); ?></td>
+                                <td data-label="Curso"><?= htmlspecialchars($fila['Nombre_Curso']); ?></td>
+                                <td data-label="Carga Horaria"><?= htmlspecialchars($fila['Carga_Horaria']); ?> hs</td>
+                                <td data-label="Descripción"><?= htmlspecialchars($fila['Descripcion']); ?></td>
+                                <td data-label="Requisitos"><?= htmlspecialchars($fila['Requisitos']); ?></td>
 
-                                <td class="col-institucion"><?= htmlspecialchars($fila['Institucion1']); ?></td>
-                                <td class="col-institucion"><?= htmlspecialchars($fila['Institucion2']); ?></td>
-                                <td class="col-institucion"><?= htmlspecialchars($fila['Institucion3']); ?></td>
+                                <td data-label="Institución 1" class="col-institucion"><?= htmlspecialchars($fila['Institucion1']); ?></td>
+                                <td data-label="Institución 2" class="col-institucion"><?= htmlspecialchars($fila['Institucion2']); ?></td>
+                                <td data-label="Institución 3" class="col-institucion"><?= htmlspecialchars($fila['Institucion3']); ?></td>
 
-                                <td class="col-estado">
+                                <td data-label="Estado" class="col-estado">
                                     <span class="status-badge <?= $estado_class ?>"><?= $estado_evaluacion ?></span>
                                 </td>
 
-                                <td class="col-info-extra">
+                                <td data-label="Info Extra" class="col-info-extra">
                                     <?php if (!empty($fila['Archivo_Evaluacion'])): ?>
                                         <a href="descargar_archivo_externo.php?id=<?= htmlspecialchars($fila['ID_Evaluacion']) ?>" class="btn-descargar-pdf">
                                             <i class="fas fa-file-download"></i> PDF
@@ -201,7 +201,7 @@ $php_path = $base_path . 'PHP/';
                                         <span class="sin-archivo">Sin archivo</span>
                                     <?php endif; ?>
                                 </td>
-                                <td class="col-accion">
+                                <td data-label="Acción" class="col-accion">
                                     <a href="ver_evaluacion_externa.php?id=<?= htmlspecialchars($fila['ID_Evaluacion']) ?>" class="btn-accion" title="Ver y Evaluar">
                                         <i class="fas fa-eye"></i>
                                     </a>

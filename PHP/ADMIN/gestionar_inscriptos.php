@@ -319,7 +319,7 @@ $current_page = 'gestionar_inscriptos.php';
                                 <h3 id="tituloGuia">Guía para subir archivos de inscriptos</h3>
                                 <p>Tu archivo debe ser .CSV (UTF-8) y contener las columnas en este orden exacto:</p>
                                 <ul>
-                                    <li><strong>CUIL</strong> (sin guiones)</li>
+                                    <li><strong>Cuil</strong> (sin guiones)</li>
                                     <li><strong>DNI</strong></li>
                                     <li><strong>Apellido</strong></li>
                                     <li><strong>Nombre</strong></li>
@@ -328,7 +328,7 @@ $current_page = 'gestionar_inscriptos.php';
                                     <li><strong>Teléfono</strong></li>
                                     <li><strong>Curso</strong> (nombre o ID_Curso, preferible ID_Curso)</li>
                                     <li><strong>Cuatrimestre</strong></li>
-                                    <li><strong>Año</strong></li>
+                                    <li><strong>Año (Se debe escribir como Anio)</strong></li>
                                     <li><strong>Comisión</strong></li>
                                 </ul>
                                 <p><strong>Ejemplo de fila:</strong></p>

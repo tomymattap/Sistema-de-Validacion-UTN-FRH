@@ -12,6 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
         closeBtn.addEventListener('click', () => {
             offCanvasMenu.classList.remove('active');
         });
+
+        // Cierra el menú al hacer clic en un enlace dentro de él
+        offCanvasMenu.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') {
+                offCanvasMenu.classList.remove('active');
+            }
+        });
     }
 
     // ----- Botón de Volver Arriba -----

@@ -3,15 +3,15 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Validar que solo los administradores puedan acceder
-if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
-    header('Location: ../inicio_sesion.php?error=acceso_denegado');
-    exit;
-}
-
 // **BLOQUE DE SEGURIDAD: Forzar cambio de contraseña**
 if (isset($_SESSION['force_password_change'])) {
     header('Location: cambiar_contrasena_obligatorio.php');
+    exit;
+}
+
+// Validar que solo los administradores puedan acceder
+if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
+    header('Location: ../inicio_sesion.php?error=acceso_denegado');
     exit;
 }
 

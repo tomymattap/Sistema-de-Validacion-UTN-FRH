@@ -93,17 +93,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <header class="site-header">
         <div class="header-container">
             <div class="logo">
-                <a href="../index.html"><img src="../../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
+                <a href="../../index.html"><img src="../../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
             </div>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="../index.html">VALIDAR</a></li>
-                    <li><a href="../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
-                    <li><a href="../HTML/contacto.html">CONTACTO</a></li>
+                    <li><a href="../../index.html">VALIDAR</a></li>
+                    <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
                 </ul>
             </nav>
             <div class="session-controls" id="session-controls">
-                <a href="inicio_sesion.php" class="btn-sesion">INICIAR SESIÓN</a>
+                <a href="../inicio_sesion.php" class="btn-sesion">INICIAR SESIÓN</a>
             </div>
             <button class="hamburger-menu" aria-label="Abrir menú">
                 <span></span>
@@ -118,10 +118,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button class="close-btn" aria-label="Cerrar menú">&times;</button>
         <nav>
             <ul>
-                <li><a href="../index.html">VALIDAR</a></li>
-                <li><a href="../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
-                <li><a href="../HTML/contacto.html">CONTACTO</a></li>
-                <li><a href="inicio_sesion.php" class="btn-sesion">INICIAR SESIÓN</a></li>
+                <li><a href="../../index.html">VALIDAR</a></li>
+                <li><a href="../../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="../../HTML/contacto.html">CONTACTO</a></li>
+                <li><a href="../inicio_sesion.php" class="btn-sesion">INICIAR SESIÓN</a></li>
             </ul>
         </nav>
     </div>
@@ -192,16 +192,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="footer-nav">
                 <h4>Navegación</h4>
                 <ul>
-                    <li><a href="../index.html">Validar</a></li>
-                    <li><a href="../HTML/sobre_nosotros.html">Sobre Nosotros</a></li>
-                    <li><a href="../HTML/contacto.html">Contacto</a></li>
+                    <li><a href="../../index.html">Validar</a></li>
+                    <li><a href="../../HTML/sobre_nosotros.html">Sobre Nosotros</a></li>
+                    <li><a href="../../HTML/contacto.html">Contacto</a></li>
                 </ul>
             </div>
             <div class="footer-separator"></div>
             <div class="footer-dynamic-nav" id="footer-dynamic-nav">
                 <h4>Acceso</h4>
                 <ul>
-                    <li><a href="inicio_sesion.php">Iniciar Sesión</a></li>
+                    <li><a href="../inicio_sesion.php">Iniciar Sesión</a></li>
                 </ul>
             </div>
         </div>

@@ -48,6 +48,9 @@ $php_path = $base_path . 'PHP/';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Cursos Externos - Admin</title>
     <link rel="icon" href="../../Imagenes/icon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="<?php echo $css_path; ?>general.css">
     <link rel="stylesheet" href="<?php echo $css_path; ?>ADMIN/gestionar_cursos.css">
@@ -60,29 +63,70 @@ $php_path = $base_path . 'PHP/';
             <a href="<?php echo $base_path; ?>index.html"><img src="<?php echo $img_path; ?>UTNLogo.png" alt="Logo UTN FRH"></a>
         </div>
         <nav class="main-nav hide-on-mobile">
+                <ul>
+                    <li><a href="<?php echo $base_path; ?>index.html">VALIDAR</a></li>
+                    <li><a href="<?php echo $html_path; ?>sobre_nosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="<?php echo $html_path; ?>contacto.html">CONTACTO</a></li>
+                </ul>
+            </nav>
+            <div class="session-controls hide-on-mobile">
+                <?php if (isset($_SESSION['user_name'])): ?>
+                    <div class="user-menu-container">
+                        <a href="#" class="btn-sesion user-menu-toggle">Hola, <?php echo htmlspecialchars($_SESSION['user_name']); ?> <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-menu">
+                            <ul>
+                                <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
+                                <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                                <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_admin.php" class="active">Gestionar Administradores</a></li>
+                                <li><a href="<?php echo $php_path; ?>logout.php">Cerrar Sesión</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <a href="<?php echo $php_path; ?>inicio_sesion.php" class="btn-sesion">INICIAR SESIÓN</a>
+                <?php endif; ?>
+            </div>
+            <button class="hamburger-menu" aria-label="Abrir menú">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="off-canvas-menu" id="off-canvas-menu">
+        <button class="close-btn" aria-label="Cerrar menú">&times;</button>
+        <nav>
             <ul>
                 <li><a href="<?php echo $base_path; ?>index.html">VALIDAR</a></li>
                 <li><a href="<?php echo $html_path; ?>sobre_nosotros.html">SOBRE NOSOTROS</a></li>
                 <li><a href="<?php echo $html_path; ?>contacto.html">CONTACTO</a></li>
+                <li id="mobile-session-section">
+                    <?php if (isset($_SESSION['user_name'])):
+                        $user_rol = $_SESSION['user_rol'];
+                    ?>
+                        <a href="#" class="user-menu-toggle-mobile">Hola, <?php echo htmlspecialchars($_SESSION['user_name']); ?> <i class="fas fa-chevron-down"></i></a>
+                        <ul class="submenu">
+                            <?php if ($user_rol == 1): // Admin ?>
+                                <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
+                                <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                                <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                                <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
+                            <?php else: // Estudiante ?>
+                                <li><a href="<?php echo $php_path; ?>ALUMNO/perfil.php">Mi Perfil</a></li>
+                                <li><a href="<?php echo $php_path; ?>ALUMNO/inscripciones.php">Inscripciones</a></li> 
+                                <li><a href="<?php echo $php_path; ?>ALUMNO/certificaciones.php">Certificaciones</a></li>
+                            <?php endif; ?>
+                            <li><a href="<?php echo $php_path; ?>logout.php">Cerrar Sesión</a></li>
+                        </ul>
+                    <?php else: ?>
+                        <a href="<?php echo $php_path; ?>inicio_sesion.php">INICIAR SESIÓN</a>
+                    <?php endif; ?>
+                </li>
             </ul>
         </nav>
-        <div class="session-controls" id="session-controls"></div>
-        <button class="hamburger-menu" aria-label="Abrir menú">
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-        </button>
     </div>
-</header>
-
-<div class="off-canvas-menu" id="off-canvas-menu">
-    <button class="close-btn" aria-label="Cerrar menú">&times;</button>
-    <nav>
-        <ul>
-            <!-- Contenido dinámico por JS -->
-        </ul>
-    </nav>
-</div>
 
 <main class="admin-section" style="padding-top: 2rem; padding-bottom: 2rem;">
     <div class="gestion-cursos-container">

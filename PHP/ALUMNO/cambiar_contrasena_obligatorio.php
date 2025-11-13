@@ -94,17 +94,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="<?php echo $css_path; ?>INICIO/inicio_sesion.css"> <!-- Reutilizamos estilos de inicio de sesión -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body class="login-page">
+<body>
+
     <header class="site-header">
         <div class="header-container">
             <div class="logo">
-                <a href="<?php echo $base_path; ?>index.html"><img src="<?php echo $img_path; ?>UTNLogo.png" alt="Logo UTN FRH"></a>
+                <a href="../index.html"><img src="../../Imagenes/UTNLogo.png" alt="Logo UTN FRH"></a>
             </div>
-            <div class="session-controls" style="display: block;">
-                <a href="../logout.php" class="btn-sesion">Cerrar Sesión</a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html">VALIDAR</a></li>
+                    <li><a href="../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
+                    <li><a href="../HTML/contacto.html">CONTACTO</a></li>
+                </ul>
+            </nav>
+            <div class="session-controls" id="session-controls">
+                <a href="inicio_sesion.php" class="btn-sesion">INICIAR SESIÓN</a>
             </div>
+            <button class="hamburger-menu" aria-label="Abrir menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </header>
+
+    <!-- Menú Off-canvas -->
+    <div class="off-canvas-menu" id="off-canvas-menu">
+        <button class="close-btn" aria-label="Cerrar menú">&times;</button>
+        <nav>
+            <ul>
+                <li><a href="../index.html">VALIDAR</a></li>
+                <li><a href="../HTML/sobre_nosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="../HTML/contacto.html">CONTACTO</a></li>
+                <li><a href="inicio_sesion.php" class="btn-sesion">INICIAR SESIÓN</a></li>
+            </ul>
+        </nav>
+    </div>
+
     <main class="login-page">
         <div class="login-container">
             <h1 class="login-title">Cambiar Contraseña</h1>
@@ -142,6 +169,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
         </div>
     </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-logo-info">
+                <img src="../../Imagenes/UTNLogo_footer.webp" alt="Logo UTN" class="footer-logo">
+                <div class="footer-info">
+                    <p>París 532, Haedo (1706)</p>
+                    <p>Buenos Aires, Argentina</p>
+                    <br>
+                    <p>Número de teléfono del depto.</p>
+                    <br>
+                    <p>extension@frh.utn.edu.ar</p>
+                </div>
+            </div>
+            <div class="footer-social-legal">
+                <div class="footer-social">
+                    <a href="https://www.youtube.com/@facultadregionalhaedo-utn3647" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.linkedin.com/school/utn-facultad-regional-haedo/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                </div>
+                <div class="footer-legal">
+                    <a href="mailto:extension@frh.utn.edu.ar">Contacto</a>
+                    <br> 
+                    <a href="#politicas">Políticas de Privacidad</a>
+                </div>
+            </div>
+            <div class="footer-separator"></div>
+            <div class="footer-nav">
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a href="../index.html">Validar</a></li>
+                    <li><a href="../HTML/sobre_nosotros.html">Sobre Nosotros</a></li>
+                    <li><a href="../HTML/contacto.html">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-separator"></div>
+            <div class="footer-dynamic-nav" id="footer-dynamic-nav">
+                <h4>Acceso</h4>
+                <ul>
+                    <li><a href="inicio_sesion.php">Iniciar Sesión</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+    </a>
     <script>
         // Script para mostrar/ocultar contraseña
         document.querySelectorAll('.password-wrapper i[data-toggle-for]').forEach(icon => {

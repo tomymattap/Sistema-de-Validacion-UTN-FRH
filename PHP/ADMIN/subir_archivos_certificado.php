@@ -245,7 +245,7 @@ $php_path = $base_path . 'PHP/';
             <div id="genuino-fields" style="display: none; width: 100%; max-width: 600px;">
                 <div class="form-group">
                     <label for="tipo_actividad_genuino">Tipo de actividad <span class="required">*</span></label>
-                    <input type="text" name="tipo_actividad" id="tipo_actividad_genuino" class="form-control">
+                    <input type="text" name="tipo_actividad" id="tipo_actividad_genuino" class="form-control" placeholder="Incluya el artículo correspondiente. Ej: 'el curso', 'el taller'">
                 </div>
                 <div class="form-group">
                     <label for="firma_secretario_genuino">Firma del Secretario (PNG) <span class="required">*</span></label>
@@ -268,15 +268,15 @@ $php_path = $base_path . 'PHP/';
             <div id="externo-fields" style="display: none; width: 100%; max-width: 600px;">
                 <div class="form-group">
                     <label for="tipo_actividad_externo">Tipo de actividad <span class="required">*</span></label>
-                    <input type="text" name="tipo_actividad" id="tipo_actividad_externo" class="form-control">
+                    <input type="text" name="tipo_actividad" id="tipo_actividad_externo" class="form-control" placeholder="Incluya el artículo correspondiente. Ej: 'el curso', 'el taller'">
                 </div>
                 <div class="form-group">
                     <label for="camara_organizadora">Nombre de la cámara organizadora <span class="required">*</span></label>
-                    <input type="text" name="camara_organizadora" id="camara_organizadora" class="form-control">
+                    <input type="text" name="camara_organizadora" id="camara_organizadora" class="form-control" placeholder="Incluya el artículo correspondiente. Ej: 'la Camara Argentina...'" >
                 </div>
                 <div class="form-group">
                     <label for="institutos_codictantes">Nombre instituto/s codictante/s <span class="required">*</span></label>
-                    <input type="text" name="institutos_codictantes" id="institutos_codictantes" class="form-control" required>
+                    <input type="text" name="institutos_codictantes" id="institutos_codictantes" class="form-control" required placeholder="Incluya el artículo correspondiente. Ej: 'el Instituto Técnico...'">
                 </div>
                 <div class="form-group">
                     <label for="firma_secretario_externo">Firma del Secretario (PNG) <span class="required">*</span></label>

@@ -1,6 +1,15 @@
 <?php
 session_start();
 include("../conexion.php");
+
+// --- Definición de rutas ---
+$base_path = '../../';
+$css_path = $base_path . 'CSS/';
+$img_path = $base_path . 'Imagenes/';
+$js_path = $base_path . 'JavaScript/';
+$html_path = $base_path . 'HTML/';
+$php_path = $base_path . 'PHP/';
+$current_page = 'agregar_curso.php';
 ?>
 
 <!DOCTYPE html>

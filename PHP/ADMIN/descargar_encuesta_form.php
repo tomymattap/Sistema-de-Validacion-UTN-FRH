@@ -2,6 +2,15 @@
 session_start();
 include("../conexion.php");
 
+// --- Definición de rutas ---
+$base_path = '../../';
+$css_path = $base_path . 'CSS/';
+$img_path = $base_path . 'Imagenes/';
+$js_path = $base_path . 'JavaScript/';
+$html_path = $base_path . 'HTML/';
+$php_path = $base_path . 'PHP/';
+$current_page = 'gestionar_cursos.php';
+
 // --- Security check for admin ---
 if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
     // Not an admin, redirect to login

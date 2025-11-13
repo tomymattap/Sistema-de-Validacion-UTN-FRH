@@ -1,5 +1,14 @@
 <?php
 session_start();
+
+// --- Definición de rutas ---
+$base_path = '../../';
+$css_path = $base_path . 'CSS/';
+$img_path = $base_path . 'Imagenes/';
+$js_path = $base_path . 'JavaScript/';
+$html_path = $base_path . 'HTML/';
+$php_path = $base_path . 'PHP/';
+$current_page = 'generar_certificado.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">

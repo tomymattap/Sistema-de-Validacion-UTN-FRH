@@ -2,6 +2,15 @@
 session_start();
 include("../conexion.php");
 
+// --- Definición de rutas ---
+$base_path = '../../';
+$css_path = $base_path . 'CSS/';
+$img_path = $base_path . 'Imagenes/';
+$js_path = $base_path . 'JavaScript/';
+$html_path = $base_path . 'HTML/';
+$php_path = $base_path . 'PHP/';
+$current_page = 'filtrar_cursos.php';
+
 // Obtener valores distintos para los filtros
 $modalidades = mysqli_query($conexion, "SELECT DISTINCT Modalidad FROM curso ORDER BY Modalidad");
 $categorias = mysqli_query($conexion, "SELECT DISTINCT Categoria FROM curso ORDER BY Categoria");

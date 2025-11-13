@@ -6,6 +6,15 @@ $curso = null;
 $cursos_a_eliminar = [];
 $error_message = '';
 
+// --- Definición de rutas ---
+$base_path = '../../';
+$css_path = $base_path . 'CSS/';
+$img_path = $base_path . 'Imagenes/';
+$js_path = $base_path . 'JavaScript/';
+$html_path = $base_path . 'HTML/';
+$php_path = $base_path . 'PHP/';
+$current_page = 'confirmar_eliminar_curso.php';
+
 // Manejar eliminación múltiple desde POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cursos_a_eliminar'])) {
     $ids_cursos = $_POST['cursos_a_eliminar'];

@@ -2,6 +2,16 @@
 session_start();
 require '../conexion.php';
 
+// --- Definición de rutas ---
+$base_path = '../../';
+$css_path = $base_path . 'CSS/';
+$img_path = $base_path . 'Imagenes/';
+$js_path = $base_path . 'JavaScript/';
+$html_path = $base_path . 'HTML/';
+$php_path = $base_path . 'PHP/';
+$current_page = 'perfil.php';
+
+
 // Verificar si el usuario está logueado y es un alumno
 if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 2) {
     header("Location: ../inicio_sesion.php?error=acceso_denegado");

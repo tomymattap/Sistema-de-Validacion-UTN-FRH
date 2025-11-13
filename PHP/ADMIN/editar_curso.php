@@ -2,6 +2,15 @@
 session_start();
 include("../conexion.php");
 
+// --- Definición de rutas ---
+$base_path = '../../';
+$css_path = $base_path . 'CSS/';
+$img_path = $base_path . 'Imagenes/';
+$js_path = $base_path . 'JavaScript/';
+$html_path = $base_path . 'HTML/';
+$php_path = $base_path . 'PHP/';
+$current_page = 'editar_curso.php';
+
 $curso = null;
 $id_curso = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 

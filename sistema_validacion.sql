@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-11-2025 a las 02:37:48
+-- Tiempo de generación: 13-11-2025 a las 19:43:56
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -33,37 +33,6 @@ CREATE TABLE `acceso_externo` (
   `valido_hasta` datetime DEFAULT NULL,
   `usado` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `acceso_externo`
---
-
-INSERT INTO `acceso_externo` (`id`, `token`, `valido_hasta`, `usado`) VALUES
-(4, '7e97719985821f5268f6e0e333aad409', '2025-11-09 23:28:42', 1),
-(5, 'aa08d74fb42d05bc037fca20c7ee78ce', '2025-11-09 23:38:25', 0),
-(6, '70c644c04a33258046b8a3ad2f61586f', '2025-11-09 23:47:42', 1),
-(7, '99948755432e6d9e11f7efc27fe86046', '2025-11-09 23:55:24', 1),
-(8, '17683424aa619366da8665fb8ce03149', '2025-11-10 00:20:01', 0),
-(9, '30d1a0486ae17769ffb1acc6834d8281', '2025-11-10 00:26:09', 0),
-(10, '5951f16b75325b8d04869d98271bb9d1', '2025-11-10 00:33:36', 1),
-(11, 'b3649118018ba5674eec55392fff5d61', '2025-11-10 00:42:59', 0),
-(12, '35eae46356dac8dc2f1f8824d83dd3bd', '2025-11-10 16:01:15', 0),
-(13, 'dd740ed0b5b129fab3b2bd7484b06d6f', '2025-11-10 16:16:03', 0),
-(14, 'eafb2d76195bcc7ee26a655fe84bae60', '2025-11-10 23:39:55', 0),
-(15, '2d06ea5442f8ec3e94f34f3663813f25', '2025-11-13 11:16:51', 0),
-(16, '1c6b817df942f1d0d988f9ce1cc3c0c2', '2025-11-13 11:43:35', 0),
-(17, '9b2bd599fa67dbec1d308b090305149a', '2025-11-13 11:55:33', 1),
-(18, '1ff8f635abd9baf14a1f5dddf68b7eae', '2025-11-13 17:33:12', 1),
-(19, 'ea695aad3d5caa3480a2ed424cc0cf2c', '2025-11-13 17:41:46', 1),
-(20, '2b8c0600afd06d071fe9f50e947527ab', '2025-11-13 17:59:02', 1),
-(21, '30c488ea32ab185ded685eaade49a12a', '2025-11-13 18:05:15', 1),
-(22, '67d48410430f33a74e89b99ce71ec824', '2025-11-13 18:27:07', 0),
-(23, '661676ace4d861d8e2106979d698b8da', '2025-11-13 18:33:49', 0),
-(24, '33c44344a11fc4cf74a13aeac1ec3026', '2025-11-13 18:37:20', 0),
-(25, 'e8b2e99dc59832f6cc1f8655e1d3aa81', '2025-11-13 18:39:31', 1),
-(26, '6e40a16512a8e2cabbfcb9254e024a34', '2025-11-15 00:48:24', 0),
-(27, '928e775210879d138eab46ca48033f34', '2025-11-15 01:25:15', 0),
-(28, '25e42a846a0fee4d478f980661fc7d6f', '2025-11-15 21:47:31', 0);
 
 -- --------------------------------------------------------
 
@@ -232,53 +201,6 @@ CREATE TABLE `auditoria_abm` (
   `Detalle` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `auditoria_abm`
---
-
-INSERT INTO `auditoria_abm` (`ID_Auditoria`, `ID_Admin`, `Fecha_Modif`, `ID_Curso`, `ID_Alumno`, `Tipo_Operacion`, `Detalle`) VALUES
-(42, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó alumno: Diego Ramírez'),
-(43, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó alumno: pepe lopez'),
-(44, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó alumno: Sofía Lopez'),
-(45, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó alumno: Juan Pérez'),
-(46, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó alumno: María López'),
-(47, 'matta_30184', '2025-11-12', NULL, NULL, 'INSERT', 'Se registró nuevo alumno: pepe lopez'),
-(48, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó alumno: pepe lopez'),
-(49, 'matta_30184', '2025-11-12', NULL, NULL, 'INSERT', 'Se registró nuevo alumno: pepe lopez'),
-(50, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó alumno: pepe lopez'),
-(51, 'matta_30184', '2025-11-12', NULL, NULL, 'INSERT', 'Se registró nuevo alumno: Pedro Perez'),
-(52, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó alumno: Pedro Perez'),
-(53, 'matta_30184', '2025-11-12', NULL, NULL, 'INSERT', 'Se registró nuevo alumno: Juan Fernández'),
-(54, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó alumno: Juan Fernández'),
-(55, 'matta_30184', '2025-11-12', NULL, NULL, 'INSERT', 'Se registró nuevo alumno: pepe lopez'),
-(56, 'sistema', '2025-11-12', NULL, NULL, 'INSERT', 'Se creó nuevo administrador: pepe lopez'),
-(57, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó administrador: pepe lopez'),
-(58, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó alumno: pepe lopez'),
-(59, 'sistema', '2025-11-12', NULL, 27345678901, 'INSERT', 'Se registró nuevo alumno: Lucía González'),
-(60, 'sistema', '2025-11-12', NULL, 20321122334, 'INSERT', 'Se registró nuevo alumno: Juan Pérez'),
-(61, 'sistema', '2025-11-12', NULL, 27456789012, 'INSERT', 'Se registró nuevo alumno: María López'),
-(62, 'sistema', '2025-11-12', NULL, 27321098765, 'INSERT', 'Se registró nuevo alumno: Diego Ramírez'),
-(63, 'matta_30184', '2025-11-12', NULL, NULL, 'INSERT', 'Se registró nuevo alumno: pepe lopez'),
-(64, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó alumno: pepe lopez'),
-(65, 'matta_30184', '2025-11-12', NULL, NULL, 'INSERT', 'Se registró nuevo alumno: pepe lopez'),
-(66, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó alumno: pepe lopez'),
-(67, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó curso: prueba_externa3'),
-(68, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó curso: prueba_externa6'),
-(69, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó curso: prueba_externa7'),
-(70, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó curso: prueba_externa7'),
-(71, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó curso: prueba_externa8'),
-(72, 'matta_30184', '2025-11-12', NULL, 20234564973, 'INSERT', 'Se registró nuevo alumno: Tomás Matta'),
-(73, 'sistema', '2025-11-12', NULL, 20234564973, 'UPDATE', 'Se modificó alumno: Tomás Matta'),
-(74, 'sistema', '2025-11-12', NULL, 20321122334, 'UPDATE', 'Se modificó alumno: Juan Pérez'),
-(75, 'sistema', '2025-11-12', NULL, 20321122334, 'UPDATE', 'Se modificó alumno: Juan Pérez'),
-(76, 'sistema', '2025-11-12', NULL, 20321122334, 'UPDATE', 'Se modificó alumno: Juan Pérez'),
-(77, 'sistema', '2025-11-12', NULL, 20234564973, 'UPDATE', 'Se modificó alumno: Tomás Matta'),
-(78, 'sistema', '2025-11-12', NULL, 20234564973, 'UPDATE', 'Se modificó alumno: Tomás Matta'),
-(79, 'sistema', '2025-11-12', NULL, NULL, 'INSERT', 'Se creó nuevo administrador: Pedro Rodriguez'),
-(80, 'sistema', '2025-11-12', NULL, NULL, 'UPDATE', 'Se modificó administrador: Pedro Rodriguez'),
-(81, 'sistema', '2025-11-12', NULL, NULL, 'DELETE', 'Se eliminó administrador: Pedro Rodriguez'),
-(82, 'sistema', '2025-11-12', NULL, 20431223444, 'UPDATE', 'Se modificó alumno: Mateo Fernández');
-
 -- --------------------------------------------------------
 
 --
@@ -340,16 +262,6 @@ CREATE TABLE `contacto` (
   `Mensaje` text NOT NULL,
   `Fecha_Contacto` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `contacto`
---
-
-INSERT INTO `contacto` (`ID_Contacto`, `Rol`, `Nombre`, `Apellido`, `Email`, `Mensaje`, `Fecha_Contacto`) VALUES
-(2, '', '', '', '', '', '2025-11-12 00:14:09'),
-(3, '', '', '', '', '', '2025-11-12 00:15:17'),
-(4, '', '', '', '', '', '2025-11-12 00:15:23'),
-(5, 'Alumno', 'pepe', 'lopez', 'pepe.lopez@gmail.com', 'hola', '2025-11-12 20:19:16');
 
 -- --------------------------------------------------------
 

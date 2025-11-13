@@ -17,10 +17,14 @@ if (empty($_SESSION['csrf_token'])) {
 }
 $csrf_token = $_SESSION['csrf_token'];
 
-// Definir rutas localmente
+// --- Definición de rutas ---
 $base_path = '../../';
 $css_path = $base_path . 'CSS/';
 $img_path = $base_path . 'Imagenes/';
+$js_path = $base_path . 'JavaScript/';
+$html_path = $base_path . 'HTML/';
+$php_path = $base_path . 'PHP/';
+$current_page = 'cambiar_contrasena_obligatorio.php';
 
 require_once '../conexion.php';
 $error = null;

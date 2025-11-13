@@ -10,6 +10,15 @@ if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 1) {
 
 include("../conexion.php");
 
+// --- Definición de rutas ---
+$base_path = '../../';
+$css_path = $base_path . 'CSS/';
+$img_path = $base_path . 'Imagenes/';
+$js_path = $base_path . 'JavaScript/';
+$html_path = $base_path . 'HTML/';
+$php_path = $base_path . 'PHP/';
+$current_page = 'seleccionar_alum_certif.php';
+
 $resultado = null; // Inicializar resultado
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

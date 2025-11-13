@@ -446,7 +446,7 @@ tr.modified, tr.modified:hover {
 }
 
 .actions a { 
-    text-decoration: none; 
+    text-decoration: none; LAGACY
 }
 
 /* Estilo de los botones de acción (íconos) */
@@ -888,5 +888,222 @@ tr.modified, tr.modified:hover {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
+    }
+}
+
+/* ===================================== */
+/* ===== RESPONSIVE GESTIONAR CURSOS ===== */
+/* ===================================== */
+
+@media (max-width: 1200px) {
+    .gestion-cursos-container {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 992px) {
+    #header-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .header-buttons {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
+    .filters-container {
+        justify-content: flex-start;
+    }
+
+    .filter-form {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .filter-group {
+        max-width: none;
+        min-width: 0;
+    }
+
+    .search-group {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    .gestion-cursos-container {
+        padding: 1rem;
+        gap: 1.5rem;
+    }
+
+    #header-container .main-title {
+        font-size: 1.8rem;
+    }
+
+    .header-buttons .menu-btn {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .filters-container {
+        padding: 1rem;
+    }
+
+    #tabla-cursos th, #tabla-cursos td {
+        padding: 0.8rem 1rem;
+    }
+
+    #tabla-cursos {
+        font-size: 0.9rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr; /* Una sola columna en pantallas pequeñas */
+    }
+
+    .form-actions {
+        justify-content: center; /* Centra los botones del formulario */
+    }
+}
+
+@media (max-width: 480px) {
+    .header-buttons {
+        gap: 0.3rem;
+    }
+    .header-buttons .menu-btn {
+        flex-grow: 1;
+        justify-content: center;
+    }
+
+    #filter-btn, #reset-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .search-group {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 992px) {
+    .filter-courses-container .search-group {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .filter-courses-container .search-group > * {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* =========================================== */
+/* ===== RESPONSIVE TABLA EDITAR DURACION ===== */
+/* =========================================== */
+
+@media (max-width: 768px) {
+    #tabla-fechas thead {
+        display: none; /* Ocultar la cabecera original en móvil */
+    }
+
+    #tabla-fechas, #tabla-fechas tbody, #tabla-fechas tr, #tabla-fechas td {
+        display: block;
+        width: 100%;
+    }
+
+    #tabla-fechas tr {
+        margin-bottom: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1rem;
+    }
+
+    #tabla-fechas td {
+        border: none;
+        padding-left: 50%; /* Espacio para el label */
+        position: relative;
+        text-align: right;
+    }
+
+    #tabla-fechas td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: 700;
+        color: var(--color-principal);
+    }
+
+    #tabla-fechas td:nth-of-type(1):before { content: "ID Curso:"; }
+    #tabla-fechas td:nth-of-type(2):before { content: "Nombre:"; }
+    #tabla-fechas td:nth-of-type(3):before { content: "Fecha Inicio:"; }
+    #tabla-fechas td:nth-of-type(4):before { content: "Fecha Fin:"; }
+
+    #tabla-fechas input[type="date"] {
+        width: auto;
+        min-width: 0;
+    }
+}
+
+/* =========================================== */
+/* ===== RESPONSIVE TABLA GESTION EXTERNOS ===== */
+/* =========================================== */
+
+@media (max-width: 1200px) {
+    #tabla-cursos-externos thead {
+        display: none;
+    }
+
+    #tabla-cursos-externos, #tabla-cursos-externos tbody, #tabla-cursos-externos tr, #tabla-cursos-externos td {
+        display: block;
+        width: 100%;
+    }
+
+    #tabla-cursos-externos tr {
+        margin-bottom: 1.5rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1rem;
+    }
+
+    #tabla-cursos-externos td {
+        border: none;
+        padding-left: 40%;
+        position: relative;
+        text-align: right;
+        padding-bottom: 0.5rem;
+        padding-top: 0.5rem;
+        white-space: normal;
+    }
+
+    #tabla-cursos-externos td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        width: 35%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: 700;
+        color: var(--color-principal);
+    }
+}
+
+/* =========================================== */
+/* ===== RESPONSIVE FORMULARIO EXTERNO ===== */
+/* =========================================== */
+@media (max-width: 768px) {
+    .file-upload-zone {
+        padding: 1rem;
+    }
+    .file-upload-zone p {
+        font-size: 0.9rem;
     }
 }

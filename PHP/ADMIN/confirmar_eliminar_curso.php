@@ -6,6 +6,15 @@ $curso = null;
 $cursos_a_eliminar = [];
 $error_message = '';
 
+// --- Definición de rutas ---
+$base_path = '../../';
+$css_path = $base_path . 'CSS/';
+$img_path = $base_path . 'Imagenes/';
+$js_path = $base_path . 'JavaScript/';
+$html_path = $base_path . 'HTML/';
+$php_path = $base_path . 'PHP/';
+$current_page = 'confirmar_eliminar_curso.php';
+
 // Manejar eliminación múltiple desde POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cursos_a_eliminar'])) {
     $ids_cursos = $_POST['cursos_a_eliminar'];
@@ -49,6 +58,7 @@ if (empty($cursos_a_eliminar) && empty($error_message)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confirmar Eliminación - Admin</title>
+    <link rel="icon" href="../Imagenes/icon.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">

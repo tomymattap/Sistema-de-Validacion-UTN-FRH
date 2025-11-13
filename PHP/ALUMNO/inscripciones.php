@@ -19,6 +19,7 @@ if (isset($_SESSION['force_password_change'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscripciones - UTN FRH</title>
+    <link rel="icon" href="../../Imagenes/icon.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -85,28 +86,79 @@ if (isset($_SESSION['force_password_change'])) {
             <h1>INSCRIPCIONES</h1>
             <h2>Mis cursos</h2>
             <div class="cursos-accordion">
-                <div class="curso-item" data-course-id="curso1">
-                    <div class="curso-header">
-                        <h3>Instalación de Paneles Solares</h3>
-                    </div>
-                    <div class="curso-details">
-                        <p><strong>Fecha de inicio:</strong> 01/08/2024</p>
-                        <p><strong>Fecha de finalización:</strong> 30/11/2024</p>
-                        <p><strong>Modalidad:</strong> Online</p>
-                        <p><strong>Docente a Cargo:</strong> Juan Pérez</p>
-                    </div>
-                </div>
-                <div class="curso-item" data-course-id="curso2">
-                    <div class="curso-header">
-                        <h3>Programming Essentials en Python</h3>
-                    </div>
-                    <div class="curso-details">
-                        <p><strong>Fecha de inicio:</strong> 15/08/2024</p>
-                        <p><strong>Fecha de finalización:</strong> 15/12/2024</p>
-                        <p><strong>Modalidad:</strong> Presencial</p>
-                        <p><strong>Docente a Cargo:</strong> María García</p>
-                    </div>
-                </div>
+                <?php
+                // Incluir el archivo de conexión
+                include '../conexion.php';
+
+                // Obtener el ID del alumno de la sesión
+                if (isset($_SESSION['user_id'])) {
+                    $id_alumno = $_SESSION['user_id'];
+
+                    // Consulta para obtener los cursos en los que el alumno está inscripto
+                    $sql = "SELECT 
+                                c.ID_Curso,
+                                c.Nombre_Curso, 
+                                c.Modalidad, 
+                                c.Docente,
+                                dc.Inicio_Curso, 
+                                dc.Fin_Curso,
+                                i.Estado_Cursada
+                            FROM inscripcion i
+                            JOIN curso c ON i.ID_Curso = c.ID_Curso
+                            LEFT JOIN duracion_curso dc ON c.ID_Curso = dc.ID_Curso
+                            WHERE i.ID_Cuil_Alumno = ?";
+
+                    $stmt = $conexion->prepare($sql);
+                    
+                    if ($stmt) {
+                        $stmt->bind_param("i", $id_alumno);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                $estado_cursada = strtolower($row['Estado_Cursada']);
+                                $estado_js = '';
+                                switch ($estado_cursada) {
+                                    case 'pendiente':
+                                        $estado_js = 'pendiente';
+                                        break;
+                                    case 'en curso':
+                                        $estado_js = 'aceptado';
+                                        break;
+                                    case 'finalizado':
+                                    case 'certificada':
+                                        $estado_js = 'finalizado';
+                                        break;
+                                    default:
+                                        $estado_js = 'pendiente'; // O un estado por defecto
+                                }
+
+                                echo '<div class="curso-item" data-course-id="' . htmlspecialchars($row['ID_Curso']) . '" data-estado="' . $estado_js . '">';
+                                echo '    <div class="curso-header">';
+                                echo '        <h3>' . htmlspecialchars($row['Nombre_Curso']) . '</h3>';
+                                echo '    </div>';
+                                echo '    <div class="curso-details">';
+                                echo '        <p><strong>Fecha de inicio:</strong> ' . ($row['Inicio_Curso'] ? htmlspecialchars(date("d/m/Y", strtotime($row['Inicio_Curso']))) : 'No especificada') . '</p>';
+                                echo '        <p><strong>Fecha de finalización:</strong> ' . ($row['Fin_Curso'] ? htmlspecialchars(date("d/m/Y", strtotime($row['Fin_Curso']))) : 'No especificada') . '</p>';
+                                echo '        <p><strong>Modalidad:</strong> ' . htmlspecialchars($row['Modalidad']) . '</p>';
+                                echo '        <p><strong>Docente a Cargo:</strong> ' . ($row['Docente'] ? htmlspecialchars($row['Docente']) : 'A confirmar') . '</p>';
+                                echo '        <p><strong>Estado:</strong> ' . htmlspecialchars($row['Estado_Cursada']) . '</p>';
+                                echo '    </div>';
+                                echo '</div>';
+                            }
+                        } else {
+                            echo '<p class="no-cursos">Aún no te has inscripto a ningún curso.</p>';
+                        }
+                        $stmt->close();
+                    } else {
+                        echo '<p class="no-cursos">Error al preparar la consulta.</p>';
+                    }
+                    $conexion->close();
+                } else {
+                    echo '<p class="no-cursos">No se pudo identificar al usuario.</p>';
+                }
+                ?>
             </div>
         </div>
         <aside class="estado-aside">
@@ -131,22 +183,23 @@ if (isset($_SESSION['force_password_change'])) {
             </div>
         </div>
         <div class="footer-social-legal">
-            <div class="footer-social">
-                <a href="#"><i class="fab fa-youtube"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <div class="footer-social">
+                    <a href="https://www.youtube.com/@facultadregionalhaedo-utn3647" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.linkedin.com/school/utn-facultad-regional-haedo/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                </div>
+                <div class="footer-legal">
+                    <a href="mailto:extension@frh.utn.edu.ar">Contacto</a>
+                    <br> 
+                    <a href="#politicas">Políticas de Privacidad</a>
+                </div>
             </div>
-            <div class="footer-legal">
-                <a href="#">Contacto</a><br>
-                <a href="#">Políticas de Privacidad</a>
-            </div>
-        </div>
         <div class="footer-separator"></div>
         <div class="footer-nav">
             <h4>Navegación</h4>
             <ul>
-                <li><a href="<?php echo $base_path; ?>index.html">Validar</a></li>
-                <li><a href="<?php echo $html_path; ?>sobre_nosotros.html">Sobre Nosotros</a></li>
-                <li><a href="<?php echo $html_path; ?>contacto.html">Contacto</a></li>
+                <li><a href="../../index.html">Validar</a></li>
+                <li><a href="../../HTML/sobre_nosotros.html">Sobre Nosotros</a></li>
+                <li><a href="../../HTML/contacto.html">Contacto</a></li>
             </ul>
         </div>
         <div class="footer-separator"></div>
@@ -156,26 +209,26 @@ if (isset($_SESSION['force_password_change'])) {
                 <ul>
                     <?php if ($_SESSION['user_rol'] == 1): ?>
                         <br>
-                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
+                        <li><a href="../ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                         <br>
-                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                        <li><a href="../ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                         <br>
-                        <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                        <li><a href="../ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                         <br>
-                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
+                        <li><a href="../ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
                     <?php else: ?>
                         <br>
-                        <li><a href="#">Mi Perfil</a></li>
+                        <li><a href="perfil.php">Mi Perfil</a></li>
                         <br>
-                        <li><a href="#">Inscripciones</a></li>
+                        <li><a href="inscripciones.php">Inscripciones</a></li>
                         <br>
-                        <li><a href="#">Certificaciones</a></li>
+                        <li><a href="certificaciones.php">Certificaciones</a></li>
                     <?php endif; ?>
                 </ul>
             <?php else: ?>
                 <h4>Acceso</h4>
                 <ul>
-                    <li><a href="<?php echo $php_path; ?>inicio_sesion.php">Iniciar Sesión</a></li>
+                    <li><a href="../inicio_sesion.php">Iniciar Sesión</a></li>
                 </ul>
             <?php endif; ?>
         </div>

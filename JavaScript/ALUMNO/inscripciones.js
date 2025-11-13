@@ -4,18 +4,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const estadoAceptado = document.getElementById('estado-aceptado');
     const estadoFinalizado = document.getElementById('estado-finalizado');
 
-    // This should be fetched from a server in a real application
-    const courseStatus = {
-        'curso1': 'finalizado',
-        'curso2': 'aceptado'
-    };
-
     cursoItems.forEach(item => {
         const header = item.querySelector('.curso-header');
         header.addEventListener('click', function() {
             const clickedItem = this.parentElement;
-            const courseId = clickedItem.dataset.courseId;
-            const status = courseStatus[courseId];
+            const status = clickedItem.dataset.estado;
 
             // Toggle active class for accordion
             if (clickedItem.classList.contains('active')) {

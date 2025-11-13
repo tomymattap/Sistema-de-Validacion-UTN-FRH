@@ -2,6 +2,16 @@
 session_start();
 require '../conexion.php';
 
+// --- Definición de rutas ---
+$base_path = '../../';
+$css_path = $base_path . 'CSS/';
+$img_path = $base_path . 'Imagenes/';
+$js_path = $base_path . 'JavaScript/';
+$html_path = $base_path . 'HTML/';
+$php_path = $base_path . 'PHP/';
+$current_page = 'perfil.php';
+
+
 // Verificar si el usuario está logueado y es un alumno
 if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] != 2) {
     header("Location: ../inicio_sesion.php?error=acceso_denegado");
@@ -33,6 +43,7 @@ $conexion->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil de Estudiante - UTN FRH</title>
+    <link rel="icon" href="../../Imagenes/icon.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -159,22 +170,23 @@ $conexion->close();
             </div>
         </div>
         <div class="footer-social-legal">
-            <div class="footer-social">
-                <a href="#"><i class="fab fa-youtube"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <div class="footer-social">
+                    <a href="https://www.youtube.com/@facultadregionalhaedo-utn3647" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.linkedin.com/school/utn-facultad-regional-haedo/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                </div>
+                <div class="footer-legal">
+                    <a href="mailto:extension@frh.utn.edu.ar">Contacto</a>
+                    <br> 
+                    <a href="#politicas">Políticas de Privacidad</a>
+                </div>
             </div>
-            <div class="footer-legal">
-                <a href="#">Contacto</a><br>
-                <a href="#">Políticas de Privacidad</a>
-            </div>
-        </div>
         <div class="footer-separator"></div>
         <div class="footer-nav">
             <h4>Navegación</h4>
             <ul>
-                <li><a href="<?php echo $base_path; ?>index.html">Validar</a></li>
-                <li><a href="<?php echo $html_path; ?>sobre_nosotros.html">Sobre Nosotros</a></li>
-                <li><a href="<?php echo $html_path; ?>contacto.html">Contacto</a></li>
+                <li><a href="../../index.html">Validar</a></li>
+                <li><a href="../../HTML/sobre_nosotros.html">Sobre Nosotros</a></li>
+                <li><a href="../../HTML/contacto.html">Contacto</a></li>
             </ul>
         </div>
         <div class="footer-separator"></div>
@@ -184,26 +196,26 @@ $conexion->close();
                 <ul>
                     <?php if ($_SESSION['user_rol'] == 1): ?>
                         <br>
-                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
+                        <li><a href="../ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                         <br>
-                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                        <li><a href="../ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
                         <br>
-                        <li><a href="<?php echo $php_path; ?>ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                        <li><a href="../ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
                         <br>
-                        <li><a href="<?php echo $php_path; ?>ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
+                        <li><a href="../ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
                     <?php else: ?>
                         <br>
-                        <li><a href="#">Mi Perfil</a></li>
+                        <li><a href="perfil.php">Mi Perfil</a></li>
                         <br>
-                        <li><a href="#">Inscripciones</a></li>
+                        <li><a href="inscripciones.php">Inscripciones</a></li>
                         <br>
-                        <li><a href="#">Certificaciones</a></li>
+                        <li><a href="certificaciones.php">Certificaciones</a></li>
                     <?php endif; ?>
                 </ul>
             <?php else: ?>
                 <h4>Acceso</h4>
                 <ul>
-                    <li><a href="<?php echo $php_path; ?>inicio_sesion.php">Iniciar Sesión</a></li>
+                    <li><a href="../inicio_sesion.php">Iniciar Sesión</a></li>
                 </ul>
             <?php endif; ?>
         </div>

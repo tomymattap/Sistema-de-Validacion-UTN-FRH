@@ -21,6 +21,7 @@ $resultado = mysqli_query($conexion, $consulta);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestionar Cursos - Admin</title>
+    <link rel="icon" href="../../Imagenes/icon.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -173,14 +174,15 @@ $resultado = mysqli_query($conexion, $consulta);
             </div>
         </div>
         <div class="footer-social-legal">
-            <div class="footer-social">
-                <a href="#"><i class="fab fa-youtube"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-            </div>
-            <div class="footer-legal">
-                <a href="#">Contacto</a><br>
-                <a href="#">Políticas de Privacidad</a>
-            </div>
+                <div class="footer-social">
+                    <a href="https://www.youtube.com/@facultadregionalhaedo-utn3647" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.linkedin.com/school/utn-facultad-regional-haedo/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                </div>
+                <div class="footer-legal">
+                    <a href="mailto:extension@frh.utn.edu.ar">Contacto</a>
+                    <br> 
+                    <a href="#politicas">Políticas de Privacidad</a>
+                </div>
         </div>
         <div class="footer-separator"></div>
         <div class="footer-nav">
@@ -198,26 +200,26 @@ $resultado = mysqli_query($conexion, $consulta);
                 <ul>
                     <?php if ($_SESSION['user_rol'] == 1): ?>
                         <br>
-                        <li><a href="../../PHP/ADMIN/gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
+                        <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
                         <br>
-                        <li><a href="../../PHP/ADMIN/gestionar_cursos.php">Gestionar Cursos</a></li>
+                        <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
                         <br>
-                        <li><a href="../../PHP/ADMIN/seleccionar_alum_certif.php">Emitir Certificados</a></li>
+                        <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
                         <br>
-                        <li><a href="../../PHP/ADMIN/gestionar_admin.php">Gestionar Administradores</a></li>
+                        <li><a href="gestionar_admin.php">Gestionar Administradores</a></li>
                     <?php else: ?>
                         <br>
-                        <li><a href="#">Mi Perfil</a></li>
+                        <li><a href="../ALUMNO/perfil.php">Mi Perfil</a></li>
                         <br>
-                        <li><a href="#">Inscripciones</a></li>
+                        <li><a href="../ALUMNO/inscripciones.php">Inscripciones</a></li>
                         <br>
-                        <li><a href="#">Certificaciones</a></li>
+                        <li><a href="../ALUMNO/certificaciones.php">Certificaciones</a></li>
                     <?php endif; ?>
                 </ul>
             <?php else: ?>
                 <h4>Acceso</h4>
                 <ul>
-                    <li><a href="../../PHP/inicio_sesion.php">Iniciar Sesión</a></li>
+                    <li><a href="../inicio_sesion.php">Iniciar Sesión</a></li>
                 </ul>
             <?php endif; ?>
         </div>

@@ -3,6 +3,12 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Verificar si la extensión Zip está habilitada para evitar un error fatal.
+if (!class_exists('ZipArchive')) {
+    http_response_code(500);
+    die("Error de configuración del servidor: La extensión 'Zip' de PHP, necesaria para crear archivos comprimidos, no está habilitada. Por favor, contacte al administrador del sistema o active 'extension=zip' en el archivo php.ini.");
+}
+
 require_once(__DIR__ . '/../conexion.php');
 
 // Validar que solo los administradores puedan acceder y obtener su ID

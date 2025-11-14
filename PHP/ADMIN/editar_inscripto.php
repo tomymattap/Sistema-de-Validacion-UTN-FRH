@@ -53,7 +53,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'GE
     $inscripcion = mysqli_fetch_assoc($res);
 
     $cursos_res = mysqli_query($conexion, "SELECT ID_Curso, Nombre_Curso FROM curso ORDER BY Nombre_Curso");
-    $estados = ['En curso', 'Finalizado', 'CERTIFICADA', 'ASISTIDO'];
+    $estados = ['En curso', 'Finalizado', 'CERTIFICADA', 'ASISTIDO', 'Abandonado'];
 } else {
     header('Location: gestionar_inscriptos.php');
     exit;

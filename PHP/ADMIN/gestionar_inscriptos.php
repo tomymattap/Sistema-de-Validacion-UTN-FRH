@@ -26,7 +26,7 @@ $anios_res = mysqli_query($conexion, "SELECT DISTINCT Anio FROM inscripcion ORDE
 $anios = [];
 while ($row = mysqli_fetch_assoc($anios_res)) { $anios[] = $row['Anio']; }
 
-$estados = ['Pendiente', 'En Curso', 'Finalizado', 'Certificada'];
+$estados = ['Pendiente', 'En Curso', 'Finalizado', 'Certificada', 'Abandonado'];
 $cuatrimestres = ['Primer Cuatrimestre', 'Segundo Cuatrimestre', 'Anual'];
 
 // --- Definición de rutas para el header/footer temporal ---

@@ -441,7 +441,10 @@
     background-color: #e0f7fa;
     color: #007b83;
 }
-
+.status-badge.status-abandonado {
+    background-color: #fff1f0;
+    color: #cf1322;
+}
 /* -------------------------------------------
     Mensajes visuales (éxito / error)
 ------------------------------------------- */

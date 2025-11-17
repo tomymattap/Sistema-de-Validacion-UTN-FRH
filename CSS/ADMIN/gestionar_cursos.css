@@ -319,8 +319,15 @@
 
 /* Fila modificada */
 tr.modified, tr.modified:hover {
-    background-color: #e6f7d8 !important; /* Un verde claro para indicar cambio */
+    background-color: #c3f799 !important; /* Un verde claro para indicar cambio */
     transition: background-color 0.3s ease;
+}
+
+/* Fila con error de validación (tiene mayor especificidad que .modified) */
+tr.error, tr.error:hover,
+tr.modified.error, tr.modified.error:hover {
+    background-color: #ffe0e5 !important; /* Un rojo muy claro */
+    border-left: 5px solid var(--color-secundario-4);
 }
 
 /* ======================================= */

@@ -40,6 +40,38 @@ $resultado = mysqli_query($conexion, $consulta);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../CSS/general.css">
     <link rel="stylesheet" href="../../CSS/ADMIN/gestionar_cursos.css">
+    <style>
+        /* --- Estilos para el Cartel Flotante de Error --- */
+        .floating-error-banner {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translate(-50%, -150%); /* Inicia fuera de la pantalla */
+            width: 90%;
+            max-width: 800px;
+            z-index: 1050;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .floating-error-banner.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, 0); /* Se desliza a su posición */
+        }
+
+        .floating-error-banner .confirmacion-header {
+            display: flex;
+            justify-content: space-between; /* Alinea el título a la izquierda y el botón a la derecha */
+            align-items: center;
+        }
+        .floating-error-banner .close-banner-btn {
+            background: none; border: none; font-size: 1.5rem; color: #888; cursor: pointer;
+        }
+    </style>
 </head>
 <body class="fade-in">
     <header class="site-header">
@@ -121,6 +153,9 @@ $resultado = mysqli_query($conexion, $consulta);
                     <a href="gestionar_cursos.php" class="menu-btn volver-btn"><i class="fas fa-arrow-left"></i> VOLVER</a>
                 </div>
 
+                <!-- Contenedor para mostrar errores de validación del lado del cliente -->
+                <div id="error-container" class="confirmacion-container floating-error-banner" style="border-left-color: var(--color-secundario-4);"></div>
+
                 <form action="confirmar_modif_fechas.php" method="POST">
                     <div class="results-container">
                         <table id="tabla-fechas">
@@ -137,16 +172,18 @@ $resultado = mysqli_query($conexion, $consulta);
                                     <?php while ($fila = mysqli_fetch_assoc($resultado)):
                                         $id_curso = htmlspecialchars($fila['ID_Curso']);
                                         $nombre_curso = htmlspecialchars($fila['Nombre_Curso']);
+                                        $inicio_curso_val = htmlspecialchars($fila['Inicio_Curso'] ?? '');
+                                        $fin_curso_val = htmlspecialchars($fila['Fin_Curso'] ?? '');
                                     ?>
                                         <tr data-id-curso="<?= $id_curso ?>">
                                             <td data-label="ID Curso"><?= $id_curso ?></td>
                                             <td data-label="Nombre"><?= $nombre_curso ?></td>
                                             <td data-label="Fecha Inicio">
                                                 <input type="hidden" name="cursos[<?= $id_curso ?>][nombre]" value="<?= $nombre_curso ?>">
-                                                <input type="date" name="cursos[<?= $id_curso ?>][inicio]" value="<?= htmlspecialchars($fila['Inicio_Curso'] ?? '') ?>" class="date-input">
+                                                <input type="date" name="cursos[<?= $id_curso ?>][inicio]" value="<?= $inicio_curso_val ?>" class="date-input" data-original-value="<?= $inicio_curso_val ?>">
                                             </td>
                                             <td data-label="Fecha Fin">
-                                                <input type="date" name="cursos[<?= $id_curso ?>][fin]" value="<?= htmlspecialchars($fila['Fin_Curso'] ?? '') ?>" class="date-input">
+                                                <input type="date" name="cursos[<?= $id_curso ?>][fin]" value="<?= $fin_curso_val ?>" class="date-input" data-original-value="<?= $fin_curso_val ?>">
                                             </td>
                                         </tr>
                                     <?php endwhile; ?>
@@ -230,46 +267,6 @@ $resultado = mysqli_query($conexion, $consulta);
     <a href="#" class="scroll-to-top-btn" id="scroll-to-top-btn" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 
     <script src="../../JavaScript/general.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Resaltar fila al modificar una fecha
-            document.querySelectorAll('.date-input').forEach(input => {
-                input.addEventListener('change', function() {
-                    this.closest('tr').classList.add('modified');
-                });
-            });
-
-            // Script para manejar la sesión del usuario en el header
-            fetch('../get_user_name.php')
-            .then(response => response.json())
-            .then(data => {
-                const sessionControls = document.getElementById('session-controls');
-                const mobileNav = document.querySelector('.off-canvas-menu nav ul');
-                let sessionHTML = '';
-
-                if (data.user_name && data.user_rol === 1) {
-                    const dropdownMenu = `
-                        <button class="user-menu-toggle">Hola, ${data.user_name}. <i class="fas fa-chevron-down"></i></button>
-                        <div class="dropdown-menu">
-                            <ul>
-                                <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
-                                <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
-                                <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                                <li><a href="../logout.php">Cerrar Sesión</a></li>
-                            </ul>
-                        </div>`;
-                    sessionHTML = `
-                        <li><a href="gestionar_inscriptos.php">Gestionar Inscriptos</a></li>
-                        <li><a href="gestionar_cursos.php">Gestionar Cursos</a></li>
-                        <li><a href="seleccionar_alum_certif.php">Emitir Certificados</a></li>
-                        <li><a href="../logout.php">Cerrar Sesión</a></li>`;
-                    sessionControls.innerHTML = dropdownMenu;
-                    mobileNav.innerHTML = sessionHTML;
-                } else {
-                    window.location.href = '../inicio_sesion.php';
-                }
-            });
-        });
-    </script>
+    <script src="../../JavaScript/ADMIN/editar_duracion_cursos.js"></script>
 </body>
 </html>

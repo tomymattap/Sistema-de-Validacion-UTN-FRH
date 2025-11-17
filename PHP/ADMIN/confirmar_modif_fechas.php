@@ -30,6 +30,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cursos'])) {
     // Iniciar transacción para la actualización
     mysqli_begin_transaction($conexion);
     try {
+        // --- VALIDACIÓN DE FECHAS (solo para fechas modificadas) ---
+        $fecha_actual = date('Y-m-d');
+        foreach ($cursos_post as $id_curso => $datos) {
+            $id_curso_int = intval($id_curso);
+            $nombre_curso = $datos['nombre'];
+            $inicio_nuevo = !empty($datos['inicio']) ? $datos['inicio'] : null;
+            $fin_nuevo = !empty($datos['fin']) ? $datos['fin'] : null;
+
+            // Obtener fechas actuales para comparar
+            $stmt_check = mysqli_prepare($conexion, "SELECT Inicio_Curso, Fin_Curso FROM duracion_curso WHERE ID_Curso = ?");
+            mysqli_stmt_bind_param($stmt_check, "i", $id_curso_int);
+            mysqli_stmt_execute($stmt_check);
+            $result_check = mysqli_stmt_get_result($stmt_check);
+            $fechas_actuales = mysqli_fetch_assoc($result_check);
+            mysqli_stmt_close($stmt_check);
+
+            $inicio_actual = $fechas_actuales['Inicio_Curso'] ?? null;
+            $fin_actual = $fechas_actuales['Fin_Curso'] ?? null;
+
+            // Solo validar si la fecha de inicio fue modificada
+            if ($inicio_nuevo !== $inicio_actual) {
+                if ($inicio_nuevo && $inicio_nuevo < $fecha_actual) {
+                    throw new Exception("La fecha de inicio para el curso '" . htmlspecialchars($nombre_curso) . "' no puede ser anterior a la fecha actual.");
+                }
+            }
+
+            // Validaciones de coherencia si hay fechas nuevas
+            if ($fin_nuevo && !$inicio_nuevo) {
+                throw new Exception("Para el curso '" . htmlspecialchars($nombre_curso) . "', si se define una fecha de fin, la fecha de inicio es obligatoria.");
+            }
+            if ($inicio_nuevo && $fin_nuevo && $fin_nuevo < $inicio_nuevo) {
+                throw new Exception("La fecha de fin para el curso '" . htmlspecialchars($nombre_curso) . "' no puede ser anterior a su fecha de inicio.");
+            }
+        }
+
         foreach ($cursos_post as $id_curso => $datos) {
             $id_curso = intval($id_curso);
             $nombre_curso = $datos['nombre'];
@@ -38,10 +73,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cursos'])) {
 
             // Obtener fechas actuales para comparar
             $stmt_check = mysqli_prepare($conexion, "SELECT Inicio_Curso, Fin_Curso FROM duracion_curso WHERE ID_Curso = ?");
-            mysqli_stmt_bind_param($stmt_check, "i", $id_curso);
+            mysqli_stmt_bind_param($stmt_check, "i", $id_curso_int);
             mysqli_stmt_execute($stmt_check);
             $result_check = mysqli_stmt_get_result($stmt_check);
             $fechas_actuales = mysqli_fetch_assoc($result_check);
+            mysqli_stmt_close($stmt_check);
+
 
             $inicio_actual = $fechas_actuales['Inicio_Curso'] ?? null;
             $fin_actual = $fechas_actuales['Fin_Curso'] ?? null;
@@ -76,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cursos'])) {
         mysqli_commit($conexion);
     } catch (Exception $e) {
         mysqli_rollback($conexion);
-        $error_message = "Error en la transacción: " . $e->getMessage();
+        $error_message = $e->getMessage();
     }
 } else {
     // Si se accede sin POST, redirigir

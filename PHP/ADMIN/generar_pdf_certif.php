@@ -188,8 +188,8 @@ try {
         }
 
         // --- INICIO: Generar QR ---
-        // URL para el QR. Ajusta la URL base según sea necesario.
-        $validation_url = "http://localhost/Sistema_Validacion/index.html?cuv=" . urlencode($cuv);
+        // URL para el QR que apunta directamente al script de validación.
+        $validation_url = "http://localhost/Sistema-de-Validacion-UTN-FRH/PHP/validacion.php?codigo=" . urlencode($cuv);
         $qrCodeImage = (new \chillerlan\QRCode\QRCode)->render($validation_url);
 
 

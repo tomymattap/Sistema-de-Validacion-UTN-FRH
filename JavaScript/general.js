@@ -13,13 +13,18 @@ document.addEventListener('DOMContentLoaded', () => {
             offCanvasMenu.classList.remove('active');
         });
 
-        // Cierra el menú al hacer clic en un enlace dentro de él
-        offCanvasMenu.addEventListener('click', (e) => {
-            if (e.target.tagName === 'A') {
-                offCanvasMenu.classList.remove('active');
+        offCanvasMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', (e) => {
+
+            // Si es el botón "Hola, Nombre", NO cerrar
+            if (link.classList.contains('user-menu-toggle-mobile')) {
+                return; 
             }
+
+            // Para cualquier otro link (incluye links dentro del submenu)
+            offCanvasMenu.classList.remove('active');
         });
-    }
+});
 
     // ----- Botón de Volver Arriba -----
     const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
@@ -188,4 +193,4 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
-);
+});

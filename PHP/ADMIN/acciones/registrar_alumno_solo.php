@@ -35,6 +35,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $stmt->close();
 
+    // Establecer el ID del admin actual para la auditoría
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (isset($_SESSION['user_id'])) {
+        $current_admin_id = $_SESSION['user_id'];
+        $conexion->query("SET @current_admin = '$current_admin_id'");
+    }
+
     // Insertar nuevo alumno
     $password_por_defecto = password_hash($cuil, PASSWORD_DEFAULT); // Usamos el CUIL como contraseña inicial
     $rol_alumno = 2; // ID_Rol para Alumno

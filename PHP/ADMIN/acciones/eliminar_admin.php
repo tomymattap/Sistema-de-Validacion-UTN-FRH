@@ -20,6 +20,12 @@ if (empty($id_admin)) {
     exit;
 }
 
+// Establecer el ID del admin actual para la auditoría
+if (isset($_SESSION['user_id'])) {
+    $current_admin_id = $_SESSION['user_id'];
+    mysqli_query($conexion, "SET @current_admin = '$current_admin_id'");
+}
+
 $sql = "DELETE FROM admin WHERE ID_Admin = ?";
 $stmt = mysqli_prepare($conexion, $sql);
 

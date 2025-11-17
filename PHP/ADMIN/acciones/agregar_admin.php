@@ -38,6 +38,12 @@ if (mysqli_stmt_num_rows($stmt) > 0) {
 }
 mysqli_stmt_close($stmt);
 
+// Establecer el ID del admin actual para la auditoría
+if (isset($_SESSION['user_id'])) {
+    $current_admin_id = $_SESSION['user_id'];
+    mysqli_query($conexion, "SET @current_admin = '$current_admin_id'");
+}
+
 // Generar ID_Admin
 $id_admin = strtolower($apellido) . '_' . $legajo;
 

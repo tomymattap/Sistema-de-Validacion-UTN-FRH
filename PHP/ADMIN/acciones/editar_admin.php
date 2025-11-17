@@ -25,6 +25,12 @@ if (empty($id_admin) || empty($nombre) || empty($apellido) || empty($email) || e
     exit;
 }
 
+// Establecer el ID del admin actual para la auditoría
+if (isset($_SESSION['user_id'])) {
+    $current_admin_id = $_SESSION['user_id'];
+    mysqli_query($conexion, "SET @current_admin = '$current_admin_id'");
+}
+
 $sql = "UPDATE admin SET Nombre = ?, Apellido = ?, Email = ?, ID_Rol = ? WHERE ID_Admin = ?";
 $stmt = mysqli_prepare($conexion, $sql);
 mysqli_stmt_bind_param($stmt, "sssis", $nombre, $apellido, $email, $rol, $id_admin);

@@ -3,6 +3,15 @@ header('Content-Type: application/json');
 include("../conexion.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Establecer el ID del admin actual para la auditoría
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (isset($_SESSION['user_id'])) {
+        $current_admin_id = $_SESSION['user_id'];
+        $conexion->query("SET @current_admin = '$current_admin_id'");
+    }
+
     $id = intval($_POST['ID_Inscripcion'] ?? 0);
 
     if ($id <= 0) {

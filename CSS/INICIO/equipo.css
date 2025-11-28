@@ -1,0 +1,28 @@
+.team-section {
+    padding-top: 2rem;
+}
+
+.team-member {
+    margin-bottom: 1.5rem;
+}
+
+.team-member p {
+    margin: 0.3rem 0;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #007bff; /* Color del ícono y texto del enlace */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.social-link:hover {
+    color: #0056b3; /* Color al pasar el mouse */
+}
+
+.social-link i {
+    font-size: 1.2rem; /* Tamaño del ícono de LinkedIn */
+}

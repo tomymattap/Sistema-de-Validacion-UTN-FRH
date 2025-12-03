@@ -74,7 +74,14 @@ if (empty($token)) {
                             </div>
                             <div class="form-group">
                                 <label for="modalidad">Modalidad</label>
-                                <input type="text" id="modalidad" name="modalidad" required>
+                                <select id="modalidad" name="modalidad" required>
+                                    <option value="">Seleccione una modalidad</option>
+                                    <?php
+                                    $modalidades_res = mysqli_query($conexion, "SELECT DISTINCT Modalidad FROM curso WHERE Modalidad IS NOT NULL AND Modalidad != '' ORDER BY Modalidad");
+                                    while ($fila = mysqli_fetch_assoc($modalidades_res)): ?>
+                                        <option value="<?= htmlspecialchars($fila['Modalidad']) ?>"><?= htmlspecialchars($fila['Modalidad']) ?></option>
+                                    <?php endwhile; ?>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="docente">Docente (opcional)</label>
@@ -93,18 +100,11 @@ if (empty($token)) {
                                 <textarea id="requisitos" name="requisitos" rows="3"></textarea>
                             </div>
 
-                            <div class="form-group">
-                                <label for="institucion1">Institución 1</label>
-                                <input type="text" id="institucion1" name="institucion1" required>
+                            <div class="form-group full-width">
+                                <label for="instituciones_externas">Instituciones Externas - Use un guión para separar los nombres de las instituciones</label>
+                                <textarea id="instituciones_externas" name="instituciones_externas" rows="3" required placeholder="Ej: Universidad de José C. Paz - Asociación de Desarrolladores de Videojuegos Argentinos (ADVA)"></textarea>
                             </div>
-                            <div class="form-group">
-                                <label for="institucion2">Institución 2 (Opcional)</label>
-                                <input type="text" id="institucion2" name="institucion2">
-                            </div>
-                            <div class="form-group">
-                                <label for="institucion3">Institución 3 (Opcional)</label>
-                                <input type="text" id="institucion3" name="institucion3">
-                            </div>
+
                             <div class="form-group">
                                 <label for="archivo_evaluacion">Archivo con datos necesarios de la Certificación (Opcional, solo PDF)</label>
                                 <div class="file-upload-zone" id="fileUploadZone">

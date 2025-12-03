@@ -42,13 +42,23 @@ if (!$id_evaluacion) {
     $error_message = "No se proporcionó un ID de evaluación válido.";
 } else {
     $consulta_sql = "
-        SELECT 
-            c.Nombre_Curso, c.Modalidad, c.Docente, c.Carga_Horaria, c.Descripcion, c.Requisitos, c.Categoria,
-            e.ID_Evaluacion, e.Institucion1, e.Institucion2, e.Institucion3, e.Estado_Evaluacion, e.Archivo_Evaluacion
-        FROM evaluacion_curso_externo e
-        JOIN curso c ON e.ID_Curso = c.ID_Curso
-        WHERE e.ID_Evaluacion = ?
-    ";
+    SELECT 
+        c.Nombre_Curso, 
+        c.Modalidad, 
+        c.Docente, 
+        c.Carga_Horaria, 
+        c.Descripcion, 
+        c.Requisitos, 
+        c.Categoria,
+        e.ID_Evaluacion, 
+        e.Instituciones_externas,
+        e.Estado_Evaluacion, 
+        e.Archivo_Evaluacion
+    FROM evaluacion_curso_externo e
+    JOIN curso c ON e.ID_Curso = c.ID_Curso
+    WHERE e.ID_Evaluacion = ?
+";
+
     $stmt = $conexion->prepare($consulta_sql);
     $stmt->bind_param("i", $id_evaluacion);
     $stmt->execute();
@@ -130,24 +140,12 @@ $js_path = $base_path . 'JavaScript/';
                             </div>
                         </div>
 
-                        <h3>Instituciones Asociadas</h3>
+                        <h3>Instituciones Asociadas</h3>                        
                         <div class="info-grid">
                             <div class="info-item">
-                                <label>Institución 1</label>
-                                <span><?= htmlspecialchars($evaluacion['Institucion1']) ?></span>
+                                <label>Instituciones Asociadas</label>
+                                <span><?= nl2br(htmlspecialchars(str_replace(' - ', "\n", $evaluacion['Instituciones_externas']))) ?></span>
                             </div>
-                            <?php if (!empty($evaluacion['Institucion2'])): ?>
-                            <div class="info-item">
-                                <label>Institución 2</label>
-                                <span><?= htmlspecialchars($evaluacion['Institucion2']) ?></span>
-                            </div>
-                            <?php endif; ?>
-                            <?php if (!empty($evaluacion['Institucion3'])): ?>
-                            <div class="info-item">
-                                <label>Institución 3</label>
-                                <span><?= htmlspecialchars($evaluacion['Institucion3']) ?></span>
-                            </div>
-                            <?php endif; ?>
                         </div>
                     </div>
 

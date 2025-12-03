@@ -73,12 +73,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cursos'])) {
 
             // Obtener fechas actuales para comparar
             $stmt_check = mysqli_prepare($conexion, "SELECT Inicio_Curso, Fin_Curso FROM duracion_curso WHERE ID_Curso = ?");
-            mysqli_stmt_bind_param($stmt_check, "i", $id_curso_int);
+            mysqli_stmt_bind_param($stmt_check, "i", $id_curso);
             mysqli_stmt_execute($stmt_check);
             $result_check = mysqli_stmt_get_result($stmt_check);
             $fechas_actuales = mysqli_fetch_assoc($result_check);
             mysqli_stmt_close($stmt_check);
-
 
             $inicio_actual = $fechas_actuales['Inicio_Curso'] ?? null;
             $fin_actual = $fechas_actuales['Fin_Curso'] ?? null;

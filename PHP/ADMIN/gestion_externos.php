@@ -19,9 +19,7 @@ $consulta_sql = "
     c.Descripcion,
     c.Carga_Horaria,
     c.Requisitos,
-    e.Institucion1,
-    e.Institucion2,
-    e.Institucion3,
+    e.instituciones_externas,
     e.Estado_Evaluacion,
     e.Archivo_Evaluacion
 FROM evaluacion_curso_externo e
@@ -147,17 +145,10 @@ $php_path = $base_path . 'PHP/';
                             <th>Carga Horaria</th>
                             <th>Descripción</th>
                             <th>Requisitos</th>
-                            <th colspan="3" class="inst-header">Instituciones Asociadas</th>
+                            <th class="inst-header">Instituciones Asociadas</th>
                             <th>Estado Evaluación</th>
                             <th>Info. Extra</th>
                             <th>Acción</th>
-                        </tr>
-                        <tr class="sub-header">
-                            <th colspan="4"></th>
-                            <th>Institución 1</th>
-                            <th>Institución 2</th>
-                            <th>Institución 3</th>
-                            <th colspan="3"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -183,10 +174,10 @@ $php_path = $base_path . 'PHP/';
                                 <td data-label="Carga Horaria"><?= htmlspecialchars($fila['Carga_Horaria']); ?> hs</td>
                                 <td data-label="Descripción"><?= htmlspecialchars($fila['Descripcion']); ?></td>
                                 <td data-label="Requisitos"><?= htmlspecialchars($fila['Requisitos']); ?></td>
-
-                                <td data-label="Institución 1" class="col-institucion"><?= htmlspecialchars($fila['Institucion1']); ?></td>
-                                <td data-label="Institución 2" class="col-institucion"><?= htmlspecialchars($fila['Institucion2']); ?></td>
-                                <td data-label="Institución 3" class="col-institucion"><?= htmlspecialchars($fila['Institucion3']); ?></td>
+                                <td data-label="Instituciones" class="col-institucion">
+                                    <?php // Reemplazamos el guion por un salto de línea para mejor visualización ?>
+                                    <?= nl2br(htmlspecialchars(str_replace(' - ', "\n", $fila['instituciones_externas']))); ?>
+                                </td>
 
                                 <td data-label="Estado" class="col-estado">
                                     <span class="status-badge <?= $estado_class ?>"><?= $estado_evaluacion ?></span>
@@ -211,7 +202,7 @@ $php_path = $base_path . 'PHP/';
 
                         <?php else: ?>
                             <tr>
-                                <td colspan="9" class="sin-resultados">No se encontraron evaluaciones de cursos externos.</td>
+                                <td colspan="7" class="sin-resultados">No se encontraron evaluaciones de cursos externos.</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>

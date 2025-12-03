@@ -29,17 +29,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_curso'])) {
     $requisitos = $_POST['requisitos'] ?? null;
     $categoria = $_POST['categoria'] ?? '';
     $tipo = $_POST['tipo'] ?? '';
+    $instituciones_externas = $_POST['instituciones_externas'] ?? null;
 
     if ($id_curso_post && !empty($nombre_curso) && !empty($categoria) && !empty($tipo)) {
-        $sql = "UPDATE curso SET Nombre_Curso=?, Modalidad=?, Docente=?, Carga_Horaria=?, Descripcion=?, Requisitos=?, Categoria=?, Tipo=? WHERE ID_Curso=?";
-        $stmt = mysqli_prepare($conexion, $sql);
-        mysqli_stmt_bind_param($stmt, "ssssssssi", $nombre_curso, $modalidad, $docente, $carga_horaria, $descripcion, $requisitos, $categoria, $tipo, $id_curso_post);
-        
-        if (mysqli_stmt_execute($stmt)) {
+        mysqli_begin_transaction($conexion);
+        try {
+            // 1. Actualizar la tabla 'curso'
+            $sql_curso = "UPDATE curso SET Nombre_Curso=?, Modalidad=?, Docente=?, Carga_Horaria=?, Descripcion=?, Requisitos=?, Categoria=?, Tipo=? WHERE ID_Curso=?";
+            $stmt_curso = mysqli_prepare($conexion, $sql_curso);
+            mysqli_stmt_bind_param($stmt_curso, "ssssssssi", $nombre_curso, $modalidad, $docente, $carga_horaria, $descripcion, $requisitos, $categoria, $tipo, $id_curso_post);
+            if (!mysqli_stmt_execute($stmt_curso)) {
+                throw new Exception('Error al actualizar los datos del curso: ' . mysqli_stmt_error($stmt_curso));
+            }
+
+            // 2. Si es un curso de certificación y se enviaron instituciones, actualizar 'evaluacion_curso_externo'
+            if ($tipo === 'CERTIFICACION' && $instituciones_externas !== null) {
+                $sql_externo = "UPDATE evaluacion_curso_externo SET instituciones_externas = ? WHERE ID_Curso = ?";
+                $stmt_externo = mysqli_prepare($conexion, $sql_externo);
+                mysqli_stmt_bind_param($stmt_externo, "si", $instituciones_externas, $id_curso_post);
+                if (!mysqli_stmt_execute($stmt_externo)) {
+                    // No lanzamos una excepción si falla, ya que podría no existir el registro.
+                    // Podrías agregar un log de error aquí si lo necesitas.
+                }
+            }
+
+            mysqli_commit($conexion);
             header('Location: gestionar_cursos.php?status=updated');
             exit;
-        } else {
-            die('Error al actualizar el curso: ' . mysqli_stmt_error($stmt));
+        } catch (Exception $e) {
+            mysqli_rollback($conexion);
+            die('Error en la transacción: ' . $e->getMessage());
         }
     } else {
         die('Error: Faltan datos obligatorios.');
@@ -48,7 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_curso'])) {
 
 // Cargar datos del curso para editar
 if ($id_curso) {
-    $sql = "SELECT * FROM curso WHERE ID_Curso = ?";
+    $sql = "SELECT c.*, e.Instituciones_externas 
+            FROM curso c
+            LEFT JOIN evaluacion_curso_externo e ON c.ID_Curso = e.ID_Curso
+            WHERE c.ID_Curso = ?";
     $stmt = mysqli_prepare($conexion, $sql);
     mysqli_stmt_bind_param($stmt, "i", $id_curso);
     mysqli_stmt_execute($stmt);
@@ -69,7 +91,7 @@ if ($id_curso) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Curso - Admin</title>
-    <link rel="icon" href="../Imagenes/icon.png" type="image/png">
+    <link rel="icon" href="../../Imagenes/icon.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -171,6 +193,13 @@ if ($id_curso) {
                                 ?>
                             </select>
                         </div>
+
+                        <?php if (!empty($curso['Instituciones_externas'])): ?>
+                        <div class="form-group full-width">
+                            <label for="instituciones_externas">Instituciones Externas Asociadas - Use un guión para separar los nombres de las instituciones</label>
+                            <textarea id="instituciones_externas" name="instituciones_externas"><?= htmlspecialchars($curso['Instituciones_externas']) ?></textarea>
+                        </div>
+                        <?php endif; ?>
 
 
                         <div class="form-group full-width">

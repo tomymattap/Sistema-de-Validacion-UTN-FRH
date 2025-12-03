@@ -16,9 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $descripcion = $_POST['descripcion'] ?? '';
     $requisitos = $_POST['requisitos'] ?? null;
     $categoria = $_POST['categoria'] ?? '';
-    $institucion1 = $_POST['institucion1'] ?? '';
-    $institucion2 = $_POST['institucion2'] ?? null;
-    $institucion3 = $_POST['institucion3'] ?? null;
+    $instituciones_externas = $_POST['instituciones_externas'] ?? '';
     $estado_evaluacion = 'PENDIENTE';
     $tipo = "CERTIFICACIÓN";
 
@@ -70,20 +68,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // 4️⃣ Insertar en evaluacion_curso_externo
     $sql_evaluacion = "INSERT INTO evaluacion_curso_externo 
-        (ID_Curso, Estado_Evaluacion, Archivo_Evaluacion, Institucion1, Institucion2, Institucion3)
-        VALUES (?, ?, ?, ?, ?, ?)";
+        (ID_Curso, Estado_Evaluacion, Archivo_Evaluacion, instituciones_externas)
+        VALUES (?, ?, ?, ?)";
     $stmt_evaluacion = mysqli_prepare($conexion, $sql_evaluacion);
 
     $null = NULL;
     mysqli_stmt_bind_param(
         $stmt_evaluacion,
-        "isbsss",
+        "isbs",
         $id_curso,
         $estado_evaluacion,
         $null,
-        $institucion1,
-        $institucion2,
-        $institucion3
+        $instituciones_externas
     );
 
     // Si hay un archivo, se envía como dato largo para el segundo marcador de posición '?' (índice 2)

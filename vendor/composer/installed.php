@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'usuario/sistema_validacion',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '1c66c8e0bb3c62fdd565aca4b3881cf23db42397',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'chillerlan/php-qrcode' => array(
-            'pretty_version' => '5.0.4',
-            'version' => '5.0.4.0',
-            'reference' => '390393e97a6e42ccae0e0d6205b8d4200f7ddc43',
+            'pretty_version' => '5.0.5',
+            'version' => '5.0.5.0',
+            'reference' => '7b66282572fc14075c0507d74d9837dab25b38d6',
             'type' => 'library',
             'install_path' => __DIR__ . '/../chillerlan/php-qrcode',
             'aliases' => array(),
@@ -29,9 +29,9 @@
             'dev_requirement' => false,
         ),
         'mpdf/mpdf' => array(
-            'pretty_version' => 'v8.2.6',
-            'version' => '8.2.6.0',
-            'reference' => 'dd30e3b01061cf8dfe65e7041ab4cc46d8ebdd44',
+            'pretty_version' => 'v8.2.7',
+            'version' => '8.2.7.0',
+            'reference' => 'b59670a09498689c33ce639bac8f5ba26721dab3',
             'type' => 'library',
             'install_path' => __DIR__ . '/../mpdf/mpdf',
             'aliases' => array(),
@@ -101,9 +101,9 @@
             'dev_requirement' => false,
         ),
         'usuario/sistema_validacion' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '1c66c8e0bb3c62fdd565aca4b3881cf23db42397',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

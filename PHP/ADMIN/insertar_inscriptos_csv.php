@@ -155,7 +155,31 @@ try {
             continue;
         }
 
+        // --- LÓGICA PARA DETERMINAR EL ESTADO DE CURSADA AUTOMÁTICAMENTE ---
         $estado_cursada = 'Pendiente'; // Estado por defecto para carga masiva
+        $stmt_fechas = mysqli_prepare($conexion, "SELECT Inicio_Curso, Fin_Curso FROM duracion_curso WHERE ID_Curso = ?");
+        mysqli_stmt_bind_param($stmt_fechas, "i", $id_curso);
+        mysqli_stmt_execute($stmt_fechas);
+        $result_fechas = mysqli_stmt_get_result($stmt_fechas);
+        $fechas_curso = mysqli_fetch_assoc($result_fechas);
+        mysqli_stmt_close($stmt_fechas);
+
+        if ($fechas_curso && !empty($fechas_curso['Inicio_Curso']) && !empty($fechas_curso['Fin_Curso'])) {
+            $fecha_actual = new DateTime();
+            $fecha_inicio = new DateTime($fechas_curso['Inicio_Curso']);
+            $fecha_fin = new DateTime($fechas_curso['Fin_Curso']);
+        
+            // Ajustar la hora a 00:00:00 para comparaciones de día completo
+            $fecha_actual->setTime(0, 0, 0);
+
+            if ($fecha_actual < $fecha_inicio) {
+                $estado_cursada = 'Pendiente';
+            } elseif ($fecha_actual >= $fecha_inicio && $fecha_actual <= $fecha_fin) {
+                $estado_cursada = 'En Curso';
+            } else {
+                $estado_cursada = 'Finalizado';
+            }
+        }
 
         $sql_insert_insc = "INSERT INTO inscripcion (ID_Cuil_Alumno, ID_Curso, Cuatrimestre, Anio, Estado_Cursada, Comision) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt_insert_insc = mysqli_prepare($conexion, $sql_insert_insc);
